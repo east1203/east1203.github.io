@@ -211,22 +211,24 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_self">
-          SV——线程及线程间的通信（二）
+        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
+          SV——线程及线程间的通信（一）
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_self">
+        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
           
           
             
           
-          1. 旗语 semaphore​    如果把进程执行看成“开车”这个行为，开车需要钥匙，旗语就类似于“钥匙”。一个线程执行要先申请钥匙（旗语），如果只有一个钥匙（旗语）并且被其他线程申请了，那么这个线程阻塞。当那个线程执行完了，返回钥匙（旗语），被阻塞的线程可以再申请钥匙（旗语）。
-​    旗语可以用在多个进程共享资源的时候。
+          ​    实际硬件中，计算是并发进行的，在Verilog中通过initial、always、连续赋值来模拟，在测试平台中为了模拟、检验Verilog中的这些语句块，tb使用许多并发的线程。
+1. 线程的定义和使用1.1 定义线程initial 、always、assign都是进程，初次之外还有：
 
-new方法创建一个或多个旗语
-get获取一个或多个旗语，获取失败
+fork    join
+其内的语句并发，fork-join块执行完才执行后面的语句。
+
+fork 
         </a>
       </p>
 
@@ -271,24 +273,22 @@ get获取一个或多个旗语，获取失败
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
-          SV——线程及线程间的通信（一）
+        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_self">
+          SV——线程及线程间的通信（二）
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
+        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_self">
           
           
             
           
-          ​    实际硬件中，计算是并发进行的，在Verilog中通过initial、always、连续赋值来模拟，在测试平台中为了模拟、检验Verilog中的这些语句块，tb使用许多并发的线程。
-1. 线程的定义和使用1.1 定义线程initial 、always、assign都是进程，初次之外还有：
+          1. 旗语 semaphore​    如果把进程执行看成“开车”这个行为，开车需要钥匙，旗语就类似于“钥匙”。一个线程执行要先申请钥匙（旗语），如果只有一个钥匙（旗语）并且被其他线程申请了，那么这个线程阻塞。当那个线程执行完了，返回钥匙（旗语），被阻塞的线程可以再申请钥匙（旗语）。
+​    旗语可以用在多个进程共享资源的时候。
 
-fork    join
-其内的语句并发，fork-join块执行完才执行后面的语句。
-
-fork 
+new方法创建一个或多个旗语
+get获取一个或多个旗语，获取失败
         </a>
       </p>
 
