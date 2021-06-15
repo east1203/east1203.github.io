@@ -134,6 +134,18 @@
           
           
             <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                
+                
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
                 About
@@ -192,63 +204,6 @@
               <div class="col-12 col-md-10 m-auto">
                 
 
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/09/14/IC/IC_Architecture/DMA/" target="_self">
-          DMA
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/09/14/IC/IC_Architecture/DMA/" target="_self">
-          
-          
-            
-          
-          注意：个人整理，有误无责。
-0. CPU控制的数据传输方式介绍由CPU控制的数据传输方式有两种：查询、中断。
-0.1 查询方式​    查询方式是由程序控制的，如果CPU中执行的程序需要进行数据传输，CPU查询外设状态，如果外设准备好，那么进行数据传输。
-0.2 中断方式​    当外设需要与CPU进行数据交换的时候，外设向CPU发出中断请求，CPU中断当前执行的程序，相应外设的数据传输请求。当外
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-09-14 00:00" pubdate>
-              2019-09-14
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/IC/">IC</a>
-            
-              <a href="/categories/IC/Architecture/">Architecture</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/Architecture/">Architecture</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
 
   <div class="row mx-auto index-card">
     
@@ -755,6 +710,80 @@ description
 
 
 
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-08-19 00:00" pubdate>
+              2019-08-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/others/">others</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/others/">others</a>
+            
+              <a href="/tags/linux/">linux</a>
+            
+              <a href="/tags/vim/">vim</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/08/19/others/linux/shell%E4%B8%AD%E7%9A%84sed/" target="_self">
+          shell中的sed
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/08/19/others/linux/shell%E4%B8%AD%E7%9A%84sed/" target="_self">
+          
+          
+            
+          
+          中兴面试被提问到：在vim中删除包含特定字符串的行。当时说不会，后来想了想可以用sed或者perl里的匹配替换。
+0. sedsed是个管道命令，可以对数据进行替换、删除、新增、选取特定行等功能。
+1. 命令格式1sed -ndfr [动作]
+
+1.1 参数
+
+
+参数
+
+
+
+
+-n
+只有被sed处理的行才会打印出来
+
+
+-e
+直接在命令行上输入sed命令，如果和-i参数配合用会保存源文件。
+
+
+-
         </a>
       </p>
 

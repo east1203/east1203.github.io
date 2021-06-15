@@ -18,23 +18,9 @@
   <meta name="author" content="Yongkang Dong">
   <meta name="keywords" content="">
   
-  <title>page.title - East1203</title>
+  <title>Tags - IC - East1203</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
-
-
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
-
-  
-    
-    
-      
-      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
-    
-  
-
-  
 
 
 
@@ -63,7 +49,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 80vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -148,6 +134,18 @@
           
           
             <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                
+                
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
                 About
@@ -178,13 +176,17 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="page.title">
+            <span class="h2" id="subtitle" title="Tag - IC">
               
             </span>
 
             
           </div>
 
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
           
         </div>
       </div>
@@ -202,16 +204,31 @@
               <div class="col-12 col-md-10 m-auto">
                 
 
-<article class="page-content">
-  <p>众所周知Perl处理字符串的功能非常强大，Perl(Practical Extraction and Reporting language)处理格式的功能也非常强大，这里我们就开始学习一些Perl的格式和字符串处理。</p>
-<p>熟悉其最强大的三个函数：substr、pack、unpack。</p>
-<p>8、pack和unpack函数用于字符串的打包和解包，功能非常强大，支持多种打包格式字符串处理的。<br>$decimal=17;<br>$newdecimal=unpack(“B32”,pack(“N”,$decimal));<br>print “$newdecimal\n”;<br>$string=”张大华爱中国”;<br>@array1=unpack(“c*”,$string);<br>@array2=unpack(“C*”,$string);<br>print (join(“,”,@array1),”\n”);<br>print (join(“,”,@array2),”\n”);<br>$string1=pack(“c*”,@array1);<br>$string2=pack(“C*”,@array2);<br>print “$string1\n”;<br>print “$string2\n”;</p>
-<p>12、演示中文字符夹带英文字符的反序(使用了多个函数)<br>print “——begin—–\n”;<br>$string1=”中国love!张大华”;<br>@array=unpack(“C*”,$string1);<br>$length=$#array;#此数组的最后一个下标<br>for(;$length&gt;=0;){<br>if($array[$length]&lt;=128){<br>#英文或者标点<br>push(@array2,$array[$length]);<br>$length=$length-1;<br>}<br>else{<br>#中文字符<br>push(@array2,$array[$length-1]);<br>push(@array2,$array[$length]);<br>$length=$length-2;<br>}<br>}</p>
-<p>$string2=pack(“C*”,@array2);<br>print “$string2\n”;<br>$dir=dir;<br>print qx/$dir/;<br>@name=qw/zheng wen feng Kitty Kitty/;<br>print join(“,”,@name);</p>
-
-
+<div class="list-group">
+  <p class="h4">71 posts in total.</p>
+  <hr>
   
-</article>
+  
+    
+      
+      <p class="h5">2019</p>
+    
+    <a href="/2019/03/09/IC/others/HLS%E9%AB%98%E5%B1%82%E6%AC%A1%E7%BB%BC%E5%90%88/" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">HLS高层次综合</span>
+      <time style="float: right;">03-09</time>
+    </a>
+  
+</div>
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/tags/IC/page/7/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/tags/IC/">1</a><span class="space">&hellip;</span><a class="page-number" href="/tags/IC/page/6/#board">6</a><a class="page-number" href="/tags/IC/page/7/#board">7</a><span class="page-number current">8</span>
+    </span>
+  </nav>
+
+
+
 
               </div>
             </div>
@@ -324,8 +341,6 @@
 
 
 
-
-  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
 
 
 

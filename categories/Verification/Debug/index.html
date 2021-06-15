@@ -18,23 +18,9 @@
   <meta name="author" content="Yongkang Dong">
   <meta name="keywords" content="">
   
-  <title>page.title - East1203</title>
+  <title>Categories - Debug - East1203</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
-
-
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
-
-  
-    
-    
-      
-      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
-    
-  
-
-  
 
 
 
@@ -148,6 +134,18 @@
           
           
             <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                
+                
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
                 About
@@ -178,7 +176,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="page.title">
+            <span class="h2" id="subtitle" title="Category - Debug">
               
             </span>
 
@@ -202,39 +200,25 @@
               <div class="col-12 col-md-10 m-auto">
                 
 
-<article class="page-content">
-  <p><strong>AHB仲裁器信号：</strong></p>
-<p><img src="D:/software/%E6%9C%89%E9%81%93%E4%BA%91%E7%AC%94%E8%AE%B0/%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6/dyk1203@126.com/805cd10e95a64ed2950e8907c682d059/clipboard.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>仲裁过程包括四个基本步骤：</p>
-<p>1．主设备使用HBuSREQx信号请求访问总线；</p>
-<p>2．仲裁器置位相应的HGRATx信号，表示主设备的申请已成功，它将在当前传输完成时获得总线访问权；</p>
-<p>3．主设备拥有地址／控制总线；</p>
-<p>4．主设备拥有数据总线。</p>
-<p><strong>请求总线访问</strong></p>
-<p>\1. master使用HBUSREQx想arbiter请求总线的控制权，仲裁器在时钟上升沿采样HBUSREQx信号，然后通过仲裁算法（协议中未规定）来决定哪一个master接管总线。</p>
-<p>\2. 如果master请求锁定总线（不希望传输被其他master的请求打断），那么master还必须断言HLOCKx信号，使其他主机不能控制总线。</p>
-<p>\3. 申请到总线的master可以执行一次burst传输，arbiter需要知道HTRANS和HBURST信号，以知道一次burst的停止。如果master希望在一次burst之后还要进行burst传输，那么master需要在burst传输中再次请求HBUSREQ。</p>
-<p>\4. 如果主机在一次burst中丢掉了对总线的控制，那么需要重新申请HBUSREQ。</p>
-<p>\5. 如果master进行未定长度的burst，那么master需要在传输过程中一直申请HBUSREQ。</p>
-<p>\6. 如果没有master请求bus，那么总线会被移交给缺省主机，HTRANS上发送IDLE。</p>
-<p>arbiter可以通过仲裁算法对发起HBUSREQ的master进行仲裁，决定哪个master占用总线，但是以下情况下，当前占用总线的master保持对总线的占用权：</p>
-<p>\1. 当前master 用HLOCK信号锁定了总线。</p>
-<p>\2. 当前主设备处于定常的burst传输。</p>
-<p>\3. 发生split相应的主设备的请求会被屏蔽。</p>
-<p><strong>授予总线</strong></p>
-<p>arbiter通过HGRANT信号表示总线中哪个master的优先级最高，并且在当前HREADY为高（也就是当前数据读写完成）时将总线授予优先权最高的master。同时arbiter改变HMASTER表示哪个master占用bus。</p>
-<p><strong>突发提前终止</strong></p>
-<p>通常仲裁器在突发结束之前不会将总线移交给新的主机。但是，如果仲裁器决定突发必须被提前终止以防止过长的总线访问时间，那么可能在一个突发完成之前将总线访问权移交给另一个主机。如果主机在突发传输中失去对总线的访问，必须重新断言总线请求信号。主机必须确保HBURsI’和瑚限ANS信号都被更新以确保不再执行一个完整的突发传输</p>
-<p><strong>仲裁算法</strong></p>
-<p><strong>仲裁算法有固定优先级的仲裁(Fixed priority)，循环式优先级仲裁(Round Robin)，或是随机性的仲裁(Random)和竞争仲裁优先级(Tournament)</strong></p>
-<p>固定优先级算法，就是指总线中各主设备的优先级是事先确定好的，在仲裁器仲裁过程中固定不变。    </p>
-<p>而循环优先级算法则不同，各主设备的优先级在仲裁器的仲裁过程中不是一成不变，而是根据一定规律发生变化的。</p>
-<p>两者各有利弊，采用固定优先级算法，可以对那些有重要数据传输或有大量实时数据传输以及经常需要占用总线的主设备赋予较高的优先权，以便有效地利用AHB总线。固定优先级算法的缺点是可能会出现总线主设备“撑死”和“饿死”的现象，即优先级高的主设备总是优于优先级低的主设备获得总线的访问权，从而导致优先级低的设备不能及时获得总线的访问权而造成数据发送堵塞。</p>
-<p>相反，采用循环优先级算法则可以克服这种“饱饿”不均的弊端，在循环优先级算法中，由于其优先级随着每个总线周期动态地改变，各个设备在总线上的身份平等，获得总线占用权的机会均等。所以，在一定意义上来说，优先级循环是最公平的算法。循环优先级的缺点是当处理某些设备的大批量实时数据时会造成效率下降。</p>
-
-
+<div class="list-group">
+  <p class="h4">1 posts in total.</p>
+  <hr>
   
-</article>
+  
+    
+      
+      <p class="h5">2019</p>
+    
+    <a href="/2019/07/15/Verification/Debug/disable_fork%E4%B8%8E%E6%80%BB%E7%BA%BF%E4%BA%8B%E5%8A%A1/" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">disable_fork与总线事务</span>
+      <time style="float: right;">07-15</time>
+    </a>
+  
+</div>
+
+
+
+
 
               </div>
             </div>
@@ -347,8 +331,6 @@
 
 
 
-
-  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
 
 
 
