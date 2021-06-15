@@ -469,20 +469,24 @@ initial 、always块中也可以定义变量。
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/07/22/Verification/UVM/UVM1.2%E4%B8%8EUVM1.1%E7%9A%84%E4%B8%8D%E5%90%8C/" target="_self">
-          UVM1.2与UVM1.1的不同
+        <a href="/2019/07/22/Verification/UVM/UG%E4%B8%AD%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%86%E8%8A%82%E7%82%B9/" target="_self">
+          UVM UG中的一些细节点
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/07/22/Verification/UVM/UVM1.2%E4%B8%8EUVM1.1%E7%9A%84%E4%B8%8D%E5%90%8C/" target="_self">
+        <a href="/2019/07/22/Verification/UVM/UG%E4%B8%AD%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%86%E8%8A%82%E7%82%B9/" target="_self">
           
           
             
           
-          UVM-1.2在2014年5月发布，相比于之前的UVM-1.1改变了一些东西，这里分两部分，逐步总结UVM-1.2和UVM-1.1的不同。
-1. UVM-1.2增加的内容2. UVM-1.2取消的内容2.1 取消在sequence中控制objection在1.1中可以通过raise_objection   drop_objection 来控制tb的执行，而在1.2中取消了这种写法，改成了。
-1se
+          c
+UG 1.1
+Chapter3P42
+在SV中不允许在class中使用concurrent assertion，但可以在interface中使用concurrent assertion进行协议检查。
+P46
+$format(inst_name,”master[%0d]”,i); //将字符串内容存在inst_name变量中。注意和$formatf区别。
+
         </a>
       </p>
 
@@ -529,24 +533,20 @@ initial 、always块中也可以定义变量。
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/07/22/Verification/UVM/UG%E4%B8%AD%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%86%E8%8A%82%E7%82%B9/" target="_self">
-          UVM UG中的一些细节点
+        <a href="/2019/07/22/Verification/UVM/UVM1.2%E4%B8%8EUVM1.1%E7%9A%84%E4%B8%8D%E5%90%8C/" target="_self">
+          UVM1.2与UVM1.1的不同
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/07/22/Verification/UVM/UG%E4%B8%AD%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%86%E8%8A%82%E7%82%B9/" target="_self">
+        <a href="/2019/07/22/Verification/UVM/UVM1.2%E4%B8%8EUVM1.1%E7%9A%84%E4%B8%8D%E5%90%8C/" target="_self">
           
           
             
           
-          c
-UG 1.1
-Chapter3P42
-在SV中不允许在class中使用concurrent assertion，但可以在interface中使用concurrent assertion进行协议检查。
-P46
-$format(inst_name,”master[%0d]”,i); //将字符串内容存在inst_name变量中。注意和$formatf区别。
-
+          UVM-1.2在2014年5月发布，相比于之前的UVM-1.1改变了一些东西，这里分两部分，逐步总结UVM-1.2和UVM-1.1的不同。
+1. UVM-1.2增加的内容2. UVM-1.2取消的内容2.1 取消在sequence中控制objection在1.1中可以通过raise_objection   drop_objection 来控制tb的执行，而在1.2中取消了这种写法，改成了。
+1se
         </a>
       </p>
 
