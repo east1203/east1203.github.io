@@ -542,58 +542,6 @@ decltype类型
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/03/09/C++/%E6%A8%A1%E6%9D%BF%E7%B1%BB%E3%80%81%E6%A8%A1%E6%9D%BF%E5%87%BD%E6%95%B0%E5%A3%B0%E6%98%8E%E5%AE%9A%E4%B9%89%E5%9C%A8%E4%B8%80%E8%B5%B7/" target="_self">
-          模板类、模板函数声明定义在一起
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/03/09/C++/%E6%A8%A1%E6%9D%BF%E7%B1%BB%E3%80%81%E6%A8%A1%E6%9D%BF%E5%87%BD%E6%95%B0%E5%A3%B0%E6%98%8E%E5%AE%9A%E4%B9%89%E5%9C%A8%E4%B8%80%E8%B5%B7/" target="_self">
-          
-          
-            
-          
-          模板函数、模板类声明和定义要放在一起，不要再.h中声明了，然后再.cpp中定义，这要编译器再链接时会提示找不到函数或类的标识符。
-这是因为编译时是以文件为基础逐个文件编译的。对于普通的函数，如果定义在.h，实现在.cpp文件，程序在执行的时候可以通过.h文件找到函数在.cpp文件中的定义，可以执行。
-** 但是模板函数如果定义在.h,实现在.cpp文件， 程序在执行的时候找不到函数的实现——不知道
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-03-09 00:00" pubdate>
-              2019-03-09
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/C/">C++</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/C/">C++</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
         <a href="/2019/03/09/C++/%E4%B8%80%E4%BA%9BC++%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95(1)/" target="_self">
           C++问题记录(1)
         </a>
@@ -633,6 +581,60 @@ decltype类型
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/C/">C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/03/09/Verilog/Verilog%E8%AF%AD%E6%B3%95%E5%B0%8F%E7%BB%93(1)/" target="_self">
+          Verilog语法小结(1)
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/03/09/Verilog/Verilog%E8%AF%AD%E6%B3%95%E5%B0%8F%E7%BB%93(1)/" target="_self">
+          
+          
+            
+          
+          
+逻辑综合忽略延时信息
+
+ 比如”# 10 a = 1’b1;”在逻辑综合的时候会将延时信息忽略。2. always语句的规则：重复执行always后的语句
+ 如果always后接”@(posedge clk)”,当执行到这时，always语句块的进程被挂起来，直到满足”posedge clk”条件，执行always块中的语句。然后always块会马上重复执行,到”@(posedge clk)”又
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-03-09 00:00" pubdate>
+              2019-03-09
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verilog/">Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Verilog/">Verilog</a>
             
           </div>
         
@@ -703,22 +705,20 @@ decltype类型
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/03/09/links/MentorSources/" target="_self">
-          MentorSources
+        <a href="/2019/03/09/C++/%E6%A8%A1%E6%9D%BF%E7%B1%BB%E3%80%81%E6%A8%A1%E6%9D%BF%E5%87%BD%E6%95%B0%E5%A3%B0%E6%98%8E%E5%AE%9A%E4%B9%89%E5%9C%A8%E4%B8%80%E8%B5%B7/" target="_self">
+          模板类、模板函数声明定义在一起
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/03/09/links/MentorSources/" target="_self">
+        <a href="/2019/03/09/C++/%E6%A8%A1%E6%9D%BF%E7%B1%BB%E3%80%81%E6%A8%A1%E6%9D%BF%E5%87%BD%E6%95%B0%E5%A3%B0%E6%98%8E%E5%AE%9A%E4%B9%89%E5%9C%A8%E4%B8%80%E8%B5%B7/" target="_self">
           
           
             
           
-          
- Mentor Academy Resource
-
-Industry Conferences：各个年份DAC、DVCon会议的现场录像视频，也可以下载PPT文件。
-Low Power Verification Forum：his forum will explore the new and unique low-power coverage methodologies that enable d
+          模板函数、模板类声明和定义要放在一起，不要再.h中声明了，然后再.cpp中定义，这要编译器再链接时会提示找不到函数或类的标识符。
+这是因为编译时是以文件为基础逐个文件编译的。对于普通的函数，如果定义在.h，实现在.cpp文件，程序在执行的时候可以通过.h文件找到函数在.cpp文件中的定义，可以执行。
+** 但是模板函数如果定义在.h,实现在.cpp文件， 程序在执行的时候找不到函数的实现——不知道
         </a>
       </p>
 
@@ -732,6 +732,20 @@ Low Power Verification Forum：his forum will explore the new and unique low-pow
           </div>
         
         
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/C/">C++</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+          </div>
         
       </div>
     </article>

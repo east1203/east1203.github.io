@@ -452,19 +452,18 @@
   </entry>
   
   <entry>
-    <title>SV——static</title>
-    <link href="http://example.com/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94static/"/>
-    <id>http://example.com/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94static/</id>
+    <title>SV——声明和例化</title>
+    <link href="http://example.com/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E5%A3%B0%E6%98%8E%E5%92%8C%E4%BE%8B%E5%8C%96/"/>
+    <id>http://example.com/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E5%A3%B0%E6%98%8E%E5%92%8C%E4%BE%8B%E5%8C%96/</id>
     <published>2019-09-26T16:00:00.000Z</published>
-    <updated>2021-06-14T12:44:43.937Z</updated>
+    <updated>2021-06-14T12:44:43.938Z</updated>
     
-    <content type="html"><![CDATA[<p>C</p><h3 id="static-class-property"><a href="#static-class-property" class="headerlink" title="static class property"></a>static class property</h3><p>如果变量需要在不同的对象中<strong>共享</strong>，那么可以把这个变成定义成静态变量。</p><p>静态变量在声明对象句柄的时候就分配内存空间。</p><p>The static class properties can be used without creating an object of that type. </p><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-keyword">class</span> Packet ;<br>static integer fileID = <span class="hljs-constructor">$fopen( <span class="hljs-string">&quot;data&quot;</span>, <span class="hljs-string">&quot;r&quot;</span> )</span>;<br>Packet p;<br>c = <span class="hljs-constructor">$fgetc( <span class="hljs-params">p</span>.<span class="hljs-params">fileID</span> )</span>;<br></code></pre></td></tr></table></figure><h3 id="static-class-method"><a href="#static-class-method" class="headerlink" title="static class method"></a>static class method</h3><p>​    <strong>A static method has no access to non-static members (class properties or methods),</strong>  but it can directly access static class properties or call static methods of the same class.</p><pre><code> Access to non-static members or to the special **this** handle within the body of a static method is illegal and results in a compiler error. </code></pre><p>​     <strong>Static methods  cannot be virtual.</strong></p>]]></content>
+    <content type="html"><![CDATA[<h3 id="1-class-constructor-—-new"><a href="#1-class-constructor-—-new" class="headerlink" title="1. class constructor —- new"></a>1. class constructor —- new</h3><p>SV中通过new构造函数来<strong>创建对象</strong>，在创建对象的过程中，可以做一些初始化工作。</p><p>new函数没有返回值，他的返回类型就是赋值表达式中左值的类型。</p><p>如果没有自己定义new函数，那么SV会调用默认的new函数；一个派生类的new函数会先调用父类的new函数。</p><h3 id="2-super"><a href="#2-super" class="headerlink" title="2. super"></a>2. super</h3><p>​    The <strong>super</strong> keyword is used from within a derived class to refer to members, class value parameters, or local value parameters of the base class（super关键字用来引用父类中的成员、参数等）. It is necessary to use <strong>super</strong> to access members, value parameters, or  local value parameters of a base class when those are overridden by the derived class（如果父类中的成员、参数被子类重载了，并且还想在子类中使用重载之前的父类的成员，那么要用super）。</p><p>​    但是super只能用一层，如果super.super.new()这种方式，不行。</p><p>​    A <strong>super</strong>.<strong>new</strong> call shall be the first statement executed in the constructor. This is because the <strong>superclass</strong> </p><p><strong>shall be initialized before the current class</strong> and, if the user code does not provide an initialization, the </p><p>compiler shall insert a call to <strong>super</strong>.<strong>new</strong> automatically. </p><p>​    <strong>super.new()会对父类中定义的成员初始化。</strong></p><h3 id="3-声明和例化"><a href="#3-声明和例化" class="headerlink" title="3. 声明和例化"></a>3. 声明和例化</h3><p><strong>声明是声明一个变量，其中保存类对象的句柄。</strong></p><p><strong>例化是通过构造函数，创建对象，分配内存空间，并将声明的句柄指向这段内存空间。</strong></p><p>​    虽然在SV中可以在声明的时候例化对象，但是不建议如此。一般是在块语句之外声明类对象，在块语句内例化对象；可以控制对象的实例化顺序。</p><h3 id="4-对象解除"><a href="#4-对象解除" class="headerlink" title="4. 对象解除"></a>4. 对象解除</h3><p>在SV中自动管理对象创建时分配的内存。SV会记住指向一段内存的句柄的数目，如果一段内存没有一个句柄指向它，那么它就会被自动释放掉。</p>]]></content>
     
     
       
       
-    <summary type="html">&lt;p&gt;C&lt;/p&gt;
-&lt;h3 id=&quot;static-class-property&quot;&gt;&lt;a href=&quot;#static-class-property&quot; class=&quot;headerlink&quot; title=&quot;static class property&quot;&gt;&lt;/a&gt;static class p</summary>
+    <summary type="html">&lt;h3 id=&quot;1-class-constructor-—-new&quot;&gt;&lt;a href=&quot;#1-class-constructor-—-new&quot; class=&quot;headerlink&quot; title=&quot;1. class constructor —- new&quot;&gt;&lt;/a&gt;1. class </summary>
       
     
     
@@ -483,18 +482,19 @@
   </entry>
   
   <entry>
-    <title>SV——声明和例化</title>
-    <link href="http://example.com/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E5%A3%B0%E6%98%8E%E5%92%8C%E4%BE%8B%E5%8C%96/"/>
-    <id>http://example.com/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E5%A3%B0%E6%98%8E%E5%92%8C%E4%BE%8B%E5%8C%96/</id>
+    <title>SV——static</title>
+    <link href="http://example.com/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94static/"/>
+    <id>http://example.com/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94static/</id>
     <published>2019-09-26T16:00:00.000Z</published>
-    <updated>2021-06-14T12:44:43.938Z</updated>
+    <updated>2021-06-14T12:44:43.937Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="1-class-constructor-—-new"><a href="#1-class-constructor-—-new" class="headerlink" title="1. class constructor —- new"></a>1. class constructor —- new</h3><p>SV中通过new构造函数来<strong>创建对象</strong>，在创建对象的过程中，可以做一些初始化工作。</p><p>new函数没有返回值，他的返回类型就是赋值表达式中左值的类型。</p><p>如果没有自己定义new函数，那么SV会调用默认的new函数；一个派生类的new函数会先调用父类的new函数。</p><h3 id="2-super"><a href="#2-super" class="headerlink" title="2. super"></a>2. super</h3><p>​    The <strong>super</strong> keyword is used from within a derived class to refer to members, class value parameters, or local value parameters of the base class（super关键字用来引用父类中的成员、参数等）. It is necessary to use <strong>super</strong> to access members, value parameters, or  local value parameters of a base class when those are overridden by the derived class（如果父类中的成员、参数被子类重载了，并且还想在子类中使用重载之前的父类的成员，那么要用super）。</p><p>​    但是super只能用一层，如果super.super.new()这种方式，不行。</p><p>​    A <strong>super</strong>.<strong>new</strong> call shall be the first statement executed in the constructor. This is because the <strong>superclass</strong> </p><p><strong>shall be initialized before the current class</strong> and, if the user code does not provide an initialization, the </p><p>compiler shall insert a call to <strong>super</strong>.<strong>new</strong> automatically. </p><p>​    <strong>super.new()会对父类中定义的成员初始化。</strong></p><h3 id="3-声明和例化"><a href="#3-声明和例化" class="headerlink" title="3. 声明和例化"></a>3. 声明和例化</h3><p><strong>声明是声明一个变量，其中保存类对象的句柄。</strong></p><p><strong>例化是通过构造函数，创建对象，分配内存空间，并将声明的句柄指向这段内存空间。</strong></p><p>​    虽然在SV中可以在声明的时候例化对象，但是不建议如此。一般是在块语句之外声明类对象，在块语句内例化对象；可以控制对象的实例化顺序。</p><h3 id="4-对象解除"><a href="#4-对象解除" class="headerlink" title="4. 对象解除"></a>4. 对象解除</h3><p>在SV中自动管理对象创建时分配的内存。SV会记住指向一段内存的句柄的数目，如果一段内存没有一个句柄指向它，那么它就会被自动释放掉。</p>]]></content>
+    <content type="html"><![CDATA[<p>C</p><h3 id="static-class-property"><a href="#static-class-property" class="headerlink" title="static class property"></a>static class property</h3><p>如果变量需要在不同的对象中<strong>共享</strong>，那么可以把这个变成定义成静态变量。</p><p>静态变量在声明对象句柄的时候就分配内存空间。</p><p>The static class properties can be used without creating an object of that type. </p><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-keyword">class</span> Packet ;<br>static integer fileID = <span class="hljs-constructor">$fopen( <span class="hljs-string">&quot;data&quot;</span>, <span class="hljs-string">&quot;r&quot;</span> )</span>;<br>Packet p;<br>c = <span class="hljs-constructor">$fgetc( <span class="hljs-params">p</span>.<span class="hljs-params">fileID</span> )</span>;<br></code></pre></td></tr></table></figure><h3 id="static-class-method"><a href="#static-class-method" class="headerlink" title="static class method"></a>static class method</h3><p>​    <strong>A static method has no access to non-static members (class properties or methods),</strong>  but it can directly access static class properties or call static methods of the same class.</p><pre><code> Access to non-static members or to the special **this** handle within the body of a static method is illegal and results in a compiler error. </code></pre><p>​     <strong>Static methods  cannot be virtual.</strong></p>]]></content>
     
     
       
       
-    <summary type="html">&lt;h3 id=&quot;1-class-constructor-—-new&quot;&gt;&lt;a href=&quot;#1-class-constructor-—-new&quot; class=&quot;headerlink&quot; title=&quot;1. class constructor —- new&quot;&gt;&lt;/a&gt;1. class </summary>
+    <summary type="html">&lt;p&gt;C&lt;/p&gt;
+&lt;h3 id=&quot;static-class-property&quot;&gt;&lt;a href=&quot;#static-class-property&quot; class=&quot;headerlink&quot; title=&quot;static class property&quot;&gt;&lt;/a&gt;static class p</summary>
       
     
     

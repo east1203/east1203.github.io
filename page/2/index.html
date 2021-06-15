@@ -507,22 +507,21 @@ compilation unit and have a static lifetime (exi
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94static/" target="_self">
-          SV——static
+        <a href="/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E5%A3%B0%E6%98%8E%E5%92%8C%E4%BE%8B%E5%8C%96/" target="_self">
+          SV——声明和例化
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94static/" target="_self">
+        <a href="/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E5%A3%B0%E6%98%8E%E5%92%8C%E4%BE%8B%E5%8C%96/" target="_self">
           
           
             
           
-          C
-static class property如果变量需要在不同的对象中共享，那么可以把这个变成定义成静态变量。
-静态变量在声明对象句柄的时候就分配内存空间。
-The static class properties can be used without creating an object of that type. 
-1234class Packet ;static integer fileI
+          1. class constructor —- newSV中通过new构造函数来创建对象，在创建对象的过程中，可以做一些初始化工作。
+new函数没有返回值，他的返回类型就是赋值表达式中左值的类型。
+如果没有自己定义new函数，那么SV会调用默认的new函数；一个派生类的new函数会先调用父类的new函数。
+2. super​    The super keyword is used from wi
         </a>
       </p>
 
@@ -567,21 +566,22 @@ The static class properties can be used without creating an object of that type.
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E5%A3%B0%E6%98%8E%E5%92%8C%E4%BE%8B%E5%8C%96/" target="_self">
-          SV——声明和例化
+        <a href="/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94static/" target="_self">
+          SV——static
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E5%A3%B0%E6%98%8E%E5%92%8C%E4%BE%8B%E5%8C%96/" target="_self">
+        <a href="/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94static/" target="_self">
           
           
             
           
-          1. class constructor —- newSV中通过new构造函数来创建对象，在创建对象的过程中，可以做一些初始化工作。
-new函数没有返回值，他的返回类型就是赋值表达式中左值的类型。
-如果没有自己定义new函数，那么SV会调用默认的new函数；一个派生类的new函数会先调用父类的new函数。
-2. super​    The super keyword is used from wi
+          C
+static class property如果变量需要在不同的对象中共享，那么可以把这个变成定义成静态变量。
+静态变量在声明对象句柄的时候就分配内存空间。
+The static class properties can be used without creating an object of that type. 
+1234class Packet ;static integer fileI
         </a>
       </p>
 
