@@ -223,21 +223,24 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/03/09/Verilog/%E9%98%BB%E5%A1%9E%E5%92%8C%E9%9D%9E%E9%98%BB%E5%A1%9E%E8%B5%8B%E5%80%BC/" target="_self">
-          阻塞和非阻塞赋值
+        <a href="/2019/03/09/links/ic_LowPower/" target="_self">
+          ic_LowPower
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/03/09/Verilog/%E9%98%BB%E5%A1%9E%E5%92%8C%E9%9D%9E%E9%98%BB%E5%A1%9E%E8%B5%8B%E5%80%BC/" target="_self">
+        <a href="/2019/03/09/links/ic_LowPower/" target="_self">
           
           
             
           
-          
-1 阻塞赋值2 非阻塞赋值3 自触发always块
-使用阻塞赋值不能自触发123456789module osc(clk);output clk;reg clk;initial begin   #10 clk = 0;end//initialalways @(clk)    #5 clk = ~clk;endmodule
-当语句执行到 clk = ~clk,clk的值立马改变，在此期间不允许其他
+          0.  低功耗设计功耗对处理器的限制究竟有多大    功耗与工艺、面积、速度之间的相互关系
+1. 低功耗技术知乎-数字芯片实验室-数字IC设计低功耗概述
+博客园-IC learner-数字IC 低功耗入门
+艾瑞后端设计微信公众号-浅谈芯片低功耗的设计实现（上）
+艾瑞后端设计微信公众号-浅谈芯片低功耗的设计实现（下）
+大话芯片功耗：并行化和流水话可以降低功耗。
+1.1 clock gating门控时
         </a>
       </p>
 
@@ -251,20 +254,6 @@
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verilog/">Verilog</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Verilog/">Verilog</a>
-            
-          </div>
         
       </div>
     </article>
@@ -323,24 +312,22 @@ IP厂商晶圆厂商中芯国际：
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/03/09/links/ic_LowPower/" target="_self">
-          ic_LowPower
+        <a href="/2019/03/09/links/MentorSources/" target="_self">
+          MentorSources
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/03/09/links/ic_LowPower/" target="_self">
+        <a href="/2019/03/09/links/MentorSources/" target="_self">
           
           
             
           
-          0.  低功耗设计功耗对处理器的限制究竟有多大    功耗与工艺、面积、速度之间的相互关系
-1. 低功耗技术知乎-数字芯片实验室-数字IC设计低功耗概述
-博客园-IC learner-数字IC 低功耗入门
-艾瑞后端设计微信公众号-浅谈芯片低功耗的设计实现（上）
-艾瑞后端设计微信公众号-浅谈芯片低功耗的设计实现（下）
-大话芯片功耗：并行化和流水话可以降低功耗。
-1.1 clock gating门控时
+          
+ Mentor Academy Resource
+
+Industry Conferences：各个年份DAC、DVCon会议的现场录像视频，也可以下载PPT文件。
+Low Power Verification Forum：his forum will explore the new and unique low-power coverage methodologies that enable d
         </a>
       </p>
 
@@ -383,6 +370,47 @@ Charles J. Alpert 时钟网络研究
 
 3. 文章3.1 process论STA | POCV/ SOCV 之分析：【陌上骑驴看IC】微信公众号分享的关于工艺波动的分析，链接中有好几篇文章，作者打算收集成一个体系，等写大论文的时候看一下。
 4
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-03-09 00:00" pubdate>
+              2019-03-09
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/03/09/links/links/" target="_self">
+          useful links
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/03/09/links/links/" target="_self">
+          
+          
+            
+          
+          
+收集一些有用的链接
+一、AI​    关于Ai的学习资料、网站。
+二、IC​    包括但不限于IC设计、验证、后端、低功耗等相关的学习资料、网站、项目、文章、代码等。
+2.1 Verification2.2 Design2.3 LowPower2.4 Backend2.5 MentorSources2.6 Companies三、software​    一些有用的作图、文件处理软件。
+四、In
         </a>
       </p>
 
@@ -468,47 +496,6 @@ How delay of a standard cell chan
 使用VCS生成覆盖率报告
 3. 进阶资料验证的资料收藏：包括哪些书？有哪些在线的SV,UVM教程？关于验证的会议等。** ** 很重要 ** ** 
 E课网的一些SV代码资料，cod
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-03-09 00:00" pubdate>
-              2019-03-09
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/03/09/links/links/" target="_self">
-          useful links
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/03/09/links/links/" target="_self">
-          
-          
-            
-          
-          
-收集一些有用的链接
-一、AI​    关于Ai的学习资料、网站。
-二、IC​    包括但不限于IC设计、验证、后端、低功耗等相关的学习资料、网站、项目、文章、代码等。
-2.1 Verification2.2 Design2.3 LowPower2.4 Backend2.5 MentorSources2.6 Companies三、software​    一些有用的作图、文件处理软件。
-四、In
         </a>
       </p>
 

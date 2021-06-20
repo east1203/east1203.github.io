@@ -628,41 +628,38 @@ driver中有一个回调的“钩子”——是
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/08/19/others/linux/shell%E4%B8%AD%E7%9A%84grep/" target="_self">
-          shell中的grep
+        <a href="/2019/08/19/others/linux/shell%E4%B8%AD%E7%9A%84sed/" target="_self">
+          shell中的sed
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/08/19/others/linux/shell%E4%B8%AD%E7%9A%84grep/" target="_self">
+        <a href="/2019/08/19/others/linux/shell%E4%B8%AD%E7%9A%84sed/" target="_self">
           
           
             
           
-          grep主要用来进行字符串数据对比，然后将符合用户需要的字符串打印出来。
-1. 查找特定字符串1grep -n [-A] [-B] &quot;要查找的字符串&quot; --color=auto filename
+          中兴面试被提问到：在vim中删除包含特定字符串的行。当时说不会，后来想了想可以用sed或者perl里的匹配替换。
+0. sedsed是个管道命令，可以对数据进行替换、删除、新增、选取特定行等功能。
+1. 命令格式1sed -ndfr [动作]
+
+1.1 参数
 
 
+参数
 
-
-option
-description
 
 
 
 -n
-显示行在文件中的行号
+只有被sed处理的行才会打印出来
 
 
--A
-后面跟数字，所匹配行之后的几行也会打印
+-e
+直接在命令行上输入sed命令，如果和-i参数配合用会保存源文件。
 
 
--B
-后面跟数字，所匹配行之前的几行也会打印
-
-
-
+-
         </a>
       </p>
 
@@ -705,38 +702,41 @@ description
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/08/19/others/linux/shell%E4%B8%AD%E7%9A%84sed/" target="_self">
-          shell中的sed
+        <a href="/2019/08/19/others/linux/shell%E4%B8%AD%E7%9A%84grep/" target="_self">
+          shell中的grep
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/08/19/others/linux/shell%E4%B8%AD%E7%9A%84sed/" target="_self">
+        <a href="/2019/08/19/others/linux/shell%E4%B8%AD%E7%9A%84grep/" target="_self">
           
           
             
           
-          中兴面试被提问到：在vim中删除包含特定字符串的行。当时说不会，后来想了想可以用sed或者perl里的匹配替换。
-0. sedsed是个管道命令，可以对数据进行替换、删除、新增、选取特定行等功能。
-1. 命令格式1sed -ndfr [动作]
-
-1.1 参数
+          grep主要用来进行字符串数据对比，然后将符合用户需要的字符串打印出来。
+1. 查找特定字符串1grep -n [-A] [-B] &quot;要查找的字符串&quot; --color=auto filename
 
 
-参数
 
+
+option
+description
 
 
 
 -n
-只有被sed处理的行才会打印出来
+显示行在文件中的行号
 
 
--e
-直接在命令行上输入sed命令，如果和-i参数配合用会保存源文件。
+-A
+后面跟数字，所匹配行之后的几行也会打印
 
 
--
+-B
+后面跟数字，所匹配行之前的几行也会打印
+
+
+
         </a>
       </p>
 
