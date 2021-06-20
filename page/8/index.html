@@ -223,21 +223,20 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/08/07/Verilog/Verilog%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" target="_self">
-          Verilog——文件读写
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_queue/" target="_self">
+          ch2-Queues
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/08/07/Verilog/Verilog%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" target="_self">
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_queue/" target="_self">
           
           
             
           
-          1. 读取文件读取文件是之前在CSDN中整理的，链接
-$readmemb和$readmemh用来从文件中读取数据到存储器中。
-读取的内容只包括：空白位置（空格、换行、制表格(tab和form-feeds),注释行、二进制或十六进制的数字。
-数字中不能包含位宽说明和格式说明，其中readmemb要求每个数字是二进制数，readmemh要求每个数字必须是十六进制数字。数字中不定值x或X，高阻值z或Z，
+          2019-10-24
+SystemVerilog Queues​    A SystemVerilog queue is a First In First Out scheme which can have a variable size to store elements of the same data type.
+Queue SyntaxA queue is distinguished by
         </a>
       </p>
 
@@ -245,241 +244,8 @@ $readmemb和$readmemh用来从文件中读取数据到存储器中。
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2019-08-07 00:00" pubdate>
-              2019-08-07
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verilog/">Verilog</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/Verilog/">Verilog</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/08/06/Verilog/Verilog%E2%80%94%E2%80%94%E5%88%86%E9%A2%91%E5%99%A8/" target="_self">
-          Verilog——分频器
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/08/06/Verilog/Verilog%E2%80%94%E2%80%94%E5%88%86%E9%A2%91%E5%99%A8/" target="_self">
-          
-          
-            
-          
-          在面试比试中经常出现的奇数时钟分频电路。
-1. 不用时钟下降沿触发的3分频电路12345678910111213141516module ClockDiv(  // 3 分频    input clk_i,    input rst_n,    output  clk_o    );reg [2:0] cnt;always@(posedge clk_i or negedge rst_n) begi
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-08-06 00:00" pubdate>
-              2019-08-06
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verilog/">Verilog</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/Verilog/">Verilog</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/07/30/Verification/UVM/UVM%E2%80%94%E2%80%94callback%E6%9C%BA%E5%88%B6/" target="_self">
-          UVM——callback机制
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/07/30/Verification/UVM/UVM%E2%80%94%E2%80%94callback%E6%9C%BA%E5%88%B6/" target="_self">
-          
-          
-            
-          
-          参考UVM_CALLBACK—VerificationGuide网站
-《UVM实战1》
-1. 介绍Where callbacks can be implemented?Callbacks can be implemented in an object or component.
-What are the benefits of callback?Different flavors of the c
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-07-30 00:00" pubdate>
-              2019-07-30
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verification/">Verification</a>
-            
-              <a href="/categories/Verification/UVM/">UVM</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/SV/">SV</a>
-            
-              <a href="/tags/Verification/">Verification</a>
-            
-              <a href="/tags/UVM/">UVM</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/07/30/Verification/UVM/UVM%E2%80%94%E2%80%94RAL/" target="_self">
-          UVM——RAL
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/07/30/Verification/UVM/UVM%E2%80%94%E2%80%94RAL/" target="_self">
-          
-          
-            
-          
-          1. 寄存器模型介绍每个IP都有总线接口，连接到总线上，用来对DUT中寄存器进行配置，改变其行为。
-再验证环境中，如果改变了DUT的行为，那么参考模型需要知道DUT做了哪些改变，并同步改变，否则参考模型和当前DUT的功能不一致。
-参考模型要想获得寄存器值，需要做两件事：
-
-在参考模型中启动sequence用来产生一个读取DUT寄存器的操作。
-读取的值传递给参考模型。
-
-如果有了寄存器模型，可以直接
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-07-30 00:00" pubdate>
-              2019-07-30
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verification/">Verification</a>
-            
-              <a href="/categories/Verification/UVM/">UVM</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/SV/">SV</a>
-            
-              <a href="/tags/Verification/">Verification</a>
-            
-              <a href="/tags/UVM/">UVM</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/07/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94SV%E4%B8%8EC%E7%9A%84%E6%8E%A5%E5%8F%A3/" target="_self">
-          SV——SV与C的接口
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/07/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94SV%E4%B8%8EC%E7%9A%84%E6%8E%A5%E5%8F%A3/" target="_self">
-          
-          
-            
-          
-          在Verilog中，通过VPI可以引用C程序，听说挺复杂的（，当然我不会）。在SV中引入了DPI（direct programming Interface），可以通过在SV中简单的设置，就可以引用C语言。
-1. SV简单引用C先看一个例子
-123456789101112131415// tb.svimport &quot;DPI-C&quot; function int factorial(inp
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-07-27 00:00" pubdate>
-              2019-07-27
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
             </time>
           </div>
         
@@ -497,11 +263,9 @@ What are the benefits of callback?Different flavors of the c
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/IC/">IC</a>
-            
               <a href="/tags/SV/">SV</a>
             
-              <a href="/tags/Verification/">Verification</a>
+              <a href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
             
           </div>
         
@@ -515,20 +279,20 @@ What are the benefits of callback?Different flavors of the c
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/07/24/IC/Synthesis/%E9%80%BB%E8%BE%91%E7%BB%BC%E5%90%88%E2%80%94%E2%80%94%E4%BE%BF%E6%8D%B7%E5%91%BD%E4%BB%A4/" target="_self">
-          逻辑综合——便捷命令
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_packed%20array/" target="_self">
+          ch2-Packed array
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/07/24/IC/Synthesis/%E9%80%BB%E8%BE%91%E7%BB%BC%E5%90%88%E2%80%94%E2%80%94%E4%BE%BF%E6%8D%B7%E5%91%BD%E4%BB%A4/" target="_self">
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_packed%20array/" target="_self">
           
           
             
           
-          1. 获取感兴趣的对象123filter_collection [get_cells *] &quot;ref_name=AN*&quot; #找到以AN开头的单元名字get_cells -filter &quot;ref_name = AN*&quot; #找到以AN开头的单元名字get_cells -filter &quot;dont_touch==true&quot; # 按照属性过滤
-
-2
+          2019-10-24
+SystemVerilog Packed ArraysThere are two types of arrays in SystemVerilog - packed and unpacked arrays.
+​    A packed array is used to refer to dimensions declared before the variable name.
         </a>
       </p>
 
@@ -536,121 +300,8 @@ What are the benefits of callback?Different flavors of the c
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2019-07-24 00:00" pubdate>
-              2019-07-24
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/IC/">IC</a>
-            
-              <a href="/categories/IC/Synthesis/">Synthesis</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/Synthesis/">Synthesis</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/07/24/IC/Synthesis/%E9%80%BB%E8%BE%91%E7%BB%BC%E5%90%88%E2%80%94%E2%80%94%E8%AE%BE%E7%BD%AE%E5%BA%93/" target="_self">
-          逻辑综合——设置库
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/07/24/IC/Synthesis/%E9%80%BB%E8%BE%91%E7%BB%BC%E5%90%88%E2%80%94%E2%80%94%E8%AE%BE%E7%BD%AE%E5%BA%93/" target="_self">
-          
-          
-            
-          
-          逻辑综合分成三步：综合=转化+优化+映射。
-​    DC先通过read命令将RTL设计转化成布尔表达式，也就是GTECH格式，然后执行compile命令，按照设计约束进行逻辑综合和优化，并使用工艺库中的逻辑单元映射成门级网表
-​    DC以时序为基础进行优化。DC内建STA工具，将设计分解成多条时序路径，通过计算路径延迟对它们进行约束和优化。
-1. 目标库 target library​   
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-07-24 00:00" pubdate>
-              2019-07-24
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/IC/">IC</a>
-            
-              <a href="/categories/IC/Synthesis/">Synthesis</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/Synthesis/">Synthesis</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94OOP%E6%8A%80%E5%B7%A7/" target="_self">
-          SV——OOP技巧
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94OOP%E6%8A%80%E5%B7%A7/" target="_self">
-          
-          
-            
-          
-          1. 事务传递​    在事务生成器中，每次新建transaction，随机化后发送给接收器，这样每次发送函数transmit(tr)发送的transaction都不同。避免了transmit程序需要多个cycle，后面的随机化将前面还没有发送完成的数据覆盖了。
-​    下面这种写法是只创建一个transaction对象，对对象进行多次随机化，后面的随机化可能会覆盖前面没发送的数据。
-12345
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-07-23 00:00" pubdate>
-              2019-07-23
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
             </time>
           </div>
         
@@ -668,11 +319,9 @@ What are the benefits of callback?Different flavors of the c
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/IC/">IC</a>
-            
               <a href="/tags/SV/">SV</a>
             
-              <a href="/tags/Verification/">Verification</a>
+              <a href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
             
           </div>
         
@@ -686,24 +335,19 @@ What are the benefits of callback?Different flavors of the c
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
-          SV——线程及线程间的通信（一）
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_manipulation%20array/" target="_self">
+          ch2-Array Manipulation
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_manipulation%20array/" target="_self">
           
           
             
           
-          ​    实际硬件中，计算是并发进行的，在Verilog中通过initial、always、连续赋值来模拟，在测试平台中为了模拟、检验Verilog中的这些语句块，tb使用许多并发的线程。
-1. 线程的定义和使用1.1 定义线程initial 、always、assign都是进程，初次之外还有：
-
-fork    join
-其内的语句并发，fork-join块执行完才执行后面的语句。
-
-fork 
+          SystemVerilog Array ManipulationThere are many built-in methods in SystemVerilog to help in array searching and ordering.
+Array manipulation methods simply iterate through the array elements and each 
         </a>
       </p>
 
@@ -711,8 +355,8 @@ fork
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2019-07-23 00:00" pubdate>
-              2019-07-23
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
             </time>
           </div>
         
@@ -730,11 +374,9 @@ fork
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/IC/">IC</a>
-            
               <a href="/tags/SV/">SV</a>
             
-              <a href="/tags/Verification/">Verification</a>
+              <a href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
             
           </div>
         
@@ -748,22 +390,19 @@ fork
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_self">
-          SV——线程及线程间的通信（二）
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_struct/" target="_self">
+          ch2-Struct
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_self">
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_struct/" target="_self">
           
           
             
           
-          1. 旗语 semaphore​    如果把进程执行看成“开车”这个行为，开车需要钥匙，旗语就类似于“钥匙”。一个线程执行要先申请钥匙（旗语），如果只有一个钥匙（旗语）并且被其他线程申请了，那么这个线程阻塞。当那个线程执行完了，返回钥匙（旗语），被阻塞的线程可以再申请钥匙（旗语）。
-​    旗语可以用在多个进程共享资源的时候。
-
-new方法创建一个或多个旗语
-get获取一个或多个旗语，获取失败
+          2019-10-24
+What is the need to typedef a structure ?​    Only one variable was created in the example above, but if there’s a need to create multiple structure variables with the same constituents, it
         </a>
       </p>
 
@@ -771,8 +410,8 @@ get获取一个或多个旗语，获取失败
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2019-07-23 00:00" pubdate>
-              2019-07-23
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
             </time>
           </div>
         
@@ -790,11 +429,356 @@ get获取一个或多个旗语，获取失败
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/IC/">IC</a>
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_unpacked%20array/" target="_self">
+          ch2-Unpacked array
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_unpacked%20array/" target="_self">
+          
+          
+            
+          
+          2019-10-24
+Multidimensional Unpacked Array123456789101112131415module tb;  byte   stack [2][4];     // 2 rows, 4 cols   initial begin    // Assign random values to each slot of the stack    foreach (s
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
             
               <a href="/tags/SV/">SV</a>
             
-              <a href="/tags/Verification/">Verification</a>
+              <a href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch03_Control%20Flow/ch03_case/" target="_self">
+          ch3-Case
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch03_Control%20Flow/ch03_case/" target="_self">
+          
+          
+            
+          
+          2019-10-24
+unique,unique0 case​    All case statements can be qualified by unique or unique0 keywords to perform violation checks like we saw in if-else-if construct.
+​    unique and unique0 ensure th
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch03_Control%20Flow/ch03_function/" target="_self">
+          ch3-Function
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch03_Control%20Flow/ch03_function/" target="_self">
+          
+          
+            
+          
+          2019-10-24
+FunctionsThe primary purpose of a function is to return a value that can be used in an expression and cannot consume simulation time.
+
+A function cannot have time controlled statements like
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch03_Control%20Flow/ch03_if_else/" target="_self">
+          ch3-If else
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch03_Control%20Flow/ch03_if_else/" target="_self">
+          
+          
+            
+          
+          2019-10-24
+if-elseunique-if, unique0-ifunique-if evaluates conditions in any order and does the following :
+
+report an error when none of the if conditions match unless there is an explicit else.
+repo
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch03_Control%20Flow/ch03_event/" target="_self">
+          ch3-Event
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch03_Control%20Flow/ch03_event/" target="_self">
+          
+          
+            
+          
+          2019-10-24
+SystemVerilog EventAn event is a static object handle to synchronize between two or more concurrently active processes. One process will trigger the event, and another process waits for the
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch04_process/ch04_fork_join/" target="_self">
+          ch4-Fork join
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch04_process/ch04_fork_join/" target="_self">
+          
+          
+            
+          
+          2019-10-24
+三种forkWhat are different fork - join styles ?We have three different styles of fork join in SystemVerilog.
+
+
+
+
+fork join
+Finishes when all child threads are over
+
+
+
+fork join_any
+Finishes w
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
             
           </div>
         

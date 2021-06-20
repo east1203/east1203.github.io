@@ -223,248 +223,30 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/07/15/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E6%8E%A5%E5%8F%A3/" target="_self">
-          SV——接口
+        <a href="/2019/06/28/SelfGrowth/%E4%BF%9D%E6%8C%81%E7%B2%BE%E5%8A%9B/" target="_self">
+          保持精力
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/07/15/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E6%8E%A5%E5%8F%A3/" target="_self">
+        <a href="/2019/06/28/SelfGrowth/%E4%BF%9D%E6%8C%81%E7%B2%BE%E5%8A%9B/" target="_self">
           
           
             
           
-          1. Interface概念System Verilog中引入了接口定义，接口与module 等价的定义，是要在其他的接口、module中直接定义，不能写在块语句中，跟class是不同的。
-​    接口是将一组线捆绑起来，可以将接口传递给module。
-2.  接口的优点一）通过接口在module之间或内部进行信号，模块的输入列表就是一个接口，这样简单，避免手动连线的错误。
-二）如果需要增加模块
-        </a>
-      </p>
+          时间：2019-11-12
+地点：东南大学无锡校区东南院304
+0. 介绍从知乎上看到的关于【精力管理】的文章，自己近来一直觉得精力不足，身体发虚，所以简单整理了一下适合自己的东西。
+1. 操持精力——身体1.1 休息
+冥想： 15min，放空心思，专注于自己的呼吸。
 
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-07-15 00:00" pubdate>
-              2019-07-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verification/">Verification</a>
-            
-              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/SV/">SV</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
+做不同的事： 论文、专业书、视频课、古诗、音乐、画、风景、美女等。
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/07/10/Verification/SystemVerilog/UVMPrimer%E4%B8%AD%E7%9A%84DUT%E6%94%B9%E5%86%99%E6%88%90Verilog/" target="_self">
-          UVMPrimer中的DUT改写成Verilog
-        </a>
-      </h1>
+睡眠
 
-      <p class="index-excerpt">
-        <a href="/2019/07/10/Verification/SystemVerilog/UVMPrimer%E4%B8%AD%E7%9A%84DUT%E6%94%B9%E5%86%99%E6%88%90Verilog/" target="_self">
-          
-          
-            
-          
-          内容：讲UVMPrimer书给的代码中的DUT改写成了Verilog形式，原来时VHDL形式，用VCS仿真的时候总是出错，花了大半天改写了。
-DUT介绍这本书中的DUT是个ALU，模块管脚如下图，
 
-A,B是两个八位的输入，start是启动信号，op是命令信号，包括加，乘，与等，result是计算结果，done是DUT的应答信号，当dut计算结束，done为1。ALU中的计算有单周期，也有多周期的
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-07-10 00:00" pubdate>
-              2019-07-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verification/">Verification</a>
-            
-              <a href="/categories/Verification/Others/">Others</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/SV/">SV</a>
-            
-              <a href="/tags/Verification/">Verification</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/07/01/IC/tools/EasierUVM%E5%AE%89%E8%A3%85%E9%97%AE%E9%A2%98/" target="_self">
-          EasierUVM安装问题
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/07/01/IC/tools/EasierUVM%E5%AE%89%E8%A3%85%E9%97%AE%E9%A2%98/" target="_self">
-          
-          
-            
-          
-          perl包安装EasierUVM需要安装File::Copy::Recursive,File::stat, and Time::Piece modules.这几个PERL 包，官方文档给的安装命令是
-123perl -MCPAN -e &#x27;install File::Copy::Recursive&#x27;perl -MCPAN -e &#x27;install File::stat&#
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-07-01 00:00" pubdate>
-              2019-07-01
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/IC/">IC</a>
-            
-              <a href="/categories/IC/tools/">tools</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/SV/">SV</a>
-            
-              <a href="/tags/vcs/">vcs</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/06/29/IC/others/%E4%BB%BF%E7%9C%9F%E9%94%99%E8%AF%AF%E9%9B%86%E5%90%88/" target="_self">
-          仿真错误集合
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/29/IC/others/%E4%BB%BF%E7%9C%9F%E9%94%99%E8%AF%AF%E9%9B%86%E5%90%88/" target="_self">
-          
-          
-            
-          
-          1 UVM仿真1.1 imp声明时两个参数Error-[MRRE] Member reference resolution error/home/IC/uvm/uvm-1.1d/src/tlm1/uvm_analysis_port.svh, 114  Member operator “.” cannot be used on object of type int.  Expression: m_i
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-06-29 00:00" pubdate>
-              2019-06-29
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/IC/">IC</a>
-            
-              <a href="/categories/IC/others/">others</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/sim/">sim</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/06/28/C++/%E5%87%BD%E6%95%B0/C++%20%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/" target="_self">
-          C++ 函数指针
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/28/C++/%E5%87%BD%E6%95%B0/C++%20%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/" target="_self">
-          
-          
-            
-          
-          1. 定义函数指针，指向函数的指针，而不是对象。函数的类型由它的返回值类型和形参共同决定，与函数名无关。
-1234// 定义一个函数void display(const string&amp; s1,const string&amp; s2);// 函数指针void (*fp)(const string&amp; s1,const string&amp; s2);
-
-函数指针的定义，只需用函数指针
+1.2 运动
+有氧运动： 20-60min，3-
         </a>
       </p>
 
@@ -481,7 +263,9 @@ A,B是两个八位的输入，start是启动信号，op是命令信号，包括�
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/C/">C++</a>
+              <a href="/categories/Self-Growth/">Self_Growth</a>
+            
+              <a href="/categories/Self-Growth/other/">other</a>
             
           </div>
         
@@ -489,7 +273,288 @@ A,B是两个八位的输入，start是启动信号，op是命令信号，包括�
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/C/">C++</a>
+              <a href="/tags/Self-Growth-other/">Self_Growth_other</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/28/SelfGrowth/%E5%A6%82%E4%BD%95%E6%88%90%E4%B8%BA%E9%AB%98%E6%95%88%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%B8%88/" target="_self">
+          如何成为高效的工程师
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/28/SelfGrowth/%E5%A6%82%E4%BD%95%E6%88%90%E4%B8%BA%E9%AB%98%E6%95%88%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%B8%88/" target="_self">
+          
+          
+            
+          
+          2019-12-19
+《how to be a star engineer》​                                        —— Robert E.Kelley
+作者跟踪了一些在Bell Lab工作的两种人的经历，一种是star performance people ，另一种是average performance people，发现这些人之所以star，不是因为
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-28 00:00" pubdate>
+              2019-06-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Self-Growth/">Self_Growth</a>
+            
+              <a href="/categories/Self-Growth/other/">other</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Self-Growth-other/">Self_Growth_other</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/28/SelfGrowth/%E5%AD%A6%E4%B9%A0%E5%8A%9B%E8%AF%BE%E7%A8%8B/" target="_self">
+          学习力课程
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/28/SelfGrowth/%E5%AD%A6%E4%B9%A0%E5%8A%9B%E8%AF%BE%E7%A8%8B/" target="_self">
+          
+          
+            
+          
+          2020-05-29
+
+这是之前看的关于学习力的课程时做的笔记。
+
+学习力课程第一课 学习力最优质的学习不是发生在埋头苦读中，而在于对生活的观察和体悟。
+学习力是一个人的动力、毅力和能力。
+第二、三课 摆脱假勤奋，提高效率学习效率的提升是金字塔形式的，最底层是“生理基础”，在往上是“心态习惯”，最上面是“技能技巧”。
+“四个法则”：1）找出自己的生理节律；2）休息；3）提升“有效”学习时间；4）运
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-28 00:00" pubdate>
+              2019-06-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Self-Growth/">Self_Growth</a>
+            
+              <a href="/categories/Self-Growth/other/">other</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Self-Growth-other/">Self_Growth_other</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/28/SelfGrowth/%E7%86%AC%E5%A4%9C%E5%8D%B1%E5%AE%B3/" target="_self">
+          熬夜的危害
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/28/SelfGrowth/%E7%86%AC%E5%A4%9C%E5%8D%B1%E5%AE%B3/" target="_self">
+          
+          
+            
+          
+          时间：2019-11-12
+熬夜的危害1.熬夜使记忆力变差长时间熬夜——导致身体机能下降并影响情绪——患上抑郁症——抑郁症使得人的脑子变得极其缓慢——记忆力变差。
+2.破坏生物钟​    熬夜就是破坏生物钟的一种行为！当生物钟发生紊乱后，我们就出现了变丑、变胖、脑子不灵光的情况，甚至引发一系列的心脑血管疾病。
+
+曾经有人研究过一个奇怪的早睡早起的家族：他们每天都会在凌晨4点起，晚上7点睡觉，后来才
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-28 00:00" pubdate>
+              2019-06-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Self-Growth/">Self_Growth</a>
+            
+              <a href="/categories/Self-Growth/other/">other</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Self-Growth-other/">Self_Growth_other</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/28/SelfGrowth/%E8%AE%B0%E5%BF%86%E5%8A%9B/" target="_self">
+          记忆力
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/28/SelfGrowth/%E8%AE%B0%E5%BF%86%E5%8A%9B/" target="_self">
+          
+          
+            
+          
+          时间：2019-11-12
+记忆力有利于记忆力0. 集中注意力1. 回忆法​    每天睡前快速回忆今天发生的每一件事，多用五官的感受当时的心情，那种感觉就像你用法眼看世界一样！回忆的时候要问自己当时心情怎么样，闻到了什么听到了什么，触摸到了什么，温度怎样有没有风，和谁一起她穿了什么有啥变化等等！
+2. 饮食​    饱和脂肪不利于脑子的保养，研究表明长期喂食高饱和脂肪食物的小鼠在学习和记忆测试中
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-28 00:00" pubdate>
+              2019-06-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Self-Growth/">Self_Growth</a>
+            
+              <a href="/categories/Self-Growth/other/">other</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Self-Growth-other/">Self_Growth_other</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/28/SelfGrowth/%E9%A2%86%E8%A2%96%E5%BF%83%E7%90%86%E5%AD%A6-%E5%93%88%E4%BD%9B1508/" target="_self">
+          领袖心理学-哈佛508
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/28/SelfGrowth/%E9%A2%86%E8%A2%96%E5%BF%83%E7%90%86%E5%AD%A6-%E5%93%88%E4%BD%9B1508/" target="_self">
+          
+          
+            
+          
+          2020-05-23
+前些天在网易公开课上听了哈佛大学 TAL教授讲的“领袖心理学”，在笔记本上做了一点笔记，有点乱，整理一下。
+
+生活中并不缺少让我们锻炼领导力的事情，只是人们通常会忽略他们，像一个人在埋头寻找真理，但当真理来敲门的时候，他们却说：“get out，I’m looking for truth”。
+
+多面兼容思维（2020-05-04）
+杰出的人通常会同时持有多种矛盾、不同的思维、
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-28 00:00" pubdate>
+              2019-06-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Self-Growth/">Self_Growth</a>
+            
+              <a href="/categories/Self-Growth/other/">other</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Self-Growth-other/">Self_Growth_other</a>
             
           </div>
         
@@ -713,68 +778,6 @@ A,B是两个八位的输入，start是启动信号，op是命令信号，包括�
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/SV/">SV</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/06/13/others/linux/vim%E4%B8%ADsystemverilog%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE/" target="_self">
-          vim中systemverilog语法高亮
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/13/others/linux/vim%E4%B8%ADsystemverilog%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE/" target="_self">
-          
-          
-            
-          
-          1. 内容：在vim、gvim中设计systemverilog语法高亮。
-2. 步骤：
-在自己主目录下创建.vim的隐藏文件夹。cd ~
-在.vim目录下创建两个文件夹，命名为syntax和ftdetect。
-在ftdetect文件夹下创建文件sv.vim。
-
-12// 在文件sv.vim中保存下面一行能容au BufRead,BufNewFile *.sv set filetype=system
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-06-13 00:00" pubdate>
-              2019-06-13
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/others/">others</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/others/">others</a>
-            
-              <a href="/tags/SV/">SV</a>
-            
-              <a href="/tags/linux/">linux</a>
-            
-              <a href="/tags/vim/">vim</a>
             
           </div>
         

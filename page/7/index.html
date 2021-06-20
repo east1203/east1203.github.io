@@ -223,18 +223,19 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/08/27/Verification/UVM/UVM%E2%80%94%E2%80%94Fun%20with%20UVM%20Sequences%20-%20Coding%20and%20Debugging/" target="_self">
-          UVM——Fun with UVM Sequences - Coding and Debugging
+        <a href="/2019/07/15/Verification/Debug/disable_fork%E4%B8%8E%E6%80%BB%E7%BA%BF%E4%BA%8B%E5%8A%A1/" target="_self">
+          disable_fork与总线事务
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/08/27/Verification/UVM/UVM%E2%80%94%E2%80%94Fun%20with%20UVM%20Sequences%20-%20Coding%20and%20Debugging/" target="_self">
+        <a href="/2019/07/15/Verification/Debug/disable_fork%E4%B8%8E%E6%80%BB%E7%BA%BF%E4%BA%8B%E5%8A%A1/" target="_self">
           
           
             
           
-          0. 介绍​    今天早上，发现Mentor Verification给我发了一封推送邮件，说有关于验证的最新研究。我是要做验证工程师的男人，看到这，能不打开吗，找了一篇关于UVM sequence的文章—— Fun with UVM Sequences - Coding and Debugging。哇，这个外国人写得确实不错，一上午拜读，也自己跑了其中的一些东西，顺便也整理了一下这篇文章的东西
+          对于下面的例子，假设实际中是thread1 先完成，thread0被disable。并且 signal==1的时候，reg0的值恰好也会跳变为1。本意是再thread 2对reg 0 做的write clear.
+123456789101112fork    begin  // thread 0        while(rd_data == 0) begin            getreg(
         </a>
       </p>
 
@@ -242,8 +243,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2019-08-27 00:00" pubdate>
-              2019-08-27
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
             </time>
           </div>
         
@@ -253,7 +254,7 @@
             
               <a href="/categories/Verification/">Verification</a>
             
-              <a href="/categories/Verification/UVM/">UVM</a>
+              <a href="/categories/Verification/Debug/">Debug</a>
             
           </div>
         
@@ -264,10 +265,6 @@
               <a href="/tags/IC/">IC</a>
             
               <a href="/tags/SV/">SV</a>
-            
-              <a href="/tags/Verification/">Verification</a>
-            
-              <a href="/tags/UVM/">UVM</a>
             
           </div>
         
@@ -281,19 +278,18 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/08/25/Verification/UVM/UVM%E2%80%94%E2%80%94ALU%E7%94%9F%E6%88%90fabonacci%E6%95%B0%E5%88%97/" target="_self">
-          UVM——ALU生成fabonacci数列
+        <a href="/2019/07/15/Verification/Debug/dump%E6%B3%A2%E5%BD%A2/" target="_self">
+          debug——dumpboxing
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/08/25/Verification/UVM/UVM%E2%80%94%E2%80%94ALU%E7%94%9F%E6%88%90fabonacci%E6%95%B0%E5%88%97/" target="_self">
+        <a href="/2019/07/15/Verification/Debug/dump%E6%B3%A2%E5%BD%A2/" target="_self">
           
           
             
           
-          0. 介绍之前的这篇文章——UVM——tb0-alu验证平台是居于一个ALU搭建的验证平台，现在希望让这个验证平台能够输出斐波那契数列数列（1，1，2，3，5，8…），利用一种特殊的响应，写一个能够生成斐波那契数列的sequence。
-1.  思路特殊的响应`uvm_do语句会将transaction通过sequencer发送给driver，`uvm_do执行完之后，它的第一个参数，也就是刚才发送
+          
         </a>
       </p>
 
@@ -301,188 +297,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2019-08-25 00:00" pubdate>
-              2019-08-25
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verification/">Verification</a>
-            
-              <a href="/categories/Verification/UVM/">UVM</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/SV/">SV</a>
-            
-              <a href="/tags/Verification/">Verification</a>
-            
-              <a href="/tags/UVM/">UVM</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/08/25/Verification/UVM/UVM%E2%80%94%E2%80%94tb0-alu%E9%AA%8C%E8%AF%81%E5%B9%B3%E5%8F%B0/" target="_self">
-          UVM——tb0-alu验证平台
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/08/25/Verification/UVM/UVM%E2%80%94%E2%80%94tb0-alu%E9%AA%8C%E8%AF%81%E5%B9%B3%E5%8F%B0/" target="_self">
-          
-          
-            
-          
-          更新​    09-28 之前遇到的问题解决了，可以生成激励、正确自检和收集覆盖率。
-​    代码 h.add_coverage_modified
-0. 介绍这几天为了准备面试，基于自己的思路写了一个验证平台，DUT是个ALU。
-这个验证平台是逐步完善的，不断的迭代，最终可以测试ALU的计算，这里介绍的是添加了scoreboard之后可以进行随机激励生成、自检、覆盖率采样的版本。详细代码在链接里
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-08-25 00:00" pubdate>
-              2019-08-25
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verification/">Verification</a>
-            
-              <a href="/categories/Verification/UVM/">UVM</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/SV/">SV</a>
-            
-              <a href="/tags/Verification/">Verification</a>
-            
-              <a href="/tags/UVM/">UVM</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/08/24/Verification/UVM/UVM%E2%80%94%E2%80%94phase%20objection/" target="_self">
-          UVM——phase objection
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/08/24/Verification/UVM/UVM%E2%80%94%E2%80%94phase%20objection/" target="_self">
-          
-          
-            
-          
-          0. 介绍​    UVM中，component的task phase是消耗仿真时间的，各个components需要在不同层次的task phase中同步信息。UVM中通过objection mechanism来控制phase的执行，通过raise or drop objection来决定phase中事件的开始和停止。
-1. objection控制phase的执行1.1 phase中收集到obje
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-08-24 00:00" pubdate>
-              2019-08-24
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verification/">Verification</a>
-            
-              <a href="/categories/Verification/UVM/">UVM</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/SV/">SV</a>
-            
-              <a href="/tags/Verification/">Verification</a>
-            
-              <a href="/tags/UVM/">UVM</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/08/23/Verification/SystemVerilog/SV%E2%80%94SV%E5%AE%9E%E7%8E%B0blueprint/" target="_self">
-          SV——SV实现blueprint
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/08/23/Verification/SystemVerilog/SV%E2%80%94SV%E5%AE%9E%E7%8E%B0blueprint/" target="_self">
-          
-          
-            
-          
-          0. 介绍蓝图模式（blueprint）是“绿皮书”第八章将的一个点，它是通过层次引用，将generator产生的transaction类型改变，这样可以实现错误注入，使generator产生不同类型的transaction（这些transaction都要继承自定义在generator中的transaction）。
-1. 框图
-error_tr继承自blueprint类型，在top层，通过层次引用
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-08-23 00:00" pubdate>
-              2019-08-23
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
             </time>
           </div>
         
@@ -516,22 +332,21 @@ error_tr继承自blueprint类型，在top层，通过层次引用
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/08/23/Verification/SystemVerilog/SV%E2%80%94SV%E5%AE%9E%E7%8E%B0callback/" target="_self">
-          SV——SV实现callback
+        <a href="/2019/07/15/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E6%8E%A5%E5%8F%A3/" target="_self">
+          SV——接口
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/08/23/Verification/SystemVerilog/SV%E2%80%94SV%E5%AE%9E%E7%8E%B0callback/" target="_self">
+        <a href="/2019/07/15/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E6%8E%A5%E5%8F%A3/" target="_self">
           
           
             
           
-          0. 介绍用SV实现回调的功能。
-回调思路可以让我们在top层向验证平台注入代码到我们预留的“钩子”（hook）中，实现一些功能，比如：在driver回调可以实现错误注入，收集激励到scoreboard中，收集覆盖率等。
-这篇文章介绍在driver中回调，实现对driver驱动的transaction的控制，可以产生不同的激励，比如错误激励。
-1. 结构图
-driver中有一个回调的“钩子”——是
+          1. Interface概念System Verilog中引入了接口定义，接口与module 等价的定义，是要在其他的接口、module中直接定义，不能写在块语句中，跟class是不同的。
+​    接口是将一组线捆绑起来，可以将接口传递给module。
+2.  接口的优点一）通过接口在module之间或内部进行信号，模块的输入列表就是一个接口，这样简单，避免手动连线的错误。
+二）如果需要增加模块
         </a>
       </p>
 
@@ -539,8 +354,8 @@ driver中有一个回调的“钩子”——是
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2019-08-23 00:00" pubdate>
-              2019-08-23
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
             </time>
           </div>
         
@@ -574,41 +389,22 @@ driver中有一个回调的“钩子”——是
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/08/19/others/linux/shell%E4%B8%AD%E7%9A%84grep/" target="_self">
-          shell中的grep
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch01_Introduction/ch01_What%20is%20a%20Testbench/" target="_self">
+          ch1-What a testbench?
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/08/19/others/linux/shell%E4%B8%AD%E7%9A%84grep/" target="_self">
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch01_Introduction/ch01_What%20is%20a%20Testbench/" target="_self">
           
           
             
           
-          grep主要用来进行字符串数据对比，然后将符合用户需要的字符串打印出来。
-1. 查找特定字符串1grep -n [-A] [-B] &quot;要查找的字符串&quot; --color=auto filename
+          2019-10-24
+What are abstraction levels ?​    In the Preface, you saw that we toggled the design using individual signals.
+12#5  resetn &lt;= 0;#20 resetn &lt;= 1;
 
-
-
-
-option
-description
-
-
-
--n
-显示行在文件中的行号
-
-
--A
-后面跟数字，所匹配行之后的几行也会打印
-
-
--B
-后面跟数字，所匹配行之前的几行也会打印
-
-
-
+​    Instead, if you put these two s
         </a>
       </p>
 
@@ -616,137 +412,8 @@ description
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2019-08-19 00:00" pubdate>
-              2019-08-19
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/others/">others</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/others/">others</a>
-            
-              <a href="/tags/linux/">linux</a>
-            
-              <a href="/tags/vim/">vim</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/08/19/others/linux/shell%E4%B8%AD%E7%9A%84sed/" target="_self">
-          shell中的sed
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/08/19/others/linux/shell%E4%B8%AD%E7%9A%84sed/" target="_self">
-          
-          
-            
-          
-          中兴面试被提问到：在vim中删除包含特定字符串的行。当时说不会，后来想了想可以用sed或者perl里的匹配替换。
-0. sedsed是个管道命令，可以对数据进行替换、删除、新增、选取特定行等功能。
-1. 命令格式1sed -ndfr [动作]
-
-1.1 参数
-
-
-参数
-
-
-
-
--n
-只有被sed处理的行才会打印出来
-
-
--e
-直接在命令行上输入sed命令，如果和-i参数配合用会保存源文件。
-
-
--
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-08-19 00:00" pubdate>
-              2019-08-19
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/others/">others</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/others/">others</a>
-            
-              <a href="/tags/linux/">linux</a>
-            
-              <a href="/tags/vim/">vim</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/08/08/Verification/UVM/UVM%E2%80%94%E2%80%94sequence%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
-          UVM——sequence（一）
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/08/08/Verification/UVM/UVM%E2%80%94%E2%80%94sequence%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
-          
-          
-            
-          
-          在UVM中，将激励生成和测试平台分开，使平台只编译一次，但可以运行多个激励，要实现这一点需要sequence机制、factory机制和config_db机制。
-在不同的测试用例中，将不同的sequence设置成sequencer的main_phase中的default_sequence。当sequencer执行到main_phase时，发现有default_sequence，就启动sequence
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-08-08 00:00" pubdate>
-              2019-08-08
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
             </time>
           </div>
         
@@ -756,7 +423,7 @@ description
             
               <a href="/categories/Verification/">Verification</a>
             
-              <a href="/categories/Verification/UVM/">UVM</a>
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
             
           </div>
         
@@ -764,13 +431,9 @@ description
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/IC/">IC</a>
-            
               <a href="/tags/SV/">SV</a>
             
-              <a href="/tags/Verification/">Verification</a>
-            
-              <a href="/tags/UVM/">UVM</a>
+              <a href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
             
           </div>
         
@@ -784,19 +447,19 @@ description
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/08/08/Verification/UVM/UVM%E2%80%94%E2%80%94sequence%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_self">
-          UVM——sequence（二）
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_Enumeration/" target="_self">
+          ch2-Enume
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/08/08/Verification/UVM/UVM%E2%80%94%E2%80%94sequence%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_self">
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_Enumeration/" target="_self">
           
           
             
           
-          6. virtual sequence​    如果被嵌套的sequence需要在不同的sequencer中启动，也就是需要sequence之间同步，那么此时的嵌套sequence就是virtual sequence。它不产生transaction，只是控制其它sequence产生transaction发送给不同的sequencer，这就是为什么是virtual。
-​    virtual seq
+          2019-10-24
+​    The user can assign any integer value for any of the enumerated names. If any name does not have an assigned value, then it automatically takes the incremented value of the previous na
         </a>
       </p>
 
@@ -804,8 +467,8 @@ description
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2019-08-08 00:00" pubdate>
-              2019-08-08
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
             </time>
           </div>
         
@@ -815,7 +478,7 @@ description
             
               <a href="/categories/Verification/">Verification</a>
             
-              <a href="/categories/Verification/UVM/">UVM</a>
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
             
           </div>
         
@@ -823,13 +486,285 @@ description
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/IC/">IC</a>
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_New%20Data%20typeslogic,bit/" target="_self">
+          ch2-new data types
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_New%20Data%20typeslogic,bit/" target="_self">
+          
+          
+            
+          
+          2019-10-24
+2-state data types​    When a 4-state value is converted to a 2-state value, any unknown or high-impedance bits shall be converted to zeros.
+The most important 2-state data type is bit whic
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
             
               <a href="/tags/SV/">SV</a>
             
-              <a href="/tags/Verification/">Verification</a>
+              <a href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
             
-              <a href="/tags/UVM/">UVM</a>
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_Signed%20integers,byte/" target="_self">
+          ch2-Integers
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_Signed%20integers,byte/" target="_self">
+          
+          
+            
+          
+          2019-10-24
+Integer​    Integers are numbers without a fractional part or in other words, they are whole numbers. SystemVerilog has three new signed data types to hold integer values each with a differ
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_dynamic%20array/" target="_self">
+          ch2-Dynamic Arrays
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_dynamic%20array/" target="_self">
+          
+          
+            
+          
+          2019-10-24
+SystemVerilog Dynamic Array​    A dynamic array is an unpacked array whose size can be set or changed at run time, and hence is quite different from a static array where the size is pre-det
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_Strings/" target="_self">
+          ch2-String
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_Strings/" target="_self">
+          
+          
+            
+          
+          2019-10-24
+How are strings represented in Verilog ?​    A single ASCII character requires 8-bits (1 byte) and to store a string we would need as many bytes as there are number of characters in the str
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_associative%20array/" target="_self">
+          ch2-Associative Arrays
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_associative%20array/" target="_self">
+          
+          
+            
+          
+          2019-10-24
+SystemVerilog Associative Arrays​    When size of a collection is unknown or the data space is sparse, an associative array is a better option. Associative arrays do not have any storage al
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
             
           </div>
         
