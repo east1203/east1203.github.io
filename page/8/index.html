@@ -223,24 +223,21 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/06/13/others/linux/vim%E4%B8%ADsystemverilog%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE/" target="_self">
-          vim中systemverilog语法高亮
+        <a href="/2019/08/07/Verilog/Verilog%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" target="_self">
+          Verilog——文件读写
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/06/13/others/linux/vim%E4%B8%ADsystemverilog%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE/" target="_self">
+        <a href="/2019/08/07/Verilog/Verilog%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" target="_self">
           
           
             
           
-          1. 内容：在vim、gvim中设计systemverilog语法高亮。
-2. 步骤：
-在自己主目录下创建.vim的隐藏文件夹。cd ~
-在.vim目录下创建两个文件夹，命名为syntax和ftdetect。
-在ftdetect文件夹下创建文件sv.vim。
-
-12// 在文件sv.vim中保存下面一行能容au BufRead,BufNewFile *.sv set filetype=system
+          1. 读取文件读取文件是之前在CSDN中整理的，链接
+$readmemb和$readmemh用来从文件中读取数据到存储器中。
+读取的内容只包括：空白位置（空格、换行、制表格(tab和form-feeds),注释行、二进制或十六进制的数字。
+数字中不能包含位宽说明和格式说明，其中readmemb要求每个数字是二进制数，readmemh要求每个数字必须是十六进制数字。数字中不定值x或X，高阻值z或Z，
         </a>
       </p>
 
@@ -248,8 +245,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2019-06-13 00:00" pubdate>
-              2019-06-13
+            <time datetime="2019-08-07 00:00" pubdate>
+              2019-08-07
             </time>
           </div>
         
@@ -257,7 +254,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/others/">others</a>
+              <a href="/categories/Verilog/">Verilog</a>
             
           </div>
         
@@ -265,13 +262,9 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/others/">others</a>
+              <a href="/tags/IC/">IC</a>
             
-              <a href="/tags/SV/">SV</a>
-            
-              <a href="/tags/linux/">linux</a>
-            
-              <a href="/tags/vim/">vim</a>
+              <a href="/tags/Verilog/">Verilog</a>
             
           </div>
         
@@ -285,19 +278,19 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/06/12/Verification/SystemVerilog/SV%E2%80%94%E2%80%94package/" target="_self">
-          SV——package
+        <a href="/2019/08/06/Verilog/Verilog%E2%80%94%E2%80%94%E5%88%86%E9%A2%91%E5%99%A8/" target="_self">
+          Verilog——分频器
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/06/12/Verification/SystemVerilog/SV%E2%80%94%E2%80%94package/" target="_self">
+        <a href="/2019/08/06/Verilog/Verilog%E2%80%94%E2%80%94%E5%88%86%E9%A2%91%E5%99%A8/" target="_self">
           
           
             
           
-          1. packageSystemVerilog中package是用来在多个modules、interfaces、programs和checkers之间共享parameter、net、variables、type、task、function、sequence、property和checker declaration这些东西。
-package是最外层的命名空间，在package中可以定义paramet
+          在面试比试中经常出现的奇数时钟分频电路。
+1. 不用时钟下降沿触发的3分频电路12345678910111213141516module ClockDiv(  // 3 分频    input clk_i,    input rst_n,    output  clk_o    );reg [2:0] cnt;always@(posedge clk_i or negedge rst_n) begi
         </a>
       </p>
 
@@ -305,8 +298,188 @@ package是最外层的命名空间，在package中可以定义paramet
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2019-06-12 00:00" pubdate>
-              2019-06-12
+            <time datetime="2019-08-06 00:00" pubdate>
+              2019-08-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verilog/">Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/Verilog/">Verilog</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/30/Verification/UVM/UVM%E2%80%94%E2%80%94callback%E6%9C%BA%E5%88%B6/" target="_self">
+          UVM——callback机制
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/30/Verification/UVM/UVM%E2%80%94%E2%80%94callback%E6%9C%BA%E5%88%B6/" target="_self">
+          
+          
+            
+          
+          参考UVM_CALLBACK—VerificationGuide网站
+《UVM实战1》
+1. 介绍Where callbacks can be implemented?Callbacks can be implemented in an object or component.
+What are the benefits of callback?Different flavors of the c
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-30 00:00" pubdate>
+              2019-07-30
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/UVM/">UVM</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/Verification/">Verification</a>
+            
+              <a href="/tags/UVM/">UVM</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/30/Verification/UVM/UVM%E2%80%94%E2%80%94RAL/" target="_self">
+          UVM——RAL
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/30/Verification/UVM/UVM%E2%80%94%E2%80%94RAL/" target="_self">
+          
+          
+            
+          
+          1. 寄存器模型介绍每个IP都有总线接口，连接到总线上，用来对DUT中寄存器进行配置，改变其行为。
+再验证环境中，如果改变了DUT的行为，那么参考模型需要知道DUT做了哪些改变，并同步改变，否则参考模型和当前DUT的功能不一致。
+参考模型要想获得寄存器值，需要做两件事：
+
+在参考模型中启动sequence用来产生一个读取DUT寄存器的操作。
+读取的值传递给参考模型。
+
+如果有了寄存器模型，可以直接
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-30 00:00" pubdate>
+              2019-07-30
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/UVM/">UVM</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/Verification/">Verification</a>
+            
+              <a href="/tags/UVM/">UVM</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94SV%E4%B8%8EC%E7%9A%84%E6%8E%A5%E5%8F%A3/" target="_self">
+          SV——SV与C的接口
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94SV%E4%B8%8EC%E7%9A%84%E6%8E%A5%E5%8F%A3/" target="_self">
+          
+          
+            
+          
+          在Verilog中，通过VPI可以引用C程序，听说挺复杂的（，当然我不会）。在SV中引入了DPI（direct programming Interface），可以通过在SV中简单的设置，就可以引用C语言。
+1. SV简单引用C先看一个例子
+123456789101112131415// tb.svimport &quot;DPI-C&quot; function int factorial(inp
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-27 00:00" pubdate>
+              2019-07-27
             </time>
           </div>
         
@@ -342,22 +515,20 @@ package是最外层的命名空间，在package中可以定义paramet
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/06/11/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C/" target="_self">
-          perl语言——目录操作
+        <a href="/2019/07/24/IC/Synthesis/%E9%80%BB%E8%BE%91%E7%BB%BC%E5%90%88%E2%80%94%E2%80%94%E4%BE%BF%E6%8D%B7%E5%91%BD%E4%BB%A4/" target="_self">
+          逻辑综合——便捷命令
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/06/11/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C/" target="_self">
+        <a href="/2019/07/24/IC/Synthesis/%E9%80%BB%E8%BE%91%E7%BB%BC%E5%90%88%E2%80%94%E2%80%94%E4%BE%BF%E6%8D%B7%E5%91%BD%E4%BB%A4/" target="_self">
           
           
             
           
-          1. 移动当前目录 chdir程序会以自己的工作目录作为相对路径的起点，但可以用chdir操作符来改变当前目录
-1chdir &#x27;\etc&#x27;;
+          1. 获取感兴趣的对象123filter_collection [get_cells *] &quot;ref_name=AN*&quot; #找到以AN开头的单元名字get_cells -filter &quot;ref_name = AN*&quot; #找到以AN开头的单元名字get_cells -filter &quot;dont_touch==true&quot; # 按照属性过滤
 
-2. 文件名通配符*，glob类似于shell里的星号*，或者*.v等。在perl程序中可以用glob操作符，他的返回值是一个列表。
-12@li = glob &#x27;*&#x27;; #匹配到当前目录下的所有文件print &qu
+2
         </a>
       </p>
 
@@ -365,8 +536,8 @@ package是最外层的命名空间，在package中可以定义paramet
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2019-06-11 00:00" pubdate>
-              2019-06-11
+            <time datetime="2019-07-24 00:00" pubdate>
+              2019-07-24
             </time>
           </div>
         
@@ -376,305 +547,7 @@ package是最外层的命名空间，在package中可以定义paramet
             
               <a href="/categories/IC/">IC</a>
             
-              <a href="/categories/IC/perl/">perl</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/perl/">perl</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/06/07/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%93%88%E5%B8%8C/" target="_self">
-          perl语言——哈希
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/07/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%93%88%E5%B8%8C/" target="_self">
-          
-          
-            
-          
-          1. 什么是哈希 hash哈希是一种数据结构，可以存储任意长度的值并随意取用。
-在数组中以数字为索引，但是哈希中以名字为索引，索引在哈希中称为键(key)，它是任意唯一的字符串 ，即使是数字也会被转换成字符串。以键值对的形式存放数据。
-注意：
-
-哈希中的键都是唯一的。
-值可以不是唯一的。
-键以字符串形式保存。
-以键值对的形式存放数据。
-值可以是任何标量，比如数字，字符串，undef，及它们的组合。
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-06-07 00:00" pubdate>
-              2019-06-07
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/IC/">IC</a>
-            
-              <a href="/categories/IC/perl/">perl</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/perl/">perl</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/06/07/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%AD%97%E7%AC%A6%E4%B8%B2/" target="_self">
-          perl语言——字符串
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/07/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%AD%97%E7%AC%A6%E4%B8%B2/" target="_self">
-          
-          
-            
-          
-          1. 普通字符串操作点号.连接两个字符串。
-叉号x将字符串复制几次。
-123456$s1 = &#x27;hello&#x27;;$s2 = &#x27; world&#x27;;$s3 = $s1.$s2;$s4 = &#x27;a&#x27;x3;print &quot;$s3\n&quot;; # hello worldprint &quot;$s4\n&quot;; # aaa
-
-
-
-2.
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-06-07 00:00" pubdate>
-              2019-06-07
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/IC/">IC</a>
-            
-              <a href="/categories/IC/perl/">perl</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/perl/">perl</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/06/05/others/linux/EDA%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%BD%BF%E7%94%A8%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/" target="_self">
-          EDA虚拟机使用错误解决
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/05/others/linux/EDA%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%BD%BF%E7%94%A8%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/" target="_self">
-          
-          
-            
-          
-          在Linux中运行yum命令时显示：
-12345678910111213There was a problem importing one of the Python modulesrequired to run yum. The error leading to this problem was:   /usr/lib64/libnssutil3.so: undefined symbol: PL
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-06-05 00:00" pubdate>
-              2019-06-05
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/others/">others</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/others/">others</a>
-            
-              <a href="/tags/linux/">linux</a>
-            
-              <a href="/tags/yum/">yum</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/05/28/IC/tools/SV%E4%BB%BF%E7%9C%9F/" target="_self">
-          SystemVerilog仿真
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/05/28/IC/tools/SV%E4%BB%BF%E7%9C%9F/" target="_self">
-          
-          
-            
-          
-          modelSim仿真出错1. The interface port ‘infu’ must be passed an actual interface.在调用接口连接TEST和DUT的时候，compilation通过了，但是simulation的时候出错了，报上面这个错。
-解决：将编译命令改成：
-12vsim -voptargs=&quot;+acc&quot; top -do &quot;run
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-05-28 00:00" pubdate>
-              2019-05-28
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/IC/">IC</a>
-            
-              <a href="/categories/IC/tools/">tools</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/SV/">SV</a>
-            
-              <a href="/tags/vcs/">vcs</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/05/27/IC/others/%E7%BB%84%E5%90%88%E9%80%BB%E8%BE%91%E5%92%8C%E6%97%B6%E5%BA%8F%E9%80%BB%E8%BE%91%E7%9A%84%E7%BB%BC%E5%90%88/" target="_self">
-          组合逻辑和时序逻辑的综合
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/05/27/IC/others/%E7%BB%84%E5%90%88%E9%80%BB%E8%BE%91%E5%92%8C%E6%97%B6%E5%BA%8F%E9%80%BB%E8%BE%91%E7%9A%84%E7%BB%BC%E5%90%88/" target="_self">
-          
-          
-            
-          
-          综合工具工作的步骤：
-检测并消除冗余逻辑
-查找组合反馈回路
-利用无关紧要条件
-检测出未使用的状态
-查找并消除等价的状态；
-进行状态分配；
-在满足物理工艺的面积、速度限制的条件下，综合出最优的多级逻辑实现。既包括了最优化技术，又包括了工艺映射。
-
-1. 综合简介电路模型可以分成三个层次：**架构级(architectural level model)、逻辑级(logic level model)、物
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-05-27 00:00" pubdate>
-              2019-05-27
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/IC/">IC</a>
-            
-              <a href="/categories/IC/others/">others</a>
+              <a href="/categories/IC/Synthesis/">Synthesis</a>
             
           </div>
         
@@ -698,21 +571,21 @@ package是最外层的命名空间，在package中可以定义paramet
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/05/25/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%88%97%E8%A1%A8%E3%80%81%E6%95%B0%E7%BB%84/" target="_self">
-          perl语言——列表、数组
+        <a href="/2019/07/24/IC/Synthesis/%E9%80%BB%E8%BE%91%E7%BB%BC%E5%90%88%E2%80%94%E2%80%94%E8%AE%BE%E7%BD%AE%E5%BA%93/" target="_self">
+          逻辑综合——设置库
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/05/25/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%88%97%E8%A1%A8%E3%80%81%E6%95%B0%E7%BB%84/" target="_self">
+        <a href="/2019/07/24/IC/Synthesis/%E9%80%BB%E8%BE%91%E7%BB%BC%E5%90%88%E2%80%94%E2%80%94%E8%AE%BE%E7%BD%AE%E5%BA%93/" target="_self">
           
           
             
           
-          1.数组\列表如果perl语言中的标量是单数(singular)，那么复数(plural)用列表或数组表示。
-1.1 数组和列表perl中，列表表示一组标量的有序集合。数组是用来保存列表的变量。但这两个术语常常混用。
-1.2 数组变量@array、数组索引$array[i]数组变量：用 @变量名来表示数组整体，比如 @array。
-数组索引：用**$变量名[index]**来索引数组内元素，比如$
+          逻辑综合分成三步：综合=转化+优化+映射。
+​    DC先通过read命令将RTL设计转化成布尔表达式，也就是GTECH格式，然后执行compile命令，按照设计约束进行逻辑综合和优化，并使用工艺库中的逻辑单元映射成门级网表
+​    DC以时序为基础进行优化。DC内建STA工具，将设计分解成多条时序路径，通过计算路径延迟对它们进行约束和优化。
+1. 目标库 target library​   
         </a>
       </p>
 
@@ -720,8 +593,8 @@ package是最外层的命名空间，在package中可以定义paramet
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2019-05-25 00:00" pubdate>
-              2019-05-25
+            <time datetime="2019-07-24 00:00" pubdate>
+              2019-07-24
             </time>
           </div>
         
@@ -731,7 +604,7 @@ package是最外层的命名空间，在package中可以定义paramet
             
               <a href="/categories/IC/">IC</a>
             
-              <a href="/categories/IC/perl/">perl</a>
+              <a href="/categories/IC/Synthesis/">Synthesis</a>
             
           </div>
         
@@ -741,7 +614,7 @@ package是最外层的命名空间，在package中可以定义paramet
             
               <a href="/tags/IC/">IC</a>
             
-              <a href="/tags/perl/">perl</a>
+              <a href="/tags/Synthesis/">Synthesis</a>
             
           </div>
         
@@ -755,21 +628,20 @@ package是最外层的命名空间，在package中可以定义paramet
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/05/25/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%AD%90%E7%A8%8B%E5%BA%8F/" target="_self">
-          子程序sub
+        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94OOP%E6%8A%80%E5%B7%A7/" target="_self">
+          SV——OOP技巧
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/05/25/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%AD%90%E7%A8%8B%E5%BA%8F/" target="_self">
+        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94OOP%E6%8A%80%E5%B7%A7/" target="_self">
           
           
             
           
-          1. 定义子程序子程序由sub关键字定义花括号表示函数体范围。
-子程序不需要事先声明。
-如果定义了两个相同名字的子程序，后面的会覆盖前面的。
-12345sub marine &#123;  # marine是子程序名  print &quot;this is a test\n&quot;;&#125;&amp;marine；#子程调用，&amp;marine写在程序定义之前也可以运行。# 也可以直
+          1. 事务传递​    在事务生成器中，每次新建transaction，随机化后发送给接收器，这样每次发送函数transmit(tr)发送的transaction都不同。避免了transmit程序需要多个cycle，后面的随机化将前面还没有发送完成的数据覆盖了。
+​    下面这种写法是只创建一个transaction对象，对对象进行多次随机化，后面的随机化可能会覆盖前面没发送的数据。
+12345
         </a>
       </p>
 
@@ -777,8 +649,8 @@ package是最外层的命名空间，在package中可以定义paramet
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2019-05-25 00:00" pubdate>
-              2019-05-25
+            <time datetime="2019-07-23 00:00" pubdate>
+              2019-07-23
             </time>
           </div>
         
@@ -786,9 +658,9 @@ package是最外层的命名空间，在package中可以定义paramet
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/IC/">IC</a>
+              <a href="/categories/Verification/">Verification</a>
             
-              <a href="/categories/IC/perl/">perl</a>
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
             
           </div>
         
@@ -798,7 +670,131 @@ package是最外层的命名空间，在package中可以定义paramet
             
               <a href="/tags/IC/">IC</a>
             
-              <a href="/tags/perl/">perl</a>
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/Verification/">Verification</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
+          SV——线程及线程间的通信（一）
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
+          
+          
+            
+          
+          ​    实际硬件中，计算是并发进行的，在Verilog中通过initial、always、连续赋值来模拟，在测试平台中为了模拟、检验Verilog中的这些语句块，tb使用许多并发的线程。
+1. 线程的定义和使用1.1 定义线程initial 、always、assign都是进程，初次之外还有：
+
+fork    join
+其内的语句并发，fork-join块执行完才执行后面的语句。
+
+fork 
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-23 00:00" pubdate>
+              2019-07-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/Verification/">Verification</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_self">
+          SV——线程及线程间的通信（二）
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_self">
+          
+          
+            
+          
+          1. 旗语 semaphore​    如果把进程执行看成“开车”这个行为，开车需要钥匙，旗语就类似于“钥匙”。一个线程执行要先申请钥匙（旗语），如果只有一个钥匙（旗语）并且被其他线程申请了，那么这个线程阻塞。当那个线程执行完了，返回钥匙（旗语），被阻塞的线程可以再申请钥匙（旗语）。
+​    旗语可以用在多个进程共享资源的时候。
+
+new方法创建一个或多个旗语
+get获取一个或多个旗语，获取失败
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-23 00:00" pubdate>
+              2019-07-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/Verification/">Verification</a>
             
           </div>
         
@@ -810,7 +806,7 @@ package是最外层的命名空间，在package中可以定义paramet
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/7/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/#board">6</a><a class="page-number" href="/page/7/#board">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/#board">9</a><a class="page-number" href="/page/10/#board">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/#board">13</a><a class="extend next" rel="next" href="/page/9/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/7/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/#board">6</a><a class="page-number" href="/page/7/#board">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/#board">9</a><a class="page-number" href="/page/10/#board">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/#board">16</a><a class="extend next" rel="next" href="/page/9/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 
