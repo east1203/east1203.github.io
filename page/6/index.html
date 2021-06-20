@@ -223,6 +223,64 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94OOP%E6%8A%80%E5%B7%A7/" target="_self">
+          SV——OOP技巧
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94OOP%E6%8A%80%E5%B7%A7/" target="_self">
+          
+          
+            
+          
+          1. 事务传递​    在事务生成器中，每次新建transaction，随机化后发送给接收器，这样每次发送函数transmit(tr)发送的transaction都不同。避免了transmit程序需要多个cycle，后面的随机化将前面还没有发送完成的数据覆盖了。
+​    下面这种写法是只创建一个transaction对象，对对象进行多次随机化，后面的随机化可能会覆盖前面没发送的数据。
+12345
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-23 00:00" pubdate>
+              2019-07-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/Verification/">Verification</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
           SV——线程及线程间的通信（一）
         </a>
@@ -740,63 +798,6 @@ uvm_component 直接继承自uvm_report_object，所以component继承了一些�
             <i class="iconfont icon-date"></i>
             <time datetime="2019-07-18 00:00" pubdate>
               2019-07-18
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/IC/">IC</a>
-            
-              <a href="/categories/IC/Asynchronous/">Asynchronous</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/Asynchronous/">Asynchronous</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/07/16/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/Cummings%E2%80%94%E2%80%94%E5%BC%82%E6%AD%A5FIFO%E7%AC%AC%E4%B8%80%E8%AE%B2/" target="_self">
-          Cummings——异步FIFO第一讲
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/07/16/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/Cummings%E2%80%94%E2%80%94%E5%BC%82%E6%AD%A5FIFO%E7%AC%AC%E4%B8%80%E8%AE%B2/" target="_self">
-          
-          
-            
-          
-          0. 参考Simulation and Synthesis Techniques for Asynchronous FIFO Design — Clifford E. Cummings, Sunburst Design 
-1. 异步FIFO在跨时钟域传输的时候容易发生亚稳态。当在不同时钟域之间传递的多个信号时，需要用到异步FIFO。
-异步FIFO的难点在于生成读写地址和空满指示位。
-2. FIFO
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-07-16 00:00" pubdate>
-              2019-07-16
             </time>
           </div>
         
