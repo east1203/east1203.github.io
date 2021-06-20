@@ -272,8 +272,8 @@
 <p>​    可配置的验证平台中，会通过uvm_config_db#(..)::set来设置一些控制参数，来看重验证平台组件的生成，比如uvm_agent中的is_active。</p>
 <p>​    比如现在是在给agent设置is_active，那么我们希望agent能知道我们重新设置了这个变量，为<strong>了实现这个在UG中强烈建议加上super.build_phase（uvm UG 1.1 P44）</strong>，而且出现了好多次。当然用这个也是有前提的，这个算是config_db自动获取，我们需要：</p>
 <pre><code>1. 将agent用factory宏注册。
- 2. 将agent中需要 自动获取的变量用filed automation。
- 3. config_db中set函数的第三个参数和agent中的变量名是一样的。
+2. 将agent中需要 自动获取的变量用filed automation。
+3. config_db中set函数的第三个参数和agent中的变量名是一样的。
 </code></pre>
 <p>======================================================================================</p>
 <p>​    2019–08-29</p>

@@ -731,30 +731,29 @@ decltype类型
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2019/03/09/Verilog/Verilog%E8%AF%AD%E6%B3%95%E5%B0%8F%E7%BB%93(1)/" target="_self">
-          <img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/img/article_pic/scene2.jpg" srcset="/img/loading.gif" lazyload alt="Verilog语法小结(1)">
+        <a href="/2019/03/09/Verilog/%E9%98%BB%E5%A1%9E%E5%92%8C%E9%9D%9E%E9%98%BB%E5%A1%9E%E8%B5%8B%E5%80%BC/" target="_self">
+          <img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/img/article_pic/scene2.jpg" srcset="/img/loading.gif" lazyload alt="阻塞和非阻塞赋值">
         </a>
       </div>
     
     <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/03/09/Verilog/Verilog%E8%AF%AD%E6%B3%95%E5%B0%8F%E7%BB%93(1)/" target="_self">
-          Verilog语法小结(1)
+        <a href="/2019/03/09/Verilog/%E9%98%BB%E5%A1%9E%E5%92%8C%E9%9D%9E%E9%98%BB%E5%A1%9E%E8%B5%8B%E5%80%BC/" target="_self">
+          阻塞和非阻塞赋值
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/03/09/Verilog/Verilog%E8%AF%AD%E6%B3%95%E5%B0%8F%E7%BB%93(1)/" target="_self">
+        <a href="/2019/03/09/Verilog/%E9%98%BB%E5%A1%9E%E5%92%8C%E9%9D%9E%E9%98%BB%E5%A1%9E%E8%B5%8B%E5%80%BC/" target="_self">
           
           
             
           
           
-逻辑综合忽略延时信息
-
- 比如”# 10 a = 1’b1;”在逻辑综合的时候会将延时信息忽略。2. always语句的规则：重复执行always后的语句
- 如果always后接”@(posedge clk)”,当执行到这时，always语句块的进程被挂起来，直到满足”posedge clk”条件，执行always块中的语句。然后always块会马上重复执行,到”@(posedge clk)”又
+1 阻塞赋值2 非阻塞赋值3 自触发always块
+使用阻塞赋值不能自触发123456789module osc(clk);output clk;reg clk;initial begin   #10 clk = 0;end//initialalways @(clk)    #5 clk = ~clk;endmodule
+当语句执行到 clk = ~clk,clk的值立马改变，在此期间不允许其他
         </a>
       </p>
 
