@@ -223,6 +223,504 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2019/07/15/Verification/Debug/dump%E6%B3%A2%E5%BD%A2/" target="_self">
+          debug——dumpboxing
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/15/Verification/Debug/dump%E6%B3%A2%E5%BD%A2/" target="_self">
+          
+          
+            
+          
+          
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/SV/">SV</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/15/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E6%8E%A5%E5%8F%A3/" target="_self">
+          SV——接口
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/15/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E6%8E%A5%E5%8F%A3/" target="_self">
+          
+          
+            
+          
+          1. Interface概念System Verilog中引入了接口定义，接口与module 等价的定义，是要在其他的接口、module中直接定义，不能写在块语句中，跟class是不同的。
+​    接口是将一组线捆绑起来，可以将接口传递给module。
+2.  接口的优点一）通过接口在module之间或内部进行信号，模块的输入列表就是一个接口，这样简单，避免手动连线的错误。
+二）如果需要增加模块
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-15 00:00" pubdate>
+              2019-07-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/SV/">SV</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/10/Verification/SystemVerilog/UVMPrimer%E4%B8%AD%E7%9A%84DUT%E6%94%B9%E5%86%99%E6%88%90Verilog/" target="_self">
+          UVMPrimer中的DUT改写成Verilog
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/10/Verification/SystemVerilog/UVMPrimer%E4%B8%AD%E7%9A%84DUT%E6%94%B9%E5%86%99%E6%88%90Verilog/" target="_self">
+          
+          
+            
+          
+          内容：讲UVMPrimer书给的代码中的DUT改写成了Verilog形式，原来时VHDL形式，用VCS仿真的时候总是出错，花了大半天改写了。
+DUT介绍这本书中的DUT是个ALU，模块管脚如下图，
+
+A,B是两个八位的输入，start是启动信号，op是命令信号，包括加，乘，与等，result是计算结果，done是DUT的应答信号，当dut计算结束，done为1。ALU中的计算有单周期，也有多周期的
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-10 00:00" pubdate>
+              2019-07-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/Others/">Others</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/Verification/">Verification</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/01/IC/tools/EasierUVM%E5%AE%89%E8%A3%85%E9%97%AE%E9%A2%98/" target="_self">
+          EasierUVM安装问题
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/01/IC/tools/EasierUVM%E5%AE%89%E8%A3%85%E9%97%AE%E9%A2%98/" target="_self">
+          
+          
+            
+          
+          perl包安装EasierUVM需要安装File::Copy::Recursive,File::stat, and Time::Piece modules.这几个PERL 包，官方文档给的安装命令是
+123perl -MCPAN -e &#x27;install File::Copy::Recursive&#x27;perl -MCPAN -e &#x27;install File::stat&#
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-01 00:00" pubdate>
+              2019-07-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/IC/">IC</a>
+            
+              <a href="/categories/IC/tools/">tools</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/vcs/">vcs</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/29/IC/others/%E4%BB%BF%E7%9C%9F%E9%94%99%E8%AF%AF%E9%9B%86%E5%90%88/" target="_self">
+          仿真错误集合
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/29/IC/others/%E4%BB%BF%E7%9C%9F%E9%94%99%E8%AF%AF%E9%9B%86%E5%90%88/" target="_self">
+          
+          
+            
+          
+          1 UVM仿真1.1 imp声明时两个参数Error-[MRRE] Member reference resolution error/home/IC/uvm/uvm-1.1d/src/tlm1/uvm_analysis_port.svh, 114  Member operator “.” cannot be used on object of type int.  Expression: m_i
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-29 00:00" pubdate>
+              2019-06-29
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/IC/">IC</a>
+            
+              <a href="/categories/IC/others/">others</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/sim/">sim</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/28/C++/%E5%87%BD%E6%95%B0/C++%20%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/" target="_self">
+          C++ 函数指针
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/28/C++/%E5%87%BD%E6%95%B0/C++%20%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/" target="_self">
+          
+          
+            
+          
+          1. 定义函数指针，指向函数的指针，而不是对象。函数的类型由它的返回值类型和形参共同决定，与函数名无关。
+1234// 定义一个函数void display(const string&amp; s1,const string&amp; s2);// 函数指针void (*fp)(const string&amp; s1,const string&amp; s2);
+
+函数指针的定义，只需用函数指针
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-28 00:00" pubdate>
+              2019-06-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/C/">C++</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/26/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%B3%BB%E7%BB%9F%E5%87%BD%E6%95%B0/" target="_self">
+          SV——系统函数
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/26/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%B3%BB%E7%BB%9F%E5%87%BD%E6%95%B0/" target="_self">
+          
+          
+            
+          
+          1 随机化相关函数1)  std::randomize() with对于随机对象，可以采用object.randomize()的方式进行随机化，但有的时候可以通过更简单的方式，不必定义类和例化对象，甚至变量都不是随机类型，也可以对其进行随机化，这就是系统随机化 函数std::randomize。
+1234initial begin //SV	int value;	    std::randomiz
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-26 00:00" pubdate>
+              2019-06-26
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/Verification/">Verification</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/18/others/linux/gvim%E8%AE%BE%E7%BD%AE%E5%AD%97%E4%BD%93%E8%83%8C%E6%99%AF/" target="_self">
+          gvim中设置字体背景 - others
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/18/others/linux/gvim%E8%AE%BE%E7%BD%AE%E5%AD%97%E4%BD%93%E8%83%8C%E6%99%AF/" target="_self">
+          
+          
+            
+          
+          在/etc/vimrc文件中添加如下命令：
+123set gfn=Sans\ 12colorscheme desertset nobackup
+
+第一行：设置字体类型和字体大小，注意vimrc不支持空格，所以空格都需要加上反斜杠转义，这点很重要，我就在这里出错，试了好多遍都不对，最后有一篇文章说需要用反斜杠才搞定。
+第二行：设置背景
+第三行：设置不进行自动备份，不知道什么意思，看别人这么设的，不设
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-18 00:00" pubdate>
+              2019-06-18
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/others/">others</a>
+            
+              <a href="/tags/linux/">linux</a>
+            
+              <a href="/tags/vim/">vim</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/16/C++/%E7%B1%BB/C++%E4%B8%AD%E7%9A%84%E6%8B%B7%E8%B4%9D%E3%80%81%E8%B5%8B%E5%80%BC%E4%B8%8E%E9%94%80%E6%AF%81/" target="_self">
+          C++中的拷贝、赋值与销毁
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/16/C++/%E7%B1%BB/C++%E4%B8%AD%E7%9A%84%E6%8B%B7%E8%B4%9D%E3%80%81%E8%B5%8B%E5%80%BC%E4%B8%8E%E9%94%80%E6%AF%81/" target="_self">
+          
+          
+            
+          
+          1. 拷贝构造函数如果一个构造函数的第一个参数是该类类型的引用，且其他参数都有默认值，那么这是个拷贝构造函数。
+1234class Foo&#123;	Foo();	Foo(const Foo&amp;);  //拷贝构造函数&#125;;
+
+
+
+1.1 合成拷贝构造函数​        如果没有为类定义拷贝构造函数，那么编译器会自动定义一个合成拷贝构造函数。与合成默认构造函数不同（如果定义了其他
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-16 00:00" pubdate>
+              2019-06-16
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/C/">C++</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2019/06/13/IC/tools/%E7%94%A8VCS%E5%90%AF%E5%8A%A8UVM%E4%BB%BF%E7%9C%9F/" target="_self">
           用VCS启动UVM仿真
         </a>
@@ -276,543 +774,11 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/06/13/others/linux/vim%E4%B8%ADsystemverilog%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE/" target="_self">
-          vim中systemverilog语法高亮
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/13/others/linux/vim%E4%B8%ADsystemverilog%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE/" target="_self">
-          
-          
-            
-          
-          1. 内容：在vim、gvim中设计systemverilog语法高亮。
-2. 步骤：
-在自己主目录下创建.vim的隐藏文件夹。cd ~
-在.vim目录下创建两个文件夹，命名为syntax和ftdetect。
-在ftdetect文件夹下创建文件sv.vim。
-
-12// 在文件sv.vim中保存下面一行能容au BufRead,BufNewFile *.sv set filetype=system
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-06-13 00:00" pubdate>
-              2019-06-13
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/others/">others</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/others/">others</a>
-            
-              <a href="/tags/SV/">SV</a>
-            
-              <a href="/tags/linux/">linux</a>
-            
-              <a href="/tags/vim/">vim</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/06/12/Verification/SystemVerilog/SV%E2%80%94%E2%80%94package/" target="_self">
-          SV——package
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/12/Verification/SystemVerilog/SV%E2%80%94%E2%80%94package/" target="_self">
-          
-          
-            
-          
-          1. packageSystemVerilog中package是用来在多个modules、interfaces、programs和checkers之间共享parameter、net、variables、type、task、function、sequence、property和checker declaration这些东西。
-package是最外层的命名空间，在package中可以定义paramet
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-06-12 00:00" pubdate>
-              2019-06-12
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verification/">Verification</a>
-            
-              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/SV/">SV</a>
-            
-              <a href="/tags/Verification/">Verification</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/06/11/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C/" target="_self">
-          perl语言——目录操作
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/11/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C/" target="_self">
-          
-          
-            
-          
-          1. 移动当前目录 chdir程序会以自己的工作目录作为相对路径的起点，但可以用chdir操作符来改变当前目录
-1chdir &#x27;\etc&#x27;;
-
-2. 文件名通配符*，glob类似于shell里的星号*，或者*.v等。在perl程序中可以用glob操作符，他的返回值是一个列表。
-12@li = glob &#x27;*&#x27;; #匹配到当前目录下的所有文件print &qu
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-06-11 00:00" pubdate>
-              2019-06-11
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/IC/">IC</a>
-            
-              <a href="/categories/IC/perl/">perl</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/perl/">perl</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/06/07/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%93%88%E5%B8%8C/" target="_self">
-          perl语言——哈希
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/07/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%93%88%E5%B8%8C/" target="_self">
-          
-          
-            
-          
-          1. 什么是哈希 hash哈希是一种数据结构，可以存储任意长度的值并随意取用。
-在数组中以数字为索引，但是哈希中以名字为索引，索引在哈希中称为键(key)，它是任意唯一的字符串 ，即使是数字也会被转换成字符串。以键值对的形式存放数据。
-注意：
-
-哈希中的键都是唯一的。
-值可以不是唯一的。
-键以字符串形式保存。
-以键值对的形式存放数据。
-值可以是任何标量，比如数字，字符串，undef，及它们的组合。
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-06-07 00:00" pubdate>
-              2019-06-07
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/IC/">IC</a>
-            
-              <a href="/categories/IC/perl/">perl</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/perl/">perl</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/06/07/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%AD%97%E7%AC%A6%E4%B8%B2/" target="_self">
-          perl语言——字符串
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/07/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%AD%97%E7%AC%A6%E4%B8%B2/" target="_self">
-          
-          
-            
-          
-          1. 普通字符串操作点号.连接两个字符串。
-叉号x将字符串复制几次。
-123456$s1 = &#x27;hello&#x27;;$s2 = &#x27; world&#x27;;$s3 = $s1.$s2;$s4 = &#x27;a&#x27;x3;print &quot;$s3\n&quot;; # hello worldprint &quot;$s4\n&quot;; # aaa
-
-
-
-2.
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-06-07 00:00" pubdate>
-              2019-06-07
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/IC/">IC</a>
-            
-              <a href="/categories/IC/perl/">perl</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/perl/">perl</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/06/05/others/linux/EDA%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%BD%BF%E7%94%A8%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/" target="_self">
-          EDA虚拟机使用错误解决
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/05/others/linux/EDA%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%BD%BF%E7%94%A8%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/" target="_self">
-          
-          
-            
-          
-          在Linux中运行yum命令时显示：
-12345678910111213There was a problem importing one of the Python modulesrequired to run yum. The error leading to this problem was:   /usr/lib64/libnssutil3.so: undefined symbol: PL
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-06-05 00:00" pubdate>
-              2019-06-05
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/others/">others</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/others/">others</a>
-            
-              <a href="/tags/linux/">linux</a>
-            
-              <a href="/tags/yum/">yum</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/05/28/IC/tools/SV%E4%BB%BF%E7%9C%9F/" target="_self">
-          SystemVerilog仿真
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/05/28/IC/tools/SV%E4%BB%BF%E7%9C%9F/" target="_self">
-          
-          
-            
-          
-          modelSim仿真出错1. The interface port ‘infu’ must be passed an actual interface.在调用接口连接TEST和DUT的时候，compilation通过了，但是simulation的时候出错了，报上面这个错。
-解决：将编译命令改成：
-12vsim -voptargs=&quot;+acc&quot; top -do &quot;run
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-05-28 00:00" pubdate>
-              2019-05-28
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/IC/">IC</a>
-            
-              <a href="/categories/IC/tools/">tools</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/SV/">SV</a>
-            
-              <a href="/tags/vcs/">vcs</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/05/27/IC/others/%E7%BB%84%E5%90%88%E9%80%BB%E8%BE%91%E5%92%8C%E6%97%B6%E5%BA%8F%E9%80%BB%E8%BE%91%E7%9A%84%E7%BB%BC%E5%90%88/" target="_self">
-          组合逻辑和时序逻辑的综合
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/05/27/IC/others/%E7%BB%84%E5%90%88%E9%80%BB%E8%BE%91%E5%92%8C%E6%97%B6%E5%BA%8F%E9%80%BB%E8%BE%91%E7%9A%84%E7%BB%BC%E5%90%88/" target="_self">
-          
-          
-            
-          
-          综合工具工作的步骤：
-检测并消除冗余逻辑
-查找组合反馈回路
-利用无关紧要条件
-检测出未使用的状态
-查找并消除等价的状态；
-进行状态分配；
-在满足物理工艺的面积、速度限制的条件下，综合出最优的多级逻辑实现。既包括了最优化技术，又包括了工艺映射。
-
-1. 综合简介电路模型可以分成三个层次：**架构级(architectural level model)、逻辑级(logic level model)、物
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-05-27 00:00" pubdate>
-              2019-05-27
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/IC/">IC</a>
-            
-              <a href="/categories/IC/others/">others</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/Synthesis/">Synthesis</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/05/25/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%88%97%E8%A1%A8%E3%80%81%E6%95%B0%E7%BB%84/" target="_self">
-          perl语言——列表、数组
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/05/25/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%88%97%E8%A1%A8%E3%80%81%E6%95%B0%E7%BB%84/" target="_self">
-          
-          
-            
-          
-          1.数组\列表如果perl语言中的标量是单数(singular)，那么复数(plural)用列表或数组表示。
-1.1 数组和列表perl中，列表表示一组标量的有序集合。数组是用来保存列表的变量。但这两个术语常常混用。
-1.2 数组变量@array、数组索引$array[i]数组变量：用 @变量名来表示数组整体，比如 @array。
-数组索引：用**$变量名[index]**来索引数组内元素，比如$
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-05-25 00:00" pubdate>
-              2019-05-25
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/IC/">IC</a>
-            
-              <a href="/categories/IC/perl/">perl</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/perl/">perl</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/6/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/#board">5</a><a class="page-number" href="/page/6/#board">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/#board">8</a><a class="page-number" href="/page/9/#board">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/#board">12</a><a class="extend next" rel="next" href="/page/8/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/6/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/#board">5</a><a class="page-number" href="/page/6/#board">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/#board">8</a><a class="page-number" href="/page/9/#board">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/#board">13</a><a class="extend next" rel="next" href="/page/8/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

@@ -223,6 +223,556 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2019/04/30/IC/others/%E6%95%B0%E6%8D%AE%E4%BE%9D%E8%B5%96RAW%20WAW%20WAR/" target="_self">
+          数据依赖RAW WAW WAR
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/04/30/IC/others/%E6%95%B0%E6%8D%AE%E4%BE%9D%E8%B5%96RAW%20WAW%20WAR/" target="_self">
+          
+          
+            
+          
+          本文是作者在学习过程中的理解，所以很可能存在不全面或者错误
+本文参考了自己动手写CPU之第五阶段（1）——流水线数据相关问题和cpu乱序原理
+CPU指令中的相关性包括数据相关性，结构（资源）相关性和控制相关性。
+数据相关性：CPU基于流水线执行，在执行指令时，上一条指令没有执行完就要开始接下来指令的执行，如果当前指令中的操作数来源于上一条指令的执行结果，那么就会产生数据依赖。
+资源相关性：CPU内
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-04-30 00:00" pubdate>
+              2019-04-30
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/IC/">IC</a>
+            
+              <a href="/categories/IC/others/">others</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/04/19/others/linux/redhat%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/" target="_self">
+          redhat虚拟机网络配置
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/04/19/others/linux/redhat%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/" target="_self">
+          
+          
+            
+          
+          redhat虚拟机出现联网错误解决1 设置windows主机的网络连接(参考)
+在网络连接下有VMnet1,VMnet2,(vmnet1是host-only，也就是说，选择用vmnet1的话就相当于VMware给你提供了一个虚拟交换机，仅将虚拟机和真实系统连上了，虚 拟机可以与真实系统相互共享文件，但是虚拟机无法访问外部互联网，而vmnet8是NAT，就是网络地址转换，相当于给你一个虚拟交换机，将
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-04-19 00:00" pubdate>
+              2019-04-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/others/">others</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/others/">others</a>
+            
+              <a href="/tags/virtual-machine/">virtual machine</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/04/18/C++/%E5%87%BD%E6%95%B0/C++%20%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0/" target="_self">
+          C++ 函数参数
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/04/18/C++/%E5%87%BD%E6%95%B0/C++%20%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0/" target="_self">
+          
+          
+            
+          
+          C++中函数的参数类型
+值传递
+引用形参
+const参数
+数组参数
+
+值传递将实参的值复制一份给形参。主要有两种：1）地址参数——实际是对实参操作。2）非地址参数——形参改变不会影响实参
+引用形参实参的引用，实际操作实参，但不会拷贝对象
+优点：
+
+拷贝某些大的自定义类型的对象时效率低
+某些类型(IO类型)不支持拷贝
+
+ 比如在IO流中，重载输出运算符&lt;&lt;，将ostream对象的引用穿进
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-04-18 00:00" pubdate>
+              2019-04-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/C/">C++</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/04/18/C++/%E7%B1%BB/this%E6%8C%87%E9%92%88%E5%92%8Cconst%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0/" target="_self">
+          this指针和const成员函数
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/04/18/C++/%E7%B1%BB/this%E6%8C%87%E9%92%88%E5%92%8Cconst%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0/" target="_self">
+          
+          
+            
+          
+          
+const对象只能调用const成员函数
+
+this指针类的成员函数都有一个隐式的this指针来指向调用该函数的那个类对象，this总是指向这个对象，所以this指针是个指针常量，属于顶层const。
+可以通过*this来返回对象。
+以下是一个结构体类型（C++中的结构体可以有成员函数）
+1234567891011121314struct INT &#123;	INT() = default;	
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-04-18 00:00" pubdate>
+              2019-04-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/C/">C++</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/04/14/C++/%E7%B1%BB/%E9%87%8D%E5%86%99class%E7%9A%84%E9%BB%98%E8%AE%A4%E5%87%BD%E6%95%B0/" target="_self">
+          重写class的默认函数
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/04/14/C++/%E7%B1%BB/%E9%87%8D%E5%86%99class%E7%9A%84%E9%BB%98%E8%AE%A4%E5%87%BD%E6%95%B0/" target="_self">
+          
+          
+            
+          
+          默认情况C++会自动为类生成构造函数、析构函数、复制构造函数、赋值构造函数，但是当类数据成员中有指针类型时，需要我们自己写这些默认的函数来更好的管理内存。
+下面以一个字符串类为例子说明
+123456789101112131415class MyString &#123;	public:		MyString(); //构造		MyString(char* str = &quot; &quot;); 
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-04-14 00:00" pubdate>
+              2019-04-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/C/">C++</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/04/14/IC/others/makefile/" target="_self">
+          makefile
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/04/14/IC/others/makefile/" target="_self">
+          
+          
+            
+          
+          makefile 介绍一个企业级项目，通常会有很多源文件，有时也会按功能、类型、模块分门别类的放在不同的目录中，有时候也会在一个目录里存放了多个程序的源代码。这时，如何对这些代码的编译就成了个问题。Makefle就是为这个问题而生的，它定义了一套规则，决定了哪些文件要先编译，哪些文件后编译，哪些文件要重新编译。整个工程通常只要一个make命令就可以完成编译、链接，甚至更复杂的功能。可以说，任何一个
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-04-14 00:00" pubdate>
+              2019-04-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/IC/">IC</a>
+            
+              <a href="/categories/IC/others/">others</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/makefile/">makefile</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/04/14/IC/tools/vcs%E4%BD%BF%E7%94%A8/" target="_self">
+          vcs使用
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/04/14/IC/tools/vcs%E4%BD%BF%E7%94%A8/" target="_self">
+          
+          
+            
+          
+          VCS仿真流程VCS将.v文件（verilog模型）编译成可执行二进制文件(simv)，然后运行可执行文件进行仿真。
+
+常用options
+**-l filename  **
+
+ 将需要编译的文件的地址写在filename文件下，每行一个文件
+
+-R编译之后直接运行simv进行仿真
+
+-sverilog
+
+
+ 识别system Verilog语法
+
+-full64
+
+ 在64bit环境下编译和仿真
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-04-14 00:00" pubdate>
+              2019-04-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/IC/">IC</a>
+            
+              <a href="/categories/IC/tools/">tools</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/vcs/">vcs</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/04/13/IC/STA/%E9%9D%99%E6%80%81%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/" target="_self">
+          静态时序分析STA
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/04/13/IC/STA/%E9%9D%99%E6%80%81%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/" target="_self">
+          
+          
+            
+          
+          
+目录
+概念
+为什么要进行时序分析？
+
+
+
+- ##### 分类
+
+
+STA优缺点
+STA作用
+STA的过程
+时序分析基本概念
+
+
+概念
+为什么要进行时序分析？
+
+ 设计都会有性能指标，为了保证在物理制造后的电路功能正确并且满足设计指标，需要保证电路的时序满足设计要求，这就需要在电路设计好后对电路进行时序分析，满足时序才能进行接下来的设计和制造。
+
+分类
+
+
+动态时序仿真
+
+动态时序仿真是针对给定
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-04-13 00:00" pubdate>
+              2019-04-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/IC/">IC</a>
+            
+              <a href="/categories/IC/STA/">STA</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/04/13/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/%E5%90%8C%E6%AD%A5FIFO/" target="_self">
+          同步FIFO
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/04/13/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/%E5%90%8C%E6%AD%A5FIFO/" target="_self">
+          
+          
+            
+          
+          fifo介绍先入先出的数据缓存器，没有外部读写地址线，可同时读写。
+
+fifo种类 FIFO有同步fifo和异步fifo之分。同步fifo只有一个时钟，读写时钟一样；异步fifo读写时钟不同，可能不同频率，或者同频不同相。
+
+fifo用途
+缓存数据
+
+  如果输入端burst一个数据，接收端不能立马全部接受，需要fifo存住这些数据。
+
+跨时钟域数据传输
+
+  同步数据。
+
+
+同步fifo 同步F
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-04-13 00:00" pubdate>
+              2019-04-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/IC/">IC</a>
+            
+              <a href="/categories/IC/Asynchronous/">Asynchronous</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/Asynchronous/">Asynchronous</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2019/04/13/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/%E5%BC%82%E6%AD%A5fifo/" target="_self">
           异步FIFO
         </a>
@@ -274,488 +824,11 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/04/11/IC/tools/%E7%94%9F%E6%88%90%E4%BB%BF%E7%9C%9F%E6%B3%A2%E5%BD%A2.vcd%20.fsdb%20.vpd/" target="_self">
-          生成仿真波形vcd vpd fsdb
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/04/11/IC/tools/%E7%94%9F%E6%88%90%E4%BB%BF%E7%9C%9F%E6%B3%A2%E5%BD%A2.vcd%20.fsdb%20.vpd/" target="_self">
-          
-          
-            
-          
-          1. verilog系统函数生成vcdVCD （Value Change Dump）是一个通用的格式。 VCD文件是IEEE1364标准(Verilog HDL语言标准)中定义的一种ASCII文件。它主要包含了头信息，变量的预定义和变量值的变化信息。正是因为它包含了信号的变化信息，就相当于记录了整个仿真的信息，我们可以用这个文件来再现仿真，也就能够显示波形。
-特别说明的一点是，正是因为VCD记录了
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-04-11 00:00" pubdate>
-              2019-04-11
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/IC/">IC</a>
-            
-              <a href="/categories/IC/tools/">tools</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/vcs/">vcs</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/03/11/others/hello-world/" target="_self">
-          Hello World
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/03/11/others/hello-world/" target="_self">
-          
-          
-            
-          
-          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-03-11 00:00" pubdate>
-              2019-03-11
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/others/">others</a>
-            
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/03/11/others/%E6%AC%A2%E8%BF%8E%E4%BD%BF%E7%94%A8%20Cmd%20Markdown%20%E7%BC%96%E8%BE%91%E9%98%85%E8%AF%BB%E5%99%A8/" target="_self">
-          欢迎使用 Cmd Markdown 编辑阅读器
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/03/11/others/%E6%AC%A2%E8%BF%8E%E4%BD%BF%E7%94%A8%20Cmd%20Markdown%20%E7%BC%96%E8%BE%91%E9%98%85%E8%AF%BB%E5%99%A8/" target="_self">
-          
-          
-            
-          
-          什么是 Cmd Markdown您可以使用很多工具书写 Markdown，但是 Cmd Markdown 是这个星球上我们已知的、最好的 Markdown 工具——没有之一 ：）因为深信文字的力量，所以我们和你一样，对流畅书写，分享思想和知识，以及阅读体验有极致的追求，我们把对于这些诉求的回应整合在 Cmd Markdown，并且一次，两次，三次，乃至无数次地提升这个工具的体验，最终将它演化成一个
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-03-11 00:00" pubdate>
-              2019-03-11
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/others/">others</a>
-            
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/03/11/others/git/git%E4%BD%BF%E7%94%A8/" target="_self">
-          git使用
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/03/11/others/git/git%E4%BD%BF%E7%94%A8/" target="_self">
-          
-          
-            
-          
-          
-git四个区域
-remote repository
-local repository
-
- git commit之后，会将stage area区域的文件提交到local repository 3. #### stage area 临时区域
- git add文件之后，会将文件的内容更新到临时区域 4. #### work area 就是仓库目录下的那些源文件
-上传文件
-本机和github账户绑定
-
-
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-03-11 00:00" pubdate>
-              2019-03-11
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/others/">others</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/git/">git</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/03/09/C++/C++11%E6%96%B0%E7%89%B9%E6%80%A7/" target="_self">
-          C++11 新特性
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/03/09/C++/C++11%E6%96%B0%E7%89%B9%E6%80%A7/" target="_self">
-          
-          
-            
-          
-          
-用花括号来初始化变量{}
-
-1234int i&#123;10&#125;;int i(10);int i = 10;int i = &#123;10&#125;;
-
-
-auto类型——编译器通过初始值自动推算变量的类型当我们希望编译器根据表达式的结果来确定变量的类型，并且通过表达式结果来赋值
-
-decltype类型
-
- 当我们希望编译器根据表达式的结果来确定变量的类型，但又不是通过表达式结果来
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-03-09 00:00" pubdate>
-              2019-03-09
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/C/">C++</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/C/">C++</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/03/09/C++/%E4%B8%80%E4%BA%9BC++%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95(1)/" target="_self">
-          C++问题记录(1)
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/03/09/C++/%E4%B8%80%E4%BA%9BC++%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95(1)/" target="_self">
-          
-          
-            
-          
-          
-1. 模板函数定义在.h文件对普通函数来说，声明放在头文件中，定义放在源文件中，其它的地方要使用该函数时，仅需要包含头文件即可，因为编译器编译时是以一个源文件作为单元编译的，当它遇到不在本文件中定义的函数时，若能够找到其声明，则会将此符号放在本编译单元的外部符号表中，链接的时候自然就可以找到该符号的定义了。
-而对模板函数来说，首先明确，模板函数是在编译器遇到使用模板的代码时才将模板函数实例化的。
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-03-09 00:00" pubdate>
-              2019-03-09
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/C/">C++</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/C/">C++</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/03/09/C++/%E6%A8%A1%E6%9D%BF%E7%B1%BB%E3%80%81%E6%A8%A1%E6%9D%BF%E5%87%BD%E6%95%B0%E5%A3%B0%E6%98%8E%E5%AE%9A%E4%B9%89%E5%9C%A8%E4%B8%80%E8%B5%B7/" target="_self">
-          模板类、模板函数声明定义在一起
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/03/09/C++/%E6%A8%A1%E6%9D%BF%E7%B1%BB%E3%80%81%E6%A8%A1%E6%9D%BF%E5%87%BD%E6%95%B0%E5%A3%B0%E6%98%8E%E5%AE%9A%E4%B9%89%E5%9C%A8%E4%B8%80%E8%B5%B7/" target="_self">
-          
-          
-            
-          
-          模板函数、模板类声明和定义要放在一起，不要再.h中声明了，然后再.cpp中定义，这要编译器再链接时会提示找不到函数或类的标识符。
-这是因为编译时是以文件为基础逐个文件编译的。对于普通的函数，如果定义在.h，实现在.cpp文件，程序在执行的时候可以通过.h文件找到函数在.cpp文件中的定义，可以执行。
-** 但是模板函数如果定义在.h,实现在.cpp文件， 程序在执行的时候找不到函数的实现——不知道
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-03-09 00:00" pubdate>
-              2019-03-09
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/C/">C++</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/C/">C++</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/03/09/Verilog/Verilog%E5%B0%8F%E7%94%B5%E8%B7%AF(1)/" target="_self">
-          Verilog小电路(1)
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/03/09/Verilog/Verilog%E5%B0%8F%E7%94%B5%E8%B7%AF(1)/" target="_self">
-          
-          
-            
-          
-          
-1 存储器建模
-2 三分频时钟，占空比50%
-3 普通分频–2分频 4分频
-4 同步复位/异步复位/异步复位同步释放
-5 串并转化电路
-
-1. 存储器建模123456789101112131415161718192021 module ram_basic (clk, CS, WR, addr, data_in, data_out, en); input         clk; input   
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-03-09 00:00" pubdate>
-              2019-03-09
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verilog/">Verilog</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Verilog/">Verilog</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/03/09/Verilog/Verilog%E8%AF%AD%E6%B3%95%E5%B0%8F%E7%BB%93(1)/" target="_self">
-          Verilog语法小结(1)
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/03/09/Verilog/Verilog%E8%AF%AD%E6%B3%95%E5%B0%8F%E7%BB%93(1)/" target="_self">
-          
-          
-            
-          
-          
-逻辑综合忽略延时信息
-
- 比如”# 10 a = 1’b1;”在逻辑综合的时候会将延时信息忽略。2. always语句的规则：重复执行always后的语句
- 如果always后接”@(posedge clk)”,当执行到这时，always语句块的进程被挂起来，直到满足”posedge clk”条件，执行always块中的语句。然后always块会马上重复执行,到”@(posedge clk)”又
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-03-09 00:00" pubdate>
-              2019-03-09
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verilog/">Verilog</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Verilog/">Verilog</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/9/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/#board">8</a><a class="page-number" href="/page/9/#board">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/#board">11</a><a class="page-number" href="/page/12/#board">12</a><a class="extend next" rel="next" href="/page/11/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/9/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/#board">8</a><a class="page-number" href="/page/9/#board">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/#board">11</a><a class="page-number" href="/page/12/#board">12</a><a class="page-number" href="/page/13/#board">13</a><a class="extend next" rel="next" href="/page/11/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 
