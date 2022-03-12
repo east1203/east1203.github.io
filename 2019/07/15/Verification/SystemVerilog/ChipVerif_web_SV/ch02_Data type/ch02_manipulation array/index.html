@@ -1,0 +1,654 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="SystemVerilog Array ManipulationThere are many built-in methods in SystemVerilog to help in array searching and ordering. Array manipulation methods simply iterate through the array elements and each">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ch2-Array Manipulation">
+<meta property="og:url" content="http://example.com/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_manipulation%20array/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="SystemVerilog Array ManipulationThere are many built-in methods in SystemVerilog to help in array searching and ordering. Array manipulation methods simply iterate through the array elements and each">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.chipverify.com/images/site/eda-playground-logo.png">
+<meta property="og:image" content="https://www.chipverify.com/images/site/eda-playground-logo.png">
+<meta property="og:image" content="https://www.chipverify.com/images/site/eda-playground-logo.png">
+<meta property="og:image" content="https://www.chipverify.com/images/site/eda-playground-logo.png">
+<meta property="article:published_time" content="2019-07-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.807Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="SV">
+<meta property="article:tag" content="ChipVerif_Web">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.chipverify.com/images/site/eda-playground-logo.png">
+  
+  
+  <title>ch2-Array Manipulation - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="ch2-Array Manipulation">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-07-15 00:00" pubdate>
+        July 15, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.5k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      54 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ch2-Array Manipulation</h1>
+            
+            <div class="markdown-body">
+              <h1 id="SystemVerilog-Array-Manipulation"><a href="#SystemVerilog-Array-Manipulation" class="headerlink" title="SystemVerilog Array Manipulation"></a>SystemVerilog Array Manipulation</h1><p>There are many built-in methods in SystemVerilog to help in array searching and ordering.</p>
+<p>Array manipulation methods simply iterate through the array elements and each element is used to evaluate the expression specified by the <code>with</code> clause. The <strong>iterator argument</strong> specifies a local variable that can be used within the <code>with</code> expression to refer to the current element in the iteration. <strong>If an argument is not provided, <em>item</em> is the name used by default.</strong></p>
+<p>Specifying an iterator argument without the <code>with</code> clause is illegal.</p>
+<h2 id="Array-Locator-Methods"><a href="#Array-Locator-Methods" class="headerlink" title="Array Locator Methods"></a>Array Locator Methods</h2><p>​    <strong>The <code>with</code> clause and expresison is mandatory for some of these methods and for some others its optional.</strong></p>
+<h3 id="Mandatory-‘with’-clause"><a href="#Mandatory-‘with’-clause" class="headerlink" title="Mandatory ‘with’ clause"></a>Mandatory ‘with’ clause</h3><p>​    These methods are used to filter out certain elements from an existing array based on a given expression. <strong>All such elements that satisfy the given expression is put into an array and returned.</strong> Hence the <code>with</code> clause is mandatory for the following methods.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Method name</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">find()</td>
+<td align="left">Returns all elements satisfying the given expression</td>
+</tr>
+<tr>
+<td align="left">find_index()</td>
+<td align="left">Returns the indices of all elements satisfying the given expression</td>
+</tr>
+<tr>
+<td align="left">find_first()</td>
+<td align="left">Returns the first element satisfying the given expression</td>
+</tr>
+<tr>
+<td align="left">find_first_index()</td>
+<td align="left">Returns the index of the first element satisfying the given expression</td>
+</tr>
+<tr>
+<td align="left">find_last()</td>
+<td align="left">Returns the last element satisfying the given expression</td>
+</tr>
+<tr>
+<td align="left">find_last_index()</td>
+<td align="left">Returns the index of the last element satisfying the given expression</td>
+</tr>
+</tbody></table>
+<p><strong>Example</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></div></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> tb;<br>  <span class="hljs-keyword">int</span> array[<span class="hljs-number">9</span>] = &#x27;&#123;<span class="hljs-number">4</span>, <span class="hljs-number">7</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">6</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>&#125;;<br>  <span class="hljs-keyword">int</span> res[$];<br> <br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    res = array<span class="hljs-variable">.find</span>(x) <span class="hljs-keyword">with</span> (x &gt; <span class="hljs-number">3</span>);<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;find(x)         : %p&quot;</span>, res);<br> <br>    res = array<span class="hljs-variable">.find_index</span> <span class="hljs-keyword">with</span> (item == <span class="hljs-number">4</span>);<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;find_index      : res[%0d] = 4&quot;</span>, res[<span class="hljs-number">0</span>]);<br> <br>    res = array<span class="hljs-variable">.find_first</span> <span class="hljs-keyword">with</span> (item &lt; <span class="hljs-number">5</span> &amp; item &gt;= <span class="hljs-number">3</span>);<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;find_first      : %p&quot;</span>, res);<br> <br>    res = array<span class="hljs-variable">.find_first_index</span>(x) <span class="hljs-keyword">with</span> (x &gt; <span class="hljs-number">5</span>);<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;find_first_index: %p&quot;</span>, res);<br> <br>    res = array<span class="hljs-variable">.find_last</span> <span class="hljs-keyword">with</span> (item &lt;= <span class="hljs-number">7</span> &amp; item &gt; <span class="hljs-number">3</span>);<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;find_last       : %p&quot;</span>, res);<br> <br>    res = array<span class="hljs-variable">.find_last_index</span>(x) <span class="hljs-keyword">with</span> (x &lt; <span class="hljs-number">3</span>);<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;find_last_index : %p&quot;</span>, res);<br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br> <br></code></pre></td></tr></table></figure>
+
+<p><strong>Simulation Log</strong></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ncsim</span>&gt; run<br><span class="hljs-attribute">find</span>(x)         : &#x27;&#123;<span class="hljs-number">4</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">6</span>&#125;<br><span class="hljs-attribute">find_index</span>      : res[<span class="hljs-number">0</span>] = <span class="hljs-number">4</span><br><span class="hljs-attribute">find_first</span>      : &#x27;&#123;<span class="hljs-number">4</span>&#125;<br><span class="hljs-attribute">find_first_index</span>: &#x27;&#123;<span class="hljs-number">1</span>&#125;<br><span class="hljs-attribute">find_last</span>       : &#x27;&#123;<span class="hljs-number">6</span>&#125;<br><span class="hljs-attribute">find_last_index</span> : &#x27;&#123;<span class="hljs-number">8</span>&#125;<br><span class="hljs-attribute">ncsim</span>: *W,RNQUIE: Simulation is complete.<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.edaplayground.com/x/2mgN">Click to try this example in a simulator!  <img src="https://www.chipverify.com/images/site/eda-playground-logo.png" srcset="/img/loading.gif" lazyload alt="img"></a></p>
+<h3 id="Optional-‘with’-clause"><a href="#Optional-‘with’-clause" class="headerlink" title="Optional ‘with’ clause"></a>Optional ‘with’ clause</h3><table>
+<thead>
+<tr>
+<th align="left">Methods</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">min()</td>
+<td align="left">Returns the element with minimum value or whose expression evaluates to a minimum</td>
+</tr>
+<tr>
+<td align="left">max()</td>
+<td align="left">Returns the element with maximum value or whose expression evaluates to a maximum</td>
+</tr>
+<tr>
+<td align="left">unique()</td>
+<td align="left">Returns all elements with unique values or whose expression evaluates to a unique value</td>
+</tr>
+<tr>
+<td align="left">unique_index()</td>
+<td align="left">Returns the indices of all elements with unique values or whose expression evaluates to a unique value</td>
+</tr>
+</tbody></table>
+<p><strong>Example</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> tb;<br>  <span class="hljs-keyword">int</span> array[<span class="hljs-number">9</span>] = &#x27;&#123;<span class="hljs-number">4</span>, <span class="hljs-number">7</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">6</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>&#125;;<br>    <span class="hljs-keyword">int</span> res[$];<span class="hljs-comment">// 返回的类型是队列</span><br> <br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span>   <br>    res = array<span class="hljs-variable">.min</span>();<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;min          : %p&quot;</span>, res);<br> <br>    res = array<span class="hljs-variable">.max</span>();<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;max          : %p&quot;</span>, res);<br> <br>    res = array<span class="hljs-variable">.unique</span>();<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;unique       : %p&quot;</span>, res);<br> <br>    res = array<span class="hljs-variable">.unique</span>(x) <span class="hljs-keyword">with</span> (x &lt; <span class="hljs-number">3</span>);<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;unique       : %p&quot;</span>, res);<br> <br>    res = array<span class="hljs-variable">.unique_index</span>;<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;unique_index : %p&quot;</span>, res);<br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br> <br></code></pre></td></tr></table></figure>
+
+<p><strong>Simulation Log</strong></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ncsim</span>&gt; run<br><span class="hljs-attribute">min</span>          : &#x27;&#123;<span class="hljs-number">1</span>&#125;<br><span class="hljs-attribute">max</span>          : &#x27;&#123;<span class="hljs-number">7</span>&#125;<br><span class="hljs-attribute">unique</span>       : &#x27;&#123;<span class="hljs-number">4</span>, <span class="hljs-number">7</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">6</span>, <span class="hljs-number">3</span>&#125;<br><span class="hljs-attribute">unique</span>       : &#x27;&#123;<span class="hljs-number">4</span>, <span class="hljs-number">2</span>&#125;<br><span class="hljs-attribute">unique_index</span> : &#x27;&#123;<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>&#125;<br><span class="hljs-attribute">ncsim</span>: *W,RNQUIE: Simulation is complete.<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.edaplayground.com/x/3_vk">Click to try this example in a simulator!  <img src="https://www.chipverify.com/images/site/eda-playground-logo.png" srcset="/img/loading.gif" lazyload alt="img"></a></p>
+<h2 id="Array-Ordering-Methods"><a href="#Array-Ordering-Methods" class="headerlink" title="Array Ordering Methods"></a>Array Ordering Methods</h2><p>These methods operate and alter the array directly.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Method</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">reverse()</td>
+<td align="left">Reverses the order of elements in the array</td>
+</tr>
+<tr>
+<td align="left">sort()</td>
+<td align="left">Sorts the array in ascending order, optionally using <code>with</code> clause</td>
+</tr>
+<tr>
+<td align="left">rsort()</td>
+<td align="left">Sorts the array in descending order, optionally using <code>with</code> clause</td>
+</tr>
+<tr>
+<td align="left">shuffle()</td>
+<td align="left">Randomizes the order of the elements in the array. <code>with</code> clause is not allowed here.</td>
+</tr>
+</tbody></table>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> tb;<br>  <span class="hljs-keyword">int</span> array[<span class="hljs-number">9</span>] = &#x27;&#123;<span class="hljs-number">4</span>, <span class="hljs-number">7</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">6</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>&#125;;<br> <br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span>   <br>    array<span class="hljs-variable">.reverse</span>();<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;reverse  : %p&quot;</span>, array);<br> <br>    array<span class="hljs-variable">.sort</span>();<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;sort     : %p&quot;</span>, array);<br> <br>    array<span class="hljs-variable">.rsort</span>();<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;rsort    : %p&quot;</span>, array);<br> <br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) <span class="hljs-keyword">begin</span><br>      array<span class="hljs-variable">.shuffle</span>();<br>      <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;shuffle Iter:%0d  = %p&quot;</span>, i, array);<br>    <span class="hljs-keyword">end</span><br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br> <br></code></pre></td></tr></table></figure>
+
+<p><strong>Simulation Log</strong></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ncsim</span>&gt; run<br><span class="hljs-attribute">reverse</span>  : &#x27;&#123;<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">6</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>&#125;<br><span class="hljs-attribute">sort</span>     : &#x27;&#123;<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">7</span>&#125;<br><span class="hljs-attribute">rsort</span>    : &#x27;&#123;<span class="hljs-number">7</span>, <span class="hljs-number">7</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>&#125;<br><span class="hljs-attribute">shuffle</span> Iter:<span class="hljs-number">0</span>  = &#x27;&#123;<span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>&#125;<br><span class="hljs-attribute">shuffle</span> Iter:<span class="hljs-number">1</span>  = &#x27;&#123;<span class="hljs-number">5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">6</span>&#125;<br><span class="hljs-attribute">shuffle</span> Iter:<span class="hljs-number">2</span>  = &#x27;&#123;<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>&#125;<br><span class="hljs-attribute">shuffle</span> Iter:<span class="hljs-number">3</span>  = &#x27;&#123;<span class="hljs-number">6</span>, <span class="hljs-number">4</span>, <span class="hljs-number">7</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>&#125;<br><span class="hljs-attribute">shuffle</span> Iter:<span class="hljs-number">4</span>  = &#x27;&#123;<span class="hljs-number">3</span>, <span class="hljs-number">6</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">4</span>, <span class="hljs-number">7</span>, <span class="hljs-number">7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>&#125;<br><span class="hljs-attribute">ncsim</span>: *W,RNQUIE: Simulation is complete.<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.edaplayground.com/x/5Ytv">Click to try this example in a simulator!  <img src="https://www.chipverify.com/images/site/eda-playground-logo.png" srcset="/img/loading.gif" lazyload alt="img"></a></p>
+<h3 id="Using-array-ordering-on-classes"><a href="#Using-array-ordering-on-classes" class="headerlink" title="Using array ordering on classes"></a>Using array ordering on classes</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> Register;<br>  <span class="hljs-keyword">string</span> name;<br>  <span class="hljs-keyword">rand</span> <span class="hljs-keyword">bit</span> [<span class="hljs-number">3</span>:<span class="hljs-number">0</span>] rank;<br>  <span class="hljs-keyword">rand</span> <span class="hljs-keyword">bit</span> [<span class="hljs-number">3</span>:<span class="hljs-number">0</span>] pages;<br> <br>  <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span> (<span class="hljs-keyword">string</span> name);<br>    <span class="hljs-keyword">this</span><span class="hljs-variable">.name</span> = name;<br>  <span class="hljs-keyword">endfunction</span><br> <br>  <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> print();<br>    <span class="hljs-built_in">$display</span>(<span class="hljs-string">&quot;name=%s rank=%0d pages=%0d&quot;</span>, name, rank, pages);<br>  <span class="hljs-keyword">endfunction</span><br> <br><span class="hljs-keyword">endclass</span><br> <br><span class="hljs-keyword">module</span> tb;<br>  Register rt[<span class="hljs-number">4</span>];<br>  <span class="hljs-keyword">string</span> name_arr[<span class="hljs-number">4</span>] = &#x27;&#123;<span class="hljs-string">&quot;alexa&quot;</span>, <span class="hljs-string">&quot;siri&quot;</span>, <span class="hljs-string">&quot;google home&quot;</span>, <span class="hljs-string">&quot;cortana&quot;</span>&#125;;<br> <br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;\n-------- Initial Values --------&quot;</span>);<br>    <span class="hljs-keyword">foreach</span> (rt[i]) <span class="hljs-keyword">begin</span><br>      rt[i] = <span class="hljs-keyword">new</span> (name_arr[i]);<br>      rt[i]<span class="hljs-variable">.randomize</span>();<br>      rt[i]<span class="hljs-variable">.print</span>();<br>    <span class="hljs-keyword">end</span><br> <br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;\n--------- Sort by name ------------&quot;</span>);<br> <span class="hljs-comment">// 根据class中的数据对类对象排序</span><br>    rt<span class="hljs-variable">.sort</span>(x) <span class="hljs-keyword">with</span> (x<span class="hljs-variable">.name</span>);<br>    <span class="hljs-keyword">foreach</span> (rt[i]) rt[i]<span class="hljs-variable">.print</span>();<br> <br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;\n--------- Sort by rank, pages -----------&quot;</span>);<br> <br>    rt<span class="hljs-variable">.sort</span>(x) <span class="hljs-keyword">with</span> ( &#123;x<span class="hljs-variable">.rank</span>, x<span class="hljs-variable">.pages</span>&#125;);<br>    <span class="hljs-keyword">foreach</span> (rt[i]) rt[i]<span class="hljs-variable">.print</span>();<br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br> <br></code></pre></td></tr></table></figure>
+
+<p><strong>Simulation Log</strong></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs routeros">ncsim&gt; <span class="hljs-built_in">run</span><br><br>-------- Initial Values --------<br><span class="hljs-attribute">name</span>=alexa <span class="hljs-attribute">rank</span>=12 <span class="hljs-attribute">pages</span>=13<br><span class="hljs-attribute">name</span>=siri <span class="hljs-attribute">rank</span>=6 <span class="hljs-attribute">pages</span>=12<br><span class="hljs-attribute">name</span>=google home <span class="hljs-attribute">rank</span>=12 <span class="hljs-attribute">pages</span>=13<br><span class="hljs-attribute">name</span>=cortana <span class="hljs-attribute">rank</span>=7 <span class="hljs-attribute">pages</span>=11<br><br>--------- Sort by name ------------<br><span class="hljs-attribute">name</span>=alexa <span class="hljs-attribute">rank</span>=12 <span class="hljs-attribute">pages</span>=13<br><span class="hljs-attribute">name</span>=cortana <span class="hljs-attribute">rank</span>=7 <span class="hljs-attribute">pages</span>=11<br><span class="hljs-attribute">name</span>=google home <span class="hljs-attribute">rank</span>=12 <span class="hljs-attribute">pages</span>=13<br><span class="hljs-attribute">name</span>=siri <span class="hljs-attribute">rank</span>=6 <span class="hljs-attribute">pages</span>=12<br><br>--------- Sort by rank, pages -----------<br><span class="hljs-attribute">name</span>=siri <span class="hljs-attribute">rank</span>=6 <span class="hljs-attribute">pages</span>=12<br><span class="hljs-attribute">name</span>=cortana <span class="hljs-attribute">rank</span>=7 <span class="hljs-attribute">pages</span>=11<br><span class="hljs-attribute">name</span>=alexa <span class="hljs-attribute">rank</span>=12 <span class="hljs-attribute">pages</span>=13<br><span class="hljs-attribute">name</span>=google home <span class="hljs-attribute">rank</span>=12 <span class="hljs-attribute">pages</span>=13<br>ncsim: *W,RNQUIE: Simulation is complete.<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.edaplayground.com/x/4XQa">Click to try this example in a simulator!  <img src="https://www.chipverify.com/images/site/eda-playground-logo.png" srcset="/img/loading.gif" lazyload alt="img"></a></p>
+<h2 id="Array-Reduction-Methods"><a href="#Array-Reduction-Methods" class="headerlink" title="Array Reduction Methods"></a>Array Reduction Methods</h2><table>
+<thead>
+<tr>
+<th align="left">Method</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">sum()</td>
+<td align="left">Returns the sum of all array elements</td>
+</tr>
+<tr>
+<td align="left">product()</td>
+<td align="left">Returns the product of all array elements</td>
+</tr>
+<tr>
+<td align="left">and()</td>
+<td align="left">Returns the bitwise AND (&amp;) of all array elements</td>
+</tr>
+<tr>
+<td align="left">or()</td>
+<td align="left">Returns the bitwise OR (|) of all array elements</td>
+</tr>
+<tr>
+<td align="left">xor()</td>
+<td align="left">Returns the bitwise XOR (^) of all array elements</td>
+</tr>
+</tbody></table>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> tb;<br>  <span class="hljs-keyword">int</span> array[<span class="hljs-number">4</span>] = &#x27;&#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>&#125;;<br>  <span class="hljs-keyword">int</span> res[$];<br> <br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;sum     = %0d&quot;</span>, array<span class="hljs-variable">.sum</span>());    <br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;product = %0d&quot;</span>, array<span class="hljs-variable">.product</span>());    <br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;and     = 0x%0h&quot;</span>, array<span class="hljs-variable">.and</span>());<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;or      = 0x%0h&quot;</span>, array<span class="hljs-variable">.or</span>());    <br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;xor     = 0x%0h&quot;</span>, array<span class="hljs-variable">.xor</span>());   <br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br> <br></code></pre></td></tr></table></figure>
+
+<p><strong>Simulation Log</strong></p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs makefile">ncsim&gt; run<br>sum     = 10<br>product = 24<br>and     = 0x0<br>or      = 0x7<br>xor     = 0x4<br><span class="hljs-section">ncsim: *W,RNQUIE: Simulation is complete.</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/">Verification</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/System-Verilog/">System Verilog</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/SV/">SV</a>
+                    
+                      <a class="hover-with-bg" href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_associative%20array/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ch2-Associative Arrays</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_packed%20array/">
+                        <span class="hidden-mobile">ch2-Packed array</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

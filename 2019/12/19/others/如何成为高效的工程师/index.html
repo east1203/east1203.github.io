@@ -1,0 +1,530 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="《how to be a star engineer》​                                                    —— Robert E.Kelley 作者跟踪了一些在Bell Lab工作的两种人的经历，一种是star performance people ，另一种是average performance people，发现这些人之所以star，不是因">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何成为高效的工程师">
+<meta property="og:url" content="http://example.com/2019/12/19/others/%E5%A6%82%E4%BD%95%E6%88%90%E4%B8%BA%E9%AB%98%E6%95%88%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%B8%88/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="《how to be a star engineer》​                                                    —— Robert E.Kelley 作者跟踪了一些在Bell Lab工作的两种人的经历，一种是star performance people ，另一种是average performance people，发现这些人之所以star，不是因">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-12-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.832Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="others">
+<meta property="article:tag" content="life">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>如何成为高效的工程师 - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="如何成为高效的工程师">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-12-19 00:00" pubdate>
+        December 19, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.6k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      22 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">如何成为高效的工程师</h1>
+            
+            <div class="markdown-body">
+              <h2 id="《how-to-be-a-star-engineer》"><a href="#《how-to-be-a-star-engineer》" class="headerlink" title="《how to be a star engineer》"></a>《how to be a star engineer》</h2><p>​                                                    —— Robert E.Kelley</p>
+<p>作者跟踪了一些在Bell Lab工作的两种人的经历，一种是star performance people ，另一种是average performance people，发现这些人之所以star，不是因为他们的聪明天赋、大脑，而是因为他们如何使用自己已有的东西。”Stars, we saw, are made, not born 。“</p>
+<p>给出了以下九个工作策略（Nine work strategies）</p>
+<h3 id="1-Blazing-trails"><a href="#1-Blazing-trails" class="headerlink" title="1.Blazing trails"></a>1.Blazing trails</h3><ul>
+<li>Seeking out responsibility above and beyond job description (as when Lai installed the PC software), while still completing your core assignment.（做自己工作范围之外的事情，前提是干好自己的任务）</li>
+<li>l Undertaking extra efforts for the benefit of co-workers or the larger group, as when Lai offered to help fix the software program on her co-workers’ project.（为了同事或者整个组贡献一点额外的effort）</li>
+</ul>
+<p>特别是对于新员工来说，要表现出自己的initiative（积极主动性），不是只埋头于自己的工作范围，也要跨过自己的工作边界，帮一下同事，这样会给同事、主管留下印象。特别是同事，他们希望积极主动的同事，希望他们能够越过gaps between jobs，这样的话他们自己的load就减少了。</p>
+<h3 id="2-Knowing-who-know"><a href="#2-Knowing-who-know" class="headerlink" title="2.Knowing who know"></a>2.Knowing who know</h3><p>保持好的人际关系，不只是跟同事聊一些有的没的，或者为了升职加薪拍领导马屁，多加几个猎头，更重要的是跟自己领域里的expert建立互帮互助的双向关系，这样遇到问题的时候知道去问谁。</p>
+<h3 id="3-Proactive-self-management"><a href="#3-Proactive-self-management" class="headerlink" title="3.Proactive self-management"></a>3.Proactive self-management</h3><p>​    Average Performers认为自我管理就只是管理好时间、项目。如果他们的工作按照进度表、预期、指标完成了，那么他们就是好的self-managers。</p>
+<p>​    但是，Star Performers认为做到这些本来就是应该的，他们的工作策略是帮助他们创造机会、直接的工作选择、工作干得更好，帮助他们刻画出一条职业路径。帮助他们发展智力和工作经验，使他们对于公司而言更有价值。</p>
+<p>​    开展一些与工作有关的额外的活动，比如听个会议，参加个培训，了解一点最新的行业资讯、标准、工具、方法、软件等。</p>
+<h3 id="4-Getting-the-big-picture"><a href="#4-Getting-the-big-picture" class="headerlink" title="4. Getting the big picture"></a>4. Getting the big picture</h3><p>​    Average Performers视野狭窄，只从自己的角度看问题。</p>
+<p>​    Star Performers从自己的viewpoint中扩展出来，”客户会怎么想这个事“，”竞争对手会怎么想“，”同事怎么想“，”主管或者股东怎么想“。这样他可以评估这些观点的重要性，进而提高产品质量、解决问题的策略。</p>
+<p>举了一个软件设计师的例子，她一开始做design，后来主动去做test，两年后，又回到design岗位，因为她既知道如何design，也知道tester是怎么想的，她后来成了manager。</p>
+<h3 id="5-The-right-kind-of-followership"><a href="#5-The-right-kind-of-followership" class="headerlink" title="5. The  right kind of followership"></a>5. The  right kind of followership</h3><p>Average Performers认为，与有权威、级别高的人之间的关系是服从，不要挑战他们的观点，威胁他们的地位。</p>
+<p>Star Performers早就知道服从关系的更积极的形式是当NO.2，更重要的是提供帮助而不是取得功绩。他们积极地帮助组织或者领导取得成功，当决定什么应该做，怎么做的时候可能会经历一些批评性的评价，</p>
+<h3 id="6-Teemwork-as-joint-ownership-of-a-project"><a href="#6-Teemwork-as-joint-ownership-of-a-project" class="headerlink" title="6. Teemwork as joint ownership of a project"></a>6. Teemwork as joint ownership of a project</h3><p>Average Perfomers认为团队工作就是与其他人一起完成项目或者解决问题，只做自己的那份工作。</p>
+<p>Star Performers认为团队合作是一系列复杂技能的集合，共同拥有目标、团队承诺、工作活动、时间表和团队成就。也意味着做一个组内的正向贡献者，帮助每一个人感受到自己是组内的一部分，能够处理冲突，帮助其他人解决问题。</p>
+<h3 id="7-Small-I-leadership"><a href="#7-Small-I-leadership" class="headerlink" title="7. Small-I leadership"></a>7. Small-I leadership</h3><p>Average Perfomers认为leadership只是权力，可以决定要做什么。</p>
+<p>Star Performers领导力是一种基于技术能力和影响力的工作策略，它可以说服一组人共同完成大量工作。努力做到：帮助团队清楚看到并且坚信他们能够去哪里；寻找资源来完成工作；引导工作成功完成。</p>
+<p>Small-I的领导认为人类关系能够连接彼此，然而Big-I 领导太过于关注他们自己的观点、目标、风格。Small-I领导能够考虑到团队中每个人的需求、技能、期望和能量。</p>
+<p>Small-I领导很少使用权威来对待团队成员。团队成员会根据兴趣喜好来追随他们的领导。Small-I领导会在努力工作之后弄点深夜披萨之类的东西来团结成员。</p>
+<p>Star Performers的最大的秘密是他们从来不会假设自己已经对每个人都很了解了。他们会提前问一下其他人的以减，即使当他们确定自己已经知道了结果。</p>
+<h3 id="8-Street-smarts"><a href="#8-Street-smarts" class="headerlink" title="8. Street smarts"></a>8. Street smarts</h3><p>讲的是办公室政治。</p>
+<p>Average Performers喜欢讨好别人以至于让自己能够成功。他们要么热心于办公室政治，要么故作清高完全忽略他么。</p>
+<p>Star Performers认为任何一个大的组织都会有不合理的利益。他们远离麻烦，促使团结合作，处理冲突，使事情更好。他们平衡好个人与组织的利益，知道什么时候要避免冲突，什么时候要向前迈一步，知道怎么使潜在的敌人成为盟友。</p>
+<h3 id="9-Show-and-tell"><a href="#9-Show-and-tell" class="headerlink" title="9. Show and tell"></a>9. Show and tell</h3><p>Average Performers在做presentation的时候，关注点在讨好管理层，表现他们对工作的热爱，他们主要关注自己的形象和他们自己的信息，而不是听众。</p>
+<p>Star Performers使用一系列技巧，包括选择某些信息传递给一些人，采用一种给有效、让人看起来舒服的格式呈现给特定的听众。更好以层次，Show-and-Tell要么是将正确的信息呈现给特定的人，要么是为正确的听众呈现特定的信息。</p>
+<p>Star Performers能够将信息传递给目标听众，说服听众接收他们的信息，尽量避免冲突。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/others/">others</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/others/">others</a>
+                    
+                      <a class="hover-with-bg" href="/tags/life/">life</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/01/14/IC/%E8%B4%9F%E7%9A%84%E4%BF%9D%E6%8C%81%E6%97%B6%E9%97%B4%E5%92%8C%E5%BB%BA%E7%AB%8B%E6%97%B6%E9%97%B4/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">负的保持时间和建立时间</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/12/18/books/Verilog%20and%20SystemVerilog%20Gotchas/01-Verilog%20and%20SystemVerilog%20Gotchas/">
+                        <span class="hidden-mobile">01-Verilog and SystemVerilog Gotchas</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

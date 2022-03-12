@@ -1,0 +1,942 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="第一周05-16 周四今天上午例会，王老师讲了很多，批评了zxyPPT做的不好，一顿发牢骚，激动地东站起来了，我也不行中枪，被含沙射影，说我基础差，就不对我有过高要求了，只关注寄存器分组就行了。 晚上：  1. 整理一片PERL语言的内容  2. 看英伟达的图形加速器  3. 看一下UART怎么写，准备实习面试  05-17 周五昨天晚上：  1.  整理的perl语言一篇，关于IO  2.  有">
+<meta property="og:type" content="website">
+<meta property="og:title" content="page.title">
+<meta property="og:url" content="http://example.com/dailystudy/2019-05-16%E8%87%B306-16.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="第一周05-16 周四今天上午例会，王老师讲了很多，批评了zxyPPT做的不好，一顿发牢骚，激动地东站起来了，我也不行中枪，被含沙射影，说我基础差，就不对我有过高要求了，只关注寄存器分组就行了。 晚上：  1. 整理一片PERL语言的内容  2. 看英伟达的图形加速器  3. 看一下UART怎么写，准备实习面试  05-17 周五昨天晚上：  1.  整理的perl语言一篇，关于IO  2.  有">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-03-12T03:51:25.835Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.835Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="芯片 验证 读书 编程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>page.title - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="page.title">
+              
+            </span>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<article class="page-content">
+  <h2 id="第一周"><a href="#第一周" class="headerlink" title="第一周"></a>第一周</h2><h3 id="05-16-周四"><a href="#05-16-周四" class="headerlink" title="05-16 周四"></a>05-16 周四</h3><p>今天上午例会，王老师讲了很多，批评了zxyPPT做的不好，一顿发牢骚，激动地东站起来了，我也不行中枪，被含沙射影，说我基础差，就不对我有过高要求了，只关注寄存器分组就行了。</p>
+<p>晚上：</p>
+<div class="code-wrapper"><pre><code class="hljs"> 1. 整理一片PERL语言的内容
+ 2. 看英伟达的图形加速器
+ 3. 看一下UART怎么写，准备实习面试
+</code></pre></div>
+<h3 id="05-17-周五"><a href="#05-17-周五" class="headerlink" title="05-17 周五"></a>05-17 周五</h3><p>昨天晚上：</p>
+<div class="code-wrapper"><pre><code class="hljs"> 1.  整理的perl语言一篇，关于IO
+ 2.  有复习了《Verilog HDL高级数字综合》中的程序状态机，写了一片博客
+ 3.  没有看图形加速器的内容
+</code></pre></div>
+<p>今天：</p>
+<div class="code-wrapper"><pre><code class="hljs"> 1. 英伟达的图形加速器要看起来
+ 2. 看点论文，以前的老论文
+ 3. 复习一点Verilog语法，写个循环移位等基本逻辑
+ 4. 看一点英文书 Low Power Methodology Manual For System-on-Chip Design
+ 5. 看一点C++ PRIMER
+ 6. 试一下那天在EETOP问的”怎么不让DC把电路给flatten“
+</code></pre></div>
+<p>完成：</p>
+<ol>
+<li>找了一篇关于slack的分组，一篇多位触发器还有一篇专利，周末两天看一下</li>
+<li>看了点system on a chip design and test</li>
+</ol>
+<p>好吧，就这些了，今天晚上跟我妈打了三个半小时的电话。聊了很多，破了我打电话的记录。明天再学习知识吧，哈哈</p>
+<h3 id="05-18-周六"><a href="#05-18-周六" class="headerlink" title="05-18 周六"></a>05-18 周六</h3><p>今天：</p>
+<ol>
+<li>DC 的去掉FLATTEN先做一下，要是不行的话，就先放弃，不浪费时间了。  * *</li>
+<li>看一点C++ primer                                                                                              * * *</li>
+<li>看英伟达图形加速器，这个最麻烦，要是不先看的话，估计今天有没法看了。  * * * * *</li>
+<li>Verilog语法，就看夏宇闻的那本书。                                                                * * * *</li>
+<li>英文书                                                                                                                * * * *</li>
+<li>昨天找的论文看一下                                                                                      * * * * *</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>DC综合时保持hierarchy还是不行，以后有机会再试吧，太费时间了。</li>
+</ol>
+<h3 id="05-19-周日"><a href="#05-19-周日" class="headerlink" title="05-19 周日"></a>05-19 周日</h3><p>昨天：</p>
+<ol>
+<li>昨天基本没干什么事，就上午去了半天，下午和晚上都待在宿舍看小说，真颓废，而且很累。</li>
+</ol>
+<p>今天：</p>
+<ol>
+<li>今天接着昨天的看吧</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>写了实践报告，其实就是水</li>
+<li>C++看了点异常、命名空间和虚拟继承，这三点主要用再比较大的项目中。</li>
+<li>看了一点Verilog中的函数，感觉没用，看了也会忘，应该直接看具体项目，</li>
+<li>那本《system on a chip design and test》先不看了，这本前面讲设计，右面讲DFT，DFT现在不想看，设计的部分又跟以前看的一本《resue methodology manual for system on a chip design》中讲的差不多，有时间再把这本翻一下，再看的话就先看买的那本中文的《Verilog HDL高级数字设计》</li>
+<li>下了一本关于深度学习的书，王沐的《动手学深度学习》，有时间看一下基础知识</li>
+<li><strong>英伟达的图形加速芯片放弃了，太难了，</strong></li>
+</ol>
+<p><strong>今天也没有看论文，明天开始一定要看了</strong></p>
+<h2 id="第二周"><a href="#第二周" class="headerlink" title="第二周"></a>第二周</h2><h3 id="周计划：（2019-05-23）"><a href="#周计划：（2019-05-23）" class="headerlink" title="周计划：（2019-05-23）"></a>周计划：（2019-05-23）</h3><ol>
+<li>学习DME算法—- 看那些相关论文</li>
+<li>入门FPGA</li>
+</ol>
+<h3 id="05-20-周一"><a href="#05-20-周一" class="headerlink" title="05-20 周一"></a>05-20 周一</h3><ol>
+<li>写一下，低电压下的电容的影响</li>
+<li>看点数字高级Verilog</li>
+<li>看一点C++</li>
+<li>论文（上午下午看了一些了）</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看了论文也没什么收获，之前找的几篇不怎么相关，有篇专利还稍微靠点边儿，PPT没写</li>
+<li>看了《Verilog HDL高级数字设计》中的前5章，数电基础——门、布尔代数、卡诺图、冒险、复用器、译码器等，组合逻辑、时序逻辑、行为级建模</li>
+</ol>
+<h3 id="05-21-周二"><a href="#05-21-周二" class="headerlink" title="05-21  周二"></a>05-21  周二</h3><ol>
+<li>论文，最好写一下PPT，至少找到要写什么。</li>
+<li>把《Verilog HDL高级数字设计》第5章看完。</li>
+</ol>
+<h3 id="05-23-周四"><a href="#05-23-周四" class="headerlink" title="05-23  周四"></a>05-23  周四</h3><ol>
+<li>用一下FPGA</li>
+<li>写一篇perl，关于列表和哈希的</li>
+<li>看《Verilog HDL高级数字设计》第5、6章</li>
+</ol>
+<p>完成:</p>
+<ol>
+<li>看了腾讯课堂中跨时钟域设计视频</li>
+<li>写了一篇关于跨时钟域设计的文章</li>
+</ol>
+<h3 id="05-24-周五"><a href="#05-24-周五" class="headerlink" title="05-24 周五"></a>05-24 周五</h3><ol>
+<li>写2009年专利中介绍的分组思路（下周汇报）-上午</li>
+<li>安装vivado软件  （调整到下午）</li>
+<li>看《Verilog HDL高级数字设计》第5、6章— 上午(调整到下午)</li>
+<li>看徐亮论文中的分组（下周汇报）               -  下午（调整到明天)</li>
+<li>写一篇perl，关于列表和哈希的                  -   下午</li>
+<li>看cummings关于fifo的论文并做笔记                       -  晚上</li>
+<li>有时间看《C++primer》中第十三章 拷贝控制       -  晚上</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>2009年专利与PPT</li>
+<li>vivado安装</li>
+<li>《Verilog HDL高级数字设计》第5章–</li>
+<li>看C++第十三章</li>
+</ol>
+<h3 id="05-25-周六"><a href="#05-25-周六" class="headerlink" title="05-25 周六"></a>05-25 周六</h3><ol>
+<li>学习FPGA（上午）</li>
+<li>复习昨天C++</li>
+<li>看cummings关于fifo的论文并做笔记</li>
+<li>看徐亮论文并做PPT（下午）</li>
+<li>看《Verilog HDL高级数字设计》第6章</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>学了一点PFGA，建了工程，做了流水灯，按键消抖</li>
+<li>看了CUmming的一片异步FIFO的论文</li>
+<li>复习了昨天的C++</li>
+<li>写了一片关于perl列表内容。</li>
+</ol>
+<h3 id="05-26-周日"><a href="#05-26-周日" class="headerlink" title="05-26 周日"></a>05-26 周日</h3><ol>
+<li>把刚整理的pel列表看一下（早上）</li>
+<li>看徐亮论文 （上午）</li>
+<li>看Cummings的异步FIFO的论文（早上）</li>
+<li>看《Verilog HDL高级数字设计》第6章（多看点）（加点速）</li>
+<li>用FPGA</li>
+<li>写一篇perl的哈希</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看了perl</li>
+<li>早上看了Cummings的论文</li>
+<li>看了一天关于multilevel graph bisection论文，还没有看完</li>
+<li>把PPT做完了。</li>
+</ol>
+<h2 id="第三周"><a href="#第三周" class="headerlink" title="第三周"></a>第三周</h2><p>周计划：（2019-05-23）</p>
+<ol>
+<li><del>把“小骆驼书”中的perl知识整理完毕</del></li>
+<li><del>《Verilog HDL高级数字设计》进行到第九章（一共11章）</del></li>
+<li>再看一下DC脚本，再服务器上写一版40nm的dc.tcl</li>
+<li><del>整理一片关于拷贝构造函数的</del></li>
+<li>再写一下异步FIFO的代码，将FIFO分成多个模块</li>
+<li><strong>学 综合SYN</strong></li>
+<li>学<strong>SV</strong></li>
+<li>学<strong>FPGA</strong></li>
+</ol>
+<h3 id="05-27-周一"><a href="#05-27-周一" class="headerlink" title="05-27 周一"></a>05-27 周一</h3><ol>
+<li>看《Verilog HDL高级数字设计》第6章（多看点）（加点速）</li>
+<li>看Cummings的异步FIFO的论文（早上）</li>
+<li>FPGA</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>《Verilog HDL高级数字设计》第6章</li>
+<li>写了一片关于 逻辑综合的文章</li>
+<li>看Cummings的异步设计的论文</li>
+</ol>
+<h3 id="05-28-周二"><a href="#05-28-周二" class="headerlink" title="05-28 周二"></a>05-28 周二</h3><ol>
+<li>早上来先把Cummings看过的论文复习一下。</li>
+<li>看SV书。</li>
+<li>《Verilog HDL高级数字设计》第7章</li>
+<li>FPGA</li>
+<li>写一篇perl 关于函数定义的</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看Cummings论文</li>
+<li>看SV书。</li>
+<li>一篇perl 关于函数定义的</li>
+</ol>
+<h3 id="05-29-周三"><a href="#05-29-周三" class="headerlink" title="05-29 周三"></a>05-29 周三</h3><ol>
+<li>写再看一下DC脚本，再服务器上写一版40nm的dc.tcl</li>
+<li>整理一片关于拷贝构造函数的</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>《system Verilog测试平台编写指南》第五章看完了，昨天到现在</li>
+<li>DC看了一部分。</li>
+</ol>
+<h3 id="05-30-周四"><a href="#05-30-周四" class="headerlink" title="05-30 周四"></a>05-30 周四</h3><ol>
+<li><p>看一点时钟树论文，看看PPT</p>
+</li>
+<li><h3 id="看八几年的那片论文"><a href="#看八几年的那片论文" class="headerlink" title="看八几年的那片论文"></a>看八几年的那片论文</h3></li>
+<li><p>继续学习SV</p>
+</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>5点10分来花了一个半小时把之前看的五章复习了一下</li>
+<li>SV那本书看完了前七章，开始看第八章</li>
+<li>又看了一下组会的PPT和八几年的图二分法论文</li>
+</ol>
+<h3 id="05-31-周五"><a href="#05-31-周五" class="headerlink" title="05-31 周五"></a>05-31 周五</h3><ol>
+<li>再写一下异步FIFO的代码，将FIFO分成多个模块</li>
+<li>继续看SV书，第八章</li>
+<li>写PPT</li>
+</ol>
+<h3 id="06-1-周六"><a href="#06-1-周六" class="headerlink" title="06-1 周六"></a>06-1 周六</h3><p>完成：</p>
+<ol>
+<li>看完SV的书</li>
+</ol>
+<h3 id="06-2-周日"><a href="#06-2-周日" class="headerlink" title="06-2 周日"></a>06-2 周日</h3><ol>
+<li>早上复习昨天SV的书</li>
+<li>再看一下Cumming异域时钟论文</li>
+<li>写汇报PPT</li>
+<li>有时间看一下IClearner的DC教程，主要是根据spce写约束的</li>
+<li>今天还是要挤出一点时间写一下perl中关于哈希的文章</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>复习SV的书</li>
+<li>看了Cummings论文</li>
+<li>晚上去看了电影</li>
+</ol>
+<h3 id="周完成："><a href="#周完成：" class="headerlink" title="周完成："></a>周完成：</h3><ol>
+<li><p>学<strong>SV</strong></p>
+<p>**</p>
+</li>
+</ol>
+<h3 id="周未完成："><a href="#周未完成：" class="headerlink" title="周未完成："></a>周未完成：</h3><ol>
+<li>再服务器上写一版40nm的dc.tcl——没写</li>
+<li>再写一下异步FIFO的代码，将FIFO分成多个模块——没写</li>
+<li><strong>学 综合SYN</strong>——学了一点综合，但没看完</li>
+<li><del>学<strong>FPGA</strong>——只看了一点</del></li>
+</ol>
+<h2 id="第四周"><a href="#第四周" class="headerlink" title="第四周"></a>第四周</h2><h3 id="周计划："><a href="#周计划：" class="headerlink" title="周计划："></a>周计划：</h3><ol>
+<li><del>看一下第五章讲编码风格的那本数（05-27）</del></li>
+<li>写异步fifo的代码，并用SVtestbench测试一下，可以参见第十章的例子——这个先延迟一下把，等学完UVM</li>
+<li>还是要看FPGA，上个周看了没多少，主要看SV了</li>
+<li>看UVM书，争取能看完吧，看不完了，争取看完第六章210页，算是三分之二吧</li>
+<li>每周写两三篇博客</li>
+<li>看perl的教程视频 ——完成</li>
+<li>现在公司用SV来coding，查一下是不是</li>
+<li>搭一个加法器的验证平台 （06-05）——这个也要等等</li>
+<li>准备一下面试题（06-05）** ——这个也得等</li>
+</ol>
+<h3 id="06-03-周一"><a href="#06-03-周一" class="headerlink" title="06-03 周一"></a>06-03 周一</h3><ol>
+<li>看了点UVM</li>
+</ol>
+<h3 id="06-04周二"><a href="#06-04周二" class="headerlink" title="06-04周二"></a>06-04周二</h3><ol>
+<li>早上来把看过的UVM复习一下</li>
+<li>接着做PPT，争取做完，做不完就不干别的事了</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>写完PPT</li>
+<li>UVM也复习了一下，但是光看没用，这周最好自己先搭一个加法器的验证平台</li>
+</ol>
+<h3 id="06-05-周三"><a href="#06-05-周三" class="headerlink" title="06-05 周三"></a>06-05 周三</h3><ol>
+<li>UVM第三章看完</li>
+<li>写一篇C++的文章</li>
+<li>晚上看一下FPGA，米联客</li>
+<li>看一下perl的视频   **</li>
+<li>用perl命令将uvm_object.svh中的函数声明extert virtual function，，这些行都读取出来</li>
+<li>设置好虚拟机的网络连接</li>
+<li><del>在虚拟机上安装一个visual code</del></li>
+<li>UVM1.2环境 ——先不用了，因为UVM那本书事基于1.1来code的，1.2中省略了一些，添加了一些</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>早上来把SV第二章复习了一下</li>
+<li>虚拟机网络设好，又把原来的教程改了一下</li>
+<li>打算安装firefox，半天没弄好，各种库错误，不按了，浪费时间，以后这种没用的事在也不做，visual code也没必要按了</li>
+<li>用perl命令将uvm_object.svh中的函数声明extert virtual function，，这些行都读取出来——但是很不熟练，有时间要看看了。</li>
+<li>看完UVM第三章</li>
+<li>UVM1.2环境 ——先不用了，因为UVM那本书事基于1.1来code的，1.2中省略了一些，添加了一些</li>
+<li>FPGA学了下在先频谱仪</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>写一篇C++的文章</li>
+<li>看一下perl的视频   **</li>
+</ol>
+<h3 id="06-06-周四"><a href="#06-06-周四" class="headerlink" title="06-06  周四"></a>06-06  周四</h3><ol>
+<li>早上来复习所有的perl笔记</li>
+<li>复习UVM</li>
+<li>UVM第四章</li>
+<li>继续学一下FPGA</li>
+<li>有时间把PERL视频看完了</li>
+<li>perl的笔记最好这两天做完</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>复习昨天的UVM</li>
+<li>看了perl笔记</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>UVM第四章——看了一半</li>
+<li>继续学一下FPGA</li>
+<li>有时间把PERL视频看完了</li>
+<li>perl的笔记最好这两天做完</li>
+</ol>
+<h3 id="06-07-周五"><a href="#06-07-周五" class="headerlink" title="06-07  周五"></a>06-07  周五</h3><ol>
+<li>复习UVM</li>
+<li>看完第四章</li>
+<li>看第五章</li>
+<li>上午学习FPGA</li>
+<li>看完perl视频，并整理perl笔记</li>
+<li>看一篇过去的论文</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>复习UVM</li>
+<li>看完UVM第四章</li>
+<li>看完perl视频并练习了一个将for循环展开的例子</li>
+<li>整理了perl中的字符串</li>
+<li>看完UVM第五章</li>
+</ol>
+<p>未完成：</p>
+<div class="code-wrapper"><pre><code class="hljs">1. FPGA-——眼睛太累了，明天早上来先看FPGA的教程
+ 2. 看一篇过去的论文
+</code></pre></div>
+<h3 id="06-08-周六"><a href="#06-08-周六" class="headerlink" title="06-08 周六"></a>06-08 周六</h3><ol>
+<li>早上先来把SV第四章看完</li>
+<li>然后接着FPGA学习</li>
+<li>复习昨天的UVM，希望这些在上午解决了</li>
+<li>下午看UVM第六章</li>
+<li>晚上</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>SV第四章看完</li>
+<li>调试了一下FPGA，操作了SDK，一共用了四个小时，真他么的多，中间出了很弱智的错误，花了很多时间。</li>
+<li>复习昨天的UVM——至此已是下午四点了，争取今天把UVM第六章看完。</li>
+<li>看了八十页的邓小平文选</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>UVM第六章，少看了三十页，浪费时间了</li>
+</ol>
+<h3 id="06-09-周日"><a href="#06-09-周日" class="headerlink" title="06-09  周日"></a>06-09  周日</h3><ol>
+<li>早上先把昨天看到UVM在看一下</li>
+<li>然后把第六章看完</li>
+<li>然后看一会《邓小平文选》</li>
+<li>然后做FPGA</li>
+<li>下午看一会论文，缓冲一下</li>
+<li>接着看UVM第七章</li>
+<li>晚上看一点C++的东西，好久没看了</li>
+<li>晚上巧一个简单的异步fifo代码当作练习</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>早上先把昨天看到UVM在看一下</li>
+<li>然后把第六章看完 ——12点了</li>
+<li>然后看一会《邓小平文选》</li>
+<li>然后做FPGA</li>
+<li>UVM第七章太难，只看了三分之一</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>下午看一会论文，缓冲一下</li>
+<li>接着看UVM第七章</li>
+<li>晚上看一点C++的东西，好久没看了</li>
+<li>晚上巧一个简单的异步fifo代码当作练习</li>
+</ol>
+<h3 id="周完成：-1"><a href="#周完成：-1" class="headerlink" title="周完成："></a>周完成：</h3><ol>
+<li><p>还是要看FPGA，上个周看了没多少，主要看SV了</p>
+</li>
+<li><p>看UVM书，争取能看完吧，看不完了，争取看完第六章210页，算是三分之二吧</p>
+</li>
+<li><p>每周写两三篇博客</p>
+</li>
+<li><p>看perl的教程视频 ——完成</p>
+</li>
+<li><p>现在公司用SV来coding，查一下是不是</p>
+</li>
+</ol>
+<h3 id="周未完成：-1"><a href="#周未完成：-1" class="headerlink" title="周未完成："></a>周未完成：</h3><ol>
+<li>看一下第五章讲编码风格的那本数（05-27）~~</li>
+<li>写异步fifo的代码，并用SVtestbench测试一下，可以参见第十章的例子——这个先延迟一下把，等学完UVM</li>
+<li>现在公司用SV来coding，查一下是不是</li>
+<li>搭一个加法器的验证平台 （06-05）——这个也要等等</li>
+<li>准备一下面试题（06-05）** ——这个也得等</li>
+</ol>
+<h2 id="近期要读的书——06-09"><a href="#近期要读的书——06-09" class="headerlink" title="近期要读的书——06-09"></a>近期要读的书——06-09</h2><ol>
+<li>要读-微处理器设计：从设计规划到工艺制造 </li>
+<li>要读-专用集成电路设计实用教程</li>
+<li>已读-epdf.tips_reuse-methodology-manual-for-system-on-a-chip-design</li>
+<li>要读-2012-book-The Art of Hardware Architecture Design Methods and Techniques for Digital Circuits</li>
+</ol>
+<h2 id="第五周"><a href="#第五周" class="headerlink" title="第五周"></a>第五周</h2><h3 id="周计划：-1"><a href="#周计划：-1" class="headerlink" title="周计划："></a>周计划：</h3><ol>
+<li>整理一下perl——全部完成周二</li>
+<li>每周写两三篇博客</li>
+<li><del>FPGA</del></li>
+<li>如果UVM看完了就继续看《Verilog HDL高级数字设计》</li>
+<li>了解关于断言的内容</li>
+<li>DSP快速入门</li>
+<li>5G芯片研发需要哪些技术</li>
+<li>异步fifo需要code一下，要不然全网了——完成</li>
+<li>看一看STM32芯片介绍</li>
+</ol>
+<h3 id="06-10-周一"><a href="#06-10-周一" class="headerlink" title="06-10 周一"></a>06-10 周一</h3><ol>
+<li>先先复习port等知识，再看UVM第七章，</li>
+<li>上午看UVM第八章，看一点第九章</li>
+<li>上午学习FPGA</li>
+<li>下午把第九章看完</li>
+<li>看一下nature网站</li>
+<li>晚上——写一个fifo</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>复习UVM第四章TLM通信——port export</li>
+<li>看完低七章——云里雾里 10：40</li>
+<li>看了一点cluster的论文</li>
+<li>看完第八章——下午6：44</li>
+<li>晚上——写一个fifo</li>
+<li>看一下nature网站</li>
+<li>学习FPGA</li>
+</ol>
+<h3 id="06-11-周二"><a href="#06-11-周二" class="headerlink" title="06-11 周二"></a>06-11 周二</h3><ol>
+<li>早上——复习UVM factory</li>
+<li>早上——SV中的带约束的随机变量</li>
+<li>早上——看UVMsequence那章</li>
+<li>上午——UVM第九章</li>
+<li>看一下论文</li>
+<li>uvm_do这些宏的功能介绍在哪里</li>
+<li>提交时间考核表</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>早上——SV中的带约束的随机变量</li>
+<li>早上——看UVMsequence那章</li>
+<li>早上——复习UVM factory</li>
+<li>上午——UVM第九章</li>
+<li>看了点FPGA,但决定放弃了</li>
+<li>提交时间考核表</li>
+<li>perl中的目录操作的文章，至此perl整理完毕</li>
+</ol>
+<p>未完成:</p>
+<ol>
+<li>看一下论文</li>
+<li>uvm_do这些宏的功能介绍在哪里</li>
+</ol>
+<h3 id="06-12-周三"><a href="#06-12-周三" class="headerlink" title="06-12 周三"></a>06-12 周三</h3><ol>
+<li>早上复习SV中面向对象变成基础</li>
+<li>早上看SV第十章</li>
+<li>上午看论文，写PPT</li>
+<li>下午——SV中的package使用</li>
+<li>下午——异步fifo需要code一下，要不然全网了</li>
+<li>晚上——看2005年的那片cluster论文</li>
+<li>找一下实习</li>
+<li>修改一下简历</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>早上复习SV中面向对象变成基础</li>
+<li>UVM算是看完了，第十章是UVM高级用法，在前面内容的基础上拓展，前面的东西都还没掌握，不必硬看这些高级用法，先把之前的看会再说吧。</li>
+<li>写完PPT</li>
+<li>根据Cummings 的论文写了一种fifo结构，也更新了以下异步fifo的博客文章</li>
+<li>晚上——看2005年的那片cluster论文</li>
+<li>写了一片关于SV中package的东西</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>修改一下简历</li>
+</ol>
+<h3 id="06-13-周四"><a href="#06-13-周四" class="headerlink" title="06-13 周四"></a>06-13 周四</h3><ol>
+<li>早上——先把resue那本书看第二章</li>
+<li>早上——预习一下PPT</li>
+<li>今天做UVM验证平台</li>
+<li>修改一下简历</li>
+<li>打印几张简历</li>
+<li>查一下通信芯片设计和DSP芯片设计</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>早上——先把resue那本书看第二章</li>
+<li>早上——预习一下PPT</li>
+<li>查一下通信芯片设计和DSP芯片设计</li>
+<li>修改一下简历</li>
+<li>打印几张简历</li>
+<li>写了一点UVM验证平台，进度很慢，总是出现弱智的错误。</li>
+</ol>
+<h3 id="06-14-周五"><a href="#06-14-周五" class="headerlink" title="06-14 周五"></a>06-14 周五</h3><ol>
+<li>早上看一点reuse书</li>
+<li>写一点UVM验证平台</li>
+<li>上午写论文提纲</li>
+<li>整理一片关于拷贝构造函数的</li>
+<li>5G芯片研发需要哪些技术</li>
+<li>修改PPT引用格式</li>
+<li>看一下SV中的线程和功能覆盖率</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>reuse那本书，系统级设计、宏模块的知道方法</li>
+<li>UMV进度——昨天写到driver</li>
+<li>UVM进度——上午加上了transaction</li>
+<li>17：11 加了monitor和agent</li>
+<li>9：18 加入了scoreboard、model</li>
+<li>23：06 做完了UVM第二章的实例，明天继续</li>
+</ol>
+<p>未完：</p>
+<ol>
+<li><p>上午写论文提纲</p>
+<ol start="2">
+<li>看一下SV中的线程和功能覆盖率——已完成06-15</li>
+<li>整理一片关于拷贝构造函数的</li>
+</ol>
+</li>
+</ol>
+<h3 id="06-15-周六"><a href="#06-15-周六" class="headerlink" title="06-15 周六"></a>06-15 周六</h3><ol>
+<li>早上——看一下SV中的线程和功能覆盖率</li>
+<li>上午reuse</li>
+<li>下午——uvm_report机制</li>
+<li>下午——功能覆盖率</li>
+<li>下午——看一下乐鑫的面试题</li>
+<li>晚上——试一下时钟分频电路</li>
+<li>晚上——整理一片关于拷贝构造函数的</li>
+<li>晚上——看一下reuse编码指南</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>SV中线程</li>
+<li>上午整理了一份基本UVM验证平台编写指南的表格，就是根据昨天做的。</li>
+<li>下午——试一下时钟分频电路</li>
+<li>下午——uvm_report机制</li>
+<li>晚上——功能覆盖率</li>
+<li>晚上——看一下乐鑫的面试题</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>晚上——整理一片关于拷贝构造函数的</li>
+<li>晚上——看一下reuse编码指南——已完成06-17</li>
+</ol>
+<h3 id="06-17-周日"><a href="#06-17-周日" class="headerlink" title="06-17 周日"></a>06-17 周日</h3><ol>
+<li>早上——看一下C++13章的</li>
+<li>上午——论文提纲</li>
+<li>下午——SV第八章</li>
+<li>大学同学吧收藏的EDA教程中的VCS</li>
+<li>写一下这五个周的学习总结</li>
+<li>要读-2012-book-The Art of Hardware Architecture Design Methods and Techniques for Digital Circuits</li>
+<li>晚上过来看一下别人的硕士、博士论文，写一下论文提纲。</li>
+</ol>
+<p>完成:</p>
+<ol>
+<li>早上——看一下C++13章的</li>
+<li>早上——整理一片关于拷贝构造函数的</li>
+<li>大学同学吧收藏的EDA教程中的VCS</li>
+<li>将本地的笔记整理了一下，同步到有道云笔记上了。、</li>
+<li>下午——SV第八章</li>
+</ol>
+<h2 id="五周总结："><a href="#五周总结：" class="headerlink" title="五周总结："></a>五周总结：</h2><ol>
+<li>perl语言都整理完了，而且看了好几遍。</li>
+<li>《resue methodology manual for system on a chip design》看了前五章</li>
+<li>看了一点C++的东西，做了几篇笔记。</li>
+<li>看了点FPGA，但最后决定放弃了。</li>
+<li>《Verilog HDL高级数字设计》看到第6章，但决定放一下，看验证的东西</li>
+<li>看了Cummings的几篇关于异步设计的论文，写了异步FIFO</li>
+<li>看完《system Verilog验证，测试平台编写指南》，看了将近两遍</li>
+<li>看完《UVM实战》，并自己写了简单了环境，</li>
+<li>《邓小平文选》卷二快看完了。</li>
+</ol>
+<h2 id="接下来："><a href="#接下来：" class="headerlink" title="接下来："></a>接下来：</h2><ol>
+<li>看一看STM32芯片介绍</li>
+<li>准备一下面试题（06-05）</li>
+<li>要读-微处理器设计：从设计规划到工艺制造 </li>
+<li>要读-专用集成电路设计实用教程</li>
+<li>要读-2012-book-The Art of Hardware Architecture Design Methods and Techniques for Digital Circuits</li>
+</ol>
+
+
+  
+</article>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -1,0 +1,874 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="分享芯片设计、芯片验证、EDA工具、编程、读书等的经验知识">
+<meta property="og:type" content="website">
+<meta property="og:title" content="北方天">
+<meta property="og:url" content="http://example.com/page/9/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="分享芯片设计、芯片验证、EDA工具、编程、读书等的经验知识">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="芯片 验证 读书 编程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="在盖棺定论前，一切都是准备">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div class="py-5" id="board"
+          style=margin-top:0>
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/01/tools/vcs/EasierUVM%E5%AE%89%E8%A3%85%E9%97%AE%E9%A2%98/" target="_self">
+          EasierUVM安装问题
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/01/tools/vcs/EasierUVM%E5%AE%89%E8%A3%85%E9%97%AE%E9%A2%98/" target="_self">
+          
+          perl包安装EasierUVM需要安装File::Copy::Recursive,File::stat, and Time::Piece modules.这几个PERL 包，官方文档给的安装命令是 123perl -MCPAN -e &amp;#x27;install File::Copy::Recursive&amp;#x27;perl -MCPAN -e &amp;#x27;install File::stat&amp;#
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-01 00:00" pubdate>
+              2019-07-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/tools/">tools</a>
+            
+              <a href="/categories/tools/EDA/">EDA</a>
+            
+              <a href="/categories/tools/EDA/vcs/">vcs</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/vcs/">vcs</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/29/IC/others/%E4%BB%BF%E7%9C%9F%E9%94%99%E8%AF%AF%E9%9B%86%E5%90%88/" target="_self">
+          仿真错误集合
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/29/IC/others/%E4%BB%BF%E7%9C%9F%E9%94%99%E8%AF%AF%E9%9B%86%E5%90%88/" target="_self">
+          
+          1 UVM仿真1.1 imp声明时两个参数Error-[MRRE] Member reference resolution error&#x2F;home&#x2F;IC&#x2F;uvm&#x2F;uvm-1.1d&#x2F;src&#x2F;tlm1&#x2F;uvm_analysis_port.svh, 114  Member operator “.” cannot be used on o
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-29 00:00" pubdate>
+              2019-06-29
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/IC/">IC</a>
+            
+              <a href="/categories/IC/others/">others</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/sim/">sim</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/28/C++/%E5%87%BD%E6%95%B0/C++%20%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/" target="_self">
+          C++ 函数指针
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/28/C++/%E5%87%BD%E6%95%B0/C++%20%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/" target="_self">
+          
+          1. 定义函数指针，指向函数的指针，而不是对象。函数的类型由它的返回值类型和形参共同决定，与函数名无关。 1234&#x2F;&#x2F; 定义一个函数void display(const string&amp; s1,const string&amp; s2);&#x2F;&#x2F; 函数指针void (*fp)(const string&amp; s1,const string&amp; s2);  函数指针的定义，只需用函数指针
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-28 00:00" pubdate>
+              2019-06-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/C/">C++</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/26/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%B3%BB%E7%BB%9F%E5%87%BD%E6%95%B0/" target="_self">
+          SV——系统函数
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/26/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%B3%BB%E7%BB%9F%E5%87%BD%E6%95%B0/" target="_self">
+          
+          1 随机化相关函数1)  std::randomize() with对于随机对象，可以采用object.randomize()的方式进行随机化，但有的时候可以通过更简单的方式，不必定义类和例化对象，甚至变量都不是随机类型，也可以对其进行随机化，这就是系统随机化 函数std::randomize。 1234initial begin &#x2F;&#x2F;SV	int value;	    std::randomiz
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-26 00:00" pubdate>
+              2019-06-26
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/Verification/">Verification</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/18/others/linux/gvim%E8%AE%BE%E7%BD%AE%E5%AD%97%E4%BD%93%E8%83%8C%E6%99%AF/" target="_self">
+          gvim中设置字体背景
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/18/others/linux/gvim%E8%AE%BE%E7%BD%AE%E5%AD%97%E4%BD%93%E8%83%8C%E6%99%AF/" target="_self">
+          
+          在&#x2F;etc&#x2F;vimrc文件中添加如下命令： 123set gfn&#x3D;Sans\ 12colorscheme desertset nobackup  第一行：设置字体类型和字体大小，注意vimrc不支持空格，所以空格都需要加上反斜杠转义，这点很重要，我就在这里出错，试了好多遍都不对，最后有一篇文章说需要用反斜杠才搞定。 第二行：设置背景 第三行：设置不进行自动备份，不知道什么意思，
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-18 00:00" pubdate>
+              2019-06-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/linux/">linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/linux/">linux</a>
+            
+              <a href="/tags/vim/">vim</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/16/C++/%E7%B1%BB/C++%E4%B8%AD%E7%9A%84%E6%8B%B7%E8%B4%9D%E3%80%81%E8%B5%8B%E5%80%BC%E4%B8%8E%E9%94%80%E6%AF%81/" target="_self">
+          C++中的拷贝、赋值与销毁
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/16/C++/%E7%B1%BB/C++%E4%B8%AD%E7%9A%84%E6%8B%B7%E8%B4%9D%E3%80%81%E8%B5%8B%E5%80%BC%E4%B8%8E%E9%94%80%E6%AF%81/" target="_self">
+          
+          1. 拷贝构造函数如果一个构造函数的第一个参数是该类类型的引用，且其他参数都有默认值，那么这是个拷贝构造函数。 1234class Foo&amp;#123;	Foo();	Foo(const Foo&amp;);  &#x2F;&#x2F;拷贝构造函数&amp;#125;;    1.1 合成拷贝构造函数​        如果没有为类定义拷贝构造函数，那么编译器会自动定义一个合成拷贝构造函数。与合成默认构造函数不同（如果定义了其他
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-16 00:00" pubdate>
+              2019-06-16
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/C/">C++</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/13/others/linux/vim%E4%B8%ADsystemverilog%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE/" target="_self">
+          vim中systemverilog语法高亮
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/13/others/linux/vim%E4%B8%ADsystemverilog%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE/" target="_self">
+          
+          1. 内容：在vim、gvim中设计systemverilog语法高亮。 2. 步骤： 在自己主目录下创建.vim的隐藏文件夹。cd ~ 在.vim目录下创建两个文件夹，命名为syntax和ftdetect。 在ftdetect文件夹下创建文件sv.vim。  12&#x2F;&#x2F; 在文件sv.vim中保存下面一行能容au BufRead,BufNewFile *.sv set filetype&#x3D;system
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-13 00:00" pubdate>
+              2019-06-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/linux/">linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/linux/">linux</a>
+            
+              <a href="/tags/vim/">vim</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/13/tools/vcs/%E7%94%A8VCS%E5%90%AF%E5%8A%A8UVM%E4%BB%BF%E7%9C%9F/" target="_self">
+          用VCS启动UVM仿真
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/13/tools/vcs/%E7%94%A8VCS%E5%90%AF%E5%8A%A8UVM%E4%BB%BF%E7%9C%9F/" target="_self">
+          
+          1. 准备 下载好uvm的库，解压后的文件夹uvm-1.1d，accellera官网下载UVM 将库保存在linux虚拟机自己的目录下  2. 步骤 在.bashrc文件中设置变量 $UVM_HOME，这个变量保存uvm-1.1d的目录，设置了这个变量后，在用到uvm库的路径的时候，就可以用$UVM_HOME.  12345cd ~gvim .bashrc&#x2F;&#x2F; 在.bashrc文件中添加uvm-1
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-13 00:00" pubdate>
+              2019-06-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/tools/">tools</a>
+            
+              <a href="/categories/tools/EDA/">EDA</a>
+            
+              <a href="/categories/tools/EDA/vcs/">vcs</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SV/">SV</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/12/Verification/SystemVerilog/SV%E2%80%94%E2%80%94package/" target="_self">
+          SV——package
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/12/Verification/SystemVerilog/SV%E2%80%94%E2%80%94package/" target="_self">
+          
+          1. packageSystemVerilog中package是用来在多个modules、interfaces、programs和checkers之间共享parameter、net、variables、type、task、function、sequence、property和checker declaration这些东西。 package是最外层的命名空间，在package中可以定义paramet
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-12 00:00" pubdate>
+              2019-06-12
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/Verification/">Verification</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/11/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C/" target="_self">
+          perl语言——目录操作
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/11/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C/" target="_self">
+          
+          1. 移动当前目录 chdir程序会以自己的工作目录作为相对路径的起点，但可以用chdir操作符来改变当前目录 1chdir &amp;#x27;\etc&amp;#x27;;  2. 文件名通配符*，glob类似于shell里的星号*，或者*.v等。在perl程序中可以用glob操作符，他的返回值是一个列表。 12@li &#x3D; glob &amp;#x27;*&amp;#x27;; #匹配到当前目录下的所有文件print &amp;qu
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-11 00:00" pubdate>
+              2019-06-11
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/IC/">IC</a>
+            
+              <a href="/categories/IC/perl/">perl</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/perl/">perl</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/8/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/#board">7</a><a class="page-number" href="/page/8/#board">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/#board">10</a><a class="page-number" href="/page/11/#board">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/#board">15</a><a class="extend next" rel="next" href="/page/10/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

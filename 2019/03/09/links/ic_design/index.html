@@ -1,0 +1,643 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="0. 设计芯片性能小谈——时间并行：不多文章，还未细看 1. 相关知识各种概念介绍 1. 时序分析 静态时许分析中的setup和hold存在负值的问题  时序分析基本概念介绍 How to fix setup violations What is meant by drive strength of a standard cell How delay of a standard cell chan">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ic_design">
+<meta property="og:url" content="http://example.com/2019/03/09/links/ic_design/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="0. 设计芯片性能小谈——时间并行：不多文章，还未细看 1. 相关知识各种概念介绍 1. 时序分析 静态时许分析中的setup和hold存在负值的问题  时序分析基本概念介绍 How to fix setup violations What is meant by drive strength of a standard cell How delay of a standard cell chan">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-03-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.828Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="芯片 验证 读书 编程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>ic_design - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="ic_design">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-03-09 00:00" pubdate>
+        March 9, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.7k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      32 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ic_design</h1>
+            
+            <div class="markdown-body">
+              <h3 id="0-设计"><a href="#0-设计" class="headerlink" title="0. 设计"></a>0. 设计</h3><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/jr3oK6_mSjOqJ0uqkBSNQA">芯片性能小谈——时间并行</a>：不多文章，还未细看</p>
+<h4 id="1-相关知识"><a href="#1-相关知识" class="headerlink" title="1. 相关知识"></a>1. 相关知识</h4><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/fsSCL1N8PulPnc91cBgADA">各种概念介绍</a></p>
+<h5 id="1-时序分析"><a href="#1-时序分析" class="headerlink" title="1. 时序分析"></a>1. 时序分析</h5><p> <a target="_blank" rel="noopener" href="http://blog.eetop.cn/blog-1582944-564133.html"><strong>静态时许分析中的setup和hold存在负值的问题</strong></a></p>
+<p> <a target="_blank" rel="noopener" href="http://www.sohu.com/a/241570304_99933533"><strong>时序分析基本概念介绍<Skew></strong></a></p>
+<p><a target="_blank" rel="noopener" href="https://vlsiuniverse.blogspot.com/2017/02/fixing-setup-violations.html"><strong>How to fix setup violations</strong></a></p>
+<p><a target="_blank" rel="noopener" href="https://vlsiuniverse.blogspot.com/2017/11/what-is-meant-by-drive-strength-of.html"><strong>What is meant by drive strength of a standard cell</strong></a></p>
+<p><a target="_blank" rel="noopener" href="https://vlsiuniverse.blogspot.com/2017/12/how-delay-of-standard-cell-changes-with.html"><strong>How delay of a standard cell changes with drive strength</strong></a></p>
+<h5 id="2-数字IC设计中的时钟"><a href="#2-数字IC设计中的时钟" class="headerlink" title="2.  数字IC设计中的时钟"></a>2.  数字IC设计中的时钟</h5><p><a target="_blank" rel="noopener" href="https://east1203.github.io/2019/05/23/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F%E8%AE%BE%E8%AE%A1/">我自己写的-跨时钟域设计</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/IClearner/p/6440488.html">IC learner的博客-数字设计中的时钟</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/IClearner/p/6485389.html">IC learner的博客-跨时钟域信号传输一</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/IClearner/p/6579754.html">IC learner的博客-跨时钟域信号传输二</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/1Nb52676QgV4UrIPnilhnA">门控时钟 clock gating</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u011729865/article/details/49281713#%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E5%A4%8D%E4%BD%8D%E4%BF%A1%E5%8F%B7%E9%9C%80%E8%A6%81%E5%81%9A%E5%BC%82%E6%AD%A5%E5%A4%8D%E4%BD%8D%E5%90%8C%E6%AD%A5%E9%87%8A%E6%94%BE%E5%A4%84%E7%90%86">异步复位同步释放</a></p>
+<h5 id="3-EDA工具"><a href="#3-EDA工具" class="headerlink" title="3. EDA工具"></a>3. EDA工具</h5><blockquote>
+<p>功能仿真</p>
+</blockquote>
+<p><strong>VCS</strong></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ncWfvloZ1tpYwjJp6xEX1w">用VCS对综合后以及布局布线后的门级网表进行仿真的方法</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/limanjihe/article/details/52430286">使用<strong>VCS</strong>生成覆盖率报告</a></p>
+<p><a target="_blank" rel="noopener" href="http://bbs.eetop.cn/forum.php?mod=viewthread&tid=481243&extra=page=1&filter=digest&digest=1&orderby=dateline&_dsign=325ad204"> UVM+VCS+Verdi基本平台搭建</a> ：eetop上的教程</p>
+<p><a target="_blank" rel="noopener" href="https://www.edaplayground.com/home">EDA playground</a>：在线的仿真综合网站，用 学校邮箱登陆。</p>
+<blockquote>
+<p>逻辑综合</p>
+</blockquote>
+<p><strong>Designer Compiler</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/IClearner/tag/DC/">博客园-IC learner-DC使用总结</a></p>
+<p><strong>开源的综合工具 Icarus Verilog</strong> </p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://iverilog.icarus.com/">官网</a></li>
+<li><a href="**https://github.com/steveicarus/iverilog**">GitHub代码位置</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/9p1cl8-2dDzOinyGr0FEQA">Verilog开源仿真工具Icarus Verilog的工作原理</a>：一个公众号，介绍这个开源综合工具</li>
+</ul>
+<blockquote>
+<p> PR</p>
+</blockquote>
+<p><strong>IC Compiler</strong></p>
+<blockquote>
+<p>其他</p>
+</blockquote>
+<p><strong>spice</strong></p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="http://ngspice.sourceforge.net/">NGspice</a></p>
+<p>open source spice simulator</p>
+</li>
+</ul>
+<h5 id="4-Verilog"><a href="#4-Verilog" class="headerlink" title="4. Verilog"></a>4. Verilog</h5><blockquote>
+<p> <strong>4.1 Verilog coding style</strong></p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="http://guqian110.github.io/pages/2015/04/21/verilog_hdl_coding_style_guide.html">北邮学生写的比较详细的一篇介绍coding style的</a></p>
+<p>  包括模块划分、要避免哪些点、命名规则、语法规范等等。</p>
+<blockquote>
+<p> <strong>4.2 语法规范</strong></p>
+</blockquote>
+<blockquote>
+<p> <strong>4.3 Verilog技巧</strong></p>
+</blockquote>
+<h5 id="5-FPGA"><a href="#5-FPGA" class="headerlink" title="5. FPGA"></a>5. FPGA</h5><p><strong>5.1 FPGA介绍</strong></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/WWVc6821U5eAlX9Uq1OsjA">FPGA介绍文章</a></p>
+<p><strong>5.2  FPGA小技巧</strong></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/shshine/article/details/52583842">防止FPGA中的信号被优化掉</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Pieces_thinking/article/details/90183507">vivado开发</a>：在CSDN上分享的vivado开发的视频资料</p>
+<p><strong>5.3 FPGA中的时钟与复位</strong></p>
+<p><a target="_blank" rel="noopener" href="http://guqian110.github.io/pages/2014/06/20/the_art_of_reset_design_in_fpga.html">FPGA复位设计</a></p>
+<h5 id="6-脚本语言"><a href="#6-脚本语言" class="headerlink" title="6.脚本语言"></a>6.脚本语言</h5><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/27400825">数字集成电路设计中各种脚本的优缺点分析</a>：snow的知乎分享</p>
+<p><a target="_blank" rel="noopener" href="http://www.dooccn.com/perl/">在线工具</a>：可以在线运行perl、python、C++等代码。</p>
+<h5 id="7-DFT"><a href="#7-DFT" class="headerlink" title="7. DFT"></a>7. DFT</h5><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/6srcpJ-wMkQZGjqImUlYHw">大牛访谈：DFT一哥老K</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/nz-hQfNXppBSbFq54lkyPA">扫盲！DFT到底是什么?</a></p>
+<p>以前对dft做过一些总结，我觉得可以按照以下产品特点进行分类：1. 超大规模soc&#x2F;asic芯片，这类芯片规模超级大，但是芯片结构&#x2F;时钟结构比较简单，有大量重复例化的ip，由于芯片规模太大，后端一般采用channelless flow，dft相应一般也要考虑复用以及层次化设计。比如数通类芯片、视频处理芯片、ai芯片等。2. 芯片规模虽然没有前面说的规模大，但是soc 比较复杂，集成的ip数量，种类比较多，芯片时钟定义比较复杂，产品的定义也比较复杂，比如手机soc芯片，媒体处理芯片等。3.芯片规模比较小，但是芯片对成本非常敏感，对测试成本要求比较高，比如mcu的dft设计。4.这两年兴起的汽车电子类芯片。对测试成本要求没有那么高，但是对测试质量要求非常高。从dft的角度，大部分芯片都可以归入上面几类。上面几种芯片，产品特点不同，在进行制定dft设计的时候，应用的策略也不同，dft的技术细节也不同。三家eda公司也都有相应的参考流程。</p>
+<p><a target="_blank" rel="noopener" href="https://semiwiki.com/eda/282104-bringing-hierarchy-to-dft/">Bringing Hierarchy to DFT</a>：介绍Mentor公司的hierarchy DFT。</p>
+<h5 id="8-ChipLet"><a href="#8-ChipLet" class="headerlink" title="8. ChipLet"></a>8. ChipLet</h5><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/oMA9RSaq0nuSNgKDRwHavQ">Chiplet最强科普</a></p>
+<h5 id="9-hls"><a href="#9-hls" class="headerlink" title="9. hls"></a>9. hls</h5><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/6I42jTnfSKxpMjLT1QmYfA">高阶综合的“红与黑”｜High-Level Synthesis</a></p>
+<h4 id="2-person"><a href="#2-person" class="headerlink" title="2. person"></a>2. person</h4><ul>
+<li><p><a target="_blank" rel="noopener" href="https://home.cnblogs.com/u/IClearner/feed/blog/">IC_learner</a> <strong>博客园博主，分享关于IC设计内容</strong></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://guqian110.github.io/category/fpga.html">停止更新-一个北邮学生的</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://cc.ee.ntu.edu.tw/~ywchang/">常耀文</a> ： <strong>EDA算法，集成电路</strong></p>
+</li>
+<li><p><a href="www.sunburst-design.com">Cummings</a>  ：  <strong>可以下他 的论文。</strong></p>
+<p>地址跳转不过去，点击 <a target="_blank" rel="noopener" href="http://www.sunburst-design.com/">www.sunburst-design.com</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://www.zimmerdesignservices.com/"><em>Paul Zimmer</em></a> ：<strong>异步设计的论文</strong></p>
+</li>
+</ul>
+<h4 id="3-论坛、网站、博客"><a href="#3-论坛、网站、博客" class="headerlink" title="3. 论坛、网站、博客"></a>3. 论坛、网站、博客</h4><h5 id="知识学习"><a href="#知识学习" class="headerlink" title="知识学习"></a>知识学习</h5><p><a target="_blank" rel="noopener" href="https://vlsiuniverse.blogspot.com/">VLSI UNIVERSE</a></p>
+<p> Let us learn together the basics and intricacies of VLSI</p>
+<p><a target="_blank" rel="noopener" href="https://www.design-reuse.com/">Design Resue</a>：可以搜索一些与设计验证相关的文章，不翻墙也可以用。</p>
+<p><a target="_blank" rel="noopener" href="https://www.chipverify.com/verilog/verilog-tutorial"><strong>ChipVerify</strong></a>：非常好的关于设计和验证的网站，以后要仔细看看。</p>
+<p><a target="_blank" rel="noopener" href="http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ddi0479b/BABHFBHD.html">ARM社区</a>：可以查一些arm的设计文档和设计例子。</p>
+<p><a target="_blank" rel="noopener" href="https://www.paripath.com/blog/variation-blog/secrets-sauce-of-creating-a-digital-corner">PariPath Inc</a>：与工艺相关的一些分析</p>
+<p><a target="_blank" rel="noopener" href="https://hdlbits.01xz.net/wiki/Main_Page">HDLBits</a>：Verilog学习网站，每一节都可以进行<strong>在线综合</strong>。</p>
+<h5 id="文章"><a href="#文章" class="headerlink" title="文章"></a>文章</h5><p><a target="_blank" rel="noopener" href="https://en.wikichip.org/wiki/WikiChip">WikiChip-各种芯片介绍</a></p>
+<p> WikiChip is the preeminent resource for computer architectures and semiconductor (logic) engineering.</p>
+<p><a target="_blank" rel="noopener" href="https://semiwiki.com/">SemiWiki</a>：Open Forum for Semiconductor professionals</p>
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4><p><a target="_blank" rel="noopener" href="http://www.dooccn.com/perl/">在线工具</a>：可以在线运行perl、python、C++等代码。</p>
+<p><a target="_blank" rel="noopener" href="http://www.ictown.com/">IC小镇</a>：<strong>论坛、资料下载等。</strong></p>
+<h4 id="4-开源项目"><a href="#4-开源项目" class="headerlink" title="4. 开源项目"></a>4. 开源项目</h4><ol>
+<li><h5 id="NVIDIA-Deep-Learning-Accelerator-NVDLA"><a href="#NVIDIA-Deep-Learning-Accelerator-NVDLA" class="headerlink" title="NVIDIA Deep Learning Accelerator (NVDLA)"></a><a target="_blank" rel="noopener" href="https://github.com/nvdla/hw">NVIDIA Deep Learning Accelerator (NVDLA)</a></h5><h5 id="英伟达开源的深度学习加速器"><a href="#英伟达开源的深度学习加速器" class="headerlink" title="英伟达开源的深度学习加速器"></a>英伟达开源的深度学习加速器</h5></li>
+<li><h5 id="EDA课程"><a href="#EDA课程" class="headerlink" title="EDA课程"></a><a target="_blank" rel="noopener" href="http://cc.ee.ntu.edu.tw/~cchen/course.html">EDA课程</a></h5><p> Computer Aided Analysis &amp; Optimization of Integrated Circuit</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://openrisc.io/"><strong>open</strong> risc</a></p>
+<p>Welcome to the project overview of the OpenRISC project. The major goal of the project it to create a free and open processor for embedded systems. This includes:</p>
+<p>a free and open RISC instruction set architecture with DSP features</p>
+<p>a set of free, open source implementations of the architecture</p>
+<p>a complete set of free, open source software development tools, libraries, operating systems and applications</p>
+<p>a variety of system-on-chip and system simulators</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/chipsalliance/Cores-SweRV">西部数据开源RISC-V芯片</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/east1203/Cores-SweRV">自己也保存了</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://ptm.asu.edu/"> PTM-晶体管模型</a></p>
+<p>   PTM(<strong>Predictive Technology Model</strong>).<strong>PTM</strong> provides accurate, customizable, and predictive model files for future transistor and interconnect technologies. These predictive model files are compatible with standard circuit simulators, such as SPICE, and scalable with a wide range of process variations.</p>
+</li>
+<li><p>ARM cortexM系列开源处理器——<a target="_blank" rel="noopener" href="https://developer.arm.com/ip-products/designstart/eval">下载</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/east1203/ExamplesCode/tree/master/armcortexm0">ARM cortexM0</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/east1203/ExamplesCode/tree/master/armcortexm3">ARM cortexM3</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/east1203/rocket-chip">伯克利大学开源RISC-V芯片</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/east1203/AI-Chip">总结AI芯片的GitHub项目</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/east1203/wujian100_open">平头哥的无剑100 RISC-V</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/east1203/ExamplesCode/blob/master/eetop.cn_h265enc_v2.0.zip">复旦的H.265视频编解码IP</a>：它由  复旦大学  专用集成电路与系统国家重点实验室 （State Key Lab of asic &amp; System，Fudan University）  视频图像处理实验室 （VIP Lab）  范益波教授研究团队开发完成，并开放源代码。</p>
+</li>
+</ol>
+<h4 id="5-Books"><a href="#5-Books" class="headerlink" title="5.  Books"></a>5.  Books</h4><p><a target="_blank" rel="noopener" href="https://epdf.tips/reuse-methodology-manual-for-system-on-a-chip-designs4a91cd793bfa24079f6880ac1d185f3231127.html">《Reuse Methodology Manual for System-On-A-Chip Designs,Third Edition》</a></p>
+<p>中文版本：《片上系统－可重用设计方法学》，2004年，电子工业出版社出版，220多页。</p>
+<p>介绍了设计一个macro或者说IP模块的流程——定义管教、寄存器、参数定义等。<br>在第5章：RTL编码指南用了几十页详细介了coding style，。内容涉及可重用IP核的各个方面。</p>
+<p><a target="_blank" rel="noopener" href="http://bbs.eetop.cn/thread-266690-1-1.html">《Static Timing Analysis for Nanometer Designs:A Practical Approach》</a></p>
+<p>做芯片最重要的就是Timing，这本书就是讲timing的。</p>
+<p>IC圆桌派荐书，芯片架构设计学习书单</p>
+<ul>
+<li><p>计算机体系结构-量化研究方法</p>
+</li>
+<li><p>EMBEDDED SYSTEM DESIGN-INTRODUCTION TO SOC SYSTEM ARCHITECTURE</p>
+</li>
+<li><p>ARM-system on chip architecture</p>
+</li>
+<li><p>微处理器设计-从设计规划到工艺制造</p>
+</li>
+<li><p>微处理器设计-架构，电路及实现</p>
+</li>
+<li><p>RISC-V处理器</p>
+</li>
+<li><p>A Practical Approach to VLSI System on Chip (SoC) Design</p>
+</li>
+<li><p>看看arm coresight，pl301，nic文档，或者用ambadesigner生成一套soc结构比看啥书都理解的快</p>
+</li>
+<li><p>Parallel Programming for FPGAs</p>
+</li>
+<li><p>Modern Processor Design - Fundamentals of Superscalar Processors</p>
+</li>
+<li><p>A Primer on Memory Consistency and Cache Coherence</p>
+</li>
+<li><p>Processor MIcroarchitecture– An Implementation Perspective</p>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/zRnklaaNDgZYDywmrQy-wA">极刊・IC极客荐书，一起学习，一起挂科</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/DauMkUAKgM4bFe9FrBeXQg">最全的数字IC设计经典书籍电子版下载</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/09/links/ic_backend/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ic_backend</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/09/links/ic_verification/">
+                        <span class="hidden-mobile">ic_verification</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

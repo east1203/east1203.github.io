@@ -1,0 +1,858 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="阶段计划：18号回家，现在是7号晚上，还有九天的时间，计划一下剩下九天在学校的工作，并且做一下回假的学习安排。  《Verilog and SystemVerilog Gotchas》已看完01-17  《System Verilog for design——A guide to using system verilog for hardware design and modeling》——已看完">
+<meta property="og:type" content="website">
+<meta property="og:title" content="page.title">
+<meta property="og:url" content="http://example.com/dailystudy/2020-01-06%E8%87%B32020-02-23.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="阶段计划：18号回家，现在是7号晚上，还有九天的时间，计划一下剩下九天在学校的工作，并且做一下回假的学习安排。  《Verilog and SystemVerilog Gotchas》已看完01-17  《System Verilog for design——A guide to using system verilog for hardware design and modeling》——已看完">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-03-12T03:51:25.836Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.836Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="芯片 验证 读书 编程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>page.title - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="page.title">
+              
+            </span>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<article class="page-content">
+  <h1 id="阶段计划："><a href="#阶段计划：" class="headerlink" title="阶段计划："></a>阶段计划：</h1><p>18号回家，现在是7号晚上，还有九天的时间，计划一下剩下九天在学校的工作，并且做一下回假的学习安排。</p>
+<ol>
+<li><p>《Verilog and SystemVerilog Gotchas》已看完01-17</p>
+</li>
+<li><p>《System Verilog for design——A guide to using system verilog for hardware design and modeling》——已看完</p>
+</li>
+<li><p>看别人的分组硕士论文</p>
+</li>
+<li><p>硕士论文具体实现思考</p>
+</li>
+<li><p>“积极心理学公开课”再看一遍 ** ** **</p>
+</li>
+<li><p>看一下关于cross link和mesh来降低工艺波动的论文。 已看过（在学校）</p>
+</li>
+<li><p><del>第一章部分回家的时候再写。</del></p>
+</li>
+<li><p>每天必须要练习英语听力。** ** **</p>
+</li>
+<li><p>学习怎么做PPT</p>
+</li>
+</ol>
+<p>每日必做：</p>
+<ol>
+<li>写日记</li>
+<li>听英语听力半小时以上、或者精听练习 </li>
+<li>每周要写两篇技术文章（2020-02-20）</li>
+</ol>
+<h2 id="第三十二周"><a href="#第三十二周" class="headerlink" title="第三十二周"></a>第三十二周</h2><h3 id="周计划："><a href="#周计划：" class="headerlink" title="周计划："></a>周计划：</h3><p>这个周最后一天才做周计划，我也是牛逼，放一句昨天发现的话吧：</p>
+<p>“人生不是做饭，不能等到所有东西都准备好以后才下锅”            —— 《饮食男女》</p>
+<h3 id="01-08-周三"><a href="#01-08-周三" class="headerlink" title="01-08 周三"></a>01-08 周三</h3><ol>
+<li>看一下之前的校庆论文</li>
+<li>看一下门控分组的硕士论文</li>
+<li>看《Verilog and SystemVerilog Gotchas》</li>
+</ol>
+<h3 id="01-09-x2F-10-x2F-11"><a href="#01-09-x2F-10-x2F-11" class="headerlink" title="01-09&#x2F;10&#x2F;11"></a>01-09&#x2F;10&#x2F;11</h3><ol>
+<li>关于cross link的论文</li>
+</ol>
+<h3 id="01-12-周日"><a href="#01-12-周日" class="headerlink" title="01-12 周日"></a>01-12 周日</h3><ol>
+<li>看论文</li>
+<li>看《Verilog and SystemVerilog Gotchas》</li>
+<li>看一下mesh</li>
+<li>写日记</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看论文</li>
+<li>写日记</li>
+<li>看《Verilog and SystemVerilog Gotchas》</li>
+</ol>
+<h3 id="01-13-周一"><a href="#01-13-周一" class="headerlink" title="01-13 周一"></a>01-13 周一</h3><ol>
+<li>看自己的校庆论文、开题报告</li>
+<li>看别人的分组硕士论文</li>
+<li>硕士论文具体实现思考</li>
+<li>写日记</li>
+<li>查一下租车价格</li>
+</ol>
+<h3 id="01-14-周二"><a href="#01-14-周二" class="headerlink" title="01-14 周二"></a>01-14 周二</h3><ol>
+<li>回顾一下ICC使用</li>
+<li>看看别人的分组硕士论文</li>
+<li></li>
+</ol>
+<h3 id="01-15-周三"><a href="#01-15-周三" class="headerlink" title="01-15 周三"></a>01-15 周三</h3><ol>
+<li>看《Verilog and SystemVerilog Gotchas》</li>
+<li>看昨天王老师给的论文</li>
+<li>看徐亮硕士论文呢</li>
+<li>日记</li>
+<li>英语听力</li>
+<li>看一点《邓小平文选》</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看《Verilog and SystemVerilog Gotchas》</li>
+<li>看一点《邓小平文选》</li>
+<li>日记</li>
+<li>看昨天王老师给的论文</li>
+</ol>
+<h3 id="周总结："><a href="#周总结：" class="headerlink" title="周总结："></a>周总结：</h3><ol>
+<li>看完《Verilog and SystemVerilog Gotchas》</li>
+<li>看完“积极心理学公开课”</li>
+<li>基本每天写日记</li>
+<li>大体看了一些cross link相关等论文，并作了笔记。</li>
+</ol>
+<h2 id="第三十三周"><a href="#第三十三周" class="headerlink" title="第三十三周"></a>第三十三周</h2><h3 id="周计划：-1"><a href="#周计划：-1" class="headerlink" title="周计划："></a>周计划：</h3><ol>
+<li>每天听英语听力</li>
+<li>看《System Verilog for design——A guide to using system verilog for hardware design and modeling》</li>
+<li>看一下自己上一个日记本。</li>
+</ol>
+<p>每日必做：</p>
+<ol>
+<li>英语听力</li>
+<li>写日记</li>
+<li>看《System Verilog for design——A guide to using system verilog for hardware design and modeling》</li>
+</ol>
+<h3 id="01-20-周一"><a href="#01-20-周一" class="headerlink" title="01-20 周一"></a>01-20 周一</h3><p>完成：</p>
+<ol>
+<li>听英语</li>
+<li>写日记</li>
+<li>看《System Verilog for design——A guide to using system verilog for hardware design and modeling》</li>
+</ol>
+<h3 id="01-21-周二"><a href="#01-21-周二" class="headerlink" title="01-21 周二"></a>01-21 周二</h3><ol>
+<li>看一下微信收藏的关于AI公司的帖子。</li>
+<li></li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>听英语</li>
+<li>写日记</li>
+<li>看《System Verilog for design——A guide to using system verilog for hardware design and modeling》</li>
+<li>看一下微信收藏的关于AI公司的帖子。</li>
+</ol>
+<h3 id="01-22-周三"><a href="#01-22-周三" class="headerlink" title="01-22 周三"></a>01-22 周三</h3><p>完成：</p>
+<ol>
+<li>听英语</li>
+<li>写日记</li>
+<li>看《System Verilog for design——A guide to using system verilog for hardware design and modeling》</li>
+</ol>
+<h3 id="01-23-周三"><a href="#01-23-周三" class="headerlink" title="01-23 周三"></a>01-23 周三</h3><p>完成：</p>
+<ol>
+<li>听英语</li>
+<li>写日记</li>
+<li>看《System Verilog for design——A guide to using system verilog for hardware design and modeling》</li>
+</ol>
+<h3 id="周总结：-1"><a href="#周总结：-1" class="headerlink" title="周总结："></a>周总结：</h3><ol>
+<li>每天听英语听力</li>
+<li>《System Verilog for design——A guide to using system verilog for hardware design and modeling》看到第三章</li>
+</ol>
+<p>过年几天没怎么学习了，也没出去串门，浪费了时间。</p>
+<h2 id="第三十四周"><a href="#第三十四周" class="headerlink" title="第三十四周"></a>第三十四周</h2><ol>
+<li>《System Verilog for design——A guide to using system verilog for hardware design and modeling》看完一半</li>
+<li>每天英语听力</li>
+<li>每天日记</li>
+<li>把打印的论文看了</li>
+<li>看积极心理学公开课</li>
+<li></li>
+</ol>
+<h3 id="01-28-周二"><a href="#01-28-周二" class="headerlink" title="01-28 周二"></a>01-28 周二</h3><ol>
+<li>7：30起床</li>
+<li>8：00 -10：00 英语听力</li>
+<li>10：00-11：30 《System Verilog for design》</li>
+<li>下午积极心理学公开课，看两部</li>
+<li>晚上7：00-9：00看《System Verilog for design》</li>
+<li>日记</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>7：30起床</li>
+<li>8：00 -10：00 英语听力</li>
+<li>看《System Verilog for design》</li>
+<li>日记</li>
+<li>看了一集积极心理学公开课</li>
+</ol>
+<h3 id="01-29-周三"><a href="#01-29-周三" class="headerlink" title="01-29 周三"></a>01-29 周三</h3><ol>
+<li>7：30起床</li>
+<li>8：00 -10：00 英语听力</li>
+<li>10：00-11：30 《System Verilog for design》</li>
+<li>下午学习PPT</li>
+<li>下午积极心理学公开课</li>
+<li>晚上7：00-9：00看《System Verilog for design》</li>
+<li>日记</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>7：30起床</li>
+<li>8：00 -10：00 英语听力</li>
+<li>10：00-11：30 《System Verilog for design》</li>
+<li>看了一集积极心理学公开课</li>
+</ol>
+<h3 id="01-30-周四"><a href="#01-30-周四" class="headerlink" title="01-30 周四"></a>01-30 周四</h3><ol>
+<li>7：30起床</li>
+<li>8：00 -10：00 英语听力</li>
+<li>10：00-11：30 《System Verilog for design》</li>
+<li>下午看一下perl语法</li>
+<li>下午积极心理学公开课</li>
+<li>晚上7：00-9：00看《System Verilog for design》</li>
+<li>日记</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>英语听力</li>
+<li>《System Verilog for design》</li>
+</ol>
+<h3 id="01-31-周五"><a href="#01-31-周五" class="headerlink" title="01-31 周五"></a>01-31 周五</h3><ol>
+<li>看perl——上午</li>
+<li>看知乎上收藏的PPT制作——上午</li>
+<li>听英语——下午</li>
+<li>下午积极心理学公开课</li>
+<li>晚上7：00-9：00看《System Verilog for design》</li>
+<li>看一下微信群的内容——晚上</li>
+<li>日记</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看perl——上午</li>
+<li>看知乎上收藏的PPT制作——上午</li>
+<li>听英语——下午</li>
+<li>下午看了两集积极心理学公开课</li>
+<li>日记</li>
+<li>晚上7：00-9：00看《System Verilog for design》</li>
+</ol>
+<h3 id="02-01-周六"><a href="#02-01-周六" class="headerlink" title="02-01 周六"></a>02-01 周六</h3><ol>
+<li>7：30起床</li>
+<li>8：00 -10：00 英语听力</li>
+<li>10：00-11：30 《System Verilog for design》</li>
+<li>下午看论文</li>
+<li>下午积极心理学公开课</li>
+<li>晚上7：00-9：00看《System Verilog for design》</li>
+<li>看微信文章</li>
+<li>日记</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li><p>英语听力，到12点</p>
+</li>
+<li><p>《System Verilog for design》</p>
+</li>
+<li><p>看了一点论文</p>
+</li>
+<li><p>看了chisel和敏捷开发</p>
+</li>
+</ol>
+<h3 id="02-02-周日"><a href="#02-02-周日" class="headerlink" title="02-02 周日"></a>02-02 周日</h3><blockquote>
+<p>上午</p>
+</blockquote>
+<ul>
+<li>6：40-8：40 整理了一下有道云笔记的文件目录（花的时间有点多）</li>
+<li>10：40-11：00 看边缘计算内容</li>
+<li>11：00 - 12：30 听英语听力</li>
+</ul>
+<blockquote>
+<p>下午</p>
+</blockquote>
+<ul>
+<li>下午看论文</li>
+<li>回顾一下自己的论文</li>
+<li>下午积极心理学公开课</li>
+</ul>
+<blockquote>
+<p>晚上</p>
+</blockquote>
+<ul>
+<li>下午积极心理学公开课</li>
+<li>晚上7：00-9：00看《System Verilog for design》</li>
+<li>日记</li>
+</ul>
+<p>完成：</p>
+<p>:one:  6：40-8：40 整理了一下有道云笔记的文件目录（花的时间有点多）</p>
+<p>:two:  10：10-10：40 写日记</p>
+<p>:three:  10：40-11：00 看边缘计算内容</p>
+<p>:four:  11：00 - 12：30 听英语听力</p>
+<p>:five:  13：15-14：20 睡午觉</p>
+<p>:six:   下午看了一丢丢论文，并下了几篇论文</p>
+<h3 id="周总结：-2"><a href="#周总结：-2" class="headerlink" title="周总结："></a>周总结：</h3><p>:one: 《System Verilog for design——A guide to using system verilog for hardware design and modeling》看完一半</p>
+<p>:two:  每天英语听力，共七篇</p>
+<p>:three:  积极心理学公开课看了5节</p>
+<p>:four:  整理了一下有道云笔记的文件目录</p>
+<p>:five:  了解了一点chisel</p>
+<h2 id="第三十五周"><a href="#第三十五周" class="headerlink" title="第三十五周"></a>第三十五周</h2><h3 id="周计划：-2"><a href="#周计划：-2" class="headerlink" title="周计划："></a>周计划：</h3><ol>
+<li>完成《System Verilog for design》</li>
+<li>英语听力7篇</li>
+<li>积极心理学公开课看10节</li>
+<li>论文</li>
+<li>论文笔记回顾</li>
+</ol>
+<h3 id="02-03-周一"><a href="#02-03-周一" class="headerlink" title="02-03 周一"></a>02-03 周一</h3><blockquote>
+<p>上午</p>
+</blockquote>
+<ul>
+<li>7：30起床</li>
+<li>8：00 -10：00 英语听力 </li>
+<li>《System Verilog for design》</li>
+</ul>
+<blockquote>
+<p>下午</p>
+</blockquote>
+<ul>
+<li>研究毕业论文</li>
+<li>下午积极心理学公开课</li>
+</ul>
+<blockquote>
+<p>晚上</p>
+</blockquote>
+<ul>
+<li>下午积极心理学公开课</li>
+<li>研究毕业论文</li>
+<li>晚上7：00-9：00看《System Verilog for design》</li>
+<li>日记</li>
+</ul>
+<p>完成：</p>
+<p>:one:  英语听力</p>
+<p>:two:  日记</p>
+<p>:three:  晚上7：00-9：00看《System Verilog for design》</p>
+<p>:four:  晚上看了一集积极心理学公开课</p>
+<h3 id="02-04、05周二、周三"><a href="#02-04、05周二、周三" class="headerlink" title="02-04、05周二、周三"></a>02-04、05周二、周三</h3><blockquote>
+<p>上午</p>
+</blockquote>
+<ul>
+<li>7：30起床</li>
+<li>8：00 -10：00 英语听力 </li>
+<li>《System Verilog for design》</li>
+</ul>
+<blockquote>
+<p>下午</p>
+</blockquote>
+<ul>
+<li>研究毕业论文</li>
+<li>下午积极心理学公开课</li>
+</ul>
+<blockquote>
+<p>晚上</p>
+</blockquote>
+<ul>
+<li>下午积极心理学公开课</li>
+<li>研究毕业论文</li>
+<li>晚上7：00-9：00看《System Verilog for design》</li>
+<li>日记</li>
+</ul>
+<p>完成：</p>
+<p>:one:  —：12：15 英语听力两篇</p>
+<p>:two:  《System Verilog for design》看了53页</p>
+<p>:three:  日记</p>
+<h3 id="02-26-周四"><a href="#02-26-周四" class="headerlink" title="02-26 周四"></a>02-26 周四</h3><blockquote>
+<p>上午</p>
+</blockquote>
+<ul>
+<li>7：30起床</li>
+<li>8：00 -10：00 英语听力 </li>
+<li>《System Verilog for design》第十章</li>
+</ul>
+<blockquote>
+<p>下午</p>
+</blockquote>
+<ul>
+<li>研究毕业论文</li>
+<li>下午积极心理学公开课</li>
+</ul>
+<blockquote>
+<p>晚上</p>
+</blockquote>
+<ul>
+<li>下午积极心理学公开课</li>
+<li>研究毕业论文</li>
+<li>日记</li>
+</ul>
+<p>完成：</p>
+<p>:one:  8：10：10：00 英语听力一篇</p>
+<p>:two:  《System Verilog for design》第十章</p>
+<p>:three:  日记</p>
+<p>:four:  一集积极心理学公开课</p>
+<h3 id="02-07-周五"><a href="#02-07-周五" class="headerlink" title="02-07 周五"></a>02-07 周五</h3><p>完成：</p>
+<p>:one:  看了一集积极心理学公开课</p>
+<p>:two:  日记</p>
+<p>:three:  出鸡</p>
+<h3 id="02-08-周六"><a href="#02-08-周六" class="headerlink" title="02-08 周六"></a>02-08 周六</h3><p>完成：</p>
+<p>:one:  英语听力</p>
+<p>:two:  看完《System Verilog for design》</p>
+<h3 id="02-09-周日"><a href="#02-09-周日" class="headerlink" title="02-09 周日"></a>02-09 周日</h3><p>完成：</p>
+<p>:one:  1. 日记</p>
+<p>:two:  2. 英语听力一篇</p>
+<p>:three:  3. 积极心理学公开课两篇</p>
+<h3 id="周总结：-3"><a href="#周总结：-3" class="headerlink" title="周总结："></a>周总结：</h3><ol>
+<li>看完《System Verilog for design》</li>
+<li>积极心理学公开课五篇，缺五篇</li>
+<li>英语听力六篇，缺一篇</li>
+</ol>
+<h2 id="第三十六周"><a href="#第三十六周" class="headerlink" title="第三十六周"></a>第三十六周</h2><h3 id="周计划"><a href="#周计划" class="headerlink" title="周计划:"></a>周计划:</h3><ol>
+<li>准备每周报告</li>
+<li>英语听力7篇</li>
+<li>积极心理学公开课看10节</li>
+<li>回顾《System Verilog for design》的笔记。</li>
+<li>论文笔记回顾</li>
+</ol>
+<h3 id="02-10-周一"><a href="#02-10-周一" class="headerlink" title="02-10 周一"></a>02-10 周一</h3><ol>
+<li><strong>开始准备论文和周四的报告。</strong></li>
+</ol>
+<p>完成：</p>
+<p>:one:  一篇听力</p>
+<p>:two:  一集积极心理学公开课</p>
+<h3 id="02-11-周二"><a href="#02-11-周二" class="headerlink" title="02-11 周二"></a>02-11 周二</h3><p>完成：</p>
+<p>:one:  一篇听力</p>
+<h3 id="02-12-周三"><a href="#02-12-周三" class="headerlink" title="02-12 周三"></a>02-12 周三</h3><p>完成：</p>
+<p>:repeat_one:   一篇听力</p>
+<p>:two:  日记</p>
+<p>:three:  运行一下虚拟机</p>
+<p>:four:  改了一点论文（第二章）</p>
+<h3 id="02-13-周四"><a href="#02-13-周四" class="headerlink" title="02-13 周四"></a>02-13 周四</h3><p>完成：</p>
+<p>:one: 汇报假期工作</p>
+<p>:two:  英语听力一片</p>
+<h3 id="02-14-周五"><a href="#02-14-周五" class="headerlink" title="02-14 周五"></a>02-14 周五</h3><p>完成：</p>
+<p>:one: 英语听力一篇</p>
+<p>:two:  仿真了ovc_clustering</p>
+<h3 id="02-15-周六"><a href="#02-15-周六" class="headerlink" title="02-15 周六"></a>02-15 周六</h3><ol>
+<li>中午英语听力</li>
+<li>下午看一下论文2002那篇SCG图</li>
+<li>看一下ICC  DC的使用笔记</li>
+<li>看tcl语言</li>
+<li>积极心理学公开课</li>
+</ol>
+<p>完成：</p>
+<p>:one: 中午英语听力</p>
+<p>:two:  日记</p>
+<h3 id="02-16-周日"><a href="#02-16-周日" class="headerlink" title="02-16 周日"></a>02-16 周日</h3><ol>
+<li>下午看一下论文2002那篇SCG图</li>
+<li>看一下ICC  DC的使用笔记</li>
+<li>看tcl语言</li>
+<li>积极心理学公开课</li>
+</ol>
+<p>完成：</p>
+<p>:one: 一篇英语</p>
+<p>:two:  积极心理学三篇</p>
+<h3 id="周总结：-4"><a href="#周总结：-4" class="headerlink" title="周总结："></a>周总结：</h3><ol>
+<li>英语听力六篇</li>
+<li>积极心理学公开课4篇</li>
+</ol>
+<h2 id="第三十七周："><a href="#第三十七周：" class="headerlink" title="第三十七周："></a>第三十七周：</h2><h3 id="周计划-1"><a href="#周计划-1" class="headerlink" title="周计划"></a>周计划</h3><ol>
+<li>看一下论文2002那篇SCG图</li>
+<li>看一下ICC  DC的使用笔记</li>
+<li>看tcl语言</li>
+<li>准备周报</li>
+</ol>
+<h3 id="02-17-19-周一"><a href="#02-17-19-周一" class="headerlink" title="02-17-19 周一"></a>02-17-19 周一</h3><ol>
+<li>看一下论文2002那篇SCG图</li>
+<li>看tcl语言</li>
+</ol>
+<p>完成：</p>
+<p>:one: 英语听力</p>
+<p>:two:  tcl语言</p>
+<h3 id="02-20-周四"><a href="#02-20-周四" class="headerlink" title="02-20 周四"></a>02-20 周四</h3><ol>
+<li>英语听力</li>
+<li>DC使用手册</li>
+<li>DME那篇论文</li>
+</ol>
+<p>完成：</p>
+<p>:one: 英语听力</p>
+<h3 id="02-22-周六"><a href="#02-22-周六" class="headerlink" title="02-22 周六"></a>02-22 周六</h3><ol>
+<li>看完《systemverilog for design》的笔记。</li>
+<li>看完DC ICC笔记</li>
+<li>看金字塔原理</li>
+<li>看DME论文</li>
+</ol>
+<p>完成：</p>
+<p>:one: 看完《systemverilog for design》的笔记。</p>
+<p>:two:  英语听力</p>
+<p>:three:  看完DC笔记</p>
+<p>:four:  看金字塔原理</p>
+<h3 id="03-23-周日"><a href="#03-23-周日" class="headerlink" title="03-23 周日"></a>03-23 周日</h3><ol>
+<li>看ICC笔记</li>
+<li>看论文，思考s</li>
+</ol>
+<p>完成：</p>
+<p>:one: 学习ICC使用</p>
+<p>:two:  英语听力一篇</p>
+<p>:three:  思考论文实现</p>
+<h3 id="周总结：-5"><a href="#周总结：-5" class="headerlink" title="周总结："></a>周总结：</h3><ol>
+<li>英语听力四篇</li>
+<li>复习了《systemverilog for design》的笔记</li>
+<li>看完DC笔记</li>
+<li>看了三分之一的《金字塔原理》</li>
+<li>用了一下ICC</li>
+<li>想了一下论文的思路</li>
+<li>看了DME</li>
+<li>看tcl语言</li>
+</ol>
+<h2 id="阶段总结："><a href="#阶段总结：" class="headerlink" title="阶段总结："></a>阶段总结：</h2><p>完成：</p>
+<p>:one: 《Verilog and SystemVerilog Gotchas》已看完01-17</p>
+<p>:two:  《System Verilog for design——A guide to using system verilog for hardware design and modeling》——已看完</p>
+<p>:three:  “积极心理学公开课”又看了一半</p>
+<p>:four:  看一下关于cross link和mesh来降低工艺波动的论文。 已看过（在学校）</p>
+<p>:five:  有六分之五的时间每天都听了英语听力。</p>
+<p>未完成：</p>
+<p>:one: 每周要写两篇技术文章（2020-02-20）</p>
+<p>:two:  看别人的分组硕士论文</p>
+
+
+  
+</article>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

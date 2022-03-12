@@ -1,0 +1,596 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="​    实际硬件中，计算是并发进行的，在Verilog中通过initial、always、连续赋值来模拟，在测试平台中为了模拟、检验Verilog中的这些语句块，tb使用许多并发的线程。 1. 线程的定义和使用1.1 定义线程initial 、always、assign都是进程，初次之外还有：  fork    join 其内的语句并发，fork-join块执行完才执行后面的语句。  fork">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SV——线程及线程间的通信（一）">
+<meta property="og:url" content="http://example.com/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="​    实际硬件中，计算是并发进行的，在Verilog中通过initial、always、连续赋值来模拟，在测试平台中为了模拟、检验Verilog中的这些语句块，tb使用许多并发的线程。 1. 线程的定义和使用1.1 定义线程initial 、always、assign都是进程，初次之外还有：  fork    join 其内的语句并发，fork-join块执行完才执行后面的语句。  fork">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-07-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.816Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="IC">
+<meta property="article:tag" content="SV">
+<meta property="article:tag" content="Verification">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>SV——线程及线程间的通信（一） - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="SV——线程及线程间的通信（一）">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-07-23 00:00" pubdate>
+        July 23, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.3k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      36 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">SV——线程及线程间的通信（一）</h1>
+            
+            <div class="markdown-body">
+              <p>​    实际硬件中，计算是并发进行的，在Verilog中通过initial、always、连续赋值来模拟，在测试平台中为了模拟、检验Verilog中的这些语句块，tb使用许多并发的线程。</p>
+<h3 id="1-线程的定义和使用"><a href="#1-线程的定义和使用" class="headerlink" title="1. 线程的定义和使用"></a>1. 线程的定义和使用</h3><h4 id="1-1-定义线程"><a href="#1-1-定义线程" class="headerlink" title="1.1 定义线程"></a>1.1 定义线程</h4><p>initial 、always、assign都是进程，初次之外还有：</p>
+<ol>
+<li><p>fork    join</p>
+<p>其内的语句并发，fork-join块执行完才执行后面的语句。</p>
+</li>
+<li><p>fork    join_none</p>
+<p>其内 的语句并发，并且不会阻塞块之后的语句，块内语句与块之后的语句是并发关系。</p>
+</li>
+</ol>
+<figure class="highlight verilog"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	语句<span class="hljs-number">1</span>；<br>    #<span class="hljs-number">10</span>；<br>	<span class="hljs-keyword">fork</span><br>		语句<span class="hljs-number">2</span>；<br>		语句<span class="hljs-number">3</span>；<br>	<span class="hljs-keyword">join_none</span><br>	语句<span class="hljs-number">4</span>；<br>    语句<span class="hljs-number">5</span>；<br><span class="hljs-keyword">end</span><br><span class="hljs-comment">// 执行顺序</span><br><span class="hljs-comment">// #0 语句1</span><br><span class="hljs-comment">// #10 语句2，语句3，语句4并发执行</span><br><span class="hljs-comment">// #10 语句4执行完之后才执行语句5。4执行完之后，即使2，3没执行完，也会接着执行5，因为fork块内语句与之后的语句是并行的，不会阻塞之后的语句</span><br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>fork    join_any</p>
+<p>与fork   Join_none类似，只是，先要执行一条块内的进程。</p>
+</li>
+</ol>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>  <span class="hljs-keyword">fork</span><br>      #<span class="hljs-number">20</span> <span class="hljs-built_in">$display</span>(<span class="hljs-string">&quot;@ %0t [line1] seq 20&quot;</span>,<span class="hljs-built_in">$time</span>);<br>      #<span class="hljs-number">10</span> <span class="hljs-built_in">$display</span>(<span class="hljs-string">&quot;@ %0t [line2] seq 10&quot;</span>,<span class="hljs-built_in">$time</span>);<br>  <span class="hljs-keyword">join_any</span><br>    #<span class="hljs-number">15</span>  <span class="hljs-built_in">$display</span>(<span class="hljs-string">&quot;@ %0t [line3] after seq 15&quot;</span>,<span class="hljs-built_in">$time</span>);<br><span class="hljs-keyword">end</span><br><span class="hljs-comment">//结果</span><br>@ <span class="hljs-number">10</span> [line2] seq <span class="hljs-number">10</span><br>@ <span class="hljs-number">20</span> [line1] seq <span class="hljs-number">20</span><br>@ <span class="hljs-number">25</span> [line3] after seq <span class="hljs-number">15</span> <br></code></pre></td></tr></table></figure>
+
+<p>分析：先要执行fork内的语句，line1与line2的并行，先执行完line2，此时仿真时间是10ns。从现在开始也可以执行fork块之后的语句，也就是line3，line3还需要15ns才输出，而此时line1已经仿真的10ns，再需要10ns就可以输出了，所以先输出line1，然后是line3</p>
+<h4 id="1-2-动态线程"><a href="#1-2-动态线程" class="headerlink" title="1.2 动态线程"></a>1.2 动态线程</h4><p>在类中创建线程，用上面的三个fork块。</p>
+<p><strong>每个fork块都可以看成启动了一个线程。</strong></p>
+<p>如果循环启动线程，需要用automatic关键字，来自动创建变量，这样为每个线程单独分配内存。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">3</span>;i++)<br>		<span class="hljs-keyword">fork</span><br>			<span class="hljs-keyword">automatic</span> <span class="hljs-keyword">int</span> k=i;<br>			<span class="hljs-built_in">$display</span>(k);<br>		<span class="hljs-keyword">join_none</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="1-3-等待所有子线程结束"><a href="#1-3-等待所有子线程结束" class="headerlink" title="1.3 等待所有子线程结束"></a>1.3 等待所有子线程结束</h4><p>在SV，所有的initial都执行完就结束仿真了，有的线程执行时间长，可能还没执行完，仿真就结束了。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	....<br>	run_fork(); <span class="hljs-comment">//调用run_fork()之后，继续执行a&lt;=b，最后一条语句结束，仿真结束，此时</span><br>					<span class="hljs-comment">// run_fork()可能还没执行完。</span><br>	a &lt;= b;<br>	....<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>wait fork来等待线程都执行完。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">task</span> run();<br>	<span class="hljs-keyword">fork</span>:fork_all<br>        run_fork0(); <span class="hljs-comment">//线程0 ；任务内有fork</span><br>        run_fork1();<span class="hljs-comment">//任务内有fork</span><br>		run_fork2();<span class="hljs-comment">//任务内有fork</span><br>		...<br>	<span class="hljs-keyword">join_none</span><br>	<span class="hljs-keyword">wait</span> <span class="hljs-keyword">fork</span>; <span class="hljs-comment">// 等待fork_all中的所有线程都执行完</span><br><span class="hljs-keyword">endtask</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="1-4-停止线程-disable"><a href="#1-4-停止线程-disable" class="headerlink" title="1.4  停止线程  disable"></a>1.4  停止线程  disable</h4><ol>
+<li><p>停止单个线程</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">fork</span>:timeout_fork  <span class="hljs-comment">//fork有标识符</span><br>		run_fork0();<span class="hljs-comment">//任务内有fork</span><br>		run_fork1();<span class="hljs-comment">//任务内有fork</span><br>	<span class="hljs-keyword">join_none</span><br>	#<span class="hljs-number">100</span>;<br>	<span class="hljs-keyword">disable</span> timeout_fork; <span class="hljs-comment">// disable+标识符</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>停止多个线程</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    run_fork2();<br>	<span class="hljs-keyword">fork</span> <span class="hljs-comment">// timeout_fork</span><br>		<span class="hljs-keyword">begin</span><br>			run_fork0();<span class="hljs-comment">//任务内有fork</span><br>			run_fork1();<span class="hljs-comment">//任务内有fork</span><br>			#<span class="hljs-number">100</span> <span class="hljs-keyword">disable</span> <span class="hljs-keyword">fork</span>;<span class="hljs-comment">// 将disable_fork进程中所有的子进程都停止，不需要标识符。</span><br>		<span class="hljs-keyword">end</span><br>	<span class="hljs-keyword">join</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<p>timeout_fork块用来限制要disable的fork的范围，上方代码中的disable对run_fork2()没影响。</p>
+</li>
+<li><p>禁止多次被调用的任务</p>
+<p>如果在任务中启动了进程，当禁用这个任务的时候，会停止所有由该任务启动的进程；在其他地方也调用了该任务，那么其他的那些进程也会被disable。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">task</span> time_out(<span class="hljs-keyword">input</span> <span class="hljs-keyword">int</span> i);<br>	<span class="hljs-keyword">if</span>(i==<span class="hljs-number">0</span>)<br>		#<span class="hljs-number">2</span> <span class="hljs-keyword">disable</span> time_out; <span class="hljs-comment">// 如果i等于0，那么2ns之后停止任务</span><br>	....<br>endtaks<br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	time_out(<span class="hljs-number">0</span>);<br>	time_out(<span class="hljs-number">1</span>);<br>	time_out(<span class="hljs-number">2</span>);<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<p>在2ns时，停止time_out(0)任务，此时也会导致另外两个任务也disable，使它们不能执行完。</p>
+<p><strong>所有disable任务要慎重。</strong></p>
+</li>
+</ol>
+<h3 id="2-线程间通信"><a href="#2-线程间通信" class="headerlink" title="2. 线程间通信"></a>2. 线程间通信</h3><p>​    测试平台中所有的线程需要传递数据，可能多个线程同时要访问同一个数据，测试平台的代码是使得同一时间只有一个线程能访问。</p>
+<p>​    这些数据交换和控制的同步叫做线程间的通信(IPC)。</p>
+<h3 id="3-事件-event"><a href="#3-事件-event" class="headerlink" title="3. 事件 event"></a>3. 事件 event</h3><p>SV中对Verilog中的event做了扩展：</p>
+<p>​    <strong>1. event可以作为参数传递给方法。</strong></p>
+<p>​    <strong>2. 引入了triggered函数</strong></p>
+<p>Verilog中由@，-&gt;操作符来阻塞和触发事件。如果一个线程在阻塞事件的同时，另一个线程同时触发了事件，那么可能发生竞争，如果触发先于阻塞，那么错过触发。</p>
+<p>​    <strong>SV中引入了triggered函数，它可以查询事件是否被触发，包括当前时间片触发（time slot）。触发了返回1.这样可以用wait来等待这个函数的结果，而不必用@来阻塞。</strong></p>
+<p>​    <strong>@e1是边沿敏感的阻塞语句；wait(e1.triggered())是电平敏感的。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">event</span> e1,e2;<br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span>:i1<br>	@e1; <span class="hljs-comment">// 先执行i1块，发现阻塞</span><br>	<span class="hljs-built_in">$display</span>(....);<br>	-&gt;e2; <span class="hljs-comment">//执行完代码后触发e2，开始执行i2</span><br><span class="hljs-keyword">end</span><br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span>:i2<br>	#<span class="hljs-number">1</span>; <span class="hljs-comment">// 1ns后触发e1，并且阻塞在e2</span><br>	-&gt;e1;<br>    @e2;<br>	<span class="hljs-built_in">$display</span>(...);	<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">event</span> e1,e2;<br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">wait</span>(e1<span class="hljs-variable">.triggered</span>());<br>	<span class="hljs-built_in">$display</span>(....);<br>	-&gt;e2;<br><span class="hljs-keyword">end</span><br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	#<span class="hljs-number">1</span>;<br>	-&gt;e1;<br>    <span class="hljs-keyword">wait</span>(e2<span class="hljs-variable">.triggered</span>());<br>	<span class="hljs-built_in">$display</span>(...);<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="3-1-在循环中使用事件"><a href="#3-1-在循环中使用事件" class="headerlink" title="3.1 在循环中使用事件"></a>3.1 在循环中使用事件</h4><p><strong>@e1是边沿敏感的阻塞语句；wait(e1.triggered())是电平敏感的。</strong></p>
+<p>在循环中使用事件，如果循环是0延时的，那么会有点问题：</p>
+<ol>
+<li><p>电平敏感的阻塞</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">forever</span> <span class="hljs-keyword">begin</span><br>		<span class="hljs-keyword">wait</span>(e1<span class="hljs-variable">.triggered</span>());<br>		<span class="hljs-built_in">$display</span>(...);<br>	<span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<p>wait会持续地触发，仿真时间不会向前推进。因为wait触发，执行了一个循环之后，还在当前时间片，e1.triggered()还是返回1，wait继续触发。</p>
+<p>改进：在循环中加入延迟。</p>
+</li>
+<li><p>边沿敏感的阻塞</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">forever</span> <span class="hljs-keyword">begin</span><br>		@e1;<br>		<span class="hljs-built_in">$display</span>(...);<br>	<span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<p>边沿的触发，即使0延迟，只触发一次。</p>
+</li>
+</ol>
+<h4 id="3-2-事件作为参数"><a href="#3-2-事件作为参数" class="headerlink" title="3.2 事件作为参数"></a>3.2 事件作为参数</h4><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> Generator;<br>	<span class="hljs-keyword">event</span> e;<br>    <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">event</span> e1) <span class="hljs-comment">//传入事件</span><br>		<span class="hljs-keyword">this</span><span class="hljs-variable">.e</span> = e1;<br>	<span class="hljs-keyword">endfunction</span><br>	<span class="hljs-keyword">task</span> run()<br>		...<br>		-&gt;e; <span class="hljs-comment">//触发</span><br>	<span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br><span class="hljs-keyword">class</span> Driver;<br>	<span class="hljs-keyword">event</span> e;<br>	<span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">event</span> e2);<span class="hljs-comment">//传入事件</span><br>		<span class="hljs-keyword">this</span><span class="hljs-variable">.e</span>=e2;<br>	<span class="hljs-keyword">endfunction</span><br>	<span class="hljs-keyword">task</span> run();<br>		@e;  <span class="hljs-comment">//等待触发</span><br>		<span class="hljs-comment">// wait(e.triggered());</span><br>		...<br>	<span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br><span class="hljs-keyword">program</span> test;<br>	Generator gen;<br>	Driver drv;<br>	<span class="hljs-keyword">event</span> e;<br>	<span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>		gen=<span class="hljs-keyword">new</span>(e);<br>		drv=<span class="hljs-keyword">new</span>(e);<br>		<span class="hljs-keyword">fork</span><br>			gen<span class="hljs-variable">.run</span>();<br>			drv<span class="hljs-variable">.run</span>();<br>		<span class="hljs-keyword">join</span><br>	<span class="hljs-keyword">end</span><br>endpragram<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-3-等待多个事件"><a href="#3-3-等待多个事件" class="headerlink" title="3.3 等待多个事件"></a>3.3 等待多个事件</h4><p>如果有多个发生器，那么需要等待所有的发生器的线程都执行完。</p>
+<p>方法一、用wait fork</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">event</span> done[N];<span class="hljs-comment">// N是发生器数目</span><br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">foreach</span> (gen[i])<span class="hljs-keyword">begin</span><br>		gen[i]=<span class="hljs-keyword">new</span>(done[i]);<br>		gen[i]<span class="hljs-variable">.run</span>();<br>	<span class="hljs-keyword">end</span><br>	<span class="hljs-keyword">foreach</span>(gen[i]) <span class="hljs-keyword">fork</span><br>		<span class="hljs-keyword">automatic</span> <span class="hljs-keyword">int</span> k=i;<br>		<span class="hljs-keyword">wait</span>(done[k]<span class="hljs-variable">.triggered</span>());<br>	<span class="hljs-keyword">join_none</span><br>    <span class="hljs-keyword">wait</span> <span class="hljs-keyword">fork</span>; <span class="hljs-comment">//等待所有的fork执行完</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<p>方法二、用计数器</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">event</span> done[N];<span class="hljs-comment">// N是发生器数目</span><br><span class="hljs-keyword">int</span> cnt;<br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">foreach</span> (gen[i])<span class="hljs-keyword">begin</span><br>		gen[i]=<span class="hljs-keyword">new</span>(done[i]);<br>		gen[i]<span class="hljs-variable">.run</span>();<br>	<span class="hljs-keyword">end</span><br>	<span class="hljs-keyword">foreach</span>(gen[i]) <span class="hljs-keyword">fork</span><br>		<span class="hljs-keyword">automatic</span> <span class="hljs-keyword">int</span> k=i;<br>        <span class="hljs-keyword">begin</span> <span class="hljs-comment">//begin块</span><br>            <span class="hljs-keyword">wait</span>(done[k]<span class="hljs-variable">.triggered</span>());<br>            cnt++; <span class="hljs-comment">//触发一个，计数加一。</span><br>        <span class="hljs-keyword">end</span><br>	<span class="hljs-keyword">join_none</span><br>    <span class="hljs-keyword">wait</span>(cnt==N); <span class="hljs-comment">//等待计数到N。说明所有的fork执行完毕，所有的事件都触发</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<p>方法三、摆脱事件，只用静态变量来计数</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> Generator ;<br>	<span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> cnt=<span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">task</span> run();<br>        cnt++; <span class="hljs-comment">// 调用run计数加一</span><br>        <span class="hljs-keyword">fork</span><br>            <span class="hljs-keyword">begin</span><br>               ....<br>                cnt--; <span class="hljs-comment">//代码执行完毕，cnt减一。</span><br>            <span class="hljs-keyword">end</span><br>        <span class="hljs-keyword">join_none</span><br>    <span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">foreach</span> (gen[i])  gen[i]=<span class="hljs-keyword">new</span>();<br>    <span class="hljs-keyword">foreach</span> (gen[i])  gen[i]<span class="hljs-variable">.run</span>();<br>    <span class="hljs-keyword">wait</span>(Generator::cnt == <span class="hljs-number">0</span>); <span class="hljs-comment">//gen启动时都+1，结束时都-1，最终结果0.</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/">Verification</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/System-Verilog/">System Verilog</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/SV/">SV</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Verification/">Verification</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94OOP%E6%8A%80%E5%B7%A7/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">SV——OOP技巧</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%BA%8C%EF%BC%89/">
+                        <span class="hidden-mobile">SV——线程及线程间的通信（二）</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

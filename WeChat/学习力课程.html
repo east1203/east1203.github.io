@@ -1,0 +1,507 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="2020-05-29  这是之前看的关于学习力的课程时做的笔记。  学习力课程第一课 学习力最优质的学习不是发生在埋头苦读中，而在于对生活的观察和体悟。 学习力是一个人的动力、毅力和能力。 第二、三课 摆脱假勤奋，提高效率学习效率的提升是金字塔形式的，最底层是“生理基础”，在往上是“心态习惯”，最上面是“技能技巧”。 “四个法则”：1）找出自己的生理节律；2）休息；3）提升“有效”学习时间；4）运">
+<meta property="og:type" content="website">
+<meta property="og:title" content="page.title">
+<meta property="og:url" content="http://example.com/WeChat/%E5%AD%A6%E4%B9%A0%E5%8A%9B%E8%AF%BE%E7%A8%8B.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="2020-05-29  这是之前看的关于学习力的课程时做的笔记。  学习力课程第一课 学习力最优质的学习不是发生在埋头苦读中，而在于对生活的观察和体悟。 学习力是一个人的动力、毅力和能力。 第二、三课 摆脱假勤奋，提高效率学习效率的提升是金字塔形式的，最底层是“生理基础”，在往上是“心态习惯”，最上面是“技能技巧”。 “四个法则”：1）找出自己的生理节律；2）休息；3）提升“有效”学习时间；4）运">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-03-12T03:51:25.792Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.792Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="芯片 验证 读书 编程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>page.title - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="page.title">
+              
+            </span>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<article class="page-content">
+  <p>2020-05-29</p>
+<blockquote>
+<p>这是之前看的关于学习力的课程时做的笔记。</p>
+</blockquote>
+<h2 id="学习力课程"><a href="#学习力课程" class="headerlink" title="学习力课程"></a>学习力课程</h2><h3 id="第一课-学习力"><a href="#第一课-学习力" class="headerlink" title="第一课 学习力"></a>第一课 学习力</h3><p>最优质的学习不是发生在埋头苦读中，而在于对生活的观察和体悟。</p>
+<p>学习力是一个人的动力、毅力和能力。</p>
+<h3 id="第二、三课-摆脱假勤奋，提高效率"><a href="#第二、三课-摆脱假勤奋，提高效率" class="headerlink" title="第二、三课 摆脱假勤奋，提高效率"></a>第二、三课 摆脱假勤奋，提高效率</h3><p>学习效率的提升是金字塔形式的，最底层是“生理基础”，在往上是“心态习惯”，最上面是“技能技巧”。</p>
+<p>“四个法则”：1）找出自己的生理节律；2）休息；3）提升“有效”学习时间；4）运用碎片化时间和整体时间；5）对抗拖延症。</p>
+<h4 id="1-找出生理节律"><a href="#1-找出生理节律" class="headerlink" title="1. 找出生理节律"></a>1. 找出生理节律</h4><p>看看自己什么时候需要休息，什么时候学习效率高。</p>
+<h4 id="2-休息-——阶段性休息"><a href="#2-休息-——阶段性休息" class="headerlink" title="2. 休息 ——阶段性休息"></a>2. 休息 ——阶段性休息</h4><p>如果长时间专注于某个难题而没有结果，那么可以停下来，做一下别的事情转移一下注意力，此时我们虽然在做其他的事情，但是我们的大脑在我们不主动思考的情况下也会替我们思考，或许会有新的灵感。（深有体会，有时候上个厕所，会有新的解决方法冒出来）</p>
+<h4 id="3-提升“有效”学习时间"><a href="#3-提升“有效”学习时间" class="headerlink" title="3. 提升“有效”学习时间"></a>3. 提升“有效”学习时间</h4><ul>
+<li><p>一心不能二用</p>
+<p>当大脑在一心二用的时候，大脑会在两件事之间不停切换，在不断地转移注意力，长期会损害我们的长期、短期记忆。</p>
+<p>但是在做运动的时候我们可以一心二用，这是因为控制运动的大脑区域跟学习、思考的大脑区域不同，各自管各自的事情。</p>
+</li>
+<li><p>“输入”+“输出”的学习模式</p>
+<p>“输入型“：听老师讲</p>
+<p>“输出型”：运用所学知识，最好讲给不懂的人听。</p>
+</li>
+</ul>
+<h4 id="4-运用碎片化时间和整体时间"><a href="#4-运用碎片化时间和整体时间" class="headerlink" title="4. 运用碎片化时间和整体时间"></a>4. 运用碎片化时间和整体时间</h4><ul>
+<li><p>整体时间整体利用。（心流理论）</p>
+<p>心流状态是专注做某一件事情而忽略其他的事情，感到时间流逝地很快，此时我们的学习效率会很高。</p>
+<p>心流状态一般是需要较长时间专注于某事，才可能进入。</p>
+<p>心流的好处：1）学习效率高；2）学习过程不痛苦。</p>
+</li>
+<li><p>学习性质与时间分配相对应</p>
+</li>
+</ul>
+<p>碎片化时间的技巧：不要把事情做完，留下一个小尾巴，这样大脑会觉得不完整，会促使我们及时回到这个工作上。也可以用来应对拖延症。</p>
+<h4 id="5-对抗拖延症"><a href="#5-对抗拖延症" class="headerlink" title="5. 对抗拖延症"></a>5. 对抗拖延症</h4><p>拖延症的原因？</p>
+<p>1）对任务结果的恐惧。</p>
+<p>2）对任务本身难度的高估。</p>
+<p>3）半途失去动力。</p>
+<p>克服拖延症的方法：</p>
+<ol>
+<li>习惯、行为规律的养成。大脑喜欢在相同的环境里做相同的事情，当我们回忆或者记忆某一个东西的时候，最好有相同的生理状态。比如可能有的人上午做数学题厉害，有的人在下午做数学题厉害。</li>
+<li>设定短期、阶段性的目标，及时获得反馈。</li>
+<li>万事开头难，先开始做一点，有一个开头，这会让我们脑子里时常想起自己有个事还没做完。</li>
+<li>目标让越多人知道越好，无形中会有外界的力量 督促自己去行动。</li>
+</ol>
+<h3 id="第四课-开放型心态"><a href="#第四课-开放型心态" class="headerlink" title="第四课 开放型心态"></a>第四课 开放型心态</h3><p>开放型心态三个因素：</p>
+<ol>
+<li>如何直面自我？</li>
+<li>如何直面生活的挑战？</li>
+<li>如何直面批评意见？</li>
+</ol>
+<h4 id="如何直面自我？"><a href="#如何直面自我？" class="headerlink" title="如何直面自我？"></a>如何直面自我？</h4><ul>
+<li><p>不要给自己下定义</p>
+<p>不要将自己局限在某一个标签内，不要给自己下定义，无论好的还是坏的。</p>
+<p>对别人也是这样。</p>
+<p>作评价的时候，要关注那些可以改变的方面。比如说不够努力，而不是说笨。</p>
+</li>
+<li><p>不要轻信局限自我的言论</p>
+</li>
+</ul>
+<h4 id="如何直面生活的挑战？"><a href="#如何直面生活的挑战？" class="headerlink" title="如何直面生活的挑战？"></a>如何直面生活的挑战？</h4><ul>
+<li><p>思考模式转变，这是学习的机遇而不是不可克服的困境。</p>
+</li>
+<li><p>自我归因还是环境归因。</p>
+<p>避免这种情况：自己出错，从外部环境找原因，但别人出错，就认为是别人的错，而不考虑是否是客观条件的限制。</p>
+</li>
+<li><p>热爱所有的挑战和失败</p>
+</li>
+</ul>
+<h4 id="如何直面批评意见？"><a href="#如何直面批评意见？" class="headerlink" title="如何直面批评意见？"></a>如何直面批评意见？</h4><ul>
+<li><p>要增强自己接受负面批评的能力，不要玻璃心</p>
+</li>
+<li><p>批评比表扬要有用</p>
+</li>
+<li><p>判断哪些是要听的，哪些是不需要听的。</p>
+<p>对于一些下定义的评价就不要听力，无论是说你是个天才还是蠢材。</p>
+</li>
+</ul>
+<h3 id="第五课-心理博弈–变压力为动力"><a href="#第五课-心理博弈–变压力为动力" class="headerlink" title="第五课 心理博弈–变压力为动力"></a>第五课 心理博弈–变压力为动力</h3><p>通过有效的激励机制来提升自己的学习力。通过自我激励或者外部激励。（自我激励是实现自己目标的满足感，外部激励是得到别人对自己能力的承认、认可）</p>
+<h3 id="第六课-行为经济学"><a href="#第六课-行为经济学" class="headerlink" title="第六课 行为经济学"></a>第六课 行为经济学</h3><p>机会成本：花同样地时间和精力，可以做其他的事情。</p>
+<p>沉没成本：及时进行止损。</p>
+<p>如何选择自己的人生？</p>
+<ol>
+<li>清晰的人生目标：事业规划是什么？什么规划？目标要长远，并且要坚持去做。</li>
+<li>明确的自我定位：擅长什么？喜欢什么？（找自己能力和爱好的交点）</li>
+<li>集中的时间规划：与其什么都会，不如精通某一点</li>
+<li>宏观的世界视野：未来10年、30年，世界最缺什么？</li>
+</ol>
+<h3 id="第七课-批判思考"><a href="#第七课-批判思考" class="headerlink" title="第七课 批判思考"></a>第七课 批判思考</h3><ul>
+<li><p>如何应对生活中的各种信息？</p>
+<p> 信息的来源？内容？目的？公平？可靠?</p>
+</li>
+<li><p>如何面对相同的信息？</p>
+<p>警惕“智能推荐”；总是关注自己熟悉、感兴趣的东西，会固化原有的思维模式，容易陷入认识的局限中。</p>
+<p>跳出舒适圈，主动了解不同年龄、职业、阶层的关注点、想法、需求。</p>
+</li>
+<li><p>如何面对不同的观点？</p>
+<p>极少有决对的对错，要从不同的角度对问题进行思考，但也不能陷入相对主义的迷惑中。</p>
+<p>有同理心，会换位思考，但也要坚持自己的想法。</p>
+<p>用听故事的心态来面对，而不是只看个结果，主要看自己能够学到什么，而不是反驳。</p>
+</li>
+</ul>
+<h3 id="第八课-学会提问——将学习生活化"><a href="#第八课-学会提问——将学习生活化" class="headerlink" title="第八课 学会提问——将学习生活化"></a>第八课 学会提问——将学习生活化</h3><p>步骤：1）倾听；2）观察；3）提问</p>
+<h4 id="如何倾听？"><a href="#如何倾听？" class="headerlink" title="如何倾听？"></a>如何倾听？</h4><ul>
+<li>别人讲得对不对，我是否同意。（初级）</li>
+<li>即使意见不统一，但还有哪些可取之处。（进阶）</li>
+<li>这人的谈吐逻辑、方式、用词，有什么值得学习的。（高级）</li>
+<li>同化别人谈话的内容、方式、逻辑，并应用它们。（最高）</li>
+</ul>
+<h4 id="如何观察？"><a href="#如何观察？" class="headerlink" title="如何观察？"></a>如何观察？</h4><p>不要对事物习以为常，要永葆好奇心，多问为什么，需要探求事物的底层原理。</p>
+<h4 id="如何提问？"><a href="#如何提问？" class="headerlink" title="如何提问？"></a>如何提问？</h4><p>向谁提问？什么时候问？问什么问题？</p>
+<p>多问本质问题</p>
+<h3 id="第九课-终生学习"><a href="#第九课-终生学习" class="headerlink" title="第九课 终生学习"></a>第九课 终生学习</h3><p>为什么会不愿意学习呢？</p>
+<ol>
+<li>学习功利化。比如“高考狂欢”。</li>
+<li>没有一个好的学习环境。</li>
+</ol>
+<p>终身学习法则：</p>
+<ol>
+<li>想好自己想要什么，不要自我局限。</li>
+<li>互助式的学习，形成学习小组，相互促进，增强满足感。</li>
+<li>沁润式的学习环境，营造有利于学习的环境，比如去书店、图书馆。</li>
+<li>交友慎重</li>
+</ol>
+
+
+  
+</article>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

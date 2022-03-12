@@ -1,0 +1,655 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="在UVM中，将激励生成和测试平台分开，使平台只编译一次，但可以运行多个激励，要实现这一点需要sequence机制、factory机制和config_db机制。 在不同的测试用例中，将不同的sequence设置成sequencer的main_phase中的default_sequence。当sequencer执行到main_phase时，发现有default_sequence，就启动sequence">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UVM——sequence（一）">
+<meta property="og:url" content="http://example.com/2019/08/08/Verification/UVM/UVM%E2%80%94%E2%80%94sequence%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="在UVM中，将激励生成和测试平台分开，使平台只编译一次，但可以运行多个激励，要实现这一点需要sequence机制、factory机制和config_db机制。 在不同的测试用例中，将不同的sequence设置成sequencer的main_phase中的default_sequence。当sequencer执行到main_phase时，发现有default_sequence，就启动sequence">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-08-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.819Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="IC">
+<meta property="article:tag" content="SV">
+<meta property="article:tag" content="Verification">
+<meta property="article:tag" content="UVM">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>UVM——sequence（一） - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="UVM——sequence（一）">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-08-08 00:00" pubdate>
+        August 8, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      11k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      93 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">UVM——sequence（一）</h1>
+            
+            <div class="markdown-body">
+              <p>在UVM中，将激励生成和测试平台分开，使平台只编译一次，但可以运行多个激励，要实现这一点需要sequence机制、factory机制和config_db机制。</p>
+<p>在不同的测试用例中，将不同的sequence设置成sequencer的main_phase中的default_sequence。当sequencer执行到main_phase时，发现有default_sequence，就启动sequence。</p>
+<h3 id="1-sequence的启动"><a href="#1-sequence的启动" class="headerlink" title="1. sequence的启动"></a>1. sequence的启动</h3><p><strong>1）方法一</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><pre><code class="hljs verilog">my_sequence seq0;<br>seq0 = my_sequence::type_id::create(<span class="hljs-string">&quot;seq0&quot;</span>);<br>uvm_config_db<span class="hljs-variable">#(uvm_sequence_base)::set(this,&quot;env.i_agt.sqr.main_phase&quot;,&quot;default_sequence&quot;,seq0)</span>;<br></code></pre></td></tr></table></figure>
+
+<p><strong>2）方法二</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">uvm_config_db<span class="hljs-variable">#(uvm_object_wrapper)::set(this,&quot;env.i_agt.sqr.main_phase&quot;,&quot;default_sequence&quot;,my_sequence::type_id::get())</span>;<br></code></pre></td></tr></table></figure>
+
+<p><strong>3）方法三</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs verilog">my_sequence seq0;<br>seq0 = my_sequence::type_id::create(<span class="hljs-string">&quot;seq0&quot;</span>);<br>seq0<span class="hljs-variable">.start</span>(env<span class="hljs-variable">.i_agt</span><span class="hljs-variable">.sqr</span>);<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-sequence相关的宏"><a href="#2-sequence相关的宏" class="headerlink" title="2. sequence相关的宏"></a>2. sequence相关的宏</h3><p><strong>1）&#96;uvm_do系列</strong></p>
+<p>在sequence类中的body任务里调用&#96;uvm_do系列的宏，<strong>用来指定在那个sequencer中发送transaction。</strong></p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs scss">`<span class="hljs-built_in">uvm_do</span>(SEQ_OR_ITEM)<br>`<span class="hljs-built_in">uvm_do_pri</span>(SEQ_OR_ITEM, PRIORITY)<br>`<span class="hljs-built_in">uvm_do_with</span>(SEQ_OR_ITEM, CONSTRAINTS)<br>`<span class="hljs-built_in">uvm_do_pri_with</span>(SEQ_OR_ITEM, PRIORITY, CONSTRAINTS)<br>`<span class="hljs-built_in">uvm_do_on</span>(SEQ_OR_ITEM, SEQR)<br>`<span class="hljs-built_in">uvm_do_on_pri</span>(SEQ_OR_ITEM, SEQR, PRIORITY)<br>`<span class="hljs-built_in">uvm_do_on_with</span>(SEQ_OR_ITEM, SEQR, CONSTRAINTS)<br>`<span class="hljs-built_in">uvm_do_on_pri_with</span>(SEQ_OR_ITEM, SEQR, PRIORITY, CONSTRAINTS)<br></code></pre></td></tr></table></figure>
+
+<p><strong>在UVM中uvm_do的其他七个宏都是从是从&#96;uvm_do_on_pri_with产生的</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-meta">`<span class="hljs-keyword">define</span> uvm_do(SEQ_OR_ITME) \</span><br>	`uvm_do_on_pri_with(SEQ_OR_ITEM,m_sequencer,-<span class="hljs-number">1</span>,&#123;&#125;)<br></code></pre></td></tr></table></figure>
+
+
+
+<p>下面是一个&#96;uvm_do_with的例子：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> crc_seq <span class="hljs-keyword">extends</span> uvm_sequence<span class="hljs-variable">#(my_transaction)</span>;<br>   `uvm_object_utils(crc_seq)<br>   <span class="hljs-keyword">function</span>  <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name= <span class="hljs-string">&quot;crc_seq&quot;</span>);<br>      <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name);<br>   <span class="hljs-keyword">endfunction</span> <br>   <br>   <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> body();<br>      my_transaction tr;<br>      `uvm_do_with(tr, &#123;tr<span class="hljs-variable">.crc_err</span> == <span class="hljs-number">1</span>;<br>                        tr<span class="hljs-variable">.dmac</span> == <span class="hljs-number">48&#x27;h980F</span>;&#125;)<br>   <span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>2）&#96;uvm_send系列</strong></p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs scss">`<span class="hljs-built_in">uvm_send</span>(SEQ_OR_ITEM)<br>`<span class="hljs-built_in">uvm_send_pri</span>(SEQ_OR_ITEM, PRIORITY)<br>`<span class="hljs-built_in">uvm_rand_send</span>(SEQ_OR_ITEM)<br>`<span class="hljs-built_in">uvm_rand_send_pri</span>(SEQ_OR_ITEM, PRIORITY)<br>`<span class="hljs-built_in">uvm_rand_send_with</span>(SEQ_OR_ITEM, CONSTRAINTS)<br>`<span class="hljs-built_in">uvm_rand_send_pri_with</span>(SEQ_OR_ITEM, PRIORITY, CONSTRAINTS)<br></code></pre></td></tr></table></figure>
+
+<p>在使用`uvm_send之前，transaction必须是已经创建好了的，可以用`uvm_create宏来创建，</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> body();<br>      <span class="hljs-keyword">int</span> num = <span class="hljs-number">0</span>;<br>      <span class="hljs-keyword">int</span> p_sz;<br>      my_transaction m_trans;<br>      <span class="hljs-keyword">if</span>(starting_phase != <span class="hljs-literal">null</span>) <br>         starting_phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>);<br>      <span class="hljs-keyword">repeat</span> (<span class="hljs-number">10</span>) <span class="hljs-keyword">begin</span><br>         num++;<br>          `uvm_create(m_trans)  <span class="hljs-comment">//创建transaction</span><br>         <span class="hljs-keyword">assert</span>(m_trans<span class="hljs-variable">.randomize</span>());<br>         p_sz = m_trans<span class="hljs-variable">.pload</span><span class="hljs-variable">.size</span>();<br>         &#123;m_trans<span class="hljs-variable">.pload</span>[p_sz - <span class="hljs-number">4</span>], <br>          m_trans<span class="hljs-variable">.pload</span>[p_sz - <span class="hljs-number">3</span>], <br>          m_trans<span class="hljs-variable">.pload</span>[p_sz - <span class="hljs-number">2</span>], <br>          m_trans<span class="hljs-variable">.pload</span>[p_sz - <span class="hljs-number">1</span>]&#125; <br>          = num; <br>          `uvm_send(m_trans) <span class="hljs-comment">//发送transaction</span><br>      <span class="hljs-keyword">end</span><br>      #<span class="hljs-number">100</span>;<br>      <span class="hljs-keyword">if</span>(starting_phase != <span class="hljs-literal">null</span>) <br>         starting_phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br>   <span class="hljs-keyword">endtask</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-sequence相关函数"><a href="#3-sequence相关函数" class="headerlink" title="3. sequence相关函数"></a>3. sequence相关函数</h3><p><strong>1）start_item和finish_item</strong></p>
+<p><strong>用这两个函数来代替&#96;uvm_do系列的宏，来控制transaction的发送。但是要求transaction是已经创建好了的。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs VERILOG"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> start_item (	uvm_sequence_item 	item,<span class="hljs-keyword">int</span> 	set_priority	 = 	-<span class="hljs-number">1</span>,<br>		uvm_sequencer_base 	sequencer	 = 	<span class="hljs-literal">null</span>	)<br>    <span class="hljs-comment">///Randomization may be done between start_item and finish_item to ensure late generation</span><br>    <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> finish_item (	uvm_sequence_item 	item,<span class="hljs-keyword">int</span> 	set_priority	 = 	-<span class="hljs-number">1</span>	)<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> body();<br>      my_transaction tr;<br>      <span class="hljs-keyword">if</span>(starting_phase != <span class="hljs-literal">null</span>) <br>         starting_phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>);<br>      <span class="hljs-keyword">repeat</span> (<span class="hljs-number">10</span>) <span class="hljs-keyword">begin</span><br>          tr = <span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;tr&quot;</span>); <span class="hljs-comment">// 先将transaction创建好。</span><br>          <span class="hljs-keyword">assert</span>(tr<span class="hljs-variable">.randomize</span>() <span class="hljs-keyword">with</span> &#123;tr<span class="hljs-variable">.pload</span><span class="hljs-variable">.size</span> == <span class="hljs-number">200</span>;&#125;);<span class="hljs-comment">//随机化也可以在两个函数之间</span><br>          start_item(tr); <span class="hljs-comment">// 等待sequencer能够接受transaction，否则阻塞</span><br>          finish_item(tr); <span class="hljs-comment">// 等待driver调用itme_done()，否则阻塞。表明一个transaction发送完，可以收集运行结果。</span><br>      <span class="hljs-keyword">end</span><br>      #<span class="hljs-number">100</span>;<br>      <span class="hljs-keyword">if</span>(starting_phase != <span class="hljs-literal">null</span>) <br>         starting_phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br>   <span class="hljs-keyword">endtask</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>2）pre_do、mid_do和post_do</strong></p>
+<p>&#96;uvm_do系列的宏封装了很多命令：</p>
+<p><strong>如果&#96;uvm_do中的参数是uvm_sequence_item：</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Verilog">`uvm_create(item)<br>sequencer<span class="hljs-variable">.wait_for_grant</span>(prior) (<span class="hljs-keyword">task</span>)<br><span class="hljs-keyword">this</span><span class="hljs-variable">.pre_do</span>(<span class="hljs-number">1</span>)                  (<span class="hljs-keyword">task</span>) <span class="hljs-comment">// start_item</span><br>item<span class="hljs-variable">.randomize</span>()<br><span class="hljs-keyword">this</span><span class="hljs-variable">.mid_do</span>(item)               (func)	<span class="hljs-comment">//finish_item</span><br>sequencer<span class="hljs-variable">.send_request</span>(item)    (func)<br>sequencer<span class="hljs-variable">.wait_for_item_done</span>()  (<span class="hljs-keyword">task</span>)<br><span class="hljs-keyword">this</span><span class="hljs-variable">.post_do</span>(item)              (func) <span class="hljs-comment">//finish_item</span><br></code></pre></td></tr></table></figure>
+
+<p>pre_do是start_item返回前执行的最后一行代码；mid_do是finish_item最开始，post_do是finish_item最后一行代码。</p>
+<p><strong>如果&#96;uvm_do中的参数是uvm_sequence：</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs VERILOG">`uvm_create(sub_seq)<br>sub_seq<span class="hljs-variable">.randomize</span>()<span class="hljs-comment">//也进行随机化，在sequence也可以定义rand变量</span><br>sub_seq<span class="hljs-variable">.pre_start</span>()         (<span class="hljs-keyword">task</span>)<br><span class="hljs-keyword">this</span><span class="hljs-variable">.pre_do</span>(<span class="hljs-number">0</span>)              (<span class="hljs-keyword">task</span>)<br><span class="hljs-keyword">this</span><span class="hljs-variable">.mid_do</span>(sub_seq)        (func)<br>sub_seq<span class="hljs-variable">.body</span>()              (<span class="hljs-keyword">task</span>)<br><span class="hljs-keyword">this</span><span class="hljs-variable">.post_do</span>(sub_seq)       (func)<br>sub_seq<span class="hljs-variable">.post_start</span>()        (<span class="hljs-keyword">task</span>)<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-sequence的仲裁机制"><a href="#4-sequence的仲裁机制" class="headerlink" title="4. sequence的仲裁机制"></a>4. sequence的仲裁机制</h3><h4 id="4-1-在同一个sequencer上同时启动多个sequence"><a href="#4-1-在同一个sequencer上同时启动多个sequence" class="headerlink" title="4.1 在同一个sequencer上同时启动多个sequence"></a>4.1 在同一个sequencer上同时启动多个sequence</h4><p>如果在同一个sequencer上同时启动多个sequence，UVM通过优先级来仲裁先发送哪个transaction或者先启动哪个sequence。</p>
+<p><strong>1）transaction的优先级</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">task</span> my_case0::main_phase(uvm_phase phase);<br>   sequence0 seq0;<br>   sequence1 seq1;<br><br>   seq0 = <span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;seq0&quot;</span>);<br>   seq0<span class="hljs-variable">.starting_phase</span> = phase;<br>   seq1 = <span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;seq1&quot;</span>);<br>   seq1<span class="hljs-variable">.starting_phase</span> = phase;<br>    env<span class="hljs-variable">.i_agt</span><span class="hljs-variable">.sqr</span><span class="hljs-variable">.set_arbitration</span>(SEQ_ARB_STRICT_FIFO);  <span class="hljs-comment">//仲裁算法</span><br>   <span class="hljs-keyword">fork</span> <span class="hljs-comment">// 并行启动sequence</span><br>      seq0<span class="hljs-variable">.start</span>(env<span class="hljs-variable">.i_agt</span><span class="hljs-variable">.sqr</span>);<br>      seq1<span class="hljs-variable">.start</span>(env<span class="hljs-variable">.i_agt</span><span class="hljs-variable">.sqr</span>);<br>   <span class="hljs-keyword">join</span><br><span class="hljs-keyword">endtask</span><br></code></pre></td></tr></table></figure>
+
+<p>transaction的优先级在&#96;uvm_pri_do宏中指定：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Verilog">`uvm_do_pri(m_trans, <span class="hljs-number">100</span>)<br></code></pre></td></tr></table></figure>
+
+<p><strong>除此之外还需要设置sequencer的仲裁算法：</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs VERILOG"><span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> set_arbitration(	SEQ_ARB_TYPE 	val	) <span class="hljs-comment">//原型</span><br></code></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>仲裁算法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SEQ_ARB_FIFO</td>
+<td>Requests are granted in FIFO order (default)</td>
+</tr>
+<tr>
+<td>SEQ_ARB_WEIGHTED</td>
+<td>Requests are granted randomly by weight</td>
+</tr>
+<tr>
+<td>SEQ_ARB_RANDOM</td>
+<td>Requests are granted randomly</td>
+</tr>
+<tr>
+<td>SEQ_ARB_STRICT_FIFO</td>
+<td>Requests at highest priority granted in fifo order</td>
+</tr>
+<tr>
+<td>SEQ_ARB_STRICT_RANDOM</td>
+<td>Requests at highest priority granted in randomly</td>
+</tr>
+<tr>
+<td>SEQ_ARB_USER</td>
+<td>Arbitration is delegated to the user-defined function, user_priority_arbitration.  That function will specify the next sequence to grant.</td>
+</tr>
+</tbody></table>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">env<span class="hljs-variable">.i_agt</span><span class="hljs-variable">.sqr</span><span class="hljs-variable">.set_arbitration</span>(SEQ_ARB_STRICT_FIFO);  <span class="hljs-comment">//仲裁算法</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>2）sequence的优先级</strong></p>
+<p>sequence也有优先级，在start任务中指定：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> start (	uvm_sequencer_base 	sequencer,	  	<br>uvm_sequence_base 	parent_sequence	 = 	<span class="hljs-literal">null</span>,<br><span class="hljs-keyword">int</span> 	this_priority	 = 	-<span class="hljs-number">1</span>,<br><span class="hljs-keyword">bit</span> 	call_pre_post	 = 	<span class="hljs-number">1</span>	)<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs VERILOG"><span class="hljs-keyword">class</span> sequence0 <span class="hljs-keyword">extends</span> uvm_sequence <span class="hljs-variable">#(my_transaction)</span>;<br>   my_transaction m_trans;<br><br>   <span class="hljs-keyword">function</span>  <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name= <span class="hljs-string">&quot;sequence0&quot;</span>);<br>      <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name);<br>   <span class="hljs-keyword">endfunction</span> <br>   <br>   <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> body();<br>       <span class="hljs-keyword">if</span>(starting_phase != <span class="hljs-literal">null</span>) <span class="hljs-comment">//sequence中控制objection</span><br>         starting_phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>);<br>      <span class="hljs-keyword">repeat</span> (<span class="hljs-number">5</span>) <span class="hljs-keyword">begin</span><br>         `uvm_do(m_trans)<br>         `uvm_info(<span class="hljs-string">&quot;sequence0&quot;</span>, <span class="hljs-string">&quot;send one transaction&quot;</span>, UVM_MEDIUM)<br>      <span class="hljs-keyword">end</span><br>      #<span class="hljs-number">100</span>;<br>      <span class="hljs-keyword">if</span>(starting_phase != <span class="hljs-literal">null</span>) <br>         starting_phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br>   <span class="hljs-keyword">endtask</span><br><br>   `uvm_object_utils(sequence0)<br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-keyword">task</span> my_case0::main_phase(uvm_phase phase);<br>   sequence0 seq0;<br>   sequence1 seq1;<br><br>   seq0 = <span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;seq0&quot;</span>);<br>   seq0<span class="hljs-variable">.starting_phase</span> = phase;<span class="hljs-comment">//将phase传给seq0的starting_phase</span><br>   seq1 = <span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;seq1&quot;</span>);<br>   seq1<span class="hljs-variable">.starting_phase</span> = phase;<span class="hljs-comment">//手动启动sequence时需要给starting_phase赋值</span><br>   env<span class="hljs-variable">.i_agt</span><span class="hljs-variable">.sqr</span><span class="hljs-variable">.set_arbitration</span>(SEQ_ARB_STRICT_FIFO);<br>   <span class="hljs-keyword">fork</span><br>       seq0<span class="hljs-variable">.start</span>(env<span class="hljs-variable">.i_agt</span><span class="hljs-variable">.sqr</span>, <span class="hljs-literal">null</span>, <span class="hljs-number">100</span>); <span class="hljs-comment">//指定优先级</span><br>      seq1<span class="hljs-variable">.start</span>(env<span class="hljs-variable">.i_agt</span><span class="hljs-variable">.sqr</span>, <span class="hljs-literal">null</span>, <span class="hljs-number">200</span>);<br>   <span class="hljs-keyword">join</span><br><span class="hljs-keyword">endtask</span><br></code></pre></td></tr></table></figure>
+
+<p>在start中指定了sequence优先级，就不需要在&#96;uvm_do宏中指定transaction的优先级了。上面的设定中，seq1的优先级高，seq1中的transaction都发送完才会发送seq0中的transaction。</p>
+<h4 id="4-2-sequencer的lock"><a href="#4-2-sequencer的lock" class="headerlink" title="4.2 sequencer的lock"></a>4.2 sequencer的lock</h4><h4 id="4-3-sequencer的grab"><a href="#4-3-sequencer的grab" class="headerlink" title="4.3 sequencer的grab"></a>4.3 sequencer的grab</h4><h4 id="4-4-sequence的有效性"><a href="#4-4-sequence的有效性" class="headerlink" title="4.4 sequence的有效性"></a>4.4 sequence的有效性</h4><p>sequencer在仲裁sequence时会查看sequence的有效性。查看Is_relevant函数的返回结果，如果为1，有效，为0，无效。<strong>所以可以通过重载is_relevant函数来控制sequence，使它无效。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs VERILOG"><span class="hljs-keyword">class</span> sequence0 <span class="hljs-keyword">extends</span> uvm_sequence <span class="hljs-variable">#(my_transaction)</span>;<br>   my_transaction m_trans;<br>   <span class="hljs-keyword">int</span> num;<br>   <span class="hljs-keyword">bit</span> has_delayed;<br>    <br>    <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">function</span> <span class="hljs-keyword">bit</span> is_relevant(); <span class="hljs-comment">//重载is_relevant</span><br>        <span class="hljs-keyword">if</span>((num &gt;= <span class="hljs-number">3</span>)&amp;&amp;(!has_delayed)) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; <span class="hljs-comment">//如果条件成立则sequence无效，停止产生transaction。</span><br>      <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>   <span class="hljs-keyword">endfunction</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p>当sequencer发现其上启动的所有的sequence都无效的时候会调用wait_for_relevant并等待sequence（查看is_relevant的返回结果）有效。可以重载wait_for_relevant使无效的sequence有效。</p>
+<p>如果sequence无效了，那么它需要等待其他有效的sequence都执行完，sequencer才会调用wait_for_relevant，所以sequence的无效是自己控制的，重新有效却受其他sequence控制。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> sequence0 <span class="hljs-keyword">extends</span> uvm_sequence <span class="hljs-variable">#(my_transaction)</span>;<br>   my_transaction m_trans;<br>   <span class="hljs-keyword">int</span> num;<br>   <span class="hljs-keyword">bit</span> has_delayed;<br>    <br>   <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">function</span> <span class="hljs-keyword">bit</span> is_relevant();<br>      <span class="hljs-keyword">if</span>((num &gt;= <span class="hljs-number">3</span>)&amp;&amp;(!has_delayed)) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>      <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>   <span class="hljs-keyword">endfunction</span><br><br>   <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> wait_for_relevant();<br>      #<span class="hljs-number">10000</span>; <span class="hljs-comment">// 10000ns后，is_relevant中的判断条件无效，is_relevant返回1，sequence重新有效</span><br>      has_delayed = <span class="hljs-number">1</span>;<br>   <span class="hljs-keyword">endtask</span><br>   <span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>is_relevant、wait_for_relevant一般成对重载。</strong></p>
+<h3 id="5-sequence进阶"><a href="#5-sequence进阶" class="headerlink" title="5. sequence进阶"></a>5. sequence进阶</h3><h4 id="5-1-嵌套sequence"><a href="#5-1-嵌套sequence" class="headerlink" title="5.1 嵌套sequence"></a>5.1 嵌套sequence</h4><p>sequence中不但可以发送transaction，也可以启动不同的sequence。可以启动不同sequence的sequence就是嵌套sequence，被嵌套的sequence和嵌套sequence在同一个sequencer中启动。</p>
+<p>嵌套sequence不产生transaction，它只是调度sequence。</p>
+<p><strong>被嵌套的sequence中产生的transaction可以被同一个sequencer发送。这是嵌套的前提条件。这些transaction需要虚sequencer支持的transaction类型相同或者派生自这个类型。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-keyword">class</span> crc_seq <span class="hljs-keyword">extends</span> uvm_sequence<span class="hljs-variable">#(my_transaction)</span>;<br>   `uvm_object_utils(crc_seq)<br>   <span class="hljs-keyword">function</span>  <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name= <span class="hljs-string">&quot;crc_seq&quot;</span>);<br>      <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name);<br>   <span class="hljs-keyword">endfunction</span> <br>   <br>    <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> body(); <span class="hljs-comment">//不控制objection</span><br>      my_transaction tr;<br>      `uvm_do_with(tr, &#123;tr<span class="hljs-variable">.crc_err</span> == <span class="hljs-number">1</span>;<br>                        tr<span class="hljs-variable">.dmac</span> == <span class="hljs-number">48&#x27;h980F</span>;&#125;)<br>   <span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs VERILOG"><span class="hljs-keyword">class</span> case0_sequence <span class="hljs-keyword">extends</span> uvm_sequence <span class="hljs-variable">#(my_transaction)</span>;<br>   my_transaction m_trans;<br>    ...<br>   <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> body();<br>      crc_seq cseq;<br>      long_seq lseq;<br>       <span class="hljs-keyword">if</span>(starting_phase != <span class="hljs-literal">null</span>) <span class="hljs-comment">//在嵌套sequence中控制objection</span><br>         starting_phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>);<br>      <span class="hljs-keyword">repeat</span> (<span class="hljs-number">10</span>) <span class="hljs-keyword">begin</span><br>          `uvm_do(cseq)<span class="hljs-comment">//先启动cseq，再启动lseq</span><br>         `uvm_do(lseq)<br>      <span class="hljs-keyword">end</span><br>      #<span class="hljs-number">100</span>;<br>      <span class="hljs-keyword">if</span>(starting_phase != <span class="hljs-literal">null</span>) <br>         starting_phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br>   <span class="hljs-keyword">endtask</span><br><br>   `uvm_object_utils(case0_sequence)<br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p>也可以用start函数启动sequence：</p>
+<p><strong>其中m_sequencer是启动sequence的sequencer。它是uvm_sequencer_base类型。它是uvm_sequence_item中的私有变量。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> body();<br>     crc_seq cseq;<br>     long_seq lseq;<br>     <span class="hljs-keyword">if</span>(starting_phase != <span class="hljs-literal">null</span>) <br>        starting_phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>);<br>     <span class="hljs-keyword">repeat</span> (<span class="hljs-number">10</span>) <span class="hljs-keyword">begin</span><br>        cseq = <span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;cseq&quot;</span>);<br>         cseq<span class="hljs-variable">.start</span>(m_sequencer);<span class="hljs-comment">//启动sequence的sequencer</span><br>        lseq = <span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;lseq&quot;</span>);<br>        lseq<span class="hljs-variable">.start</span>(m_sequencer);<br>     <span class="hljs-keyword">end</span><br>     #<span class="hljs-number">100</span>;<br>     <span class="hljs-keyword">if</span>(starting_phase != <span class="hljs-literal">null</span>) <br>        starting_phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br>  <span class="hljs-keyword">endtask</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="5-2-sequence中也可以使用rand变量"><a href="#5-2-sequence中也可以使用rand变量" class="headerlink" title="5.2 sequence中也可以使用rand变量"></a>5.2 sequence中也可以使用rand变量</h4><p>&#96;uvm_do宏在启动sequence时也对他进行随机化。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs VERILOG"><span class="hljs-keyword">class</span> long_seq <span class="hljs-keyword">extends</span> uvm_sequence<span class="hljs-variable">#(my_transaction)</span>;<br>    <span class="hljs-keyword">rand</span> <span class="hljs-keyword">bit</span>[<span class="hljs-number">47</span>:<span class="hljs-number">0</span>] ldmac;  <span class="hljs-comment">//随机变量，它的名字不能和transaction类中的变量名重复。</span><br>   `uvm_object_utils(long_seq)<br>...<br>   <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> body();<br>      my_transaction tr;<br>      `uvm_do_with(tr, &#123;tr<span class="hljs-variable">.crc_err</span> == <span class="hljs-number">0</span>;<br>                        tr<span class="hljs-variable">.pload</span><span class="hljs-variable">.size</span>() == <span class="hljs-number">1500</span>;<br>                        tr<span class="hljs-variable">.dmac</span> == ldmac;&#125;)<br>      tr<span class="hljs-variable">.print</span>();<br>   <span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br><span class="hljs-keyword">class</span> case0_sequence <span class="hljs-keyword">extends</span> uvm_sequence <span class="hljs-variable">#(my_transaction)</span>;<br>   my_transaction m_trans;<br>...<br>   <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> body();<br>      long_seq lseq;<br>      <span class="hljs-keyword">if</span>(starting_phase != <span class="hljs-literal">null</span>) <br>         starting_phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>);<br>      <span class="hljs-keyword">repeat</span> (<span class="hljs-number">10</span>) <span class="hljs-keyword">begin</span><br>          `uvm_do_with(lseq, &#123;lseq<span class="hljs-variable">.ldmac</span> == <span class="hljs-number">48&#x27;hFFFF</span>;&#125;)<span class="hljs-comment">//在启动lseq时对其随机化。</span><br>      <span class="hljs-keyword">end</span><br>      #<span class="hljs-number">100</span>;<br>      <span class="hljs-keyword">if</span>(starting_phase != <span class="hljs-literal">null</span>) <br>         starting_phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br>   <span class="hljs-keyword">endtask</span><br><br>   `uvm_object_utils(case0_sequence)<br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="5-3-transaction的类型匹配"><a href="#5-3-transaction的类型匹配" class="headerlink" title="5.3 transaction的类型匹配"></a>5.3 transaction的类型匹配</h4><p>一个sequencer只能产生一种transaction，如果sequence在此sequencer上启动，那么sequence中产生的transaction必须是sequencer支持的类型或者派生自这个类型。</p>
+<p>如果想要在sequencer产生完全不同的transaction，可以将sequencer的类型参数定义为uvm_sequence_item。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> my_sequencer <span class="hljs-keyword">extends</span> uvm_sequencer<span class="hljs-variable">#(uvm_sequence_item)</span><br><span class="hljs-keyword">class</span> my_driver <span class="hljs-keyword">extends</span> uvm_driver<span class="hljs-variable">#(uvm_sequence_item)</span><br></code></pre></td></tr></table></figure>
+
+<p>需要在my_driver中用$cast函数将uvm_sequence_item类型转换成my_transaction 类型。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-keyword">class</span> my_driver <span class="hljs-keyword">extends</span> uvm_driver<span class="hljs-variable">#(uvm_sequence_item)</span>; <span class="hljs-comment">//uvm_sequence_item</span><br><span class="hljs-keyword">task</span> main_phase(uvm_phase phase);<br>   my_transaction m_tr;<span class="hljs-comment">//两种不同的transaction，在driver中判断传过来哪种transaction</span><br>   your_transaction y_tr;<br>   vif<span class="hljs-variable">.data</span> &lt;= <span class="hljs-number">8&#x27;b0</span>;<br>   vif<span class="hljs-variable">.valid</span> &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>   <span class="hljs-keyword">while</span>(!vif<span class="hljs-variable">.rst_n</span>)<br>      @(<span class="hljs-keyword">posedge</span> vif<span class="hljs-variable">.clk</span>);<br>   <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>) <span class="hljs-keyword">begin</span><br>      seq_item_port<span class="hljs-variable">.get_next_item</span>(req);<br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">$cast</span>(m_tr, req)) <span class="hljs-keyword">begin</span><span class="hljs-comment">//如果req是my_transaction类型那么转化到m_tr</span><br>          drive_my_transaction(m_tr);<br>         `uvm_info(<span class="hljs-string">&quot;driver&quot;</span>, <span class="hljs-string">&quot;receive a transaction whose type is my_transaction&quot;</span>, UVM_MEDIUM)<br>      <span class="hljs-keyword">end</span><br>       <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-built_in">$cast</span>(y_tr, req)) <span class="hljs-keyword">begin</span><span class="hljs-comment">//如果req是your_transaction类型那么转化到y_tr</span><br>         drive_your_transaction(y_tr);<br>         `uvm_info(<span class="hljs-string">&quot;driver&quot;</span>, <span class="hljs-string">&quot;receive a transaction whose type is your_transaction&quot;</span>, UVM_MEDIUM)<br>      <span class="hljs-keyword">end</span><br>      <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>         `uvm_error(<span class="hljs-string">&quot;driver&quot;</span>, <span class="hljs-string">&quot;receive a transaction whose type is unknown&quot;</span>)<br>      <span class="hljs-keyword">end</span><br>      seq_item_port<span class="hljs-variable">.item_done</span>();<br>   <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="5-4p-sequencer变量"><a href="#5-4p-sequencer变量" class="headerlink" title="5.4p_sequencer变量"></a>5.4p_sequencer变量</h4><p>之前的m_sequencer是uvm_sequencer_base类型，p_sequencer是真正发送sequence的sequencer类型。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs VERILOG"><span class="hljs-keyword">class</span> case0_sequence <span class="hljs-keyword">extends</span> uvm_sequence <span class="hljs-variable">#(my_transaction)</span>;<br>   my_transaction m_trans;<br>   `uvm_object_utils(case0_sequence)<br>    `uvm_declare_p_sequencer(my_sequencer) <span class="hljs-comment">//声明sequencer的类型</span><br>...   <br>   <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> body();<br>      <span class="hljs-keyword">if</span>(starting_phase != <span class="hljs-literal">null</span>) <br>         starting_phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>);<br>      <span class="hljs-keyword">repeat</span> (<span class="hljs-number">10</span>) <span class="hljs-keyword">begin</span><br>          <span class="hljs-comment">// 使用p_sequencer中的参数。</span><br>         `uvm_do_with(m_trans, &#123;m_trans<span class="hljs-variable">.dmac</span> == p_sequencer<span class="hljs-variable">.dmac</span>;<br>                                m_trans<span class="hljs-variable">.smac</span> == p_sequencer<span class="hljs-variable">.smac</span>;&#125;)<br>      <span class="hljs-keyword">end</span><br>      #<span class="hljs-number">100</span>;<br>      <span class="hljs-keyword">if</span>(starting_phase != <span class="hljs-literal">null</span>) <br>         starting_phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br>   <span class="hljs-keyword">endtask</span><br><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>p_sequencer主要用来指定virtual sequencer中的真正的sequencer。</strong></p>
+<p>​            </p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/">Verification</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/UVM/">UVM</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/SV/">SV</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Verification/">Verification</a>
+                    
+                      <a class="hover-with-bg" href="/tags/UVM/">UVM</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/08/19/others/linux/shell%E4%B8%AD%E7%9A%84sed/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">shell中的sed</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/08/08/Verification/UVM/UVM%E2%80%94%E2%80%94sequence%EF%BC%88%E4%BA%8C%EF%BC%89/">
+                        <span class="hidden-mobile">UVM——sequence（二）</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -1,0 +1,542 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="2019-11-02 SystemVerilog Modport​    Modport lists with directions are defined in an interface to impose certain restrictions on interface access within a module. The keyword modport indicates that th">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ch6-Modport">
+<meta property="og:url" content="http://example.com/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch06_Interface/ch06_Modport/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="2019-11-02 SystemVerilog Modport​    Modport lists with directions are defined in an interface to impose certain restrictions on interface access within a module. The keyword modport indicates that th">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.chipverify.com/images/sv/modport-design-example-wave.PNG">
+<meta property="og:image" content="https://www.chipverify.com/images/site/eda-playground-logo.png">
+<meta property="article:published_time" content="2019-07-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.811Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="SV">
+<meta property="article:tag" content="ChipVerif_Web">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.chipverify.com/images/sv/modport-design-example-wave.PNG">
+  
+  
+  <title>ch6-Modport - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="ch6-Modport">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-07-15 00:00" pubdate>
+        July 15, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5.5k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      46 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ch6-Modport</h1>
+            
+            <div class="markdown-body">
+              <p>2019-11-02</p>
+<h1 id="SystemVerilog-Modport"><a href="#SystemVerilog-Modport" class="headerlink" title="SystemVerilog Modport"></a>SystemVerilog Modport</h1><p>​    Modport lists with directions are defined in an interface to impose certain restrictions on interface access within a module. The keyword <code>modport</code> indicates that the <strong>directions</strong> are declared as if inside the module.</p>
+<h2 id="Syntax"><a href="#Syntax" class="headerlink" title="Syntax"></a>Syntax</h2><figure class="highlight verilog"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">modport</span>  [identifier]  (<br>  <span class="hljs-keyword">input</span>  [port_list],<br>  <span class="hljs-keyword">output</span> [port_list]<br>);<br> <br></code></pre></td></tr></table></figure>
+
+<p>Shown below is the definition of an interface myInterface which has a few signals and two <code>modport</code> declarations. The modport dut0 essentially states that the signals ack and sel are inputs and gnt and irq0 are outputs to whatever module uses this particular modport.</p>
+<p>Similarly, another modport called dut1 is declared which states that gnt and irq0 are inputs and the other two are outputs for any module that uses modport dut1.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">interface</span>   myInterface;<br>  <span class="hljs-keyword">logic</span>   ack;<br>  <span class="hljs-keyword">logic</span>   gnt;<br>  <span class="hljs-keyword">logic</span>   sel;<br>  <span class="hljs-keyword">logic</span>   irq0;<br> <br>  <span class="hljs-comment">// ack and sel are inputs to the dut0, while gnt and irq0 are outputs</span><br>  <span class="hljs-keyword">modport</span>  dut0 (<br>    <span class="hljs-keyword">input</span>   ack, sel,<br>    <span class="hljs-keyword">output</span>   gnt, irq0<br>  );<br> <br>  <span class="hljs-comment">// ack and sel are outputs from dut1, while gnt and irq0 are inputs</span><br>  <span class="hljs-keyword">modport</span>  dut1 (<br>    <span class="hljs-keyword">input</span>   gnt, irq0,<br>    <span class="hljs-keyword">output</span>   ack, sel<br>  );<br><span class="hljs-keyword">endinterface</span><br> <br></code></pre></td></tr></table></figure>
+
+<h2 id="Example-of-named-port-bundle"><a href="#Example-of-named-port-bundle" class="headerlink" title="Example of named port bundle"></a>Example of named port bundle</h2><p>In this style, the design will take the required correct modport definition from the interface object as mentioned in its port list. The testbench only needs to provide the whole interface object to the design.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> dut0  ( myinterface<span class="hljs-variable">.dut0</span>  _if);<br>  ...<br><span class="hljs-keyword">endmodule</span><br> <br><span class="hljs-keyword">module</span> dut1  ( myInterface<span class="hljs-variable">.dut1</span> _if);<br>  ...<br><span class="hljs-keyword">endmodule</span><br> <br><span class="hljs-keyword">module</span> tb;<br>  myInterface   _if;<br>  dut0    d0   ( .* );<br>  dut1   d1   ( .* );<br><span class="hljs-keyword">endmodule</span><br> <br></code></pre></td></tr></table></figure>
+
+<h2 id="Example-of-connecting-port-bundle"><a href="#Example-of-connecting-port-bundle" class="headerlink" title="Example of connecting port bundle"></a>Example of connecting port bundle</h2><p>In this style, the design simply accepts whatever directional information is given to it. Hence testbench is responsible to provide the correct modport values to the design.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> dut0  ( myinterface  _if);<br>  ...<br><span class="hljs-keyword">endmodule</span><br> <br><span class="hljs-keyword">module</span> dut1  ( myInterface _if);<br>  ...<br><span class="hljs-keyword">endmodule</span><br> <br><span class="hljs-keyword">module</span> tb;<br>  myInterface   _if;<br>  dut0    d0   ( <span class="hljs-variable">._if</span> (_if<span class="hljs-variable">.dut0</span>));<br>  dut1   d1   ( <span class="hljs-variable">._if</span> (_if<span class="hljs-variable">.dut1</span>));<br><span class="hljs-keyword">endmodule</span><br> <br></code></pre></td></tr></table></figure>
+
+<h2 id="What-is-the-need-for-a-modport"><a href="#What-is-the-need-for-a-modport" class="headerlink" title="What is the need for a modport ?"></a>What is the need for a modport ?</h2><p>​    <strong>Nets declared within a simple interface is <code>inout</code> by default</strong> and hence any module connected to the same net, can either drive values or take values from it. In simple words, there are no restrictions on direction of value propagation. <strong>You could end up with an X on the net because both the testbench and the design are driving two different values to the same interface net.</strong> Special care should be taken by the testbench writer to ensure that such a situation does not happen. This can be inherently avoided by the use of <em>modports</em>.</p>
+<h2 id="Example-of-connecting-to-generic-interface"><a href="#Example-of-connecting-to-generic-interface" class="headerlink" title="Example of connecting to generic interface"></a>Example of connecting to generic interface</h2><p>A <code>module</code> can also have a <em>generic</em> interface as the portlist. The generic handle can accept any modport passed to it from the hierarchy above.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> dut0  ( <span class="hljs-keyword">interface</span>  _if);<br>  ...<br><span class="hljs-keyword">endmodule</span><br> <br><span class="hljs-keyword">module</span> dut1  ( <span class="hljs-keyword">interface</span> _if);<br>  ...<br><span class="hljs-keyword">endmodule</span><br> <br><span class="hljs-keyword">module</span> tb;<br>  myInterface   _if;<br>  dut0    d0   ( <span class="hljs-variable">._if</span> (_if<span class="hljs-variable">.dut0</span>));<br>  dut1   d1   ( <span class="hljs-variable">._if</span> (_if<span class="hljs-variable">.dut1</span>));<br><span class="hljs-keyword">endmodule</span><br> <br></code></pre></td></tr></table></figure>
+
+<h2 id="Design-Example"><a href="#Design-Example" class="headerlink" title="Design Example"></a>Design Example</h2><p>​    Lets consider two modules master and slave connected by a very simple bus structure. Assume that the <em>bus</em> is capable of sending an address and data which the slave is expected to capture and update the information in its internal registers. So the master always has to initiate the transfer and the slave is capable of indicating to the master whether it is ready to accept the data by its sready signal.</p>
+<h3 id="Interface"><a href="#Interface" class="headerlink" title="Interface"></a>Interface</h3><p>Shown below is an <code>interface</code> definition that is shared between the <em>master</em> and <em>slave</em>modules.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">interface</span> ms_if (<span class="hljs-keyword">input</span> clk);][][]<br>  <span class="hljs-keyword">logic</span> sready;      <span class="hljs-comment">// Indicates if slave is ready to accept data</span><br>  <span class="hljs-keyword">logic</span> rstn;        <span class="hljs-comment">// Active low reset</span><br>  <span class="hljs-keyword">logic</span> [<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] addr;  <span class="hljs-comment">// Address </span><br>  <span class="hljs-keyword">logic</span> [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] data;  <span class="hljs-comment">// Data</span><br> <br>  <span class="hljs-keyword">modport</span> slave ( <span class="hljs-keyword">input</span> addr, data, rstn, clk,<br>                 <span class="hljs-keyword">output</span> sready);<br> <br>  <span class="hljs-keyword">modport</span> master ( <span class="hljs-keyword">output</span> addr, data,<br>                  <span class="hljs-keyword">input</span>  clk, sready, rstn);<br><span class="hljs-keyword">endinterface</span><br> <br></code></pre></td></tr></table></figure>
+
+<h3 id="Design"><a href="#Design" class="headerlink" title="Design"></a>Design</h3><p>​    Assume that the <em>master</em> simply iterates the address from 0 to 3 and sends data equal to the address multiplied by 4. The master should only send when the slave is ready to accept and is indicated by the sready signal.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-comment">// This module accepts an interface with modport &quot;master&quot;</span><br><span class="hljs-comment">// Master sends transactions in a pipelined format</span><br><span class="hljs-comment">// CLK    1   2   3   4   5   6</span><br><span class="hljs-comment">// ADDR   A0  A1  A2  A3  A0  A1</span><br><span class="hljs-comment">// DATA       D0  D1  D2  D3  D4</span><br><span class="hljs-keyword">module</span> master ( ms_if<span class="hljs-variable">.master</span> mif);<br>  <span class="hljs-keyword">always</span> @ (<span class="hljs-keyword">posedge</span> mif<span class="hljs-variable">.clk</span>) <span class="hljs-keyword">begin</span><br> <br>    <span class="hljs-comment">// If reset is applied, set addr and data to default values</span><br>    <span class="hljs-keyword">if</span> (! mif<span class="hljs-variable">.rstn</span>) <span class="hljs-keyword">begin</span><br>      mif<span class="hljs-variable">.addr</span> &lt;= <span class="hljs-number">0</span>;<br>      mif<span class="hljs-variable">.data</span> &lt;= <span class="hljs-number">0</span>;<br> <br>    <span class="hljs-comment">// Else increment addr, and assign data accordingly if slave is ready</span><br>    <span class="hljs-keyword">end</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-comment">// Send new addr and data only if slave is ready</span><br>      <span class="hljs-keyword">if</span> (mif<span class="hljs-variable">.sready</span>) <span class="hljs-keyword">begin</span><br>        mif<span class="hljs-variable">.addr</span> &lt;= mif<span class="hljs-variable">.addr</span> + <span class="hljs-number">1</span>;<br>        mif<span class="hljs-variable">.data</span> &lt;= (mif<span class="hljs-variable">.addr</span> * <span class="hljs-number">4</span>);<br> <br>     <span class="hljs-comment">// Else maintain current addr and data</span><br>      <span class="hljs-keyword">end</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        mif<span class="hljs-variable">.addr</span> &lt;= mif<span class="hljs-variable">.addr</span>;<br>        mif<span class="hljs-variable">.data</span> &lt;= mif<span class="hljs-variable">.data</span>;<br>      <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span><br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br> <br></code></pre></td></tr></table></figure>
+
+<p>Assume that the slave accepts data for every addr and assigns them to internal registers. When the address wraps from 3 to 0, the slave requires 1 additional clock to become ready.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> slave (ms_if<span class="hljs-variable">.slave</span> sif);<br>  <span class="hljs-keyword">reg</span> [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] reg_a;<br>  <span class="hljs-keyword">reg</span> [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>]  reg_b;<br>  <span class="hljs-keyword">reg</span>     reg_c;<br>  <span class="hljs-keyword">reg</span> [<span class="hljs-number">3</span>:<span class="hljs-number">0</span>] reg_d;<br> <br>  <span class="hljs-keyword">reg</span>    dly;<br>  <span class="hljs-keyword">reg</span> [<span class="hljs-number">3</span>:<span class="hljs-number">0</span>] addr_dly;<br> <br> <br>  <span class="hljs-keyword">always</span> @ (<span class="hljs-keyword">posedge</span> sif<span class="hljs-variable">.clk</span>) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span> (! sif<span class="hljs-variable">.rstn</span>) <span class="hljs-keyword">begin</span><br>      addr_dly &lt;= <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">end</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>      addr_dly &lt;= sif<span class="hljs-variable">.addr</span>;<br>    <span class="hljs-keyword">end</span><br>  <span class="hljs-keyword">end</span><br> <br>  <span class="hljs-keyword">always</span> @ (<span class="hljs-keyword">posedge</span> sif<span class="hljs-variable">.clk</span>) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span> (! sif<span class="hljs-variable">.rstn</span>) <span class="hljs-keyword">begin</span><br>        reg_a &lt;= <span class="hljs-number">0</span>;<br>      reg_b &lt;= <span class="hljs-number">0</span>;<br>      reg_c &lt;= <span class="hljs-number">0</span>;<br>      reg_d &lt;= <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">end</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>      <span class="hljs-keyword">case</span> (addr_dly)<br>        <span class="hljs-number">0</span> : reg_a &lt;= sif<span class="hljs-variable">.data</span>;<br>        <span class="hljs-number">1</span> : reg_b &lt;= sif<span class="hljs-variable">.data</span>;<br>        <span class="hljs-number">2</span> : reg_c &lt;= sif<span class="hljs-variable">.data</span>;<br>        <span class="hljs-number">3</span> : reg_d &lt;= sif<span class="hljs-variable">.data</span>;<br>      <span class="hljs-keyword">endcase</span><br>    <span class="hljs-keyword">end</span><br>  <span class="hljs-keyword">end</span><br> <br>  <span class="hljs-keyword">assign</span> sif<span class="hljs-variable">.sready</span> = ~(sif<span class="hljs-variable">.addr</span>[<span class="hljs-number">1</span>] &amp; sif<span class="hljs-variable">.addr</span>[<span class="hljs-number">0</span>]) | ~dly;<br> <br>  <span class="hljs-keyword">always</span> @ (<span class="hljs-keyword">posedge</span> sif<span class="hljs-variable">.clk</span>) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span> (! sif<span class="hljs-variable">.rstn</span>) <br>      dly &lt;= <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">else</span> <br>      dly &lt;= sif<span class="hljs-variable">.sready</span>;<br>  <span class="hljs-keyword">end</span><br> <br><span class="hljs-keyword">endmodule</span><br> <br></code></pre></td></tr></table></figure>
+
+<p>The two design modules are tied together at a top level.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> d_top (ms_if tif);<br>  <span class="hljs-comment">// Pass the &quot;master&quot; modport to master</span><br>    master   m0 (tif<span class="hljs-variable">.master</span>);<br> <br>    <span class="hljs-comment">// Pass the &quot;slave&quot; modport to slave</span><br>    slave   s0 (tif<span class="hljs-variable">.slave</span>);<br><span class="hljs-keyword">endmodule</span><br> <br></code></pre></td></tr></table></figure>
+
+<h3 id="Testbench"><a href="#Testbench" class="headerlink" title="Testbench"></a>Testbench</h3><p>The testbench will pass the interface handle to the design, which will then assign master and slave modports to its sub-modules.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> tb;<br>  <span class="hljs-keyword">reg</span> clk;<br>  <span class="hljs-keyword">always</span> #<span class="hljs-number">10</span> clk = ~clk;<br> <br>  ms_if   if0 (clk);<br>  d_top   d0  (if0);  <br> <br>  <span class="hljs-comment">// Let the stimulus run for 20 clocks and stop</span><br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    clk &lt;= <span class="hljs-number">0</span>;<br>    if0<span class="hljs-variable">.rstn</span> &lt;= <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">repeat</span> (<span class="hljs-number">5</span>) @ (<span class="hljs-keyword">posedge</span> clk);<br>    if0<span class="hljs-variable">.rstn</span> &lt;= <span class="hljs-number">1</span>;<br> <br>    <span class="hljs-keyword">repeat</span> (<span class="hljs-number">20</span>) @ (<span class="hljs-keyword">posedge</span> clk);<br>    <span class="hljs-built_in">$finish</span>;<br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br> <br></code></pre></td></tr></table></figure>
+
+<p><strong>Simulation Output</strong></p>
+<p>Remember that the master initiates bus transactions and the slave captures data and stores it in its internal registers reg_* for the corresponding address.</p>
+<p><img src="https://www.chipverify.com/images/sv/modport-design-example-wave.PNG" srcset="/img/loading.gif" lazyload alt="modport-design-example-wave"><a target="_blank" rel="noopener" href="https://www.edaplayground.com/x/32EV">Click to try this example in a simulator!  <img src="https://www.chipverify.com/images/site/eda-playground-logo.png" srcset="/img/loading.gif" lazyload alt="img"></a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/">Verification</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/System-Verilog/">System Verilog</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/SV/">SV</a>
+                    
+                      <a class="hover-with-bg" href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch06_Interface/ch06_Interface/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ch6-Interrface</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch07_class/ch07_local/">
+                        <span class="hidden-mobile">ch7-local</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

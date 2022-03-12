@@ -1,0 +1,594 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="1. 同步、异步定义对于工具来说，只要给出了时钟之间的关系，工具就认为是同步时钟，tool就可以对这两个时钟分析时序关系。 同步时钟：能够明确定义以下属性的时钟:  时钟周期或者频率 时钟占空比 duty time 每个时钟信号第一个上升沿的时间（相位） 时钟的输入latency——从PLL到模块的时钟输入端口的delay  异步时钟：没法明确定义上面这些属性的时钟。 比如clk0的周期、占空比、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跨时钟域设计">
+<meta property="og:url" content="http://example.com/2019/05/23/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="1. 同步、异步定义对于工具来说，只要给出了时钟之间的关系，工具就认为是同步时钟，tool就可以对这两个时钟分析时序关系。 同步时钟：能够明确定义以下属性的时钟:  时钟周期或者频率 时钟占空比 duty time 每个时钟信号第一个上升沿的时间（相位） 时钟的输入latency——从PLL到模块的时钟输入端口的delay  异步时钟：没法明确定义上面这些属性的时钟。 比如clk0的周期、占空比、">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/sr.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/meta1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/meta2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/meta3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/sb1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/sb2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/sb3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/sb4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/sb5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/sb6.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/mb1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/mb2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/mb3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/async1.png">
+<meta property="article:published_time" content="2019-05-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.805Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="IC">
+<meta property="article:tag" content="Asynchronous">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/sr.png">
+  
+  
+  <title>跨时钟域设计 - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="跨时钟域设计">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-05-23 00:00" pubdate>
+        May 23, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.9k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      25 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">跨时钟域设计</h1>
+            
+            <div class="markdown-body">
+              <h2 id="1-同步、异步定义"><a href="#1-同步、异步定义" class="headerlink" title="1. 同步、异步定义"></a>1. 同步、异步定义</h2><p><strong>对于工具来说，只要给出了时钟之间的关系，工具就认为是同步时钟，tool就可以对这两个时钟分析时序关系。</strong></p>
+<p><strong>同步时钟：能够明确定义以下属性的时钟:</strong></p>
+<ol>
+<li>时钟周期或者频率</li>
+<li>时钟占空比 duty time</li>
+<li>每个时钟信号第一个上升沿的时间（相位）</li>
+<li>时钟的输入latency——从PLL到模块的时钟输入端口的delay</li>
+</ol>
+<p><strong>异步时钟：</strong>没法明确定义上面这些属性的时钟。</p>
+<p>比如clk0的周期、占空比、相位、latency都明确定义了，clk1只定义了时钟频率，那么就可以将这两个时钟看成异步时钟。</p>
+<h2 id="2-亚稳态-metastable"><a href="#2-亚稳态-metastable" class="headerlink" title="2. 亚稳态 metastable"></a>2. 亚稳态 metastable</h2><p>亚稳态这东西各种数字书、时序书、文章等都会提到，都有专门的论文将这个metastable，比如Criticality-dependency-aware timing characterization and analysis。</p>
+<h4 id="建立保持时间"><a href="#建立保持时间" class="headerlink" title="建立保持时间"></a>建立保持时间</h4><p><strong>建立时间：</strong>数据在时钟有效沿之前需要保持稳定的时间。</p>
+<p><strong>保持时间</strong>：数据在时钟有效沿之后需要保持稳定的时间。</p>
+<p><strong>建立时间和保持时间产生的由来是：边沿触发的触发器由锁存器组成的，锁存器是两个与非门或者或非门反馈形成的，反馈回路上有延迟，这样就导致触发器需要建立时间和保持时间，保证触发器建立稳定的反馈，否则就是不稳定，也就是亚稳态喽。</strong></p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/sr.png" srcset="/img/loading.gif" lazyload></p>
+<p>比如下面这张图：</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/meta1.png" srcset="/img/loading.gif" lazyload></p>
+<p>​    上方(a)图：横轴Tcp-d是时钟有效之前data需要稳定的时间，在上图中也就是从data input到达D开始至clock edge到达CP的时间；纵轴Tcp-q寄存器传播延迟——clock edge(CP)到data output(Q)时间。可见随着Tcp-d增大，Tcp-q区域稳定值，当此时的Tcp-q恶化10%时对应的Tcp-d就是Tsetup时间。如果Tcp-d继续减小，寄存器延迟迅速增长。</p>
+<p>​         灰影区域<strong>metastable region</strong>亚稳态区域。但是就算是setup slack 小于建立时间，处在亚稳态区域，芯片也不一定失败，因为设计中的路径可能时序裕量较大。但是工艺厂商不保证器件时序正确。保持时间类似，如下图：</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/meta2.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="亚稳态的两个问题"><a href="#亚稳态的两个问题" class="headerlink" title="亚稳态的两个问题"></a>亚稳态的两个问题</h4><p>当建立、保持时间不满足时寄存器处于亚稳态，这回带来两个问题：</p>
+<ol>
+<li><strong>实际电路中大大延迟了Tck-q的时间，这个Tck-q的值不在工艺库里，需要问foundry到底是多少</strong></li>
+<li><strong>最终Q端的值不确定，可能是0也可能是1.</strong></li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/meta3.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="3-跨时钟域处理的目标"><a href="#3-跨时钟域处理的目标" class="headerlink" title="3.  跨时钟域处理的目标"></a>3.  跨时钟域处理的目标</h2><p>为了保证跨时钟域数据（事件）的完整性或正确性：</p>
+<ol>
+<li>数据（事件）的值不能错</li>
+<li>数据（事件）的顺序不能错</li>
+<li>数据（事件）的个数不能错</li>
+</ol>
+<p>通过这三点来检验跨时钟域数据传输的正确性。</p>
+<h2 id="3-single-bit跨时钟域"><a href="#3-single-bit跨时钟域" class="headerlink" title="3. single bit跨时钟域"></a>3. single bit跨时钟域</h2><h4 id="两级同步跨时钟信号（打两拍）"><a href="#两级同步跨时钟信号（打两拍）" class="headerlink" title="两级同步跨时钟信号（打两拍）"></a>两级同步跨时钟信号（打两拍）</h4><p>通常的跨时钟域传递数据会产生亚稳态，采样的异步时钟不知道被采样的data是否已经稳定，或者被采样的data不一定满足采样时钟的建立、保持时间。</p>
+<p><strong>一般会采用如下图的打两拍——用两个寄存器将数据稳定一下；并且设置两个用来同步的触发器间Q到D的max delay(set_maximal_delay)。</strong>下面会分析为什么要这样。</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/sb1.png" srcset="/img/loading.gif" lazyload></p>
+<p>上图中，clk0,clk1是异步时钟，clk0控制绿色的寄存器，clk1控制两个蓝色的寄存器，我们称两个蓝色的寄存器位同步寄存器。第一个同步寄存器很可能是亚稳态采样，第二个寄存器基本不会亚稳态。</p>
+<p>对于第一个同步的寄存器而言是跨时钟域采样，很可能亚稳态，这样第一个寄存器的Tck-q就会很长（这要问foundry，库中器件最大的Tck-q到底是多少，而不是根据库中的信息），比如1ns。</p>
+<p><strong>如果同步时钟clk1不是很大</strong>，比如不到100Mhz，那么周期T是10Ns，那么对于第二个寄存器来说有足够的setup  \hold time来保证不是亚稳态采样。</p>
+<p><strong>当然如果clk1频率很高的话</strong>，由于第一个寄存器亚稳态采样，Tck-q很大，实际中第一个寄存器Q端的输出会向后延迟，使第二个寄存器的setup time不满足。如下图中</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/sb2.png" srcset="/img/loading.gif" lazyload></p>
+<p>上图中由于clk1采样d_async时不满足建立时间，使得第一个同步寄存器亚稳态，其输出端d_async0经过很长时间才稳定，也就是Tck-q时间大大增长，这使得第二个同步寄存器在采样d_async0的时候也发生建立时间不满足，也使得输出端d_async1亚稳态，这样就错了。</p>
+<p>这就需要设置第一个同步寄存器Q端到第二个同步寄存器D端的最大延迟(max delay)，使这段路径满足建立保持时间约束(T &gt; Tck-q + Tq-d + Tsu)。如下图所示：</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/sb3.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="跨时钟域可能延迟一个周期"><a href="#跨时钟域可能延迟一个周期" class="headerlink" title="跨时钟域可能延迟一个周期"></a>跨时钟域可能延迟一个周期</h4><p>在跨时钟域传输中可能会延迟一个周期，如下图所示</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/sb4.png" srcset="/img/loading.gif" lazyload></p>
+<p>如上图中case0中d_sync0第一个周期采样到了高电平，而case1中d_sync0第一个周期没采样到高电平，其信号延迟了一个周期，这种延迟一个周期是不确定的，但知识一个周期，不会是两个.</p>
+<h4 id="错误的single-bit采样电路"><a href="#错误的single-bit采样电路" class="headerlink" title="错误的single bit采样电路"></a>错误的single bit采样电路</h4><p><strong>第一种</strong></p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/sb5.png" srcset="/img/loading.gif" lazyload></p>
+<p>上图中组合逻辑电路可能竞争冒险，使同步的寄存器采样到错误的数据</p>
+<p><strong>第二种</strong></p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/sb6.png" srcset="/img/loading.gif" lazyload></p>
+<p>第一级同步寄存器是会产生亚稳态，那么它的Tck-q就会很大，比如1ns吧，但工具不知道，以为它是正常的满足setup 、hold 的，所以根据库中的Tck-q，比如0.2ns，这样实际中的Tck-q多了0.8ns，所以实际中的d_sync0信号会比工具认为的推迟0.8ns，如第二个d_asyn0信号，这样就有可能使第二级同步寄存器不满足setup time，产生亚稳态。这其实就是上面讨论的。</p>
+<p>解决方法就是对Q到D之间的路径加一个MAX DELAY约束，考虑到Tck-q增大的情况。</p>
+<h2 id="4-multi-bit跨时钟域"><a href="#4-multi-bit跨时钟域" class="headerlink" title="4. multi bit跨时钟域"></a>4. multi bit跨时钟域</h2><p>对于多位数据跨时钟域传递，如下图：</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/mb1.png" srcset="/img/loading.gif" lazyload></p>
+<p>这样不对，第一级的几个同步寄存器亚稳态时可能会产生四个输出（两位数据，四种情况），产生的数据不是传输的0或者3，这不行</p>
+<h4 id="采用握手信号"><a href="#采用握手信号" class="headerlink" title="采用握手信号"></a>采用握手信号</h4><p>下图是基于握手信号的多位同步。传递一个数据需要握手4次，传递效率低，但对时钟频率没有特别的要求。</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/mb2.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="对数据使能信号进行寄存，控制数据采样"><a href="#对数据使能信号进行寄存，控制数据采样" class="headerlink" title="对数据使能信号进行寄存，控制数据采样"></a>对数据使能信号进行寄存，控制数据采样</h4><p>下图中，vld控制data信号，当vld有效的时候clk0对data采样。</p>
+<p>在异步时钟域中，通过同步寄存器对vld进行寄存，然后用异或门产生一个cap信号，用来控制时钟clk1对data数据采样。</p>
+<p><strong>注意：这里没有对data信号寄存，而是对vld信号寄存的</strong></p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/mb3.png" srcset="/img/loading.gif" lazyload></p>
+<p>这种方法效率高一些。但要保证vld的脉冲宽度足够宽，至少是clk1的两三倍。</p>
+<h2 id="5-异步fifo"><a href="#5-异步fifo" class="headerlink" title="5. 异步fifo"></a>5. 异步fifo</h2><p>当然异步FIFO时最有效的，异步fifo设计见另一篇文章</p>
+<p><a href="%5Bhttps://east1203.github.io/2019/04/13/IC/19_04/%E5%90%8C%E6%AD%A5FIFO/%5D(https://east1203.github.io/2019/04/13/IC/19_04/%E5%90%8C%E6%AD%A5FIFO/">同步FIFO</a></p>
+<p><a href="%5Bhttps://east1203.github.io/2019/04/13/IC/19_04/%E5%BC%82%E6%AD%A5fifo/%5D(https://east1203.github.io/2019/04/13/IC/19_04/%E5%BC%82%E6%AD%A5fifo/">异步FIFO</a>s</p>
+<p>当然异步fifo有好多时序上的问题，一般不要自己搞：</p>
+<ol>
+<li>使用synopsys DesignWare（DW)中的async_fifo IP</li>
+<li>使用公司里经过TP验证的fifo，当然这要注意一下异步fifo实现的频率，可能100MHZ下可以用1GHZ或者500MHZ下就不行了</li>
+<li>在FPGA中就用ISE&#x2F;VIVADO中自带的IP。</li>
+</ol>
+<h2 id="6-后仿中的时序约束"><a href="#6-后仿中的时序约束" class="headerlink" title="6.  后仿中的时序约束"></a>6.  后仿中的时序约束</h2><p>1 . 后仿的时候要设置不让工具检查跨时钟域的setup、hold time，因为肯定会产生亚稳态。</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/async1.png" srcset="/img/loading.gif" lazyload></p>
+<p>2 . 上面也提到的设置Q到D的最大延迟</p>
+<h2 id="7-在Verilog高级数字设计第五章还有一块介绍异步传输的，"><a href="#7-在Verilog高级数字设计第五章还有一块介绍异步传输的，" class="headerlink" title="7.  在Verilog高级数字设计第五章还有一块介绍异步传输的，"></a>7.  在Verilog高级数字设计第五章还有一块介绍异步传输的，</h2><p>分成两种情况：异步数据脉冲宽度和同步时钟长短</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/categories/IC/Asynchronous/">Asynchronous</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Asynchronous/">Asynchronous</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/05/25/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%AD%90%E7%A8%8B%E5%BA%8F/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">子程序sub</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/05/19/C++/C++%E4%B8%AD%E7%9A%84%E5%BC%82%E5%B8%B8/">
+                        <span class="hidden-mobile">C++中的异常</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

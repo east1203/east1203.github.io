@@ -1,0 +1,568 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="fifo介绍先入先出的数据缓存器，没有外部读写地址线，可同时读写。  fifo种类 FIFO有同步fifo和异步fifo之分。同步fifo只有一个时钟，读写时钟一样；异步fifo读写时钟不同，可能不同频率，或者同频不同相。  fifo用途 缓存数据    如果输入端burst一个数据，接收端不能立马全部接受，需要fifo存住这些数据。2. 跨时钟域数据传输   同步数据。   同步fifo 同步F">
+<meta property="og:type" content="article">
+<meta property="og:title" content="同步FIFO">
+<meta property="og:url" content="http://example.com/2019/04/13/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/%E5%90%8C%E6%AD%A5FIFO/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="fifo介绍先入先出的数据缓存器，没有外部读写地址线，可同时读写。  fifo种类 FIFO有同步fifo和异步fifo之分。同步fifo只有一个时钟，读写时钟一样；异步fifo读写时钟不同，可能不同频率，或者同频不同相。  fifo用途 缓存数据    如果输入端burst一个数据，接收端不能立马全部接受，需要fifo存住这些数据。2. 跨时钟域数据传输   同步数据。   同步fifo 同步F">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%90%8C%E6%AD%A5fifo/1.png">
+<meta property="article:published_time" content="2019-04-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.804Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="IC">
+<meta property="article:tag" content="Asynchronous">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%90%8C%E6%AD%A5fifo/1.png">
+  
+  
+  <title>同步FIFO - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="同步FIFO">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-04-13 00:00" pubdate>
+        April 13, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.8k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      57 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">同步FIFO</h1>
+            
+            <div class="markdown-body">
+              <h3 id="fifo介绍"><a href="#fifo介绍" class="headerlink" title="fifo介绍"></a>fifo介绍</h3><p>先入先出的数据缓存器，没有外部读写地址线，可同时读写。<br><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%90%8C%E6%AD%A5fifo/1.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li><h4 id="fifo种类"><a href="#fifo种类" class="headerlink" title="fifo种类"></a>fifo种类</h4><p> FIFO有同步fifo和异步fifo之分。同步fifo只有一个时钟，读写时钟一样；异步fifo读写时钟不同，可能不同频率，或者同频不同相。</p>
+</li>
+<li><h4 id="fifo用途"><a href="#fifo用途" class="headerlink" title="fifo用途"></a>fifo用途</h4><ol>
+<li>缓存数据</li>
+</ol>
+<p>  如果输入端burst一个数据，接收端不能立马全部接受，需要fifo存住这些数据。<br>2. 跨时钟域数据传输</p>
+<p>  同步数据。</p>
+</li>
+</ul>
+<h3 id="同步fifo"><a href="#同步fifo" class="headerlink" title="同步fifo"></a>同步fifo</h3><p> 同步FIFO就是读写时钟是一个，读写地址是同步的。</p>
+<ul>
+<li><h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4></li>
+</ul>
+<ol>
+<li>读写地址是下一次要进行读写的地址，是否进行读写需要判断最终读写有效（通过输入读写位和空满标志）</li>
+<li>最终读写有效才进行读写</li>
+<li>地址变换：最终读写有效才进行地址跳变，否则的话这个地址还没进行读写就跳过去了。</li>
+</ol>
+<ul>
+<li><h4 id="fifo空满判断"><a href="#fifo空满判断" class="headerlink" title="fifo空满判断"></a>fifo空满判断</h4></li>
+</ul>
+<ol>
+<li><strong>可以在读写地址上增加一位，用来判断是否空满。空满只通过比较地址，与读写有效输入端口无关。</strong></li>
+</ol>
+<p>   <strong>空：读写地址的MSB相同，其他位也相同；满：读写地址的MSB不同，其他位相同</strong></p>
+<div class="code-wrapper"><pre><code class="hljs">用组合逻辑实现，与时钟信号无关，没有延迟，直接根据当前的读写地址就可以判断
+</code></pre></div>
+   <figure class="highlight sas"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><pre><code class="hljs sas">  // 空：读写地址相同    c<span class="hljs-meta">log2</span>()函数是求以2为底数的对数<br>assign full = (r_addr[c<span class="hljs-meta">log2</span>(Depth)-1:0]==w_addr[c<span class="hljs-meta">log2</span>(Depth)-1:0]) <span class="hljs-variable">&amp;&amp;</span> (r_addr[c<span class="hljs-meta">log2</span>(Depth)] ^ w_addr[c<span class="hljs-meta">log2</span>(Depth)]);<br> // 满：读写地址的MSB不同，其他位相同<br> assign empty =(r_addr[c<span class="hljs-meta">log2</span>(Depth)-1:0]==w_addr[c<span class="hljs-meta">log2</span>(Depth)-1:0]) <span class="hljs-variable">&amp;&amp;</span> (r_addr[c<span class="hljs-meta">log2</span>(Depth)] == w_addr[c<span class="hljs-meta">log2</span>(Depth)]);<br></code></pre></td></tr></table></figure>
+<ol start="2">
+<li><p>也可以用一个<strong>计数器cnt</strong>来表示当前有多少个没有读走的数据，当写有效，+1，读有效-1，又读又写不变。但这需要额外的计数器，并且可能影响FIFO最终的速度</p>
+</li>
+<li><p><strong>读写地址位数不变，通过地址和读写有效输入端口共同判断</strong></p>
+<p>用时序逻辑实现，有一个时钟的延迟，需要根据读写有效输入位判断空满，判断的是下一个周期的空满状态。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs verilog">  <span class="hljs-comment">/*</span><br><span class="hljs-comment">  rd,wr 读写有效输入端口</span><br><span class="hljs-comment">  rp,wp 读写地址</span><br><span class="hljs-comment">  */</span><br>  <span class="hljs-comment">// Full signal generate</span><br><span class="hljs-keyword">always</span>@(<span class="hljs-keyword">posedge</span> clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> rst) <span class="hljs-keyword">begin</span><br><span class="hljs-keyword">if</span>(!rst) full_in &lt;= <span class="hljs-number">1&#x27;b0</span>;<br><span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>  <span class="hljs-keyword">if</span>( (~rd &amp;&amp; wr)&amp;&amp;((wp==rp-<span class="hljs-number">1</span>)||(rp==<span class="hljs-number">4&#x27;h0</span>&amp;&amp;wp==<span class="hljs-number">4&#x27;hf</span>)))<br>  <span class="hljs-comment">// 下个周期只写不读，如果当前写地址落后读一个地址或者读地址是0000，写地址是1111，下个周期fifo满了。</span><br>      full_in &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>  <span class="hljs-comment">// 如果这个周期已经满了，但是有个读信号，那么下个周期就不满了</span><br>  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(full_in &amp;&amp; rd) full_in &lt;= <span class="hljs-number">1&#x27;b0</span>;<br><span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><span class="hljs-comment">// Empty signal generate</span><br><span class="hljs-keyword">always</span>@(<span class="hljs-keyword">posedge</span> clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> rst) <span class="hljs-keyword">begin</span><br><span class="hljs-keyword">if</span>(!rst) empty_in &lt;= <span class="hljs-number">1&#x27;b1</span>;<br><span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br><span class="hljs-comment">// 空跟满类似</span><br>  <span class="hljs-keyword">if</span>((rd&amp;&amp;~wr)&amp;&amp;(rp==wp-<span class="hljs-number">1</span> || (rp==<span class="hljs-number">4&#x27;hf</span>&amp;&amp;wp==<span class="hljs-number">4&#x27;h0</span>)))<br>    empty_in&lt;=<span class="hljs-number">1&#x27;b1</span>;<br>  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(empty_in &amp;&amp; wr) empty_in&lt;=<span class="hljs-number">1&#x27;b0</span>;<br><span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+  <figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs clean"><br>- #### 读写地址产生<br><br> <span class="hljs-number">1.</span> FIFO的读写地址产生比较简单 当读使能有效时 在时钟作用下 读地址加<span class="hljs-number">1</span> 当写使能有效时 写地址加<span class="hljs-number">1</span>。<br> <span class="hljs-number">2.</span> 当FIFO深度较大时 同时FIFO的速度要求较高时 可以采用线性反馈移位计数器 LFSR它的速度非常快 但是要牺牲一个地址。<br><br>    **线性反馈移位寄存器关键是要设计出<span class="hljs-number">2</span>^n个状态。**<br>    <br></code></pre></td></tr></table></figure>
+<p>   &#x2F;************************************************************\</p>
+<ul>
+<li><ul>
+<li></li>
+</ul>
+</li>
+<li>Generation of Read and Write address pointers. They use *</li>
+<li>LFSR counters, which are very fast. Because of the *</li>
+<li>nature of LFSR, one address is sacrificed. *</li>
+<li><ul>
+<li>************************************************************&#x2F;<br>wire read_linearfeedback, write_linearfeedback;<br>assign read_linearfeedback &#x3D; ! (read_addr[8] ^ read_addr[4]);<br>assign write_linearfeedback &#x3D; ! (write_addr[8] ^ write_addr[4]);<br>&#x2F;&#x2F; 读地址反馈<br>always @(posedge clock or posedge fifo_gsr)<br>if (fifo_gsr)<br> read_addr &lt;&#x3D; 9’h0;<br>else if (read_allow)<br> read_addr &lt;&#x3D; { read_addr[7], read_addr[6], read_addr[5],<br> read_addr[4], read_addr[3], read_addr[2],<br> read_addr[1], read_addr[0], read_linearfeedback };<br>&#x2F;&#x2F; 写地址反馈<br>always @(posedge clock or posedge fifo_gsr)<br>if (fifo_gsr)<br>write_addr &lt;&#x3D; 9’h0<br>else if (write_allow)<br>write_addr &lt;&#x3D; { write_addr[7], write_addr[6], write_addr[5],<br>write_addr[4], write_addr[3], write_addr[2],<br>write_addr[1], write_addr[0], write_linearfeedback };</li>
+</ul>
+</li>
+</ul>
+  <figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs clean">- #### 同步fifo的verilog代码<br><br><br></code></pre></td></tr></table></figure>
+<p>  &#x2F;&#x2F; file name          :          fifo_1.v<br>  &#x2F;&#x2F; email          :     <a href="mailto:&#x64;&#x79;&#107;&#x31;&#x32;&#48;&#51;&#x40;&#49;&#50;&#x36;&#46;&#x63;&#111;&#x6d;">&#x64;&#x79;&#107;&#x31;&#x32;&#48;&#51;&#x40;&#49;&#50;&#x36;&#46;&#x63;&#111;&#x6d;</a><br>  &#x2F;&#x2F; author                :         dong yk</p>
+<p>  &#96;timescale 1ns&#x2F;100ps<br>  module fifo #(parameter Width&#x3D;8,<br>              parameter Depth&#x3D;8) &#x2F;&#x2F;FIFO的深度<br>          (    input clk,<br>              input rst,<br>              input we,<br>              input re,<br>              input [Width-1:0] data_i,<br>              output full,<br>              output empty,<br>              output[Width-1:0] data_o<br>              );</p>
+<p>  function integer clog2;  &#x2F;&#x2F; 求2的对数 ，log2(x)。得到memory的地址宽度<br>  input integer value;<br>  begin<br>      for(clog2&#x3D;0;value&gt;1;value&#x3D;value&gt;&gt;1) begin<br>          clog2&#x3D;clog2+1;<br>      end<br>  end<br>  endfunction<br>  reg [Width-1:0] dout;<br>  reg [clog2(Depth):0] r_addr;  &#x2F;&#x2F; 读地址<br>  reg [clog2(Depth):0] w_addr; &#x2F;&#x2F; 写地址<br>  wire re_flag &#x3D; (re&#x3D;&#x3D;1’b1) &amp;&amp; (empty&#x3D;&#x3D;1’b0); &#x2F;&#x2F; 在输入读有效，且fifo不为空时，读有效<br>  wire we_flag &#x3D; (we&#x3D;&#x3D;1’b1) &amp;&amp; (full &#x3D;&#x3D; 1’b0);&#x2F;&#x2F; 在输入写有效，且fifo不为满时，写有效</p>
+<p>  reg[Width-1:0] memory[0:Depth-1]; &#x2F;&#x2F; 申请fifo内的存储空间<br>  &#x2F;&#x2F; 空：读写地址相同<br>  assign full &#x3D; (r_addr[clog2(Depth)-1:0]&#x3D;&#x3D;w_addr[clog2(Depth)-1:0]) &amp;&amp; (r_addr[clog2(Depth)] ^ w_addr[clog2(Depth)]);<br>  &#x2F;&#x2F; 满：读写地址的MSB不同，其他位相同<br>  assign empty &#x3D;(r_addr[clog2(Depth)-1:0]&#x3D;&#x3D;w_addr[clog2(Depth)-1:0]) &amp;&amp; (r_addr[clog2(Depth)] &#x3D;&#x3D; w_addr[clog2(Depth)]);<br>  assign data_o &#x3D; dout;</p>
+<p>  always@(posedge clk or negedge rst) begin<br>      if(!rst) begin<br>          r_addr &lt;&#x3D; 0;<br>          dout &lt;&#x3D; 0;<br>      end else begin<br>          r_addr &lt;&#x3D; re_flag?(r_addr+1) : r_addr ; &#x2F;&#x2F; 读地址累加<br>          dout &lt;&#x3D; re_flag?memory[r_addr[clog2(Depth)-1:0]]:dout; &#x2F;&#x2F; 数据输出<br>      end<br>  end<br>  always @(posedge clk or negedge rst) begin<br>      if(!rst) begin<br>          w_addr &lt;&#x3D; 0;<br>      end else begin<br>          w_addr &lt;&#x3D; we_flag?(w_addr+1) : w_addr; &#x2F;&#x2F; 写地址累加<br>          memory[w_addr[clog2(Depth)-1:0]] &lt;&#x3D; we_flag?data_i:memory[w_addr[clog2(Depth)-1:0]]; &#x2F;&#x2F; 写入数据<br>      end<br>  end<br>  endmodule</p>
+  <figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs clean">- #### 在fifo中增加一个表示当前剩余多少数据的值usedw<br><br></code></pre></td></tr></table></figure>
+<p>  &#x2F;&#x2F; file name          :        fifo_1.v<br>  &#x2F;&#x2F;<br>  &#x2F;&#x2F; author            :         dong yk<br>  &#x2F;&#x2F; description      ：      增加usedw 表示fifo中已经有了的数据个数<br>  &#96;timescale 1ns&#x2F;100ps<br>  module fifo #(parameter Width&#x3D;8,<br>              parameter Depth&#x3D;8) &#x2F;&#x2F;FIFO的深度<br>          (    input clk,<br>              input rst,<br>              input we,<br>              input re,<br>              input [Width-1:0] data_i,<br>              output full,<br>              output empty,<br>              output[Width-1:0] data_o，<br>              output [clog2(Depth)-1:0] usedw<br>              );</p>
+<p>  function integer clog2;  &#x2F;&#x2F; 求2的对数 ，log2(x)。得到memory的地址宽度<br>  input integer value;<br>  begin<br>      for(clog2&#x3D;0;value&gt;1;value&#x3D;value&gt;&gt;1) begin<br>          clog2&#x3D;clog2+1;<br>      end<br>  end<br>  endfunction<br>  reg [Width-1:0] dout;<br>  reg [clog2(Depth):0] r_addr;  &#x2F;&#x2F; 读地址<br>  reg [clog2(Depth):0] w_addr; &#x2F;&#x2F; 写地址<br>  reg [clog2(Depth)-1:0] usedw_r;<br>  wire re_flag &#x3D; (re&#x3D;&#x3D;1’b1) &amp;&amp; (empty&#x3D;&#x3D;1’b0); &#x2F;&#x2F; 在输入读有效，且fifo不为空时，读有效<br>  wire we_flag &#x3D; (we&#x3D;&#x3D;1’b1) &amp;&amp; (full &#x3D;&#x3D; 1’b0);&#x2F;&#x2F; 在输入写有效，且fifo不为满时，写有效</p>
+<p>  reg[Width-1:0] memory[0:Depth-1]; &#x2F;&#x2F; 申请fifo内的存储空间<br>  &#x2F;&#x2F; 空：读写地址相同<br>  assign full &#x3D; (r_addr[clog2(Depth)-1:0]&#x3D;&#x3D;w_addr[clog2(Depth)-1:0]) &amp;&amp; (r_addr[clog2(Depth)] ^ w_addr[clog2(Depth)]);<br>  &#x2F;&#x2F; 满：读写地址的MSB不同，其他位相同<br>  assign empty &#x3D;(r_addr[clog2(Depth)-1:0]&#x3D;&#x3D;w_addr[clog2(Depth)-1:0]) &amp;&amp; (r_addr[clog2(Depth)] &#x3D;&#x3D; w_addr[clog2(Depth)]);<br>  assign data_o &#x3D; dout;</p>
+<p>  always@(posedge clk or negedge rst) begin<br>      if(!rst) begin<br>          r_addr &lt;&#x3D; 0;<br>          dout &lt;&#x3D; 0;<br>      end else begin<br>          r_addr &lt;&#x3D; re_flag?(r_addr+1) : r_addr ; &#x2F;&#x2F; 读地址累加<br>          dout &lt;&#x3D; re_flag?memory[r_addr[clog2(Depth)-1:0]]:dout; &#x2F;&#x2F; 数据输出<br>      end<br>  end<br>  always @(posedge clk or negedge rst) begin<br>      if(!rst) begin<br>          w_addr &lt;&#x3D; 0;<br>      end else begin<br>          w_addr &lt;&#x3D; we_flag?(w_addr+1) : w_addr; &#x2F;&#x2F; 写地址累加<br>          memory[w_addr[clog2(Depth)-1:0]] &lt;&#x3D; we_flag?data_i:memory[w_addr[clog2(Depth)-1:0]]; &#x2F;&#x2F; 写入数据<br>      end<br>  end<br>  assign usedw &#x3D; usedw_r;<br>  always @(posedge clk or negedge rst) begin<br>      if(!rst) begin<br>          usedw_r &lt;&#x3D; 0;<br>      end&#x2F;&#x2F;if<br>      else begin<br>          case({we_flag,re_flag})<br>          2’b00: begin<br>              usedw_r &lt;&#x3D; usedw_r;<br>          end&#x2F;&#x2F;00<br>          2’b01: begin<br>              if(usedw_r&#x3D;&#x3D;(Depth-1))<br>                  usedw_r &lt;&#x3D; usedw_r;<br>              else<br>                  usedw_r &lt;&#x3D; usedw_r + 1’b1;<br>          end&#x2F;&#x2F;01<br>          2’b10: begin<br>              if(usedw_r&#x3D;&#x3D;0)<br>                  usedw_r &lt;&#x3D; usedw_r;<br>              else<br>                  usedw_r &lt;&#x3D; usedw_r - 1’b1;<br>          end&#x2F;&#x2F;10<br>          2’b11: begin<br>              usedw_r &lt;&#x3D; usedw_r;<br>          end&#x2F;&#x2F;11<br>          default: usedw_r &lt;&#x3D; 0;<br>          endcase<br>      end&#x2F;&#x2F;else<br>  end&#x2F;&#x2F;always</p>
+<p>  endmodule<br>  <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs"><br></code></pre></td></tr></table></figure></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/categories/IC/Asynchronous/">Asynchronous</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Asynchronous/">Asynchronous</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/04/13/IC/STA/%E9%9D%99%E6%80%81%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">静态时序分析STA</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/04/13/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/%E5%BC%82%E6%AD%A5fifo/">
+                        <span class="hidden-mobile">异步FIFO</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -1,0 +1,557 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="#Alice的敏捷分享–0323-验证# 我近一两年非常多次在社群里面启发大家思考一个问题，验证的目标是什么，相对能达成共识的有以下几点：  验证的目标是保证质量，不是debug 芯片可以带bug交付 （乙方会表达成，这不是bug，这是feature,或者你的姿势不对） bug分等级，category A&#x2F;B&#x2F;C，有严重到影响产品销售的bug，也有没任何影响的bug bug可以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="敏捷开发-IC极客摘要">
+<meta property="og:url" content="http://example.com/2020/05/04/IC/%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91/%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91-IC%E6%9E%81%E5%AE%A2%E6%91%98%E8%A6%81/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="#Alice的敏捷分享–0323-验证# 我近一两年非常多次在社群里面启发大家思考一个问题，验证的目标是什么，相对能达成共识的有以下几点：  验证的目标是保证质量，不是debug 芯片可以带bug交付 （乙方会表达成，这不是bug，这是feature,或者你的姿势不对） bug分等级，category A&#x2F;B&#x2F;C，有严重到影响产品销售的bug，也有没任何影响的bug bug可以">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.802Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="IC">
+<meta property="article:tag" content="敏捷开发">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>敏捷开发-IC极客摘要 - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="敏捷开发-IC极客摘要">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-05-04 00:00" pubdate>
+        May 4, 2020 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      25 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">敏捷开发-IC极客摘要</h1>
+            
+            <div class="markdown-body">
+              <p>#Alice的敏捷分享–0323-验证#</p>
+<p>我近一两年非常多次在社群里面启发大家思考一个问题，验证的目标是什么，相对能达成共识的有以下几点：</p>
+<ul>
+<li>验证的目标是保证质量，不是debug</li>
+<li>芯片可以带bug交付 （乙方会表达成，这不是bug，这是feature,或者你的姿势不对）</li>
+<li>bug分等级，category A&#x2F;B&#x2F;C，有严重到影响产品销售的bug，也有没任何影响的bug</li>
+<li>bug可以通过软件规避</li>
+</ul>
+<p>验证team的loading实在是太重了，不996是不可能的。无论哪个部门改动都会影响到我们的loading和验证计划，需求改我们改，架构改我们改，设计改我们改，后端，DFT改了反馈给前端，我们接着改，每日三省吾身，这个bug是spec的错，设计的错还是验证自身的错。</p>
+<p>不堪重负的验证团队于是开始自救，主流方法不外乎以下几种：</p>
+<ol>
+<li>把验证工作在全流程shift left</li>
+<li>自动化，并行，解耦，分层</li>
+<li>按特性跟设计结对，交付之前先过sanity check</li>
+<li>跟其他部门划清楚河汉界，定交付规则，谁的活儿谁干，谁的锅谁背</li>
+</ol>
+<p>已经有点敏捷和CI的意思了，但，还不够，没有从根因上解决导致问题的元问题，罪魁祸首是谁，肯定不是design, 他们不无辜么？架构师，你忍心责怪他们？客户？你敢让客户背锅？客户也有他的客户啊。</p>
+<p>在传统瀑布流模式下系统成员的关系：客户是甲方，芯片的需求方，业务，产品，研发（按流程切分4-8个部门），运营共同构成乙方，以芯片交付的方式满足甲方价值需求。其特点为 1，推，上游推下游，每个层级沟通都会有信息损耗，损耗导致误差，误差导致迭代 2. 下游是被动接任务，活儿是上游给的。特别是验证，谁改都是给他又来活儿了。这个系统模型从根因上决定了验证的loading，任务的总量降不下来，上述1234的方案一定程度上缓解，但没有解决根因问题。敏捷试图解决的是根因问题。</p>
+<p>敏捷的底层逻辑从系统成员的关系视角来看：</p>
+<ol>
+<li>客户是甲方（需求方），研发是解决方案，解决方案要靠近问题，跟问题共生，跟需求直接发生化学反应，需求变，方案紧跟着变，按需求点拆成价值点，把价值点转化为特性和指标定义，这，叫业务驱动研发。</li>
+<li>在研发内部，架构师是解决方案，解决方案的本质是一堆模型的组合（参考之前模型化架构师的交付物讨论），其他人帮他把模型实现成real的可交付价值的芯片，在组织内部，RTL, PR, DFT都是架构的乙方，帮他做实现。验证唯二的两个价值主张就是以最小的投入最大化保证过程质量，是中立的第三方，需要跟架构放在同一个layer。都有义务引导组织内部乙方loading不要太重，如果乙方过程飞掉，甲方自身利益受损。</li>
+<li>上述所有的甲方乙方之间遵循两个原则，1. 乙方以成就甲方目标为己任（这个观念已经比较深入人心了）2. 每个人以谈判的形式争取自己利益最大化（scrum的3355）利他是天性，利己是人性，只有在这两种力的张力下充分沟通过了达成的一致性才是真正的一致性，才是组织利益的最大化。</li>
+<li>PO管人管钱管事，是真正的product owner，他可以决定，这波研发不行，我们换一拨，这个研发是key player，给他加薪，这个feature优先级不高，砍掉，因为钱是他的，ROI是他最重要的决策指标。其他人，不代表他的利益，没有立场排序真正重要的事，但每个人的主张和利益诉求要给到他，他不掌握足够信息无法形成有效激励，但决策权在他。</li>
+</ol>
+<p>总结一句话，按照敏捷的系统论过程模型，从根因上解决了瀑布流导致的信息损耗的问题，解决了由于利益和权力不对等而导致的动力缺失和内耗问题，解决了由于信息不对等，不及时导致的出错和方案与价值需求不匹配问题。是一种以人为本，尊重人性，道法自然的工程实践方法论。聚焦客户的价值交付，以拉动的方式，持续改善工程生产力。</p>
+<p>#Alice的敏捷分享–SAFe 和LeSS有什么区别#</p>
+<p>敏捷体系当中发展出很多流派，其中影响最大的是SAFe和LeSS，他们俩的关系有点像C和S的关系，是经过一轮竞争唯二独大的两个友商（社区），这种道法术器一体化的敏捷转型不像EDA工具，直接基于同一个case跑，优劣立竿见影。企业文化研发体系转型，往往耗时几年，拼的是思想，方法和长久实践，两派各有一堆成功和失败的案例，用来互相打口水战，常年在社区互相攻击。</p>
+<p>核心区别大约有以下几点：</p>
+<ol>
+<li><p>SAFe在超大规模组织中较流行，LeSS是classic的敏捷（轻量级方法论），认为SAFe的臃肿固定的框架已经背离了敏捷的初衷，你如果对着SAFe framework框架图，初学者不看上十分钟几乎完全看不懂，LeSS framework就是非常清清爽爽的泳道，冲刺，一目了然。</p>
+</li>
+<li><p>都注重沟通和敏捷团队，都需要CICD DevOps支持，在两个体系框架下用的术语和概念不同，稍微有点对应，但不同。价值流图，敏捷交付火车，看板方法是SAFe的术语，实例化文档，影响地图，用户故事地图，冲刺，scrum是LeSS的术语</p>
+</li>
+<li><p>在经典的项目管理工具Jira当中，两种方法都支持，Kanban vs. scrum sprint，但不能混用</p>
+</li>
+<li><p>Kanban vs. scrum核心区别有两个，一是任务切分的边界不同，一个是按交付物为边界切，一个是按activity切；看板是连续的流动，sprint多了个time box，1-2w，一个冲刺内，需求不允许变更，经典模式是冲-回顾-拉</p>
+</li>
+<li><p>发布计划不同，Kanban没有冲刺，一般做三个月的长期规划，LeSS注重快，小，并行的sprint-long iterations</p>
+</li>
+<li><p>SAFe注重resource 优化，注重人与人的关系，LeSS注重产出物优化，注重人与技术的关系</p>
+</li>
+<li><p>都注重客户导向，SAFe的客户沟通还是由business owner，PM驱动，LeSS直接砍掉了这一层，直接是业务驱动研发，把所有人拉到一线去直接面向客户</p>
+</li>
+<li><p>SAFe适应超大规模相对稳定的组织，LeSS在创业团队中更受欢迎</p>
+</li>
+</ol>
+<p>#Alice的敏捷分享–三分钟快速了解敏捷体系#</p>
+<p>本篇试图回答三个问题，以下言论纯属个人理解，仅供参考，欢迎拍砖</p>
+<ol>
+<li>敏捷体系的overview</li>
+<li>立论基石</li>
+<li>核心实践</li>
+</ol>
+<p>敏捷虽作为一种轻量级方法论诞生，但随着在科技公司，软件公司及企业的数字化转型中广泛普及，作为企业的工程生产力构建指南，仍然保罗万象，海纳百川。它最早始于重构，统一语言，简单设计，TDD，极限编程，实例化文档等用于开发环节的理念，后来吸收了CICD DevOps，项目管理层面融入了精益的思想，如前置时间，看板方法，产品需求及沟通管理层面引入了影响地图，用户故事地图，增量开发等理念，开发管理上引入了scrum，团队建设上直奔学习型组织，管理3.0那一套东西，注重沟通和赋能而非控制，沟通中注重启发式，教练式，倾听式，提问式，杜绝KPI，严禁指责。放到SOC语境里面则必须要把CICD DevOps和EDA流程进行深度融合。测试是整个体系改革的重点，也是唯一能无缝映射到SOC验证领域的最佳实践。</p>
+<p>立论基石：1. 知识消费（参考下午发的内容）2. 聚焦价值交付的一致性沟通 3. 实例化文档&#x2F;TDD&#x2F;ATDD&#x2F;BDD 如果我说在一个系统论的框架下，这三点都是一回事，大家能理解么？你尝试跳出传统瀑布流，稍微升维一下，从业务视角向下看研发。</p>
+<p>核心实践：1. 度量体系 2. 可视化一切 3. 流动及反馈</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/IC/">IC</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91/">敏捷开发</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/06/06/Verification/UVM/UVM%E2%80%94%E2%80%94%E5%85%B3%E4%BA%8ERAL%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E6%B3%95/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">UVM——关于RAL的一些方法</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/26/tools/git/git%E6%8F%90%E4%BA%A4%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E7%A8%8B%E5%BA%8F/">
+                        <span class="hidden-mobile">git提交不同版本的程序</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

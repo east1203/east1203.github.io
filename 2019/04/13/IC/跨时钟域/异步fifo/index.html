@@ -1,0 +1,545 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="异步fifo  异步FIFO就是读写地址不同，要么不同频率，要么同频不同相。读地址和空标志由读时钟产生，写地址和满标志由写时钟产生   问题 异步fifo读写时钟不一致，当要产生fifo的空满标志位时，需要比较读写地址。比如产生空标志位需要在读时钟下采样写地址，并跟读地址进行比较。由于地址一般是多位，在读时钟下各位跳变不一样，产生毛刺，要过一段时间才能稳定，如果在不稳定阶段采样到了数据会发生错误">
+<meta property="og:type" content="article">
+<meta property="og:title" content="异步FIFO">
+<meta property="og:url" content="http://example.com/2019/04/13/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/%E5%BC%82%E6%AD%A5fifo/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="异步fifo  异步FIFO就是读写地址不同，要么不同频率，要么同频不同相。读地址和空标志由读时钟产生，写地址和满标志由写时钟产生   问题 异步fifo读写时钟不一致，当要产生fifo的空满标志位时，需要比较读写地址。比如产生空标志位需要在读时钟下采样写地址，并跟读地址进行比较。由于地址一般是多位，在读时钟下各位跳变不一样，产生毛刺，要过一段时间才能稳定，如果在不稳定阶段采样到了数据会发生错误">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/6.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/%E5%BC%82%E6%AD%A5fifo1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/7.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/afifo2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/afifo1.png">
+<meta property="article:published_time" content="2019-04-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.805Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="IC">
+<meta property="article:tag" content="Asynchronous">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/6.png">
+  
+  
+  <title>异步FIFO - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="异步FIFO">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-04-13 00:00" pubdate>
+        April 13, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.8k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      41 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">异步FIFO</h1>
+            
+            <div class="markdown-body">
+              <h3 id="异步fifo"><a href="#异步fifo" class="headerlink" title="异步fifo"></a>异步fifo</h3><p>  异步FIFO就是读写地址不同，要么不同频率，要么同频不同相。读地址和空标志由读时钟产生，写地址和满标志由写时钟产生<br>  <img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/6.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><ol>
+<li><p>异步fifo读写时钟不一致，当要产生fifo的空满标志位时，需要比较读写地址。比如产生空标志位需要在读时钟下采样写地址，并跟读地址进行比较。由于地址一般是多位，在读时钟下各位跳变不一样，产生毛刺，要过一段时间才能稳定，如果在不稳定阶段采样到了数据会发生错误</p>
+<p><strong>解决方法是格雷码，格雷码每次跳变一位。</strong> 格雷码相邻数据只跳变一位</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/%E5%BC%82%E6%AD%A5fifo1.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/2.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/3.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://guqian110.github.io/pages/2015/10/02/fifo_design_notes.html">跨时钟采样读写地址可能会有1T的延迟，但这个延迟并不会导致full&#x2F;empty错误置位。</a></p>
+<h4 id="读"><a href="#读" class="headerlink" title="读"></a>读</h4></li>
+</ol>
+<p>如果地址信号传递到读时钟域时延时了 1T，此时接收端并不知道数据已经写入了 FIFO，仍然认为 FIFO 是空的，这种情况只会对 FIFO 的吞吐率 throughput 有影响，但是不会导致 underflow；   如下图，先写满 FIFO，然后开始读：在 t6 时 FIFO 读空，empty &#x3D; 1，在 t7 时，写入了一个新数据，此时 FIFO 内已经有有效数据了，但是 wr_ptr 同步到读时钟域要花费 2T，所以在 t9 时 empty &#x3D; 0。有两个时钟周期（t7, t8） rd 被阻塞了，但是并不影响 FIFO 正常工作。</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/4.png" srcset="/img/loading.gif" lazyload><br>wtr_ptr_asyn这个异步的写地址是读时钟域延迟两拍采样到的写地址，用来进行进行读空判断。</p>
+<h4 id="写"><a href="#写" class="headerlink" title="写"></a>写</h4><p>如果地址信号传递到写时钟域时延是了 1T，此时发送端并不知道 FIFO 已经有空余地址了，仍然认为 FIFO 是满的，这种情况也是只会对 FIFO 的吞吐率 throughput 有影响，但是不会导致 overflow； 如下图，先写满 FIFO，然后开始读：在 t5 时，full &#x3D; 1，在 t6 时，读出了一个数据，此时 FIFO 已经有空余地址了，但是 rd_ptr 同步到写时钟域要花费 2T，所以在 t8 时 full &#x3D; 0。有两个时钟周期（t6, t7） wr 被阻塞了，但是并不影响 FIFO 正常工作。</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/5.png" srcset="/img/loading.gif" lazyload><br>rd_ptr_asyn这个异步的读地址是写时钟域延迟两拍采样到的读地址，用来进行进行写满判断。</p>
+<h4 id="空满标志"><a href="#空满标志" class="headerlink" title="空满标志"></a>空满标志</h4><ol>
+<li>异步fifo也可以增加一位地址位作为空满的判断，根据格雷码的格式</li>
+</ol>
+<p> <img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/7.png" srcset="/img/loading.gif" lazyload><br> 如上图，如果还是按照同步fifo的判断方式，读写地址一样时判断为空，如圆圈1，2，这样是正确的；但如果根据MSB不同，其他位相同，判断fifo满，如圆圈3，这样出错，此时fifo并没有满。</p>
+<p>  异步FIFO增加一位地址用来判断空满。如果读写指针最高位不同，此时如果读写对同一块内存区域，那么会产生满标志。从上面格雷码中可以看到，对于内存地址只有三位，表示的FIFO空间只有8个字节，第四位是添加的一位。如果内存地址被套圈，比如读0000，写1100，最高位不同，次高位也不同，其他位相同。所以空满的关系如下：</p>
+<p>  <strong>空：读写地址相同</strong></p>
+<p>  <strong>满：MSB和次MSB位不同，其他位相同</strong></p>
+<h4 id="Cummings异步fifo设计"><a href="#Cummings异步fifo设计" class="headerlink" title="Cummings异步fifo设计"></a>Cummings异步fifo设计</h4><p>以下是参考Cummings的异步fifo论文</p>
+<p>2002-SD_Simulation and Synthesis Techniques for Asynchronous FIFO Design</p>
+<p>FIFO的结构如下图</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/afifo2.png" srcset="/img/loading.gif" lazyload></p>
+<p>其中格雷码转换器的结构如下图，将n位的二进制地址和其转换成的格雷码用寄存器寄存</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/afifo1.png" srcset="/img/loading.gif" lazyload></p>
+<p>这篇论文中fifo的空满判断：  <strong>空：读写地址相同；满：MSB和次MSB位不同，其他位相同。</strong></p>
+<p>根据结构图分成五个子模块和一个top模块，代码如下：</p>
+<p><strong>注意：代码基本上跟论文中的一样，编译通过了，但没有进行测试</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br></pre></div></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> asyn_fifo_top<br>#(  <br> <span class="hljs-keyword">parameter</span> WIDTH=<span class="hljs-number">8</span>,<br> <span class="hljs-keyword">parameter</span> DEPTH=<span class="hljs-number">4</span><br>)<br>(<br>  <span class="hljs-keyword">input</span> wclk,winc,wrst_n,<br>  <span class="hljs-keyword">input</span> rclk,rinc,rrst_n,<br>  <span class="hljs-keyword">input</span>[WIDTH-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] data_i,<br>  <span class="hljs-keyword">output</span> [WIDTH-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] data_o,<br>  <span class="hljs-keyword">output</span> full,<br>  <span class="hljs-keyword">output</span> empty<br>);<br><span class="hljs-keyword">wire</span> [DEPTH:<span class="hljs-number">0</span>] wptr,rptr;<br><span class="hljs-keyword">wire</span> [DEPTH  :<span class="hljs-number">0</span>] r2_wptr;<br><span class="hljs-keyword">wire</span> [DEPTH  :<span class="hljs-number">0</span>] w2_rptr;<br><span class="hljs-keyword">wire</span> [DEPTH-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] raddr,waddr;<br><br><span class="hljs-comment">// 写地址被采样到读时钟域</span><br>w2r <span class="hljs-variable">#(DEPTH) w2r_u(.rclk(rclk),.rrst_n(rrst_n),.wptr(wptr),.r2_wptr(r2_wptr))</span>;<br><span class="hljs-comment">// 读地址被采样到写时钟域</span><br>r2w <span class="hljs-variable">#(DEPTH) r2w_u(.wclk(wclk),.wrst_n(wrst_n),.rptr(rptr),.w2_rptr(w2_rptr))</span>;<br><span class="hljs-comment">// 空标志产生模块</span><br>empty_r <span class="hljs-variable">#(WIDTH,DEPTH) empty_u(.rclk(rclk),.rrst_n(rrst_n),.rinc(rinc),.r2_wptr(r2_wptr),.rptr(rptr),.raddr(raddr),.empty(empty))</span>;<br><span class="hljs-comment">// 满标志产生模块</span><br>full_w <span class="hljs-variable">#(WIDTH,DEPTH) full_u(.wclk(wclk),.wrst_n(wrst_n),.winc(winc),.w2_rptr(w2_rptr),.wptr(wptr),.waddr(waddr),.full(full))</span>;<br><span class="hljs-comment">// fifo读写模块</span><br>fifomem <span class="hljs-variable">#(WIDTH,DEPTH) mem_u(.wclk(wclk),.winc(winc),.full(full),.raddr(raddr),.waddr(waddr),.data_i(data_i),.data_o(data_o))</span>;<br><span class="hljs-keyword">endmodule</span><br><br><span class="hljs-comment">// w2r.v</span><br><span class="hljs-keyword">module</span> w2r<br>#(<br><span class="hljs-keyword">parameter</span> DEPTH=<span class="hljs-number">4</span><br>)<br>(<br><span class="hljs-keyword">input</span> rclk,rrst_n,<br><span class="hljs-keyword">input</span> [DEPTH:<span class="hljs-number">0</span>] wptr,<br><span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span>[DEPTH:<span class="hljs-number">0</span>] r2_wptr<br>);<br><br><span class="hljs-keyword">reg</span> [DEPTH:<span class="hljs-number">0</span>] r1_wptr;<br><br><span class="hljs-keyword">always</span>@(<span class="hljs-keyword">posedge</span> rclk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> rrst_n) <span class="hljs-keyword">begin</span><br>  <span class="hljs-keyword">if</span>(rrst_n == <span class="hljs-number">1&#x27;b0</span>) &#123;r2_wptr,r1_wptr&#125; &lt;= <span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">else</span> &#123;r2_wptr,r1_wptr&#125; &lt;= &#123;r1_wptr,wptr&#125;; <br><span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br><span class="hljs-comment">// r2w.v</span><br><span class="hljs-keyword">module</span> r2w<br>#(<br><span class="hljs-keyword">parameter</span> DEPTH=<span class="hljs-number">4</span><br>)<br>(<br><span class="hljs-keyword">input</span> wclk,wrst_n,<br><span class="hljs-keyword">input</span> [DEPTH:<span class="hljs-number">0</span>] rptr,<br><span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span> [DEPTH:<span class="hljs-number">0</span>] w2_rptr<br>);<br><span class="hljs-keyword">reg</span> [DEPTH:<span class="hljs-number">0</span>] w1_rptr;<br><span class="hljs-keyword">always</span>@(<span class="hljs-keyword">posedge</span> wclk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> wrst_n) <span class="hljs-keyword">begin</span><br>  <span class="hljs-keyword">if</span>(wrst_n == <span class="hljs-number">1&#x27;b0</span>) &#123;w2_rptr,w1_rptr&#125; &lt;= <span class="hljs-number">0</span>;<br> <span class="hljs-keyword">else</span> &#123;w2_rptr,w1_rptr&#125; &lt;= &#123;w1_rptr,rptr&#125;; <br><span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br><br><span class="hljs-comment">// empty_r.v</span><br><span class="hljs-keyword">module</span> empty_r<br>#(<br><span class="hljs-keyword">parameter</span> WIDTH=<span class="hljs-number">8</span>,<br><span class="hljs-keyword">parameter</span> DEPTH=<span class="hljs-number">4</span><br>)<br>(<br><span class="hljs-keyword">input</span> rclk,rrst_n,rinc,<br><span class="hljs-keyword">input</span> [DEPTH:<span class="hljs-number">0</span>] r2_wptr,<br><span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span>[DEPTH:<span class="hljs-number">0</span>] rptr,<br><span class="hljs-keyword">output</span> [DEPTH-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] raddr,<br><span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span> empty<br>);<br><span class="hljs-keyword">reg</span> [DEPTH:<span class="hljs-number">0</span>] rbin;<br><span class="hljs-keyword">wire</span> [DEPTH:<span class="hljs-number">0</span>] binnext,graynext;<br><span class="hljs-keyword">wire</span> empty_val;<br><span class="hljs-keyword">assign</span> binnext = (rinc &amp; !empty) ? rbin : rbin+<span class="hljs-number">1&#x27;b1</span>;<br><span class="hljs-keyword">assign</span> graynext = binnext ^ (binnext&gt;&gt;<span class="hljs-number">1</span>);<br><span class="hljs-keyword">assign</span> raddr = rbin[DEPTH-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>];<br><span class="hljs-keyword">always</span>@(<span class="hljs-keyword">posedge</span> rclk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> rrst_n) <span class="hljs-keyword">begin</span><br>  <span class="hljs-keyword">if</span>(rrst_n == <span class="hljs-number">1&#x27;b0</span>)    &#123;rbin,rptr&#125; &lt;= <span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">else</span>   &#123;rbin,rptr&#125; &lt;= &#123;binnext,graynext&#125;;<br><span class="hljs-keyword">end</span><br><span class="hljs-comment">// empty </span><br><span class="hljs-keyword">assign</span> empty_val = (r2_wptr==rptr);<br><span class="hljs-keyword">always</span>@(<span class="hljs-keyword">posedge</span> rclk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> rrst_n) <span class="hljs-keyword">begin</span><br>  <span class="hljs-keyword">if</span>(rrst_n == <span class="hljs-number">1&#x27;b0</span>) empty &lt;= <span class="hljs-number">1</span>;<br>  <span class="hljs-keyword">else</span> empty &lt;= empty_val;<br><span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br><br><span class="hljs-comment">// full_w.v</span><br><span class="hljs-keyword">module</span> full_w<br>#(<br><span class="hljs-keyword">parameter</span> WIDTH=<span class="hljs-number">8</span>,<br><span class="hljs-keyword">parameter</span> DEPTH=<span class="hljs-number">4</span><br>)<br>(<br><span class="hljs-keyword">input</span> wclk,wrst_n,winc,<br><span class="hljs-keyword">input</span> [DEPTH:<span class="hljs-number">0</span>] w2_rptr,<br><span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span>[DEPTH:<span class="hljs-number">0</span>] wptr,<br><span class="hljs-keyword">output</span> [DEPTH-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] waddr,<br><span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span> full<br>);<br><span class="hljs-keyword">wire</span> full_val;<br><span class="hljs-keyword">reg</span> [WIDTH:<span class="hljs-number">0</span>] wbin;<br><span class="hljs-keyword">wire</span> [WIDTH:<span class="hljs-number">0</span>] binnext,graynext;<br><br><span class="hljs-keyword">assign</span> waddr = wbin[WIDTH-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>];<br><span class="hljs-keyword">assign</span> binnext = wbin + (winc &amp; !full);<br><span class="hljs-keyword">assign</span> graynext = binnext ^ (binnext&gt;&gt;<span class="hljs-number">1</span>);<br><br><span class="hljs-keyword">always</span>@(<span class="hljs-keyword">posedge</span> wclk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> wrst_n) <span class="hljs-keyword">begin</span><br>  <span class="hljs-keyword">if</span>(wrst_n==<span class="hljs-number">1&#x27;b0</span>) &#123;wbin,wptr&#125; &lt;= <span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">else</span> &#123;wbin,wptr&#125; &lt;= &#123;binnext,graynext&#125;;<br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">assign</span> full_val = w2_rptr == &#123;~wptr[DEPTH:DEPTH-<span class="hljs-number">1</span>],wptr[DEPTH-<span class="hljs-number">2</span>:<span class="hljs-number">0</span>]&#125;;<br><span class="hljs-keyword">always</span>@(<span class="hljs-keyword">posedge</span> wclk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> wrst_n) <span class="hljs-keyword">begin</span><br>  <span class="hljs-keyword">if</span>(wrst_n==<span class="hljs-number">1&#x27;b0</span>) full &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>  <span class="hljs-keyword">else</span> full &lt;= full_val;<br><span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br><br><span class="hljs-comment">// fifomem.v</span><br><span class="hljs-keyword">module</span> fifomem<br>#(<br><span class="hljs-keyword">parameter</span> WIDTH=<span class="hljs-number">8</span>,<br><span class="hljs-keyword">parameter</span> DEPTH=<span class="hljs-number">4</span><br>)<br>(<br><span class="hljs-keyword">input</span> wclk,winc,full,<br><span class="hljs-keyword">input</span> [DEPTH-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] raddr,<br><span class="hljs-keyword">input</span> [DEPTH-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] waddr,<br><span class="hljs-keyword">input</span> [WIDTH-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] data_i,<br><span class="hljs-keyword">output</span> [WIDTH-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] data_o<br>);<br><span class="hljs-keyword">reg</span> [WIDTH-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] memory[<span class="hljs-number">0</span>:(<span class="hljs-number">1</span>&lt;&lt;DEPTH)-<span class="hljs-number">1</span>];<br><span class="hljs-keyword">always</span>@(<span class="hljs-keyword">posedge</span> wclk ) <span class="hljs-keyword">begin</span><br>  <span class="hljs-keyword">if</span>(winc &amp; !full) memory[waddr] &lt;= data_i;<br><span class="hljs-keyword">end</span><br><span class="hljs-keyword">assign</span> data_o = memory[raddr];<br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/categories/IC/Asynchronous/">Asynchronous</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Asynchronous/">Asynchronous</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/04/13/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/%E5%90%8C%E6%AD%A5FIFO/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">同步FIFO</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/04/11/tools/vcs/%E7%94%9F%E6%88%90%E4%BB%BF%E7%9C%9F%E6%B3%A2%E5%BD%A2.vcd%20.fsdb%20.vpd/">
+                        <span class="hidden-mobile">生成仿真波形vcd vpd fsdb</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

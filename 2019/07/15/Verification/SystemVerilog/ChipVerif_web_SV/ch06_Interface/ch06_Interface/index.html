@@ -1,0 +1,531 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="2019-10-31 SystemVerilog InterfaceWhat is an Interface ?An Interface is a way to encapsulate signals into a block. All related signals are grouped together to form an interface block so that the same">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ch6-Interrface">
+<meta property="og:url" content="http://example.com/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch06_Interface/ch06_Interface/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="2019-10-31 SystemVerilog InterfaceWhat is an Interface ?An Interface is a way to encapsulate signals into a block. All related signals are grouped together to form an interface block so that the same">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-07-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.811Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="SV">
+<meta property="article:tag" content="ChipVerif_Web">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>ch6-Interrface - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="ch6-Interrface">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-07-15 00:00" pubdate>
+        July 15, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.9k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      33 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ch6-Interrface</h1>
+            
+            <div class="markdown-body">
+              <p>2019-10-31</p>
+<h1 id="SystemVerilog-Interface"><a href="#SystemVerilog-Interface" class="headerlink" title="SystemVerilog Interface"></a>SystemVerilog Interface</h1><h2 id="What-is-an-Interface"><a href="#What-is-an-Interface" class="headerlink" title="What is an Interface ?"></a>What is an Interface ?</h2><p>An Interface is a way to encapsulate signals into a block. All related signals are grouped together to form an interface block so that the same <code>interface</code> can be re-used for other projects. Also it becomes easier to connect with the DUT and other verification components.</p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p>APB bus protocol signals are put together in the given interface. Note that signals are declared within <code>interface</code> and <code>endinterface</code>.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">interface</span> apb_if (<span class="hljs-keyword">input</span> pclk);<br>  <span class="hljs-keyword">logic</span> [<span class="hljs-number">31</span>:<span class="hljs-number">0</span>]    paddr;<br>  <span class="hljs-keyword">logic</span> [<span class="hljs-number">31</span>:<span class="hljs-number">0</span>]    pwdata;<br>  <span class="hljs-keyword">logic</span> [<span class="hljs-number">31</span>:<span class="hljs-number">0</span>]    prdata;<br>  <span class="hljs-keyword">logic</span>           penable;<br>  <span class="hljs-keyword">logic</span>           pwrite;<br>  <span class="hljs-keyword">logic</span>           psel;<br><span class="hljs-keyword">endinterface</span><br> <br></code></pre></td></tr></table></figure>
+
+<h2 id="Why-are-signals-declared-logic"><a href="#Why-are-signals-declared-logic" class="headerlink" title="Why are signals declared logic ?"></a>Why are signals declared <code>logic</code> ?</h2><p><code>    logic</code> is a new data type that lets you drive signals of this type via assign statements and in a procedural block. Remember that in verilog, you could drive a <code>reg</code> only in procedural block and a <code>wire</code> only in <em>assign</em> statement. But this is only one reason.</p>
+<p><strong>Signals connected to the DUT should support 4-states so that X&#x2F;Z values can be caught. If these signals were <code>bit</code> then the X&#x2F;Z would have shown up as 0, and you would have missed that DUT had a X&#x2F;Z value.</strong></p>
+<h2 id="How-to-define-port-directions"><a href="#How-to-define-port-directions" class="headerlink" title="How to define port directions ?"></a>How to define port directions ?</h2><p>​    Interface signals can be used within various verification components as well as the DUT, and hence <code>modport</code> is used to define signal directions. Different modport definitions can be passed to different components that allows us to define different input-output directions for each component.</p>
+<p><strong>modport中不需要指定port width</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-comment">// Filename : myBus.sv</span><br><span class="hljs-keyword">interface</span> myBus (<span class="hljs-keyword">input</span> clk);<br>  <span class="hljs-keyword">logic</span> [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>]  data;<br>  <span class="hljs-keyword">logic</span>      enable;<br> <br>  <span class="hljs-comment">// From TestBench perspective, &#x27;data&#x27; is input and &#x27;write&#x27; is output</span><br>  <span class="hljs-keyword">modport</span> TB  (<span class="hljs-keyword">input</span> data, <span class="hljs-keyword">output</span> enable);  <br> <br>  <span class="hljs-comment">// From DUT perspective, &#x27;data&#x27; is output and &#x27;enable&#x27; is input</span><br>  <span class="hljs-keyword">modport</span> DUT (<span class="hljs-keyword">output</span> data, <span class="hljs-keyword">input</span> enable); <br><span class="hljs-keyword">endinterface</span><br> <br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.chipverify.com/systemverilog/systemverilog-modport">Click here to read more on SystemVerilog modports !</a></p>
+<h2 id="How-to-connect-an-interface-with-DUT"><a href="#How-to-connect-an-interface-with-DUT" class="headerlink" title="How to connect an interface with DUT ?"></a>How to connect an interface with DUT ?</h2><p>​    An interface object should be created in the top testbench module where DUT is instantiated, and passed to DUT. It is essential to ensure that the correct modport is assigned to DUT.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-comment">// Filename : dut.sv</span><br><span class="hljs-keyword">module</span> dut (myBus<span class="hljs-variable">.DUT</span> busIf);<br>  <span class="hljs-keyword">always</span> @ (<span class="hljs-keyword">posedge</span> clk) <br>    <span class="hljs-keyword">if</span> (busIf<span class="hljs-variable">.enable</span>)<br>      busIf<span class="hljs-variable">.data</span> &lt;= busIf<span class="hljs-variable">.data</span>+<span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">else</span> <br>      busIf<span class="hljs-variable">.data</span> &lt;= <span class="hljs-number">0</span>;<br><span class="hljs-keyword">endmodule</span> <br> <br> <br><span class="hljs-comment">// Filename : tb_top.sv</span><br><span class="hljs-keyword">module</span> tb_top;<br>  <span class="hljs-keyword">bit</span> clk;<br>  <span class="hljs-keyword">bit</span> enable;<br> <br>  <span class="hljs-comment">// Create a clock</span><br>  <span class="hljs-keyword">always</span> #<span class="hljs-number">10</span> clk = ~clk;<br> <br>  <span class="hljs-comment">// Create an interface object</span><br>  myBus busIf (clk);<br> <br>  <span class="hljs-comment">// Instantiate the DUT; pass modport DUT of busIf</span><br>  dut dut0 (busIf<span class="hljs-variable">.DUT</span>);<br> <br>  <span class="hljs-comment">// Testbench code : let&#x27;s wiggle enable</span><br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    enable  &lt;= <span class="hljs-number">0</span>;<br>    #<span class="hljs-number">10</span> enable &lt;= <span class="hljs-number">1</span>;<br>    #<span class="hljs-number">40</span> enable &lt;= <span class="hljs-number">0</span>;<br>    #<span class="hljs-number">20</span> enable &lt;= <span class="hljs-number">1</span>;<br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br> <br></code></pre></td></tr></table></figure>
+
+<h2 id="What-are-the-advantages"><a href="#What-are-the-advantages" class="headerlink" title="What are the advantages ?"></a>What are the advantages ?</h2><p>​    Interfaces can contain tasks, functions, parameters, variables, functional coverage, and assertions. This enables us to monitor and record the transactions via the interface within this block. It also becomes easier to connect to design regardless of the number of ports it has since that information is encapsulated in an interface.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-comment">//Before interface</span><br>dut dut0  (<span class="hljs-variable">.data</span> (data),<br>           <span class="hljs-variable">.enable</span> (enable),<br>           <span class="hljs-comment">//  all other signals</span><br>           );<br> <br><span class="hljs-comment">// With interface - higher level of abstraction possible</span><br>dut dut0  (busIf<span class="hljs-variable">.DUT</span>);<br> <br></code></pre></td></tr></table></figure>
+
+<h2 id="How-to-parameterize-an-interface"><a href="#How-to-parameterize-an-interface" class="headerlink" title="How to parameterize an interface ?"></a>How to parameterize an interface ?</h2><p>The same way you would do for a <em>module</em>.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">interface</span> myBus #(<span class="hljs-keyword">parameter</span> D_WIDTH=<span class="hljs-number">31</span>) (<span class="hljs-keyword">input</span> clk);<br>  <span class="hljs-keyword">logic</span> [D_WIDTH-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] data;<br>  <span class="hljs-keyword">logic</span>               enable;<br><span class="hljs-keyword">endinterface</span><br> <br></code></pre></td></tr></table></figure>
+
+<h2 id="What-are-clocking-blocks"><a href="#What-are-clocking-blocks" class="headerlink" title="What are clocking blocks ?"></a>What are clocking blocks ?</h2><p>Signals that are specified inside a clocking block will be sampled&#x2F;driven with respect to that clock. There can be mulitple clocking blocks in an interface. Note that this is for testbench related signals. You want to control when the TB drives and samples signals from DUT. Solves some part of the race condition, but not entirely. You can also parameterize the skew values.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">interface</span> my_int (<span class="hljs-keyword">input</span> <span class="hljs-keyword">bit</span> clk);<br>  <span class="hljs-comment">// Rest of interface code</span><br> <br>  <span class="hljs-keyword">clocking</span> cb_clk @(<span class="hljs-keyword">posedge</span> clk);<br>    <span class="hljs-keyword">default</span> <span class="hljs-keyword">input</span> #<span class="hljs-number">3</span>ns <span class="hljs-keyword">output</span> #<span class="hljs-number">2</span>ns;<br>    <span class="hljs-keyword">input</span> enable;<br>    <span class="hljs-keyword">output</span> data;<br>  <span class="hljs-keyword">endclocking</span><br><span class="hljs-keyword">endinterface</span><br> <br></code></pre></td></tr></table></figure>
+
+<p><strong>In the above example, we have specified that by default, input should be sampled 3ns before posedge of clk, and output should be driven 2ns after posedge of clk.</strong></p>
+<p> <strong>驱动延时（output，如2ps）或者采样延时(input，如10ps)的意思；驱动延时是正值，表示在时钟沿后2ps驱动信号，采样延时是负值，表示在时钟沿前10ps采样</strong> </p>
+<h2 id="How-to-use-a-clocking-block"><a href="#How-to-use-a-clocking-block" class="headerlink" title="How to use a clocking block ?"></a>How to use a clocking block ?</h2><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-comment">// To wait for posedge of clock</span><br>@busIf<span class="hljs-variable">.cb_clk</span>;<br> <br><span class="hljs-comment">// To use clocking block signals</span><br>busIf<span class="hljs-variable">.cb_clk</span><span class="hljs-variable">.enable</span> = <span class="hljs-number">1</span>;<br> <br></code></pre></td></tr></table></figure>
+
+<p>As you can see, you don’t have to wait for the posedge of clk, before you assign 1 to enable. This way, you are assured that enable will be driven 2ns after the next posedge clk.</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/">Verification</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/System-Verilog/">System Verilog</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/SV/">SV</a>
+                    
+                      <a class="hover-with-bg" href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch06_Interface/ch06_Clocking%20Block/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ch6-Clocking block</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch06_Interface/ch06_Modport/">
+                        <span class="hidden-mobile">ch6-Modport</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -1,0 +1,608 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="0. 参考Simulation and Synthesis Techniques for Asynchronous FIFO Design — Clifford E. Cummings, Sunburst Design  1. 异步FIFO在跨时钟域传输的时候容易发生亚稳态。当在不同时钟域之间传递的多个信号时，需要用到异步FIFO。 异步FIFO的难点在于生成读写地址和空满指示位。 2. FIFO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cummings——异步FIFO第一讲">
+<meta property="og:url" content="http://example.com/2019/07/16/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/Cummings%E2%80%94%E2%80%94%E5%BC%82%E6%AD%A5FIFO%E7%AC%AC%E4%B8%80%E8%AE%B2/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="0. 参考Simulation and Synthesis Techniques for Asynchronous FIFO Design — Clifford E. Cummings, Sunburst Design  1. 异步FIFO在跨时钟域传输的时候容易发生亚稳态。当在不同时钟域之间传递的多个信号时，需要用到异步FIFO。 异步FIFO的难点在于生成读写地址和空满指示位。 2. FIFO">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/asynchronous/gray0.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/asynchronous/gray1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/asynchronous/gray2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/asynchronous/fifo.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/asynchronous/gray00.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/asynchronous/gray11.png">
+<meta property="article:published_time" content="2019-07-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.804Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="IC">
+<meta property="article:tag" content="Asynchronous">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/asynchronous/gray0.png">
+  
+  
+  <title>Cummings——异步FIFO第一讲 - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Cummings——异步FIFO第一讲">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-07-16 00:00" pubdate>
+        July 16, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      8.3k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      69 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Cummings——异步FIFO第一讲</h1>
+            
+            <div class="markdown-body">
+              <h3 id="0-参考"><a href="#0-参考" class="headerlink" title="0. 参考"></a>0. 参考</h3><p><strong>Simulation and Synthesis Techniques for Asynchronous FIFO Design — Clifford E. Cummings, Sunburst Design</strong> </p>
+<h3 id="1-异步FIFO"><a href="#1-异步FIFO" class="headerlink" title="1. 异步FIFO"></a>1. 异步FIFO</h3><p>在跨时钟域传输的时候容易发生亚稳态。当在不同时钟域之间传递的多个信号时，需要用到异步FIFO。</p>
+<p>异步FIFO的难点在于生成读写地址和空满指示位。</p>
+<h3 id="2-FIFO指针"><a href="#2-FIFO指针" class="headerlink" title="2. FIFO指针"></a>2. FIFO指针</h3><h4 id="2-1-同步fifo指针"><a href="#2-1-同步fifo指针" class="headerlink" title="2.1 同步fifo指针"></a>2.1 同步fifo指针</h4><p>​    对于同步FIFO而言，读写时钟相同，可以用一个计数器来表示FIFO的状态，如果只写数据，则计数增加；如果只读，则计数减少；级读又写，则计数不变。当计数到某个值，表示FIFO为满；计数为零，表示FIFO空。此时的读地址在每次读有效的时候增加就可以了，当读到最高为会回到零；写地址一样。</p>
+<h4 id="2-2-异步FIFO指针"><a href="#2-2-异步FIFO指针" class="headerlink" title="2.2 异步FIFO指针"></a>2.2 异步FIFO指针</h4><p><strong>写指针：</strong>写指针指向下一个要写的地址。当FIFO reset之后，写指针为0。当写操作有效的时候，在下一个时钟沿出向写地址指向的位置写数据，然后写指针累加，指向下一个写地址。</p>
+<p><strong>读地址：</strong>读指针也要指向下一个要读的地址，FIFO reset之后，读指针也为0，此时空标志位有效，当写了一个数据后，空表示为清零。读操作有效的时候，在下一个时钟沿，向读地址指示的位置读数据，并使读地址累加。</p>
+<p><strong>满状态</strong>：如果写地址赶上读地址，此时读写地址相同，写地址将读地址套圈了，那么FIFO满了。</p>
+<p><strong>空状态：</strong>reset之后是空；当读地址赶上写地址，FIFO空。</p>
+<p><strong>地址上增加一位空满标志位：</strong>n位地址，最高位为标志位，低n-1位位真正的FIFO地址。除了最高位，读写地址相同，则为满；如果读写地址相同——最高位也相同，那么空。</p>
+<h4 id="2-3-二进制的地址问题"><a href="#2-3-二进制的地址问题" class="headerlink" title="2.3 二进制的地址问题"></a>2.3 二进制的地址问题</h4><p>​    二进制地址累加时，相邻地址经常存在多位同时跳变比如01到10，有两位同时跳变。在异步采样时可能没有采样到同时跳变后的值，可能采样到00，11的情况。</p>
+<p>解决：用格雷码表示地址</p>
+<h3 id="3-格雷码计数器"><a href="#3-格雷码计数器" class="headerlink" title="3.格雷码计数器"></a>3.格雷码计数器</h3><h4 id="3-0-跨时钟域中使用格雷码的作用："><a href="#3-0-跨时钟域中使用格雷码的作用：" class="headerlink" title="3.0 跨时钟域中使用格雷码的作用："></a>3.0 跨时钟域中使用格雷码的作用：</h4><ol>
+<li>相邻码只改变一位，降低亚稳态的发生。</li>
+<li>减少地址翻转，降低功耗。</li>
+<li>即使发生采样错误也不会产生功能错误。地址改变时，跨时钟采样可能采样到原来值，或者改变后的值。比如读地址同步到写时钟域，采样到了原来的值，产生最差的情况是不满的时候判断为满，只是会延迟一点写操作，不会产生功能错误。</li>
+<li>并且，即使发生采样错误，读地址延迟了一个写时钟周期，那么在下一次采样读地址的时候，如果采样正确，那么不会存在地址延迟的情况；即使下一次还是采样到了亚稳态，那么地址还是延迟一个周期，并不是说延迟累加，两次采样错误延迟了两个周期。</li>
+</ol>
+<p><strong>特点</strong>：<br>1.相邻码只改变1bit<br>2.只能用来记2的指数倍数，不能记奇数个数</p>
+<p>如下图：</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/asynchronous/gray0.png" srcset="/img/loading.gif" lazyload></p>
+<p>格雷码与二进制的转换：</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/2.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E5%BC%82%E6%AD%A5fifo/3.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>格雷码计数器的功能</strong>：在写时钟域内，二进制地址累加，然后将二进制的写地址转换成格雷码地址，格雷码地址要传给读时钟域；在写时钟域中格雷码转换器将二进制的读地址转换成格雷码地址，格雷码地址要传给写时钟域。</p>
+<h4 id="3-1-第一种格雷码计数器"><a href="#3-1-第一种格雷码计数器" class="headerlink" title="3.1  第一种格雷码计数器"></a>3.1  第一种格雷码计数器</h4><p>一种格雷码编码风格如下，只需要一组地址寄存器来保存地址：</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/asynchronous/gray1.png" srcset="/img/loading.gif" lazyload></p>
+<p>​    上图中上半部分表示生成n位的格雷码；下半部分红框部分将格雷码最高位与次高位异或，然后将生成的addrmsb与格雷码的低n-2位合并成一个N-1位的格雷码地址，不知有什么用？？</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-comment">// 上半图的n位格雷码计数器</span><br><span class="hljs-keyword">wire</span> clk,rst_n;<br><span class="hljs-keyword">wire</span> [n-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] bin,bnext,gnext;<br><span class="hljs-keyword">wire</span> inc,full; <span class="hljs-comment">// 写时钟域的格雷码转换器</span><br><span class="hljs-keyword">reg</span> [n-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] ptr; <span class="hljs-comment">//输出的n位格雷码</span><br><span class="hljs-keyword">integer</span> i;<br><span class="hljs-keyword">always</span>@(ptr) <span class="hljs-keyword">begin</span>  <span class="hljs-comment">//格雷码转二进制</span><br>	bin[n-<span class="hljs-number">1</span>] = ptr[n-<span class="hljs-number">1</span>];<br>	<span class="hljs-keyword">for</span>(i=n-<span class="hljs-number">2</span>;i&gt;=<span class="hljs-number">0</span>;i=i+<span class="hljs-number">1</span>)<br>		bin[i] = bin[i+<span class="hljs-number">1</span>] ^ bin[i];<br><span class="hljs-keyword">end</span><br><span class="hljs-keyword">assign</span> bnext = bnext+(inc &amp;&amp; !full)?<span class="hljs-number">1</span>:<span class="hljs-number">0</span>;<br><span class="hljs-keyword">assign</span> gnext = (bnext&gt;&gt;<span class="hljs-number">1</span>) ^ bnext; <span class="hljs-comment">//二进制转格雷码</span><br><span class="hljs-keyword">always</span> @（<span class="hljs-keyword">posedge</span> clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> rst_n) <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">if</span>(rst_n==<span class="hljs-number">1&#x27;b0</span>) ptr&lt;=<span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>		ptr &lt;= bnext;<br>	<span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="3-2-第二种格雷码计数器"><a href="#3-2-第二种格雷码计数器" class="headerlink" title="3.2 第二种格雷码计数器"></a>3.2 第二种格雷码计数器</h4><p>用寄存器保存二进制码，去除格雷码到二进制的转换逻辑。</p>
+<p>减小寄存器之间的组合逻辑长度，可以增加频率，特别是在FPGA中。</p>
+<p>如下图：</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/asynchronous/gray2.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">wire</span> clk,rst_n;<br><span class="hljs-keyword">wire</span> [n-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] bnext,gnext;<br><span class="hljs-keyword">wire</span> inc,full; <span class="hljs-comment">// 写时钟域的格雷码转换器</span><br><span class="hljs-keyword">reg</span> [n-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] ptr; <span class="hljs-comment">//输出的n位格雷码</span><br><span class="hljs-keyword">reg</span> [n-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] bin;<br><span class="hljs-keyword">integer</span> i;<br><br><span class="hljs-keyword">assign</span> bnext = bnext+(inc &amp;&amp; !full)?<span class="hljs-number">1</span>:<span class="hljs-number">0</span>;<br><span class="hljs-keyword">assign</span> gnext = (bnext&gt;&gt;<span class="hljs-number">1</span>) ^ bnext; <span class="hljs-comment">//二进制转格雷码</span><br><span class="hljs-keyword">always</span> @（<span class="hljs-keyword">posedge</span> clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> rst_n) <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">if</span>(rst_n==<span class="hljs-number">1&#x27;b0</span>) &#123;ptr,bin&#125;&lt;=<span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">else</span> &#123;ptr,bin&#125; &lt;=&#123;gnext,bnext&#125;;<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="4-fifo结构图"><a href="#4-fifo结构图" class="headerlink" title="4. fifo结构图"></a>4. fifo结构图</h3><p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/asynchronous/fifo.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="5-空满标志位"><a href="#5-空满标志位" class="headerlink" title="5. 空满标志位"></a>5. 空满标志位</h3><p><strong>空标志位在读时钟域产生；满标志位在写时钟域产生。</strong></p>
+<h4 id="5-1-空标志位"><a href="#5-1-空标志位" class="headerlink" title="5.1 空标志位"></a>5.1 空标志位</h4><p>地址比实际地址增加一位。</p>
+<p>读时钟域的格雷码读地址 与 同步过来的格雷码写地址相同，说明满</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">assign</span> rempty_val = (rgraynext == rq2_wptr); <span class="hljs-comment">// 读时钟域的格雷码读地址 与 同步过来的格雷码写地址相同，说明满</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> rclk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> rrst_n) <span class="hljs-comment">// 读时钟</span><br>	<span class="hljs-keyword">if</span> (!rrst_n) rempty &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>	<span class="hljs-keyword">else</span> rempty &lt;= rempty_val;<br></code></pre></td></tr></table></figure>
+
+<h4 id="5-2-满标志位"><a href="#5-2-满标志位" class="headerlink" title="5.2 满标志位"></a>5.2 满标志位</h4><p>地址比实际地址增加一位。</p>
+<p>根据格雷码的特性，写时钟域与的格雷码写地址与同步过来的格雷码读地址相比，最高两位都不同，其他位相同，说明满了。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">assign</span> wfull_val = (wgraynext==&#123;~wq2_rptr[ADDRSIZE:ADDRSIZE-<span class="hljs-number">1</span>],wq2_rptr[ADDRSIZE-<span class="hljs-number">2</span>:<span class="hljs-number">0</span>]&#125;);<br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> wclk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> wrst_n)<br>	<span class="hljs-keyword">if</span> (!wrst_n) wfull &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>	<span class="hljs-keyword">else</span> wfull &lt;= wfull_val;<br></code></pre></td></tr></table></figure>
+
+<h4 id="5-3-不同时钟频率的考虑"><a href="#5-3-不同时钟频率的考虑" class="headerlink" title="5.3 不同时钟频率的考虑"></a>5.3 不同时钟频率的考虑</h4><p><strong>问题一：快时钟是慢时钟的两倍，那么快域地址变化两次，慢时钟域采样一次，前后采样值变化了两次，会产生多位同步的问题吗？</strong></p>
+<p>​    不会。快时钟域第一次改变一位，比如从A到B，慢时钟域没有采样，当快时钟域改变第二次B到C之后，慢时钟域才采样，虽然这期间快时钟域的地址从A到C变了两次，但是慢时钟域只看到第二次B到C，只跳变了一位，因此不会产生多位同步问题。</p>
+<p><strong>问题二：快时钟域是否会引起full+1的情况——写溢出，或者empty+1——读溢出？</strong></p>
+<p>​    不会。对于满是在写时钟域产生，如果写时钟比读时钟快，如果waddr追上raddr，那么full有效，此时不能再写了，也就不会产生full+1情况。对于空是在写时钟域产生，如果读时钟比写时钟快，如果raddr赶上waddr，那么就不能再读，也就不会产生empty+1.</p>
+<h4 id="5-4-空满标志位取消"><a href="#5-4-空满标志位取消" class="headerlink" title="5.4 空满标志位取消"></a>5.4 空满标志位取消</h4><p>​    空满的set是立即生效的。比如读时钟域中，将采样到的写时钟域的格雷码写地址 与当前的读地址比较，如果相等，则立马使empty有效；full类似。<strong>但是读写标志位clear是有延迟的。</strong></p>
+<p>​    当empty有效的时候，读时钟域采样的写地址与读地址相同，如果此时写入数据，那么在写时钟域里写地址是增加的，但是这个增加了的写地址需要两个读时钟的同步才能让读时钟域里的地址比较器看到，所以empty的clear有<strong>两个读时钟周期</strong>的延迟；同样full的clear有<strong>两个写时钟周期</strong>的延迟。</p>
+<p>​    但这不会使FIFO发生功能错误，可忽略。</p>
+<h4 id="5-5-reset时候地址多位跳变"><a href="#5-5-reset时候地址多位跳变" class="headerlink" title="5.5 reset时候地址多位跳变"></a>5.5 reset时候地址多位跳变</h4><p>没影响，因为reset就表明FIFO里的数据是无效的，此时不对FIFO进行读写。</p>
+<h3 id="6-代码"><a href="#6-代码" class="headerlink" title="6. 代码"></a>6. 代码</h3><p>这些代码是Cummings论文中给的。</p>
+<h4 id="6-1-顶层"><a href="#6-1-顶层" class="headerlink" title="6.1 顶层"></a>6.1 顶层</h4><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> fifo1 #(<span class="hljs-keyword">parameter</span> DSIZE = <span class="hljs-number">8</span>,<br><span class="hljs-keyword">parameter</span> ASIZE = <span class="hljs-number">4</span>)<br>(<span class="hljs-keyword">output</span> [DSIZE-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] rdata,<br><span class="hljs-keyword">output</span> wfull,<br><span class="hljs-keyword">output</span> rempty,<br><span class="hljs-keyword">input</span> [DSIZE-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] wdata,<br><span class="hljs-keyword">input</span> winc, wclk, wrst_n,<br><span class="hljs-keyword">input</span> rinc, rclk, rrst_n);<br><span class="hljs-keyword">wire</span> [ASIZE-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] waddr, raddr;<br><span class="hljs-keyword">wire</span> [ASIZE:<span class="hljs-number">0</span>] wptr, rptr, wq2_rptr, rq2_wptr;<br>sync_r2w sync_r2w (<span class="hljs-variable">.wq2_rptr</span>(wq2_rptr), <span class="hljs-variable">.rptr</span>(rptr),<br><span class="hljs-variable">.wclk</span>(wclk), <span class="hljs-variable">.wrst_n</span>(wrst_n));<br>sync_w2r sync_w2r (<span class="hljs-variable">.rq2_wptr</span>(rq2_wptr), <span class="hljs-variable">.wptr</span>(wptr),<br><span class="hljs-variable">.rclk</span>(rclk), <span class="hljs-variable">.rrst_n</span>(rrst_n));<br>fifomem <span class="hljs-variable">#(DSIZE, ASIZE)</span> fifomem<br>(<span class="hljs-variable">.rdata</span>(rdata), <span class="hljs-variable">.wdata</span>(wdata),<br><span class="hljs-variable">.waddr</span>(waddr), <span class="hljs-variable">.raddr</span>(raddr),<br><span class="hljs-variable">.wclken</span>(winc), <span class="hljs-variable">.wfull</span>(wfull),<br><span class="hljs-variable">.wclk</span>(wclk));<br>rptr_empty <span class="hljs-variable">#(ASIZE)</span> rptr_empty<br>(<span class="hljs-variable">.rempty</span>(rempty),<br><span class="hljs-variable">.raddr</span>(raddr),<br><span class="hljs-variable">.rptr</span>(rptr), <span class="hljs-variable">.rq2_wptr</span>(rq2_wptr),<br><span class="hljs-variable">.rinc</span>(rinc), <span class="hljs-variable">.rclk</span>(rclk),<br><span class="hljs-variable">.rrst_n</span>(rrst_n));<br>wptr_full <span class="hljs-variable">#(ASIZE)</span> wptr_full<br>(<span class="hljs-variable">.wfull</span>(wfull), <span class="hljs-variable">.waddr</span>(waddr),<br><span class="hljs-variable">.wptr</span>(wptr), <span class="hljs-variable">.wq2_rptr</span>(wq2_rptr),<br><span class="hljs-variable">.winc</span>(winc), <span class="hljs-variable">.wclk</span>(wclk),<br><span class="hljs-variable">.wrst_n</span>(wrst_n));<br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="6-2-内存读写模块"><a href="#6-2-内存读写模块" class="headerlink" title="6.2 内存读写模块"></a>6.2 内存读写模块</h4><p>​    读数据是直接从mem中读，不需要时钟。读地址A指示的是下一次要读的地址——此时FIFO不为空,读A地址是有效的。当前rdata信号上保存的是下一次要读的数据。如果外部读时钟域打算读数据，那么给一个读有效rinc，在rclk上升沿就可以直接把rdata取走，在rinc上升沿FIFO内部会根据A+1地址判断是否empty。（可以参考3.2节）。</p>
+<p>​    写数据winc有效时，下一个写时钟沿wclk要写入数据。满标志表示如果在下一个时钟沿写数据，就写到读地址处（读写地址相同）。如果满，则下一个时钟沿不能写。所以在下一个写时钟沿到来时要判断满标志，如果满了，则不能写。</p>
+<p>​    同样，读地址表示下一个读时钟沿要读的数据，空表示下一个时钟沿是否可以读。对于读数据的设备，它需要在读的时候判断是否空了，至于FIFO的rdata输出端则不需要进行empty判断，FIFO将下一次要读的数据放在rdata处，如果读数据的设备要读，就在rclk时钟沿读就行了。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> fifomem #(<span class="hljs-keyword">parameter</span> DATASIZE = <span class="hljs-number">8</span>, <span class="hljs-comment">// Memory data word width</span><br><span class="hljs-keyword">parameter</span> ADDRSIZE = <span class="hljs-number">4</span>) <span class="hljs-comment">// Number of mem address bits</span><br>(<span class="hljs-keyword">output</span> [DATASIZE-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] rdata,<br><span class="hljs-keyword">input</span> [DATASIZE-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] wdata,<br><span class="hljs-keyword">input</span> [ADDRSIZE-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] waddr, raddr,<br><span class="hljs-keyword">input</span> wclken, wfull, wclk);<br><span class="hljs-meta">`<span class="hljs-keyword">ifdef</span> VENDORRAM</span><br><span class="hljs-comment">// instantiation of a vendor&#x27;s dual-port RAM</span><br>    vendor_ram mem (<span class="hljs-variable">.dout</span>(rdata), <span class="hljs-variable">.din</span>(wdata),  <span class="hljs-comment">//这一块不用管</span><br><span class="hljs-variable">.waddr</span>(waddr), <span class="hljs-variable">.raddr</span>(raddr),<br><span class="hljs-variable">.wclken</span>(wclken),<br><span class="hljs-variable">.wclken_n</span>(wfull), <span class="hljs-variable">.clk</span>(wclk));<br><span class="hljs-meta">`<span class="hljs-keyword">else</span></span><br><span class="hljs-comment">// RTL Verilog memory model</span><br><span class="hljs-keyword">localparam</span> DEPTH = <span class="hljs-number">1</span>&lt;&lt;ADDRSIZE; <span class="hljs-comment">//将地址位数转化成FIFO深度</span><br><span class="hljs-keyword">reg</span> [DATASIZE-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] mem [<span class="hljs-number">0</span>:DEPTH-<span class="hljs-number">1</span>];<br><span class="hljs-keyword">assign</span> rdata = mem[raddr]; <span class="hljs-comment">//直接读，empty标志位影响raddr的累加</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> wclk)<br>    <span class="hljs-keyword">if</span> (wclken &amp;&amp; !wfull) mem[waddr] &lt;= wdata;<span class="hljs-comment">//写需要判断full，并且在时钟沿处写</span><br><span class="hljs-meta">`<span class="hljs-keyword">endif</span></span><br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="6-3-读地址到写时钟域同步"><a href="#6-3-读地址到写时钟域同步" class="headerlink" title="6.3 读地址到写时钟域同步"></a>6.3 读地址到写时钟域同步</h4><p><strong>写时钟控制，打两拍</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> sync_r2w #(<span class="hljs-keyword">parameter</span> ADDRSIZE = <span class="hljs-number">4</span>)<br>(<span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span> [ADDRSIZE:<span class="hljs-number">0</span>] wq2_rptr,<br><span class="hljs-keyword">input</span> [ADDRSIZE:<span class="hljs-number">0</span>] rptr,<br><span class="hljs-keyword">input</span> wclk, wrst_n);<br><span class="hljs-keyword">reg</span> [ADDRSIZE:<span class="hljs-number">0</span>] wq1_rptr;<br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> wclk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> wrst_n)<br>    <span class="hljs-keyword">if</span> (!wrst_n) &#123;wq2_rptr,wq1_rptr&#125; &lt;= <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">else</span> &#123;wq2_rptr,wq1_rptr&#125; &lt;= &#123;wq1_rptr,rptr&#125;;<br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="6-4-写地址到读时钟域同步"><a href="#6-4-写地址到读时钟域同步" class="headerlink" title="6.4 写地址到读时钟域同步"></a>6.4 写地址到读时钟域同步</h4><p><strong>读时钟控制，打两拍</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> sync_w2r #(<span class="hljs-keyword">parameter</span> ADDRSIZE = <span class="hljs-number">4</span>)<br>(<span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span> [ADDRSIZE:<span class="hljs-number">0</span>] rq2_wptr,<br><span class="hljs-keyword">input</span> [ADDRSIZE:<span class="hljs-number">0</span>] wptr,<br><span class="hljs-keyword">input</span> rclk, rrst_n);<br><span class="hljs-keyword">reg</span> [ADDRSIZE:<span class="hljs-number">0</span>] rq1_wptr;<br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> rclk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> rrst_n)<br>    <span class="hljs-keyword">if</span> (!rrst_n) &#123;rq2_wptr,rq1_wptr&#125; &lt;= <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">else</span> &#123;rq2_wptr,rq1_wptr&#125; &lt;= &#123;rq1_wptr,wptr&#125;;<br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="6-5-空标志位产生"><a href="#6-5-空标志位产生" class="headerlink" title="6.5 空标志位产生"></a>6.5 空标志位产生</h4><p>产生空标志位、n-1位当前的二进制读地址、n位格雷码读地址</p>
+<p>产生空标志位的结构框图如下：</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/asynchronous/gray00.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-keyword">module</span> rptr_empty #(<span class="hljs-keyword">parameter</span> ADDRSIZE = <span class="hljs-number">4</span>)<br>(<span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span> rempty,<br><span class="hljs-keyword">output</span> [ADDRSIZE-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] raddr,<br><span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span> [ADDRSIZE :<span class="hljs-number">0</span>] rptr,<br><span class="hljs-keyword">input</span> [ADDRSIZE :<span class="hljs-number">0</span>] rq2_wptr,<br><span class="hljs-keyword">input</span> rinc, rclk, rrst_n);<br><span class="hljs-keyword">reg</span> [ADDRSIZE:<span class="hljs-number">0</span>] rbin;<br><span class="hljs-keyword">wire</span> [ADDRSIZE:<span class="hljs-number">0</span>] rgraynext, rbinnext;<br><span class="hljs-keyword">wire</span> rempty_val;    <br><span class="hljs-comment">//-------------------</span><br><span class="hljs-comment">// GRAYSTYLE2 pointer</span><br><span class="hljs-comment">//-------------------</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> rclk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> rrst_n)  <span class="hljs-comment">//格雷码计数器的第二种写法</span><br><span class="hljs-keyword">if</span> (!rrst_n) &#123;rbin, rptr&#125; &lt;= <span class="hljs-number">0</span>;<br><span class="hljs-keyword">else</span> &#123;rbin, rptr&#125; &lt;= &#123;rbinnext, rgraynext&#125;;<br><span class="hljs-comment">// Memory read-address pointer (okay to use binary to address memory)</span><br><span class="hljs-keyword">assign</span> raddr = rbin[ADDRSIZE-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>];<span class="hljs-comment">//给到memory模块</span><br><span class="hljs-keyword">assign</span> rbinnext = rbin + (rinc &amp; ~rempty);<br><span class="hljs-keyword">assign</span> rgraynext = (rbinnext&gt;&gt;<span class="hljs-number">1</span>) ^ rbinnext;<br><span class="hljs-comment">//---------------------------------------------------------------</span><br><span class="hljs-comment">// FIFO empty when the next rptr == synchronized wptr or on reset</span><br><span class="hljs-comment">//---------------------------------------------------------------</span><br>    <span class="hljs-keyword">assign</span> rempty_val = (rgraynext == rq2_wptr);<span class="hljs-comment">//空判断是根据下一次要读的地址来判断的</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> rclk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> rrst_n)<br>    <span class="hljs-keyword">if</span> (!rrst_n) rempty &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>    <span class="hljs-keyword">else</span> rempty &lt;= rempty_val;<br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="6-6-满标志产生"><a href="#6-6-满标志产生" class="headerlink" title="6.6 满标志产生"></a>6.6 满标志产生</h4><p>产生满标志、n-1位当前写地址、n位格雷码写地址</p>
+<p>产生满标志位的结构框图如下：</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/asynchronous/gray11.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> wptr_full #(<span class="hljs-keyword">parameter</span> ADDRSIZE = <span class="hljs-number">4</span>)<br>(<span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span> wfull,<br><span class="hljs-keyword">output</span> [ADDRSIZE-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>] waddr,<br><span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span> [ADDRSIZE :<span class="hljs-number">0</span>] wptr,<br><span class="hljs-keyword">input</span> [ADDRSIZE :<span class="hljs-number">0</span>] wq2_rptr,<br><span class="hljs-keyword">input</span> winc, wclk, wrst_n);<br><span class="hljs-keyword">reg</span> [ADDRSIZE:<span class="hljs-number">0</span>] wbin;<br><span class="hljs-keyword">wire</span> [ADDRSIZE:<span class="hljs-number">0</span>] wgraynext, wbinnext;<br><span class="hljs-keyword">wire</span> wfull_val;    <br><span class="hljs-comment">// GRAYSTYLE2 pointer</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> wclk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> wrst_n)<br><span class="hljs-keyword">if</span> (!wrst_n) &#123;wbin, wptr&#125; &lt;= <span class="hljs-number">0</span>;<br><span class="hljs-keyword">else</span> &#123;wbin, wptr&#125; &lt;= &#123;wbinnext, wgraynext&#125;;<br><span class="hljs-comment">// Memory write-address pointer (okay to use binary to address memory)</span><br><span class="hljs-keyword">assign</span> waddr = wbin[ADDRSIZE-<span class="hljs-number">1</span>:<span class="hljs-number">0</span>];<br><span class="hljs-keyword">assign</span> wbinnext = wbin + (winc &amp; ~wfull);<br><span class="hljs-keyword">assign</span> wgraynext = (wbinnext&gt;&gt;<span class="hljs-number">1</span>) ^ wbinnext;<br><span class="hljs-comment">//------------------------------------------------------------------</span><br><span class="hljs-comment">// Simplified version of the three necessary full-tests:</span><br><span class="hljs-comment">// assign wfull_val=((wgnext[ADDRSIZE] !=wq2_rptr[ADDRSIZE] ) &amp;&amp;</span><br><span class="hljs-comment">// (wgnext[ADDRSIZE-1] !=wq2_rptr[ADDRSIZE-1]) &amp;&amp;</span><br><span class="hljs-comment">// (wgnext[ADDRSIZE-2:0]==wq2_rptr[ADDRSIZE-2:0]));</span><br><span class="hljs-comment">//------------------------------------------------------------------</span><br><span class="hljs-keyword">assign</span> wfull_val = (wgraynext==&#123;~wq2_rptr[ADDRSIZE:ADDRSIZE-<span class="hljs-number">1</span>],wq2_rptr[ADDRSIZE-<span class="hljs-number">2</span>:<span class="hljs-number">0</span>]&#125;);<br>    <span class="hljs-comment">// 空判断是根据下一次要写的地址判断的。</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> wclk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> wrst_n)<br><span class="hljs-keyword">if</span> (!wrst_n) wfull &lt;= <span class="hljs-number">1&#x27;b0</span>;<br><span class="hljs-keyword">else</span> wfull &lt;= wfull_val;<br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/categories/IC/Asynchronous/">Asynchronous</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Asynchronous/">Asynchronous</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/07/18/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/Cummings%E2%80%94%E2%80%94%E5%BC%82%E6%AD%A5FIFO%E7%AC%AC%E4%BA%8C%E8%AE%B2/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Cummings——异步FIFO第二讲</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/07/15/Verification/Debug/dump%E6%B3%A2%E5%BD%A2/">
+                        <span class="hidden-mobile">debug——dumpboxing</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -1,0 +1,556 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="0. 介绍​    UVM中，component的task phase是消耗仿真时间的，各个components需要在不同层次的task phase中同步信息。UVM中通过objection mechanism来控制phase的执行，通过raise or drop objection来决定phase中事件的开始和停止。 1. objection控制phase的执行1.1 phase中收集到obje">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UVM——phase objection">
+<meta property="og:url" content="http://example.com/2019/08/24/Verification/UVM/UVM%E2%80%94%E2%80%94phase%20objection/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="0. 介绍​    UVM中，component的task phase是消耗仿真时间的，各个components需要在不同层次的task phase中同步信息。UVM中通过objection mechanism来控制phase的执行，通过raise or drop objection来决定phase中事件的开始和停止。 1. objection控制phase的执行1.1 phase中收集到obje">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-08-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.818Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="IC">
+<meta property="article:tag" content="SV">
+<meta property="article:tag" content="Verification">
+<meta property="article:tag" content="UVM">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>UVM——phase objection - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="UVM——phase objection">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-08-24 00:00" pubdate>
+        August 24, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.5k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      38 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">UVM——phase objection</h1>
+            
+            <div class="markdown-body">
+              <h3 id="0-介绍"><a href="#0-介绍" class="headerlink" title="0. 介绍"></a>0. 介绍</h3><p>​    UVM中，component的task phase是消耗仿真时间的，各个components需要在不同层次的task phase中同步信息。UVM中通过objection mechanism来控制phase的执行，通过raise or drop objection来决定phase中事件的开始和停止。</p>
+<h3 id="1-objection控制phase的执行"><a href="#1-objection控制phase的执行" class="headerlink" title="1. objection控制phase的执行"></a>1. objection控制phase的执行</h3><h4 id="1-1-phase中收集到objection"><a href="#1-1-phase中收集到objection" class="headerlink" title="1.1 phase中收集到objection"></a>1.1 phase中收集到objection</h4><p>​    当程序根据real-time phase的执行顺序，进入到某一个real-time phase中时，它会收集此phase提出的所有的objection（每个component都可以raise  objection），当这个phase中所有的objection都被撤销（drop）之后，那么这个phase就执行结束。</p>
+<p>​    比如说进入到main_phase后，driver中 raise objection，monitor的main phase没有raise objection，那么driver和monitor的main phase都会执行。monitor的的main phase的执行受driver的影响，当driver中drop objection之后，monitor的main phase也停止执行。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-comment">//// driver中提起objection</span><br><span class="hljs-keyword">task</span> driver::main_phase(uvm_phase phase);<br>	phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>);<br>	.....<span class="hljs-comment">//some activity</span><br>	phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br><span class="hljs-keyword">endtask</span><br><span class="hljs-comment">//// monitor中不提起objection</span><br><span class="hljs-keyword">task</span> monitor::main_phase(uvm_phase phase);<br>    ....<br><span class="hljs-keyword">endtask</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="1-2-phase没有收集到objection"><a href="#1-2-phase没有收集到objection" class="headerlink" title="1.2 phase没有收集到objection"></a>1.2 phase没有收集到objection</h4><p>​    如果进入某个real-time phase后没有收集到objection，也就是说所有的component的这个real-time phase没有没raise objection，那么不会执行phase。</p>
+<h4 id="1-3-run-phase的执行"><a href="#1-3-run-phase的执行" class="headerlink" title="1.3 run_phase的执行"></a>1.3 run_phase的执行</h4><p>run_phase和real-time phase是并行执行关系，如果在12个real-time phase有任何一个phase提起了objection，那么run_phase都会执行；当然也可以在run_phase中提起objection。</p>
+<p><strong>外国人的代码中一般是在run_phase中进行操作，而且run_phase和main_phase的作用差不多，推荐run_phase。</strong></p>
+<h3 id="2-在sequence中提起objection"><a href="#2-在sequence中提起objection" class="headerlink" title="2. 在sequence中提起objection"></a>2. 在sequence中提起objection</h3><p>​    在验证平台中通常是在sequence 中来控制phase的执行，并且一般是在root sequence（没有parent sequence的sequence），比如嵌套sequence、virtual sequence。</p>
+<h4 id="2-1-设置phase的default-sequence"><a href="#2-1-设置phase的default-sequence" class="headerlink" title="2.1 设置phase的default sequence"></a>2.1 设置phase的default sequence</h4><p>在uvm_sequence中有一个starting_phase成员，它是uvm_phase类型。如果我们通过设置run phase的default sequence来启动一个sequence，那么会默认将run phase的phase传递给这个sequence的starting_phase.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> my_case::build_phase(uvm_phase phase);<br>	...<br>	uvm_config_db<span class="hljs-variable">#(uvm_object_wrapper)::set(this,&quot;env.i_agt.sqr.run_phase&quot;,&quot;default_sequence&quot;,sequence::type_id::get())</span>;<br>	...<br><span class="hljs-keyword">endfunction</span><br></code></pre></td></tr></table></figure>
+
+<p>sequencer在启动sequence时候会默认做如下操作：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">task</span> sequencer::run_phase(uvm_phase phase):<br>	...<br>	seq<span class="hljs-variable">.starting_phase</span>=phase;<br>	seq<span class="hljs-variable">.start</span>(<span class="hljs-keyword">this</span>);<br>	...<br><span class="hljs-keyword">endtask</span><br></code></pre></td></tr></table></figure>
+
+<p>这样我们就可以在sequence中控制objection</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> <span class="hljs-keyword">sequence</span> <span class="hljs-keyword">extends</span> uvm_sequence<span class="hljs-variable">#(transaction)</span>;<br>    <span class="hljs-keyword">task</span> pre_body(); <span class="hljs-comment">//重载pre_body</span><br>		<span class="hljs-keyword">if</span>(starting_phase!=<span class="hljs-literal">null</span>)<br>			starting_phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>);<br>	<span class="hljs-keyword">endtask</span><br>	<span class="hljs-keyword">task</span> body();<br>		...<br>	<span class="hljs-keyword">endtask</span><br>	<span class="hljs-keyword">task</span> post_body();<br>		<span class="hljs-keyword">if</span>(starting_phase!=<span class="hljs-literal">null</span>)<br>			starting_phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br>	<span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-2-直接将task-phase的phase传递给sequence"><a href="#2-2-直接将task-phase的phase传递给sequence" class="headerlink" title="2.2 直接将task phase的phase传递给sequence"></a>2.2 直接将task phase的phase传递给sequence</h4><p>如果我们是用start函数来启动sequence，可以通过直接将phase传递给sequence的starting_phase。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">task</span> my_case::run_phase(uvm_phase phase):<br>	...<br>	seq<span class="hljs-variable">.starting_phase</span> = phase;<br>	seq<span class="hljs-variable">.start</span>(env<span class="hljs-variable">.i_agt</span><span class="hljs-variable">.sqr</span>);<br><span class="hljs-keyword">endtask</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>在实际应用中不写seq.starting_phase&#x3D;phase这一句也可以，但是在UVM UG中，写了。</strong></p>
+<h3 id="3-在哪控制objection"><a href="#3-在哪控制objection" class="headerlink" title="3. 在哪控制objection"></a>3. 在哪控制objection</h3><p>可以有两种方法。</p>
+<h4 id="3-1-在sequence中控制"><a href="#3-1-在sequence中控制" class="headerlink" title="3.1 在sequence中控制"></a>3.1 在sequence中控制</h4><p>之前讲的就是在sequence中控制，将phase传递给sequence的starting_phase</p>
+<h4 id="3-2-在scoreboard中控制"><a href="#3-2-在scoreboard中控制" class="headerlink" title="3.2 在scoreboard中控制"></a>3.2 在scoreboard中控制</h4><p>我们控制run phase任务运行的目的是想要正确的发送和接受激励序列。</p>
+<p>​    发送的激励序列一方面传递给了参考模型，一方面传递给了DUT，参考模型产生预测数据，DUT产生真实的输出响应，所以，如果我们将DUT的所有合理的输出都在scoreboard完成了，那么我们的run phase其实就可以结束了。基于这个思想我们可以在scoreboard中控制objection。</p>
+<p>​    如果我们有pkg_num个激励，那么我们可以在scoreboard中收集pkg_num个真实DUT输出就可以raise_objection。这个pkg_num可以通过config_db的get得到。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-keyword">task</span> scoreboard::run_phase(uvm_phase phase);<br>	...<br>    phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>); <span class="hljs-comment">//提起objection</span><br>	<span class="hljs-keyword">fork</span><br>		<span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>) <span class="hljs-keyword">begin</span><br>			exp_port<span class="hljs-variable">.get</span>(exp_tr); <span class="hljs-comment">//从参考模型中拿到预测值</span><br>			exp_queue<span class="hljs-variable">.push_back</span>(tr);<span class="hljs-comment">//将预测值都保存在队列中，为了后面与真实值比较</span><br>		<span class="hljs-keyword">end</span><br>		<span class="hljs-keyword">for</span>（<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;pkg_num;i++) <span class="hljs-keyword">begin</span><br>			act_port<span class="hljs-variable">.get</span>(act_tr); <span class="hljs-comment">//得到真实值</span><br>			tmp_tr=exp_queue<span class="hljs-variable">.pop_front</span>(); <span class="hljs-comment">//逐次与预测值比较</span><br>			result=exp_tr<span class="hljs-variable">.compare</span>(tmp_tr);<span class="hljs-comment">//比较</span><br>		<span class="hljs-keyword">end</span><br>	<span class="hljs-keyword">join_any</span><span class="hljs-comment">// 注意</span><br>    phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br><span class="hljs-keyword">endtask</span><br></code></pre></td></tr></table></figure>
+
+<p>上面用的是fork join_any，fork里面有两个进程，第一个是个while循环会一直执行，所以当第二个进程for循环执行完之后，就会跳出fork，执行phase.drop_objection(this);结束任务。</p>
+<h3 id="4-set-drain-time"><a href="#4-set-drain-time" class="headerlink" title="4. set_drain_time"></a>4. set_drain_time</h3><p> <strong>phase.phase_done.set_drain_time(this,200);</strong> </p>
+<p>​    任何功能模块DUT都有处理延迟，我们发送transaction给DUT的输入到DUT产生输出，这中间会有延迟，如果我们在sequence中发送完最后一个transaction之后，立马drop_objection，那么可能最后发送的几个transaction还没有在DUT中产生输出，也就不会被scoreboard收集到。</p>
+<p>​    为了让task phase在drop_objection后不立马结束，延迟一段时间，等待所有的transaction都在DUT产生输出，我们可以设置set_drain_time。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">task</span> main_phase(uvm_phase phase);<br>    phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>);<br>#<span class="hljs-number">1000</span>;<span class="hljs-comment">//这是1000ns，打印时候是ps为单位</span><br>    phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br>  <span class="hljs-keyword">endtask</span><br><br>  <span class="hljs-keyword">task</span> post_main_phase(uvm_phase phase);<br>    phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>);<br>      `uvm_info(<span class="hljs-string">&quot;case0&quot;</span>,<span class="hljs-string">&quot;this post_main_phase&quot;</span>,UVM_LOW);  <br>    phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br>  <span class="hljs-keyword">endtask</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ceylon">UVM<span class="hljs-number">_</span>INFO <span class="hljs-keyword">case</span>/cases.sv(<span class="hljs-number">31</span>) @ <span class="hljs-number">1000000</span>: uvm<span class="hljs-number">_</span>test<span class="hljs-number">_</span>top [<span class="hljs-keyword">case</span><span class="hljs-number">0</span>] <span class="hljs-keyword">this</span> post<span class="hljs-number">_m</span>ain<span class="hljs-number">_p</span>hase<br></code></pre></td></tr></table></figure>
+
+<p>延迟1000ns之后调用drop_objection，立马进入post_main_phase.</p>
+<p><strong>如果我们使用了set_drain_time：</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">task</span> main_phase(uvm_phase phase);<br>    phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>);<br>#<span class="hljs-number">1000</span>;<br>    phase<span class="hljs-variable">.phase_done</span><span class="hljs-variable">.set_drain_time</span>(<span class="hljs-keyword">this</span>,<span class="hljs-number">200</span>); <br>    phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br>  <span class="hljs-keyword">endtask</span><br><br>  <span class="hljs-keyword">task</span> post_main_phase(uvm_phase phase);<br>    phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>);<br>      `uvm_info(<span class="hljs-string">&quot;case0&quot;</span>,<span class="hljs-string">&quot;this post_main_phase&quot;</span>,UVM_LOW);  <br>    phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br>  <span class="hljs-keyword">endtask</span><br></code></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ceylon">UVM<span class="hljs-number">_</span>INFO <span class="hljs-keyword">case</span>/cases.sv(<span class="hljs-number">31</span>) @ <span class="hljs-number">1200000</span>: uvm<span class="hljs-number">_</span>test<span class="hljs-number">_</span>top [<span class="hljs-keyword">case</span><span class="hljs-number">0</span>] <span class="hljs-keyword">this</span> post<span class="hljs-number">_m</span>ain<span class="hljs-number">_p</span>hase<br></code></pre></td></tr></table></figure>
+
+<p>延迟了200ns才进入post_main_phase。</p>
+<p>这里的phase_done是uvm_phase的一个成员，它是uvm_objection类型，我们在调用phase.raise_objection(this)的时候，其实调用的是phase_done.raise_objection(this)。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/">Verification</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/UVM/">UVM</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/SV/">SV</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Verification/">Verification</a>
+                    
+                      <a class="hover-with-bg" href="/tags/UVM/">UVM</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/08/25/Verification/UVM/UVM%E2%80%94%E2%80%94tb0-alu%E9%AA%8C%E8%AF%81%E5%B9%B3%E5%8F%B0/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">UVM——tb0-alu验证平台</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/08/23/Verification/SystemVerilog/SV%E2%80%94SV%E5%AE%9E%E7%8E%B0blueprint/">
+                        <span class="hidden-mobile">SV——SV实现blueprint</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

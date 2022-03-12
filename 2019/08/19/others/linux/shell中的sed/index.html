@@ -1,0 +1,609 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="中兴面试被提问到：在vim中删除包含特定字符串的行。当时说不会，后来想了想可以用sed或者perl里的匹配替换。 0. sedsed是个管道命令，可以对数据进行替换、删除、新增、选取特定行等功能。 1. 命令格式1sed -ndfr [动作]  1.1 参数   参数     -n 只有被sed处理的行才会打印出来   -e 直接在命令行上输入sed命令，如果和-i参数配合用会保存源文件。   -">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell中的sed">
+<meta property="og:url" content="http://example.com/2019/08/19/others/linux/shell%E4%B8%AD%E7%9A%84sed/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="中兴面试被提问到：在vim中删除包含特定字符串的行。当时说不会，后来想了想可以用sed或者perl里的匹配替换。 0. sedsed是个管道命令，可以对数据进行替换、删除、新增、选取特定行等功能。 1. 命令格式1sed -ndfr [动作]  1.1 参数   参数     -n 只有被sed处理的行才会打印出来   -e 直接在命令行上输入sed命令，如果和-i参数配合用会保存源文件。   -">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-08-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T04:20:50.969Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="vim">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>shell中的sed - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="shell中的sed">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-08-19 00:00" pubdate>
+        August 19, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.4k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      12 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">shell中的sed</h1>
+            
+            <div class="markdown-body">
+              <p><strong>中兴面试被提问到：在vim中删除包含特定字符串的行。当时说不会，后来想了想可以用sed或者perl里的匹配替换。</strong></p>
+<h3 id="0-sed"><a href="#0-sed" class="headerlink" title="0. sed"></a>0. sed</h3><p>sed是个管道命令，可以对数据进行替换、删除、新增、选取特定行等功能。</p>
+<h3 id="1-命令格式"><a href="#1-命令格式" class="headerlink" title="1. 命令格式"></a>1. 命令格式</h3><figure class="highlight shell"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><pre><code class="hljs shell">sed -ndfr [动作]<br></code></pre></td></tr></table></figure>
+
+<h4 id="1-1-参数"><a href="#1-1-参数" class="headerlink" title="1.1 参数"></a>1.1 参数</h4><table>
+<thead>
+<tr>
+<th>参数</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-n</td>
+<td>只有被sed处理的行才会打印出来</td>
+</tr>
+<tr>
+<td>-e</td>
+<td>直接在命令行上输入sed命令，如果和-i参数配合用会保存源文件。</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>将sed动作写在文件内，-f filename可以执行filename文件中的动作</td>
+</tr>
+<tr>
+<td>-i</td>
+<td>如果不加-i，sed的命令不会改变源文件，如果加上，会改变源文件</td>
+</tr>
+</tbody></table>
+<h4 id="1-2-动作说明"><a href="#1-2-动作说明" class="headerlink" title="1.2 动作说明"></a>1.2 动作说明</h4><figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs inform7">‘<span class="hljs-comment">[n1]</span><span class="hljs-comment">[,n2]</span> function&#x27;<br></code></pre></td></tr></table></figure>
+
+<p>动作要写在单引号或双引号内；</p>
+<p>n1，n2可以没有，他们代表动作在哪些行进行，如果是”2,5”表示动作在第二行到第五行之间进行。</p>
+<table>
+<thead>
+<tr>
+<th>function</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>d</td>
+<td>删除这些行</td>
+</tr>
+<tr>
+<td>a</td>
+<td>新增，插入在行之后</td>
+</tr>
+<tr>
+<td>i</td>
+<td>插入，插入在行之前</td>
+</tr>
+<tr>
+<td>c</td>
+<td>行替换</td>
+</tr>
+<tr>
+<td>p</td>
+<td>将某些行打印出，通常和-n一起用</td>
+</tr>
+<tr>
+<td>s</td>
+<td>替换，可以进行正则匹配</td>
+</tr>
+</tbody></table>
+<h3 id="2-使用sed"><a href="#2-使用sed" class="headerlink" title="2. 使用sed"></a>2. 使用sed</h3><p>存在文件a，内容如下</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-keyword">this</span> <span class="hljs-number">1</span> line<br><span class="hljs-keyword">this</span> <span class="hljs-number">2</span> line<br><span class="hljs-keyword">this</span> <span class="hljs-number">3</span> line<br><span class="hljs-keyword">this</span> <span class="hljs-number">4</span> line<br><span class="hljs-keyword">this</span> <span class="hljs-number">5</span> line<br><span class="hljs-keyword">this</span> <span class="hljs-number">5</span> line<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-1-删除-d-——删除这些行"><a href="#2-1-删除-d-——删除这些行" class="headerlink" title="2.1 删除 d ——删除这些行"></a>2.1 删除 d ——删除这些行</h4><p>删除1到2行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sed -e &quot;1,2d&quot; a<br></code></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-keyword">this</span> <span class="hljs-number">3</span> line<br><span class="hljs-keyword">this</span> <span class="hljs-number">4</span> line<br><span class="hljs-keyword">this</span> <span class="hljs-number">5</span> line<br><span class="hljs-keyword">this</span> <span class="hljs-number">5</span> line<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-2-新增-a——插入在行之后"><a href="#2-2-新增-a——插入在行之后" class="headerlink" title="2.2 新增 a——插入在行之后"></a>2.2 新增 a——插入在行之后</h4><p>分别在1到3行后插入一行</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">sed -e <span class="hljs-string">&quot;1,3a after line&quot;</span> <span class="hljs-keyword">a</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-keyword">this</span> <span class="hljs-number">1</span> line<br>after line<br><span class="hljs-keyword">this</span> <span class="hljs-number">2</span> line<br>after line<br><span class="hljs-keyword">this</span> <span class="hljs-number">3</span> line<br>after line<br><span class="hljs-keyword">this</span> <span class="hljs-number">4</span> line<br><span class="hljs-keyword">this</span> <span class="hljs-number">5</span> line<br><span class="hljs-keyword">this</span> <span class="hljs-number">5</span> line<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-3-插入-i——插入在行之前"><a href="#2-3-插入-i——插入在行之前" class="headerlink" title="2.3 插入 i——插入在行之前"></a>2.3 插入 i——插入在行之前</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sed -e &quot;1,3i before line&quot; a<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs arduino">before line<br><span class="hljs-keyword">this</span> <span class="hljs-number">1</span> line<br>before line<br><span class="hljs-keyword">this</span> <span class="hljs-number">2</span> line<br>before line<br><span class="hljs-keyword">this</span> <span class="hljs-number">3</span> line<br><span class="hljs-keyword">this</span> <span class="hljs-number">4</span> line<br><span class="hljs-keyword">this</span> <span class="hljs-number">5</span> line<br><span class="hljs-keyword">this</span> <span class="hljs-number">5</span> line<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-4-行替换-c"><a href="#2-4-行替换-c" class="headerlink" title="2.4 行替换 c"></a>2.4 行替换 c</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sed -e &quot;1,3c display&quot; a<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs arduino">display<br><span class="hljs-keyword">this</span> <span class="hljs-number">4</span> line<br><span class="hljs-keyword">this</span> <span class="hljs-number">5</span> line<br><span class="hljs-keyword">this</span> <span class="hljs-number">5</span> line<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-5-打印某些行-p——将某些行打印出，通常和-n一起用"><a href="#2-5-打印某些行-p——将某些行打印出，通常和-n一起用" class="headerlink" title="2.5 打印某些行 p——将某些行打印出，通常和-n一起用"></a>2.5 打印某些行 p——将某些行打印出，通常和-n一起用</h4><p>只将1到3行打印出来</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sed -d &quot;1,3p&quot; a<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-keyword">this</span> <span class="hljs-number">1</span> line<br><span class="hljs-keyword">this</span> <span class="hljs-number">2</span> line<br><span class="hljs-keyword">this</span> <span class="hljs-number">3</span> line<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-6-正则匹配替换-s"><a href="#2-6-正则匹配替换-s" class="headerlink" title="2.6 正则匹配替换 s"></a>2.6 正则匹配替换 s</h4><p>将所有的this替换成大写THIS</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sed -e &quot;s/this/THIS/g&quot; a<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">THIS</span> <span class="hljs-number">1</span> line<br><span class="hljs-attribute">THIS</span> <span class="hljs-number">2</span> line<br><span class="hljs-attribute">THIS</span> <span class="hljs-number">3</span> line<br><span class="hljs-attribute">THIS</span> <span class="hljs-number">4</span> line<br><span class="hljs-attribute">THIS</span> <span class="hljs-number">5</span> line<br><span class="hljs-attribute">THIS</span> <span class="hljs-number">5</span> line<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-使用sed修改文件内容"><a href="#3-使用sed修改文件内容" class="headerlink" title="3. 使用sed修改文件内容"></a>3. 使用sed修改文件内容</h3><p>上面讲的用法，sed不会改变源文件。如果想要改变源文件就要加-i参数</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sed -ie &quot;s/this/THIS/g&quot; a<br></code></pre></td></tr></table></figure>
+
+<p>a文件变成：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">THIS</span> <span class="hljs-number">1</span> line<br><span class="hljs-attribute">THIS</span> <span class="hljs-number">2</span> line<br><span class="hljs-attribute">THIS</span> <span class="hljs-number">3</span> line<br><span class="hljs-attribute">THIS</span> <span class="hljs-number">4</span> line<br><span class="hljs-attribute">THIS</span> <span class="hljs-number">5</span> line<br><span class="hljs-attribute">THIS</span> <span class="hljs-number">5</span> line<br></code></pre></td></tr></table></figure>
+
+<p><strong>并且生成了一个文件ae，其中保存原来的a文件的内容，如果不加-e参数，则不生成这个文件，只修改a的内容。</strong></p>
+<p>-i也可以与其他的动作d\a等等用，用法一样，只是会改变源文件。</p>
+<p><strong>如果同时用-ie会生成新的文件保存源文件内容。</strong></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/linux/">linux</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/linux/">linux</a>
+                    
+                      <a class="hover-with-bg" href="/tags/vim/">vim</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/08/19/others/linux/shell%E4%B8%AD%E7%9A%84grep/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">shell中的grep</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/08/08/Verification/UVM/UVM%E2%80%94%E2%80%94sequence%EF%BC%88%E4%B8%80%EF%BC%89/">
+                        <span class="hidden-mobile">UVM——sequence（一）</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

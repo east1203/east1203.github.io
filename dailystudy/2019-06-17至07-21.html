@@ -1,0 +1,917 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="承接上一阶段： 看一看STM32芯片介绍 准备一下面试题（06-05） 要读-微处理器设计：从设计规划到工艺制造  要读-专用集成电路设计实用教程 要读-2012-book-The Art of Hardware Architecture Design Methods and Techniques for Digital Circuits  阶段计划： 要读-微处理器设计：从设计规划到工艺制造 —">
+<meta property="og:type" content="website">
+<meta property="og:title" content="page.title">
+<meta property="og:url" content="http://example.com/dailystudy/2019-06-17%E8%87%B307-21.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="承接上一阶段： 看一看STM32芯片介绍 准备一下面试题（06-05） 要读-微处理器设计：从设计规划到工艺制造  要读-专用集成电路设计实用教程 要读-2012-book-The Art of Hardware Architecture Design Methods and Techniques for Digital Circuits  阶段计划： 要读-微处理器设计：从设计规划到工艺制造 —">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-03-12T03:51:25.835Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.835Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="芯片 验证 读书 编程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>page.title - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="page.title">
+              
+            </span>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<article class="page-content">
+  <h2 id="承接上一阶段："><a href="#承接上一阶段：" class="headerlink" title="承接上一阶段："></a>承接上一阶段：</h2><ol>
+<li>看一看STM32芯片介绍</li>
+<li>准备一下面试题（06-05）</li>
+<li>要读-微处理器设计：从设计规划到工艺制造 </li>
+<li>要读-专用集成电路设计实用教程</li>
+<li>要读-2012-book-The Art of Hardware Architecture Design Methods and Techniques for Digital Circuits</li>
+</ol>
+<h2 id="阶段计划："><a href="#阶段计划：" class="headerlink" title="阶段计划："></a>阶段计划：</h2><ol>
+<li>要读-微处理器设计：从设计规划到工艺制造 ——看完 2019-06-21</li>
+<li>要读-专用集成电路设计实用教程——看完 2019-06-23</li>
+<li>要读-2012-book-The Art of Hardware Architecture Design Methods and Techniques for Digital Circuits</li>
+<li>要读——uvm primer——看完 07-15</li>
+<li>《芯片验证漫游指南》——看完2019-06-30</li>
+<li>Synopsys时序那本书——看完</li>
+<li>讲断言的那本书</li>
+<li>开始看几个面试题，E课网，大同学吧等。</li>
+<li>毕业论文纲要 ——写完——2019-06-18</li>
+<li>看一看STM32芯片介绍 —— 看了一部分</li>
+<li>SVA，E课网视频。——看完2019-06-18</li>
+<li>DVT eclipse——不弄了，浪费时间啊。</li>
+</ol>
+<h2 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h2><ol>
+<li>处理器架构中，为什么架构寄存器数目比物理寄存器数目小，在发生假数据依赖的时候要将架构寄存器映射成不同的物理寄存器，为什么不一开始就增加架构寄存器数目。</li>
+</ol>
+<p>​    这是为了使指令空间和代码 空间最小化，所以架构中的寄存器数目比较小，这也是因为以前工艺制造能力差，处理器中不能拥有大量寄存器。</p>
+<h2 id="第六周："><a href="#第六周：" class="headerlink" title="第六周："></a>第六周：</h2><p>周计划：</p>
+<ol>
+<li>要读-微处理器设计：从设计规划到工艺制造 ——完成</li>
+<li>继续写验证环境，争取将UVM那本书先实验完一次。——完成</li>
+<li>每天看面试的题。</li>
+<li>GIT版本管理工具来管理日常的code——下个周的把</li>
+</ol>
+<h3 id="06-17-周一-晴"><a href="#06-17-周一-晴" class="headerlink" title="06-17 周一 晴"></a>06-17 周一 晴</h3><ol>
+<li>早上——看论文，思考提纲。</li>
+<li>上午——写UVM平台。</li>
+<li>上午——看一点《邓》</li>
+<li>下午——看论文找思路。</li>
+<li>看《微处理器设计：从设计规划到工艺制造 》</li>
+<li>每天看面试的题。</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>每日一题</li>
+<li>看SVA视频</li>
+<li>写了一部分的论文纲要</li>
+</ol>
+<p>未完成:</p>
+<ol>
+<li>上午——写UVM平台。</li>
+<li>上午——看一点《邓》</li>
+<li>看《微处理器设计：从设计规划到工艺制造 》</li>
+</ol>
+<h3 id="06-18-周二-大雨"><a href="#06-18-周二-大雨" class="headerlink" title="06-18  周二 大雨"></a>06-18  周二 大雨</h3><ol>
+<li>早上——看AVA视频</li>
+<li>上午——论文提纲</li>
+<li>下午——UVM</li>
+<li>每日一题</li>
+<li>晚上——《微处理器设计：从设计规划到工艺制造 》</li>
+<li>晚上——复习SVA</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看完SVA视频并做好了笔记。</li>
+<li>上午——论文提纲 ——写完论文提纲的第一版了，哈哈</li>
+<li>下午——UVM</li>
+<li>晚上——《微处理器设计：从设计规划到工艺制造 》</li>
+<li>每日一题</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>晚上——复习SVA</li>
+</ol>
+<h3 id="06-19-周三-阴"><a href="#06-19-周三-阴" class="headerlink" title="06-19 周三 阴"></a>06-19 周三 阴</h3><ol>
+<li>早上——SVA</li>
+<li>上午——UVM继续做，sequence</li>
+<li>下午——UVM寄存器部分</li>
+<li>结束UVM实验，开始看红皮书</li>
+<li>每日一题</li>
+<li>看《微处理器设计：从设计规划到工艺制造 》</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看《微处理器设计：从设计规划到工艺制造 》</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li><p>早上——SVA</p>
+</li>
+<li><p>上午——UVM继续做，sequence</p>
+</li>
+<li><p>下午——UVM寄存器部分</p>
+</li>
+<li><p>结束UVM实验，开始看红皮书</p>
+</li>
+<li><p>每日一题</p>
+</li>
+</ol>
+<h3 id="06-20-周四"><a href="#06-20-周四" class="headerlink" title="06-20 周四"></a>06-20 周四</h3><p>昨天身体不适，在宿舍休息了一天，就当少了一天吧。</p>
+<ol>
+<li>早上——SVA</li>
+<li>上午——UVM继续做，sequence</li>
+<li>下午——UVM寄存器部分</li>
+<li>结束UVM实验，开始看红皮书</li>
+<li>每日一题</li>
+<li>看《微处理器设计：从设计规划到工艺制造 》</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看完SVA笔记</li>
+<li>每日一题</li>
+<li>就剩UVM寄存器部分了。把其他的都大体看了一遍，明天弄完。</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>结束UVM实验，开始看红皮书</li>
+<li>看《微处理器设计：从设计规划到工艺制造 》</li>
+</ol>
+<h3 id="06-21-周五"><a href="#06-21-周五" class="headerlink" title="06-21 周五"></a>06-21 周五</h3><ol>
+<li>早上——看《微处理器设计：从设计规划到工艺制造 》</li>
+<li>早上——看UVM寄存器</li>
+<li>结束UVM实验，开始看红皮书</li>
+<li>每日一题</li>
+<li>下午——看一点硕士论文。看寄存器论文。</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>早上——看《微处理器设计：从设计规划到工艺制造 》看完</li>
+<li>看了红宝书第一章</li>
+<li>红宝书看了前五章</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>早上——看UVM寄存器</li>
+<li>结束UVM实验，开始看红皮书</li>
+<li>每日一题</li>
+<li>下午——看一点硕士论文。看寄存器论文。</li>
+</ol>
+<h3 id="06-22-周六-阴"><a href="#06-22-周六-阴" class="headerlink" title="06-22 周六 阴"></a>06-22 周六 阴</h3><ol>
+<li>早上——看UVM寄存器</li>
+<li>结束UVM实验，开始看红皮书</li>
+<li>每日一题</li>
+<li>下午——看一点硕士论文。看寄存器论文。</li>
+<li>要读-专用集成电路设计实用教程</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>早上——看UVM寄存器</li>
+<li>结束UVM实验，开始看红皮书</li>
+<li>每日一题</li>
+<li>要读-专用集成电路设计实用教程——看了一半多，明天上午来看完它。</li>
+</ol>
+<p>未完成:</p>
+<ol>
+<li>下午——看一点硕士论文。看寄存器论文。</li>
+</ol>
+<h3 id="06-23-周日-阴"><a href="#06-23-周日-阴" class="headerlink" title="06-23 周日 阴"></a>06-23 周日 阴</h3><ol>
+<li>上午来看完《专用集成电路设计实用教程》</li>
+<li>看论文</li>
+<li>看红宝书</li>
+<li>每日一题</li>
+<li>大疆的简历投递</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li><p>上午来看完《专用集成电路设计实用教程》</p>
+</li>
+<li><p>红宝书看了前五章</p>
+</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>看论文</li>
+<li>每日一题</li>
+<li>大疆的简历投递</li>
+</ol>
+<h3 id="周总结："><a href="#周总结：" class="headerlink" title="周总结："></a>周总结：</h3><p>完成：</p>
+<ol>
+<li>要读-微处理器设计：从设计规划到工艺制造 ——完成</li>
+<li>继续写验证环境，争取将UVM那本书先实验完一次。——完成</li>
+<li>看完《专用集成电路设计实用教程》</li>
+<li>看完《邓小平》文选</li>
+<li>每天看面试的题。</li>
+<li>红宝书看了前五章</li>
+<li>论文提纲 ——写完论文提纲的第一版</li>
+<li>看E课网视频学习了SVA，并截屏做了笔记，把笔记又看了一遍</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>GIT版本管理工具来管理日常的code——下个周的把</li>
+</ol>
+<h2 id="第七周："><a href="#第七周：" class="headerlink" title="第七周："></a>第七周：</h2><ol>
+<li>《芯片验证漫游指南》 ** ** ** ** ——看完</li>
+<li>要读-2012-book-The Art of Hardware Architecture Design Methods and Techniques for Digital Circuits（有中文版）</li>
+<li>要读——uvm primer</li>
+<li>每天看面试的题。** ** **</li>
+<li>还要看一下UVM中的寄存器模型 ** ** **</li>
+<li>GIT版本管理工具来管理日常的code</li>
+<li>看一看STM32芯片介绍 ** ** **</li>
+<li><del>看《专用集成电路设计实用教程》低功耗设计部分 ** ** **</del></li>
+</ol>
+<h3 id="06-24-周一-晴"><a href="#06-24-周一-晴" class="headerlink" title="06-24 周一 晴"></a>06-24 周一 晴</h3><ol>
+<li>看论文，整理一下论文提纲，明天发给王老师</li>
+<li>每日一题</li>
+<li>大疆的简历投递</li>
+<li>《芯片验证漫游指南》第七、八章</li>
+<li>复习一下《专用集成电路设计实用教程》</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>复习一下《专用集成电路设计实用教程》</li>
+<li>看论文，整理一下论文提纲，</li>
+<li>《芯片验证漫游指南》第七章</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>《芯片验证漫游指南》第八章</li>
+<li>每日一题</li>
+<li>大疆的简历投递</li>
+</ol>
+<h3 id="06-25-周二-阴"><a href="#06-25-周二-阴" class="headerlink" title="06-25 周二  阴"></a>06-25 周二  阴</h3><ol>
+<li>看一点C++知识，或者复习一下C++笔记</li>
+<li>《芯片验证漫游指南》第八章</li>
+<li>每日一题</li>
+<li>大疆的简历投递 —— 早上</li>
+<li>看寄存器分组论文</li>
+<li>复习《微处理器设计：从设计规划到工艺制造 》笔记</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>复习《微处理器设计：从设计规划到工艺制造 》笔记。</li>
+<li>写好了大疆的简历，投递。</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>看一点C++知识，或者复习一下C++笔记</li>
+<li>《芯片验证漫游指南》第八章</li>
+<li>每日一题</li>
+<li>看寄存器分组论文</li>
+</ol>
+<h3 id="06-26-周三"><a href="#06-26-周三" class="headerlink" title="06-26 周三"></a>06-26 周三</h3><ol>
+<li>《芯片验证漫游指南》第八章</li>
+<li>复习SVA笔记——下午</li>
+<li>每日一题</li>
+<li>看寄存器分组论文</li>
+<li>看一点C++知识，或者复习一下C++笔记</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>《芯片验证漫游指南》第八章</li>
+<li>复习SVA笔记——下午</li>
+<li>每日一题</li>
+<li>看寄存器分组论文</li>
+<li>看一点C++知识，或者复习一下C++笔记</li>
+</ol>
+<h3 id="06-27-周四-阴"><a href="#06-27-周四-阴" class="headerlink" title="06-27 周四 阴"></a>06-27 周四 阴</h3><ol>
+<li>《芯片验证漫游指南》第八章</li>
+<li>《芯片验证漫游指南》第九章</li>
+<li>复习SVA笔记——下午</li>
+<li>每日一题</li>
+<li>看寄存器分组论文</li>
+<li>看一点C++知识，或者复习一下C++笔记</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>《芯片验证漫游指南》第八章</li>
+<li>《芯片验证漫游指南》第九章</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>复习SVA笔记——下午</li>
+<li>每日一题</li>
+<li>看寄存器分组论文</li>
+<li>看一点C++知识，或者复习一下C++笔记</li>
+</ol>
+<h3 id="06-28-周五"><a href="#06-28-周五" class="headerlink" title="06-28 周五"></a>06-28 周五</h3><ol>
+<li>复习UVM中的port、phase、factory机制——早上</li>
+<li>做《指南》第八章实现——中午Z</li>
+<li>复习SVA笔记——下午</li>
+<li>每日一题</li>
+<li>论文提纲 ** ** **</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看一点C++知识，或者复习一下C++笔记</li>
+<li>做《指南》第八章实现——没实现，又看了一遍，</li>
+<li>看完《芯片验证漫游指南》第10、11章</li>
+<li>复习SVA笔记——下午</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>每日一题</li>
+<li>论文提纲 ** ** **</li>
+<li>复习UVM中的port、phase、factory机制——早上</li>
+</ol>
+<h3 id="06-29-周六"><a href="#06-29-周六" class="headerlink" title="06-29 周六"></a>06-29 周六</h3><ol>
+<li>复习UVM中的sequence，SV中的覆盖率。——早上</li>
+<li>复习UVM中的port、phase、factory机制——早上</li>
+<li>每日一题</li>
+<li>论文提纲 ** ** **</li>
+</ol>
+<p>完成:</p>
+<ol>
+<li>复习UVM中的port、phase、factory机制——早上</li>
+<li>看完《芯片验证漫游指南》第12章</li>
+</ol>
+<h3 id="06-30-周日"><a href="#06-30-周日" class="headerlink" title="06-30 周日"></a>06-30 周日</h3><ol>
+<li>看一看STM32芯片介绍 ** ** **</li>
+<li>《芯片验证漫游指南》</li>
+<li>看一下51job网站</li>
+</ol>
+<p>完成:</p>
+<ol>
+<li>《芯片验证漫游指南》—— 看完</li>
+<li>看一下51job网站</li>
+</ol>
+<h3 id="周总结：-1"><a href="#周总结：-1" class="headerlink" title="周总结："></a>周总结：</h3><p>完成:</p>
+<ol>
+<li>《芯片验证漫游指南》看完</li>
+<li>复习SVA，《微处理器设计：从设计规划到工艺制造 》《专用集成电路设计实用教程》笔记</li>
+<li>看一点C++知识，</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>要读-2012-book-The Art of Hardware Architecture Design Methods and Techniques for Digital Circuits（有中文版）</li>
+<li>要读——uvm primer</li>
+<li>每天看面试的题。** ** **</li>
+<li>还要看一下UVM中的寄存器模型 ** ** **</li>
+<li>GIT版本管理工具来管理日常的code</li>
+<li>看一看STM32芯片介绍 ** ** **</li>
+<li><del>看《专用集成电路设计实用教程》低功耗设计部分 ** ** **</del></li>
+</ol>
+<h2 id="第八周："><a href="#第八周：" class="headerlink" title="第八周："></a>第八周：</h2><ol>
+<li>把UVM中的一些概念单独梳理一下，比如factory、寄存器模型、objection、phase、port——export等。</li>
+<li>看一下sequence、寄存器模型概念</li>
+<li>论文提纲 ** ** ** </li>
+<li>要读——uvm primer</li>
+<li>看一看STM32芯片介绍 ** ** **</li>
+<li>学习Easier UVM工具 ——看了一天半，大体看了一下，</li>
+<li>每日一题</li>
+</ol>
+<h3 id="07-01-周一-雨"><a href="#07-01-周一-雨" class="headerlink" title="07-01 周一 雨"></a>07-01 周一 雨</h3><ol>
+<li>学习Easier UVM工具</li>
+<li>看一下sequence</li>
+<li>论文提纲 ** ** ** </li>
+<li>每日一题</li>
+</ol>
+<h3 id="07-02-周二"><a href="#07-02-周二" class="headerlink" title="07-02 周二"></a>07-02 周二</h3><p>空闲，出去逛了一下，吃了烤鱼</p>
+<h3 id="07-03-周三-阴"><a href="#07-03-周三-阴" class="headerlink" title="07-03 周三 阴"></a>07-03 周三 阴</h3><ol>
+<li>看一下sequence、寄存器模型概念</li>
+</ol>
+<h3 id="07-06-周六-晴"><a href="#07-06-周六-晴" class="headerlink" title="07-06 周六 晴"></a>07-06 周六 晴</h3><ol>
+<li>看一下sequence、寄存器模型概念</li>
+<li>看一看STM32芯片介绍 ** ** **</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看一下sequence、寄存器模型概念</li>
+</ol>
+<h3 id="07-07-周日"><a href="#07-07-周日" class="headerlink" title="07-07 周日"></a>07-07 周日</h3><ol>
+<li>论文提纲 ** ** ** </li>
+<li>要读——uvm primer</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看一看STM32芯片介绍 ** ** **</li>
+<li>面试题</li>
+</ol>
+<p>未完成:</p>
+<ol>
+<li>论文提纲 ** ** ** </li>
+<li>要读——uvm primer</li>
+</ol>
+<h2 id="第九周："><a href="#第九周：" class="headerlink" title="第九周："></a>第九周：</h2><ol>
+<li>回顾一下《芯片设计漫游指南》</li>
+<li>看一些面试题</li>
+<li>论文提纲 ** ** ** </li>
+<li>要读——uvm primer</li>
+</ol>
+<h3 id="07-08"><a href="#07-08" class="headerlink" title="07-08"></a>07-08</h3><h3 id="07-09-周二-雨"><a href="#07-09-周二-雨" class="headerlink" title="07-09 周二 雨"></a>07-09 周二 雨</h3><ol>
+<li>看完《综合与时序分析的设计约束》</li>
+<li>论文提纲写完</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看完《综合与时序分析的设计约束》</li>
+<li>论文提纲写完</li>
+</ol>
+<h3 id="07-10-周三-阴转小雨"><a href="#07-10-周三-阴转小雨" class="headerlink" title="07-10 周三 阴转小雨"></a>07-10 周三 阴转小雨</h3><ol>
+<li>看覆盖率</li>
+<li>看UVMprimer。</li>
+<li>回顾一下《UVM实战》中的代码结构。</li>
+<li>面试题</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看覆盖率</li>
+<li>看了点UVMprimer。</li>
+<li>讲UVMPrimer书中给的代码中的DUT（用VHDL写的）改写成Verilog，中间出了好多错误，而且代码的验证环境也有点问题，但所幸还是成功了。哈哈。</li>
+</ol>
+<h3 id="07-11-周四-晴"><a href="#07-11-周四-晴" class="headerlink" title="07-11  周四 晴"></a>07-11  周四 晴</h3><ol>
+<li>看UVMPrimer</li>
+<li>看一些面试题-保存的网页</li>
+<li>回顾一下《UVM实战》中的代码结构。</li>
+<li></li>
+</ol>
+<h3 id="07-12-周五"><a href="#07-12-周五" class="headerlink" title="07-12 周五"></a>07-12 周五</h3><ol>
+<li>看UVMPrimer</li>
+<li>看一些面试题-保存的网页</li>
+<li>回顾一下《UVM实战》中的代码结构。</li>
+</ol>
+<h3 id="07-13-周六"><a href="#07-13-周六" class="headerlink" title="07-13 周六"></a>07-13 周六</h3><ol>
+<li>乐鑫校招笔试 晚上七点 * * * *</li>
+</ol>
+<h3 id="07-14-周日"><a href="#07-14-周日" class="headerlink" title="07-14 周日"></a>07-14 周日</h3><h3 id="周总结：-2"><a href="#周总结：-2" class="headerlink" title="周总结："></a>周总结：</h3><ol>
+<li>看一些面试题</li>
+<li>论文提纲 ** ** ** </li>
+<li>《uvm primer》——看完</li>
+<li>做了乐鑫的提前批网上笔试</li>
+</ol>
+<h2 id="第十周"><a href="#第十周" class="headerlink" title="第十周"></a>第十周</h2><ol>
+<li>准备简历上的项目面试 sdio</li>
+<li>回顾SV，验证的那四本书</li>
+<li>要读-2012-book-The Art of Hardware Architecture Design Methods and Techniques for Digital Circuits</li>
+<li>将 断言  的那本书</li>
+<li>了解以下形式验证</li>
+<li>数电基础 ：竞争冒险、组合逻辑化简、卡诺图、状态机设计、异步、时序分析、多周期路径、序列发生器及检测器、存储器概念、阻塞非阻塞、case-casex-casez、浮点运算及进制转换、BCD码转换</li>
+<li>DC综合脚本</li>
+<li>ICC流程，脚本</li>
+<li>Cummings看过的那几篇论文 及 还没看的SV相关的论文。</li>
+</ol>
+<h3 id="07-15-周一"><a href="#07-15-周一" class="headerlink" title="07-15 周一"></a>07-15 周一</h3><ol>
+<li>《UVMPrimer》</li>
+<li>《System Verilog assertion验证指南》</li>
+<li>晚上——写一些《UVMPrimer》书中的例子</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>《UVMPrimer》</li>
+<li>总结了以下接口，</li>
+</ol>
+<h3 id="07-16-周二"><a href="#07-16-周二" class="headerlink" title="07-16 周二"></a>07-16 周二</h3><ol>
+<li>Cummings看过的那几篇论文 </li>
+<li>准备简历上的项目面试 sdio</li>
+<li>《System Verilog assertion验证指南》</li>
+<li>格科微投递</li>
+<li>海康威视投递</li>
+<li>看一下中兴通讯官网</li>
+</ol>
+<p>完成:</p>
+<ol>
+<li>格科微投递</li>
+<li>海康威视投递</li>
+<li>看一下中兴通讯官网</li>
+<li>看了一篇Cummings论文，写了blog</li>
+</ol>
+<h3 id="07-17-周三"><a href="#07-17-周三" class="headerlink" title="07-17 周三"></a>07-17 周三</h3><ol>
+<li>静态时序分析中的多周期路径</li>
+<li>Cummings看过的那几篇论文 </li>
+<li>准备简历上的项目面试 sdio</li>
+<li>《System Verilog assertion验证指南》</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>Cummings看过的那几篇论文 </li>
+<li>《System Verilog assertion验证指南》</li>
+<li>静态时序分析中的多周期路径</li>
+</ol>
+<h3 id="07-18"><a href="#07-18" class="headerlink" title="07-18"></a>07-18</h3><p>完成：</p>
+<ol>
+<li>整理验证的面试问题。</li>
+</ol>
+<h3 id="07-19-周五"><a href="#07-19-周五" class="headerlink" title="07-19 周五"></a>07-19 周五</h3><ol>
+<li>准备简历上的项目面试 sdio</li>
+</ol>
+<h3 id="07-20-周六"><a href="#07-20-周六" class="headerlink" title="07-20 周六"></a>07-20 周六</h3><p>完成：</p>
+<ol>
+<li>项目准备好。</li>
+</ol>
+<h3 id="07-21-周日"><a href="#07-21-周日" class="headerlink" title="07-21 周日"></a>07-21 周日</h3><ol>
+<li>早上——SV中的数据类型，翻一翻。</li>
+<li>白皮书</li>
+<li>下午——翻一番c++</li>
+<li>复习一下perl、tcl</li>
+<li>打印30章简历。</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>打印30章简历。</li>
+<li>早上——SV中的数据类型，翻一翻。</li>
+<li>整理了数据类型的一篇博客</li>
+</ol>
+<h3 id="周总结：-3"><a href="#周总结：-3" class="headerlink" title="周总结："></a>周总结：</h3><p>完成：</p>
+<ol>
+<li>准备简历上的项目面试 sdio</li>
+<li>将 断言  的那本书</li>
+<li>了解以下形式验证</li>
+<li>数电基础 ：竞争冒险、组合逻辑化简、卡诺图、状态机设计、异步、时序分析、多周期路径、序列发生器及检测器、存储器概念、阻塞非阻塞、case-casex-casez、浮点运算及进制转换、BCD码转换</li>
+<li>DC综合脚本</li>
+<li>ICC流程，脚本</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>回顾SV，验证的那四本书</li>
+<li>要读-2012-book-The Art of Hardware Architecture Design Methods and Techniques for Digital Circuits</li>
+<li>数电基础 ：竞争冒险、组合逻辑化简、卡诺图、状态机设计、异步、时序分析、多周期路径、序列发生器及检测器、存储器概念、阻塞非阻塞、case-casex-casez、浮点运算及进制转换、BCD码转换</li>
+<li>DC综合脚本</li>
+<li>ICC流程，脚本</li>
+<li>Cummings的SV相关的论文。</li>
+</ol>
+<h2 id="阶段总结"><a href="#阶段总结" class="headerlink" title="阶段总结"></a>阶段总结</h2><p>完成：</p>
+<ol>
+<li>要读-微处理器设计：从设计规划到工艺制造 ——看完 2019-06-21</li>
+<li>要读-专用集成电路设计实用教程——看完 2019-06-23</li>
+<li>要读——uvm primer——看完 07-15</li>
+<li>《芯片验证漫游指南》——看完2019-06-30</li>
+<li>Synopsys时序那本书——看完</li>
+<li>讲断言的那本书——看了前几章</li>
+<li>开始看几个面试题，E课网，大同学吧等。</li>
+<li>毕业论文纲要 ——写完——2019-06-18</li>
+<li>看一看STM32芯片介绍 —— 看了一部分</li>
+<li>SVA，E课网视频。——看完2019-06-18</li>
+<li>整理面试的项目、面试可能问的问题</li>
+<li>写了几篇博客，将Cummings的两篇关于FIFO的论文基本翻译成博客了。</li>
+<li>看完一本《邓小平文选》</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>要读-2012-book-The Art of Hardware Architecture Design Methods and Techniques for Digital Circuits</li>
+<li>GIT版本管理工具来管理日常的code——下个周的把</li>
+</ol>
+
+
+  
+</article>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

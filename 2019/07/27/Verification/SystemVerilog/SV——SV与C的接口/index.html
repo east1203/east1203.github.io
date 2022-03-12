@@ -1,0 +1,684 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="在Verilog中，通过VPI可以引用C程序，听说挺复杂的（，当然我不会）。在SV中引入了DPI（direct programming Interface），可以通过在SV中简单的设置，就可以引用C语言。 1. SV简单引用C先看一个例子 123456789101112131415&#x2F;&#x2F; tb.svimport &quot;DPI-C&quot; function int factorial(inp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SV——SV与C的接口">
+<meta property="og:url" content="http://example.com/2019/07/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94SV%E4%B8%8EC%E7%9A%84%E6%8E%A5%E5%8F%A3/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="在Verilog中，通过VPI可以引用C程序，听说挺复杂的（，当然我不会）。在SV中引入了DPI（direct programming Interface），可以通过在SV中简单的设置，就可以引用C语言。 1. SV简单引用C先看一个例子 123456789101112131415&#x2F;&#x2F; tb.svimport &quot;DPI-C&quot; function int factorial(inp">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-07-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.813Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="IC">
+<meta property="article:tag" content="SV">
+<meta property="article:tag" content="Verification">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>SV——SV与C的接口 - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="SV——SV与C的接口">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-07-27 00:00" pubdate>
+        July 27, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      9.9k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      83 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">SV——SV与C的接口</h1>
+            
+            <div class="markdown-body">
+              <p>在Verilog中，通过VPI可以引用C程序，听说挺复杂的（，当然我不会）。在SV中引入了DPI（direct programming Interface），可以通过在SV中简单的设置，就可以引用C语言。</p>
+<h3 id="1-SV简单引用C"><a href="#1-SV简单引用C" class="headerlink" title="1. SV简单引用C"></a>1. SV简单引用C</h3><p>先看一个例子</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-comment">// tb.sv</span><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;DPI-C&quot;</span> <span class="hljs-keyword">function</span> <span class="hljs-keyword">int</span> factorial(<span class="hljs-keyword">input</span> <span class="hljs-keyword">int</span> i);<br><br><span class="hljs-keyword">program</span> test;<br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;=<span class="hljs-number">10</span>;i++) <br>      <span class="hljs-built_in">$display</span>(<span class="hljs-string">&quot;factorial(%d) is %d&quot;</span>,i,factorial(i));<br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endprogram</span><br><span class="hljs-comment">//factorial.c</span><br><span class="hljs-keyword">int</span> factorial(<span class="hljs-keyword">int</span> i) &#123;<br>  <span class="hljs-keyword">if</span>(i&lt;=<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>  <span class="hljs-keyword">else</span><br>    <span class="hljs-keyword">return</span> factorial(i-<span class="hljs-number">1</span>)*i;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>用VCS直接编译这两个文件就行了。</p>
+<h4 id="1-1-导入声明"><a href="#1-1-导入声明" class="headerlink" title="1.1  导入声明"></a>1.1  导入声明</h4><p>import将C函数引入SV，<strong>但使用的数据类型是SV的，这里就需要将C的类型转化成对应的SV数据类型。</strong></p>
+<p>如果函数名跟SV中已有的函数冲突，还可以改名，如下：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;DPI-C&quot;</span> new_name=<span class="hljs-keyword">function</span> <span class="hljs-keyword">int</span> factorial(<span class="hljs-keyword">input</span> <span class="hljs-keyword">int</span> i);<br><span class="hljs-comment">// 改名为new_name</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>如果c程序的类型是void，那么可以将C函数映射成task或者返回类型为void的function。</strong></p>
+<p>在SV中允许声明子程序的地方都可以导入函数，可以将导入函数理解成定义了一个函数，只不过是用C语言写的。</p>
+<p>也可以将import声明放在package中，如后导入package就可以。</p>
+<h4 id="1-2-参数方向"><a href="#1-2-参数方向" class="headerlink" title="1.2 参数方向"></a>1.2 参数方向</h4><p>在import函数时可以设置的参数的输入输出方向有 input、output，不支持ref类型。</p>
+<p>input：一般情况下参数方向是input；</p>
+<p>output：当参数是指针（可以对输出数据进行修改）的时候，方向为output。但如果是const指针参数，说明不会改变输入对象，那么参数是input。</p>
+<h4 id="1-3-参数类型"><a href="#1-3-参数类型" class="headerlink" title="1.3 参数类型"></a>1.3 参数类型</h4><p>通过DPI传递的每个变量都有两个数据类型，一个是C类型，一个是SV类型，必须确保兼容。</p>
+<table>
+<thead>
+<tr>
+<th>SystemVerilog</th>
+<th>C（输入）</th>
+<th>C（输出）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>byte</td>
+<td>char</td>
+<td>char*</td>
+</tr>
+<tr>
+<td>shortint</td>
+<td>short int</td>
+<td>short int*</td>
+</tr>
+<tr>
+<td>int</td>
+<td>int</td>
+<td>int*</td>
+</tr>
+<tr>
+<td>longint</td>
+<td>long long int</td>
+<td>long int*</td>
+</tr>
+<tr>
+<td>shortreal</td>
+<td>float</td>
+<td>float*</td>
+</tr>
+<tr>
+<td>real</td>
+<td>double</td>
+<td>double*</td>
+</tr>
+<tr>
+<td>string</td>
+<td>const char*</td>
+<td>char**</td>
+</tr>
+<tr>
+<td>string[N]</td>
+<td>const char*</td>
+<td>char**</td>
+</tr>
+<tr>
+<td>bit</td>
+<td>svBit or unsigned char</td>
+<td>svBit* or unsigned char*</td>
+</tr>
+<tr>
+<td>logic,reg</td>
+<td>svLogic or unsigned char</td>
+<td>svLogic* or unsigned char*</td>
+</tr>
+<tr>
+<td>bit[N:0]</td>
+<td>const svBitVecVal*</td>
+<td>svBitVecVal*</td>
+</tr>
+<tr>
+<td>reg[N:0]orlogic[N:0]</td>
+<td>const svLogicVecVal*</td>
+<td>svLogicVecVal*</td>
+</tr>
+<tr>
+<td>open array[]</td>
+<td>const svOpenArrayHandle</td>
+<td>svOpenArrayHandle</td>
+</tr>
+<tr>
+<td>chandle</td>
+<td>const void*</td>
+<td>void*</td>
+</tr>
+</tbody></table>
+<p>对于函数的返回类型，SV LRM中规定只能是void、byte、shortint、int、longint、real、shortreal、chandel和string、bit、logic。不能是bit[6:0]这样的向量。</p>
+<p><strong>C的结构类型定义在头文件svdpi.h中，比如svBit。如果在C代码中使用了这些类型，那么需要在C中#include svdpi.h</strong></p>
+<h4 id="1-4-导入数学库函数"><a href="#1-4-导入数学库函数" class="headerlink" title="1.4 导入数学库函数"></a>1.4 导入数学库函数</h4><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;DPI-C&quot;</span> <span class="hljs-keyword">function</span> <span class="hljs-keyword">real</span> sin(<span class="hljs-keyword">real</span> a);<br><span class="hljs-keyword">program</span> test; <br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=<span class="hljs-number">0</span>;j&lt;=<span class="hljs-number">5</span>;j++)<br>      <span class="hljs-built_in">$display</span>(sin(j));<br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endprogram</span><br></code></pre></td></tr></table></figure>
+
+<p>如上面的方式导入sin函数，可以直接在SV中使用。</p>
+<h3 id="2-连接简单的C子程序"><a href="#2-连接简单的C子程序" class="headerlink" title="2. 连接简单的C子程序"></a>2. 连接简单的C子程序</h3><h4 id="2-1-使用静态变量的计数器"><a href="#2-1-使用静态变量的计数器" class="headerlink" title="2.1 使用静态变量的计数器"></a>2.1 使用静态变量的计数器</h4><p>下面是一个7位计数器。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs verilog">#<span class="hljs-keyword">include</span> &lt;svdpi<span class="hljs-variable">.h</span>&gt; <span class="hljs-comment">// 引入数据类型的声明</span><br><span class="hljs-keyword">void</span> counter7_static(svBitVecVal* o,<br>            <span class="hljs-keyword">const</span> svBitVecVal* i,<br>            <span class="hljs-keyword">const</span> svBit reset,<br>            <span class="hljs-keyword">const</span> svBit load) &#123;<br><br><span class="hljs-keyword">static</span> <span class="hljs-keyword">unsigned</span> char count=<span class="hljs-number">0</span>; <span class="hljs-comment">//保存计数</span><br><span class="hljs-keyword">if</span>(reset)  count = <span class="hljs-number">0</span>;<br><span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(load)  count=*i;<br><span class="hljs-keyword">else</span>   count++;<br>count&amp;=<span class="hljs-number">0</span>x7f; <span class="hljs-comment">// 使最高位无效</span><br>*o = count; <span class="hljs-comment">// 返回计数值</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在本例中7位的计数器保存在8位的字符型变量中，所以要使最高位无效。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-comment">// tb.sv</span><br><span class="hljs-keyword">import</span>  <span class="hljs-string">&quot;DPI-C&quot;</span> counter7_static=<span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> counter7_static(<span class="hljs-keyword">output</span> <span class="hljs-keyword">bit</span>[<span class="hljs-number">6</span>:<span class="hljs-number">0</span>] out,<br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">bit</span>[<span class="hljs-number">6</span>:<span class="hljs-number">0</span>] in,<span class="hljs-keyword">bit</span> reset,<span class="hljs-keyword">bit</span> load);<br><br><span class="hljs-keyword">program</span> tb;<br><span class="hljs-keyword">bit</span> [<span class="hljs-number">6</span>:<span class="hljs-number">0</span>] in,out;<br><span class="hljs-keyword">bit</span> load,reset;<br><br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>  <span class="hljs-built_in">$monitor</span>(<span class="hljs-string">&quot;SV:out=%3d,in=%3d,reset=%3d,load=%3d&quot;</span>,out,in,reset,load);<br>  reset = <span class="hljs-number">0</span>;  load=<span class="hljs-number">0</span>;  in=<span class="hljs-number">126</span>;  out=<span class="hljs-number">42</span>;<br>  counter7_static(out,in,reset,load);<br>#<span class="hljs-number">10</span>  reset=<span class="hljs-number">1</span>;<br>  counter7_static(out,in,reset,load);<br>#<span class="hljs-number">10</span> load=<span class="hljs-number">1</span>; reset=<span class="hljs-number">0</span>;<br>  counter7_static(out,in,reset,load);<br><span class="hljs-keyword">end</span><br><span class="hljs-keyword">endprogram</span><br></code></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">SV</span>:out=  <span class="hljs-number">1</span>,in=<span class="hljs-number">126</span>,reset=  <span class="hljs-number">0</span>,load=  <span class="hljs-number">0</span><br><span class="hljs-attribute">SV</span>:out=  <span class="hljs-number">0</span>,in=<span class="hljs-number">126</span>,reset=  <span class="hljs-number">1</span>,load=  <span class="hljs-number">0</span><br><span class="hljs-attribute">SV</span>:out=<span class="hljs-number">126</span>,in=<span class="hljs-number">126</span>,reset=  <span class="hljs-number">0</span>,load=  <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-2-chandle数据类型"><a href="#2-2-chandle数据类型" class="headerlink" title="2.2 chandle数据类型"></a>2.2 chandle数据类型</h4><p>​    上面计数器保存在静态变量中，如果只需要一个计数器，可以这样；但如果需要多个计数器，那么下一个计数器会覆盖之前的计数值，<strong>所以在C代码中不要把变量保存在静态变量中。需要动态申请</strong></p>
+<p><strong>在SV中chandle类型可以存储一个C&#x2F;C++指针，这个指针指向对象的类型是任意的，可以是结构体。。。</strong></p>
+<p><strong>C中如果返回void*指针类型，那么在SV中对应chandle。</strong></p>
+<p><strong>C中的参数是结构体指针类型，那么SV中对应chandle。（这一条不是很确定，可以定义为chandle，也可以如下面第6节中所述）</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;svdpi.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;malloc.h&gt;</span></span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span>&#123;</span> <span class="hljs-comment">// 计数器结构体</span><br>  <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> cnt;<br>&#125;c7;<br><br><span class="hljs-type">void</span>* <span class="hljs-title function_">counter7_new</span><span class="hljs-params">()</span> &#123;  <span class="hljs-comment">// 返回一个结构体指针，指向计数器</span><br>  c7* c = (c7*)<span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(c7));<br>  c-&gt;cnt=<span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">return</span> c;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">counter7</span><span class="hljs-params">(c7* inst,  <span class="hljs-comment">// 计数器指针作为参数</span></span><br><span class="hljs-params">            svBitVecVal* o,</span><br><span class="hljs-params">            <span class="hljs-type">const</span> svBitVecVal* i,</span><br><span class="hljs-params">            <span class="hljs-type">const</span> svBit reset,</span><br><span class="hljs-params">            <span class="hljs-type">const</span> svBit load)</span> &#123;<br><br><span class="hljs-keyword">if</span>(reset) inst-&gt;cnt=<span class="hljs-number">0</span>; <span class="hljs-comment">// 对计数器进行操作</span><br><span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(load) inst-&gt;cnt=*i;<br><span class="hljs-keyword">else</span> inst-&gt;cnt++; <br>inst-&gt;cnt&amp;=<span class="hljs-number">0x7f</span>;<br>*o = inst-&gt;cnt;<br>io_printf(<span class="hljs-string">&quot;C:count=%d,i=%d,reset=%d,load=%d\n&quot;</span>,*o,*i,reset,load);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>上面程序中定义了一个结构体来保存计数器；counter7_new()函数用来动态申请计数器的内存，保证每个计数器唯一。调用counter7函数的时候将相应的<strong>计数器指针</strong>（inst）作为参数传入其中。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;DPI-C&quot;</span> <span class="hljs-keyword">function</span> <span class="hljs-keyword">chandle</span> counter7_new();  <span class="hljs-comment">// 将结构体指针声明称chandle</span><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;DPI-C&quot;</span> <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> counter7(<span class="hljs-keyword">input</span> <span class="hljs-keyword">chandle</span> inst,<span class="hljs-comment">// 将结构体指针声明称chandle</span><br>                                      <span class="hljs-keyword">output</span> <span class="hljs-keyword">bit</span>[<span class="hljs-number">6</span>:<span class="hljs-number">0</span>] out,<br>                                      <span class="hljs-keyword">input</span> <span class="hljs-keyword">bit</span>[<span class="hljs-number">6</span>:<span class="hljs-number">0</span>] in,<br>                                      <span class="hljs-keyword">input</span> <span class="hljs-keyword">bit</span> reset,<br>                                      <span class="hljs-keyword">input</span> <span class="hljs-keyword">bit</span> load<br>                                      );<br><br><span class="hljs-keyword">program</span> <span class="hljs-keyword">automatic</span> tb;<br><span class="hljs-keyword">bit</span> [<span class="hljs-number">6</span>:<span class="hljs-number">0</span>] in1,in2,out1,out2;<br><span class="hljs-keyword">bit</span> load,reset,clk;<br><span class="hljs-keyword">chandle</span> inst1,inst2;<br><br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br><span class="hljs-comment">//  $monitor(&quot;@ %0t SV:out2=%3d,in2=%3d,reset=%3d,load=%3d\n&quot;,$time,out2,in2,reset,load);</span><br><span class="hljs-comment">//  $monitor(&quot;@ %0t SV:out1=%3d,in1=%3d,reset=%3d,load=%3d\n&quot;,$time,out1,in1,reset,load);</span><br>    inst1=counter7_new(); <span class="hljs-comment">// 调用函数创建计数器</span><br>  inst2=counter7_new();<br>  clk=<span class="hljs-number">0</span>;<br>  reset = <span class="hljs-number">0</span>;<br>  load=<span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">fork</span><br>    <span class="hljs-keyword">forever</span> #<span class="hljs-number">5</span> clk = ~clk;<br>    <span class="hljs-keyword">forever</span> @(<span class="hljs-keyword">posedge</span> clk) <span class="hljs-keyword">begin</span><br>      counter7(inst1,out1,in1,reset,load);<br>  <span class="hljs-built_in">$display</span>(<span class="hljs-string">&quot;@ %0t SV:out1=%3d,in1=%3d,reset=%3d,load=%3d\n&quot;</span>,<span class="hljs-built_in">$time</span>,out1,in1,reset,load);<br><br>      counter7(inst2,out2,in2,reset,load);<br>  <span class="hljs-built_in">$display</span>(<span class="hljs-string">&quot;@ %0t SV:out2=%3d,in2=%3d,reset=%3d,load=%3d\n&quot;</span>,<span class="hljs-built_in">$time</span>,out2,in2,reset,load);<br>    <span class="hljs-keyword">end</span><br>  <span class="hljs-keyword">join_none</span><br>  in1=<span class="hljs-number">120</span>;<br>  in2=<span class="hljs-number">20</span>;<br>  @(<span class="hljs-keyword">negedge</span> clk) load=<span class="hljs-number">1</span>;<br>  @(<span class="hljs-keyword">negedge</span> clk) reset=<span class="hljs-number">1</span>;<br>  @(<span class="hljs-keyword">negedge</span> clk) reset=<span class="hljs-number">0</span>;<br>  @(<span class="hljs-keyword">negedge</span> clk) load=<span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">repeat</span>(<span class="hljs-number">5</span>) @(<span class="hljs-keyword">posedge</span> clk);<br>  @(<span class="hljs-keyword">negedge</span> clk) <span class="hljs-built_in">$finish</span>;<br><span class="hljs-keyword">end</span><br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>$vcdpluson;<br><span class="hljs-keyword">end</span><br><span class="hljs-keyword">endprogram</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>计数器结构体的指针，在SV中对应chandle数据类型。</strong></p>
+<h3 id="3-调用C-子程序"><a href="#3-调用C-子程序" class="headerlink" title="3. 调用C++子程序"></a>3. 调用C++子程序</h3><p>在SV中可以使用DPI调用C\C++子程序，模型的抽象层次不同调用方式不同。</p>
+<h4 id="3-1-C-中的计数器"><a href="#3-1-C-中的计数器" class="headerlink" title="3.1 C++中的计数器"></a>3.1 C++中的计数器</h4><p>用类实现计数器</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;svdpi.h&gt;</span></span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Counter</span>&#123;<br>  <span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Counter</span>() &#123;    cnt = <span class="hljs-number">0</span>;    &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">counter7_signal</span> <span class="hljs-params">(  svBitVecVal* count, <span class="hljs-type">const</span> svBitVecVal* i,</span></span><br><span class="hljs-params"><span class="hljs-function">        <span class="hljs-type">const</span> svBit reset, <span class="hljs-type">const</span> svBit load         )</span></span><br><span class="hljs-function">    </span>&#123;<br>      <span class="hljs-keyword">if</span>(reset) cnt=<span class="hljs-number">0</span>;<br>      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(load) cnt=*i;<br>      <span class="hljs-keyword">else</span> cnt++;<br>      cnt &amp;=<span class="hljs-number">0x7f</span>;<br>     *count = cnt; <br>    &#125;<br>  <span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> cnt;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-2-静态方法"><a href="#3-2-静态方法" class="headerlink" title="3.2 静态方法"></a>3.2 静态方法</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> <span class="hljs-function"><span class="hljs-type">void</span>* <span class="hljs-title">counter7_new</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Counter;<br>&#125;<br><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">counter7</span> <span class="hljs-params">( <span class="hljs-type">void</span>* inst, svBitVecVal* out, <span class="hljs-type">const</span> svBitVecVal* in,</span></span><br><span class="hljs-params"><span class="hljs-function">        <span class="hljs-type">const</span> svBit reset, <span class="hljs-type">const</span> svBit load    </span></span><br><span class="hljs-params"><span class="hljs-function">    )</span></span><br><span class="hljs-function"></span>&#123;<br>  Counter* c7=(Counter*) inst;<br>  c7-&gt;<span class="hljs-built_in">counter7_signal</span>(out,in,reset,load);<br>  <span class="hljs-keyword">delete</span> c7;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>通过DPI只能调用静态的C、C++方法，即链接时已经存在的方法。C++对象在链接的时候还不存在，那么方法也就不存在。</p>
+<p>解决方法：通过创建与C++动态对象和方法通信的静态方法，也就是上面的两个方法。<strong>将对象的指针传入函数。</strong></p>
+<p>**extern “C”**告诉C++编译器，送入链接器的外部信息应当使用C调用风格，并且不能执行名字调整name mangling。（基本支持函数重载的语言都需要进行name mangling。mangling的目的就是为了给重载的函数不同的签名，以避免调用时的二义性调用。）</p>
+<p>可以直接使用第2节中的tb。</p>
+<h4 id="3-3-和事务级C-模型通信"><a href="#3-3-和事务级C-模型通信" class="headerlink" title="3.3 和事务级C++模型通信"></a>3.3 和事务级C++模型通信</h4><p>事务级通信中用的是方法，而不是信号和时钟。</p>
+<p><strong>1.先用C++实现事务级的计数器。</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;svdpi.h&gt;</span></span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Counter7</span>&#123;<br>  <span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Counter7</span>()&#123;cnt=<span class="hljs-number">0</span>;&#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">reset</span><span class="hljs-params">()</span></span>&#123;cnt=<span class="hljs-number">0</span>;&#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">load</span><span class="hljs-params">(<span class="hljs-type">const</span> svBitVecVal* i)</span></span>&#123;cnt=*i;cnt&amp;=<span class="hljs-number">0x7f</span>;&#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">count</span><span class="hljs-params">()</span></span>&#123;cnt++;cnt&amp;=<span class="hljs-number">0x7f</span>;&#125;<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">get</span><span class="hljs-params">()</span></span>&#123;<span class="hljs-keyword">return</span> cnt;&#125;<br>  <span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> cnt;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p><strong>2.将动态方法包装成静态方法。</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span>&#123;<br><br>    <span class="hljs-function"><span class="hljs-type">void</span>* <span class="hljs-title">counter7_new</span><span class="hljs-params">()</span></span>&#123;<br>      <span class="hljs-built_in">io_printf</span>(<span class="hljs-string">&quot;call new()\n&quot;</span>);<br>      <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Counter7;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">counter7_reset</span><span class="hljs-params">(<span class="hljs-type">void</span>* inst)</span></span>&#123;<br>      <span class="hljs-built_in">io_printf</span>(<span class="hljs-string">&quot;call counter7_reset()\n&quot;</span>);<br>      Counter7 * c7=(Counter7*) inst;<br>      c7-&gt;<span class="hljs-built_in">reset</span>();<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">counter7_load</span><span class="hljs-params">(<span class="hljs-type">void</span>* inst,<span class="hljs-type">const</span> svBitVecVal* i)</span></span>&#123;<br>      <span class="hljs-built_in">io_printf</span>(<span class="hljs-string">&quot;call counter7_load()\n&quot;</span>);<br>      Counter7 * c7=(Counter7*) inst;<br>      c7-&gt;<span class="hljs-built_in">load</span>(i);<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">counter7_count</span><span class="hljs-params">(<span class="hljs-type">void</span>* inst)</span></span>&#123;<br>      <span class="hljs-built_in">io_printf</span>(<span class="hljs-string">&quot;call counter7_count()\n&quot;</span>);<br>      Counter7 * c7=(Counter7*) inst;<br>      c7-&gt;<span class="hljs-built_in">count</span>();<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">counter7_get</span><span class="hljs-params">(<span class="hljs-type">void</span>* inst)</span></span>&#123;<br>      <span class="hljs-built_in">io_printf</span>(<span class="hljs-string">&quot;call counter7_get()\n&quot;</span>);<br>      Counter7 * c7=(Counter7*) inst;<br>      <span class="hljs-keyword">return</span> c7-&gt;<span class="hljs-built_in">get</span>();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>3.在测试平台中将方法引入</strong></p>
+<p>​    注意get（）函数的返回值，它应该返回bit[6:0] 7位数据，但是规定导入函数只能返回void、byte、shortint、int、longint、real、shortreal、chandel和string、bit、logic。不能是bit[6:0]这样的向量。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;DPI-C&quot;</span> <span class="hljs-function">function chandle <span class="hljs-title">counter7_new</span><span class="hljs-params">()</span></span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;DPI-C&quot;</span> <span class="hljs-function">function <span class="hljs-type">void</span> <span class="hljs-title">counter7_reset</span><span class="hljs-params">(input chandle inst)</span></span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;DPI-C&quot;</span> <span class="hljs-function">function <span class="hljs-type">void</span> <span class="hljs-title">counter7_load</span><span class="hljs-params">(input chandle inst,input  bit[<span class="hljs-number">6</span>:<span class="hljs-number">0</span>] i)</span></span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;DPI-C&quot;</span> <span class="hljs-function">function <span class="hljs-type">void</span> <span class="hljs-title">counter7_count</span><span class="hljs-params">(input chandle inst)</span></span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;DPI-C&quot;</span> <span class="hljs-function">function <span class="hljs-type">int</span> <span class="hljs-title">counter7_get</span><span class="hljs-params">(input chandle inst)</span></span>;<br></code></pre></td></tr></table></figure>
+
+<p><strong>4.为了方便使用，将引入的方法封装成类</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> Counter7;<br>    <span class="hljs-keyword">chandle</span> inst;<br>    <span class="hljs-keyword">string</span> id;<br>    <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> str);<br>      id=str;<br>      inst = counter7_new();<br>    <span class="hljs-keyword">endfunction</span>:<span class="hljs-keyword">new</span><br>    <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> reset();<br>      counter7_reset(inst);<br>    <span class="hljs-keyword">endfunction</span>:reset<br>    <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> count();<br>      counter7_count(inst);<br>    <span class="hljs-keyword">endfunction</span>:count<br>    <span class="hljs-keyword">function</span> load(<span class="hljs-keyword">bit</span>[<span class="hljs-number">6</span>:<span class="hljs-number">0</span>] i);<br>      counter7_load(inst,i);<br>    <span class="hljs-keyword">endfunction</span>:load<br>    <span class="hljs-keyword">function</span> <span class="hljs-keyword">bit</span>[<span class="hljs-number">6</span>:<span class="hljs-number">0</span>] get();<br>      <span class="hljs-keyword">bit</span>[<span class="hljs-number">6</span>:<span class="hljs-number">0</span>] tmp = counter7_get(inst);<br>      <span class="hljs-built_in">$display</span>(<span class="hljs-string">&quot;@%0t : [%s] count is %d&quot;</span>,<span class="hljs-built_in">$time</span>,id,tmp);<br>      <span class="hljs-keyword">return</span> tmp;<br>    <span class="hljs-keyword">endfunction</span>:get<br><span class="hljs-keyword">endclass</span>:Counter7<br></code></pre></td></tr></table></figure>
+
+<p>在测试平台中使用计数器的时候，定义一个Counter7对象，然后调用它的方法就行了。</p>
+<p><strong>5.测试平台</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">program</span> <span class="hljs-keyword">automatic</span> tb;<br><span class="hljs-keyword">bit</span> clk;<br><span class="hljs-keyword">bit</span>[<span class="hljs-number">6</span>:<span class="hljs-number">0</span>] out1,out2;<br>Counter7 c1,c2;<br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">forever</span> #<span class="hljs-number">5</span> clk = ~clk;<br><span class="hljs-keyword">end</span><br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>  clk = <span class="hljs-number">0</span>;<br>  c1=<span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;c1&quot;</span>);<br>  c2=<span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;c2&quot;</span>);<br>  <span class="hljs-keyword">fork</span><br>      <span class="hljs-keyword">begin</span><br>          @(<span class="hljs-keyword">posedge</span> clk)  c1<span class="hljs-variable">.reset</span>();<br>          @(<span class="hljs-keyword">posedge</span> clk)  c1<span class="hljs-variable">.load</span>(<span class="hljs-number">100</span>);<br>          <span class="hljs-keyword">repeat</span>(<span class="hljs-number">10</span>) @(<span class="hljs-keyword">posedge</span> clk)<span class="hljs-keyword">begin</span><br>              c1<span class="hljs-variable">.count</span>();<br>              out1=c1<span class="hljs-variable">.get</span>();<br>          <span class="hljs-keyword">end</span><br>      <span class="hljs-keyword">end</span><br>      <span class="hljs-keyword">begin</span><br>          @(<span class="hljs-keyword">posedge</span> clk)  c2<span class="hljs-variable">.reset</span>();<br>          @(<span class="hljs-keyword">posedge</span> clk)  c2<span class="hljs-variable">.load</span>(<span class="hljs-number">10</span>);<br>          <span class="hljs-keyword">repeat</span>(<span class="hljs-number">10</span>) @(<span class="hljs-keyword">posedge</span> clk)<span class="hljs-keyword">begin</span><br>              c2<span class="hljs-variable">.count</span>();<br>              out2=c2<span class="hljs-variable">.get</span>();<br>          <span class="hljs-keyword">end</span><br>      <span class="hljs-keyword">end</span><br>  <span class="hljs-keyword">join_none</span><br>  <span class="hljs-keyword">repeat</span>(<span class="hljs-number">20</span>) @(<span class="hljs-keyword">posedge</span> clk); <span class="hljs-built_in">$finish</span>;<br><span class="hljs-keyword">end</span><br><span class="hljs-keyword">endprogram</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>6.输出</strong></p>
+<p>两个计数器并行计数，各记各的，互不干扰。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function">call <span class="hljs-keyword">new</span>()</span><br><span class="hljs-function">call <span class="hljs-keyword">new</span>()</span><br><span class="hljs-function">call <span class="hljs-title">counter7_reset</span>()</span><br><span class="hljs-function">call <span class="hljs-title">counter7_reset</span>()</span><br><span class="hljs-function">call <span class="hljs-title">counter7_load</span>()</span><br><span class="hljs-function">call <span class="hljs-title">counter7_load</span>()</span><br><span class="hljs-function">call <span class="hljs-title">counter7_count</span>()</span><br><span class="hljs-function">call <span class="hljs-title">counter7_get</span>()</span><br><span class="hljs-function">@25000 : [c1] count <span class="hljs-keyword">is</span> 101</span><br><span class="hljs-function">call <span class="hljs-title">counter7_count</span>()</span><br><span class="hljs-function">call <span class="hljs-title">counter7_get</span>()</span><br><span class="hljs-function">@25000 : [c2] count <span class="hljs-keyword">is</span>  11</span><br><span class="hljs-function">call <span class="hljs-title">counter7_count</span>()</span><br><span class="hljs-function">call <span class="hljs-title">counter7_get</span>()</span><br><span class="hljs-function">@35000 : [c1] count <span class="hljs-keyword">is</span> 102</span><br><span class="hljs-function">call <span class="hljs-title">counter7_count</span>()</span><br><span class="hljs-function">call <span class="hljs-title">counter7_get</span>()</span><br><span class="hljs-function">@35000 : [c2] count <span class="hljs-keyword">is</span>  12</span><br><span class="hljs-function">call <span class="hljs-title">counter7_count</span>()</span><br><span class="hljs-function">call <span class="hljs-title">counter7_get</span>()</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-共享简单数组"><a href="#4-共享简单数组" class="headerlink" title="4. 共享简单数组"></a>4. 共享简单数组</h3><h4 id="4-1-双状态一维数组"><a href="#4-1-双状态一维数组" class="headerlink" title="4.1 双状态一维数组"></a>4.1 双状态一维数组</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;svdpi.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;veriuser.h&gt;</span></span><br><br><span class="hljs-comment">//data : OUTPUT</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fib</span><span class="hljs-params">(svBitVecVal data[<span class="hljs-number">20</span>])</span></span>&#123;<br>  <span class="hljs-type">int</span> i;<br>  data[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;<br>  data[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;<br>  <span class="hljs-keyword">for</span>( i=<span class="hljs-number">2</span>;i&lt;<span class="hljs-number">20</span>;i++) &#123;<br>    data[i] = data[i<span class="hljs-number">-1</span>] + data[i<span class="hljs-number">-2</span>];<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>这里的参数是svBitVecVal，没有星号。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;DPI-C&quot;</span> <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> fib(<span class="hljs-keyword">output</span> <span class="hljs-keyword">bit</span>[<span class="hljs-number">31</span>:<span class="hljs-number">0</span>] data[<span class="hljs-number">20</span>]);<br><span class="hljs-comment">// 数组有大小</span><br><span class="hljs-keyword">program</span> <span class="hljs-keyword">automatic</span> tb;<br>  <span class="hljs-keyword">bit</span>[<span class="hljs-number">31</span>:<span class="hljs-number">0</span>] data[<span class="hljs-number">20</span>];<br>  <span class="hljs-keyword">bit</span>[<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] da;<br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    fib(data);<br>    <span class="hljs-keyword">foreach</span>(data[i]) <span class="hljs-built_in">$display</span>(<span class="hljs-string">&quot;%d : %d&quot;</span>,i,data[i]);<br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endprogram</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="5-开放数组-open-array"><a href="#5-开放数组-open-array" class="headerlink" title="5. 开放数组 open array"></a>5. 开放数组 open array</h3><p>开放数组定义在svdpi.h中，在C代码中，可以通过开放数组，操作任何大小的数组。</p>
+<h3 id="6-传递特殊结构"><a href="#6-传递特殊结构" class="headerlink" title="6. 传递特殊结构"></a>6. 传递特殊结构</h3><h4 id="6-1-SV和C之间传递结构体参数"><a href="#6-1-SV和C之间传递结构体参数" class="headerlink" title="6.1 SV和C之间传递结构体参数"></a>6.1 SV和C之间传递结构体参数</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// C代码</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span>&#123;</span><br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> r,g,b;<br>&#125;* s_rgb;<br><span class="hljs-type">void</span> <span class="hljs-title function_">invert</span><span class="hljs-params">(s_rgb rgb)</span>&#123;<br>	...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-comment">// SV</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> &#123;<span class="hljs-keyword">bit</span>[<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] r,g,b;&#125; RGB; <span class="hljs-comment">//将C的结构体定义成SV的结构体</span><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;DPI-C&quot;</span> <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> invert(<span class="hljs-keyword">inout</span> RGB rgb); <span class="hljs-comment">//使用SV结构体</span><br><span class="hljs-keyword">program</span> <span class="hljs-keyword">automatic</span> tb;<br>..<br><span class="hljs-keyword">endprogram</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="6-2-传递字符串"><a href="#6-2-传递字符串" class="headerlink" title="6.2 传递字符串"></a>6.2 传递字符串</h4><p>从C程序向SV返回字符串。</p>
+<p><strong>最简单的方法是字符串返回值；</strong></p>
+<p><strong>还有一种是char</strong>类型的参数。**</p>
+<p>下面程序同时用了这两种方法。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;svdpi.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;veriuser.h&quot;</span></span><br><br><span class="hljs-function"><span class="hljs-type">char</span>* <span class="hljs-title">test</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span>* in,<span class="hljs-type">char</span>** out)</span> </span>&#123;<br>    <br>  <span class="hljs-type">static</span> <span class="hljs-type">char</span> * s;<br>  s=in;<br>  *out=in;<br>  <span class="hljs-keyword">return</span> s;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;DPI-C&quot;</span> <span class="hljs-keyword">function</span> <span class="hljs-keyword">string</span> test(<span class="hljs-keyword">input</span> <span class="hljs-keyword">string</span> in,<span class="hljs-keyword">output</span> <span class="hljs-keyword">string</span> out);<br><span class="hljs-keyword">program</span> <span class="hljs-keyword">automatic</span> tb;<br>  <span class="hljs-keyword">string</span> s1 = <span class="hljs-string">&quot;hello&quot;</span>;<br>  <span class="hljs-keyword">string</span> s2;<br>  <span class="hljs-keyword">string</span> s3;<br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    s3 = test(s1,s2);<br>    <span class="hljs-built_in">$display</span>(<span class="hljs-string">&quot;s2=%s,s3=%s\n&quot;</span>,s2,s3);<br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endprogram</span><br></code></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">s2</span>=hello,s3=hello<br></code></pre></td></tr></table></figure>
+
+<p>从输出看一看到，test函数既返回了string值，也修改了传入的参数s2.</p>
+<h3 id="7-C也可以调用SV的函数。"><a href="#7-C也可以调用SV的函数。" class="headerlink" title="7. C也可以调用SV的函数。"></a>7. C也可以调用SV的函数。</h3>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/">Verification</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/System-Verilog/">System Verilog</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/SV/">SV</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Verification/">Verification</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/07/30/Verification/UVM/UVM%E2%80%94%E2%80%94RAL/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">UVM——RAL</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/07/24/IC/Synthesis/%E9%80%BB%E8%BE%91%E7%BB%BC%E5%90%88%E2%80%94%E2%80%94%E4%BE%BF%E6%8D%B7%E5%91%BD%E4%BB%A4/">
+                        <span class="hidden-mobile">逻辑综合——便捷命令</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

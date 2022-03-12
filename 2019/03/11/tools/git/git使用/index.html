@@ -1,0 +1,574 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="git四个区域 remote repository local repository   git commit之后，会将stage area区域的文件提交到local repository 3. #### stage area 临时区域  git add文件之后，会将文件的内容更新到临时区域 4. #### work area 就是仓库目录下的那些源文件 上传文件 本机和github账户绑定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git使用">
+<meta property="og:url" content="http://example.com/2019/03/11/tools/git/git%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="git四个区域 remote repository local repository   git commit之后，会将stage area区域的文件提交到local repository 3. #### stage area 临时区域  git add文件之后，会将文件的内容更新到临时区域 4. #### work area 就是仓库目录下的那些源文件 上传文件 本机和github账户绑定">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-03-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.834Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>git使用 - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="git使用">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-03-11 00:00" pubdate>
+        March 11, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.4k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      21 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">git使用</h1>
+            
+            <div class="markdown-body">
+              <hr>
+<h3 id="git四个区域"><a href="#git四个区域" class="headerlink" title="git四个区域"></a>git四个区域</h3><ol>
+<li><h4 id="remote-repository"><a href="#remote-repository" class="headerlink" title="remote repository"></a>remote repository</h4></li>
+<li><h4 id="local-repository"><a href="#local-repository" class="headerlink" title="local repository"></a>local repository</h4></li>
+</ol>
+<p> git commit之后，会将stage area区域的文件提交到local repository<br> 3. #### stage area 临时区域</p>
+<p> git add文件之后，会将文件的内容更新到临时区域<br> 4. #### work area<br> 就是仓库目录下的那些源文件</p>
+<h3 id="上传文件"><a href="#上传文件" class="headerlink" title="上传文件"></a>上传文件</h3><ol>
+<li><p>本机和github账户绑定</p>
+</li>
+<li><p>在文件夹中打开git  bash</p>
+</li>
+<li><p>git init 初始化一个仓库，当然也可以clone一个仓库来初始化</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><pre><code class="hljs shell">git init<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>git add filename 跟踪本地要修改的文件，也就是建立文件和本地仓库的联系，让仓库直到打算要提交哪些文件，如果想要取消这种联系用git remove filename</p>
+</li>
+<li><p>git commit -m “message” 将跟踪到的修改记录添加到本地仓库的记录中，为了在上传的时候git来比较是否修改了文件.将修改的文件提交到了真正的本地仓库区域，在object文件夹下。message随便写，是个提示信息</p>
+</li>
+<li><p>git remote add origin 仓库的url   <strong>关联仓库</strong>，就是将文件提交到这个仓库,origin是这个远端仓库名</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">git remote add origin https://github.com/east1203/MarkDownFiles.git<br></code></pre></td></tr></table></figure>
+
+<p>  如果出现错误fatal: remote origin already exists，那么运行：</p>
+<p>  git remote rm origin再执行“git remote add origin 仓库的url”</p>
+<div class="code-wrapper"><pre><code class="hljs">7. git pull origin master
+</code></pre></div>
+<p>如果出现错误<strong>failed to push some refs to</strong>就用这个命令</p>
+<p> 把remote repository的内容下下来，跟local repository合并</p>
+<p>  如果出错，加上–allow-unrelated-histories 选项<br>  8. git push -u origin master 上传文件</p>
+<h3 id="删除仓库中的文件"><a href="#删除仓库中的文件" class="headerlink" title="删除仓库中的文件"></a>删除仓库中的文件</h3><ol>
+<li>git rm -r –cached filename   要删除的文件名</li>
+<li>git commit -m “remove file”</li>
+<li>git push -u origin master</li>
+</ol>
+<h3 id="克隆仓库到本地文件夹"><a href="#克隆仓库到本地文件夹" class="headerlink" title="克隆仓库到本地文件夹"></a>克隆仓库到本地文件夹</h3><p>  git clone 仓库的url</p>
+<h3 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h3><ol>
+<li><p>git status 跟踪本地仓库状态</p>
+</li>
+<li><p>.gitignore文件 在仓库目录下，建立一个.gitignore文件，里面可以写不想要提交的文件的名字，那么git在add所有文件文件的时候会避免这些文件</p>
+</li>
+<li><h4 id="git-diff"><a href="#git-diff" class="headerlink" title="git diff"></a>git diff</h4></li>
+</ol>
+<p> git diff –staged : 比较work area和stage area中文件有没有不同，默认git diff不加任何Option就是这个</p>
+<p> git diff –cached : 比较stage area和local repository中的文件的不同。</p>
+<ol start="4">
+<li>git reset &#x2F; git checkout 恢复文件</li>
+</ol>
+<p> 如果删除了文件，但是没有git commit到本地仓库，那么还可以恢复过来。</p>
+<p> 先用git reset ,(这里可以git status查看以下提示)</p>
+<p> 然后git checkout – deletedfilename</p>
+<p> 这样就可以恢复了，但是如果git commit了，这样操作不能恢复。<br> 5. git log</p>
+<p> 查看都commit哪些。就是查看repository的版本<br> 6. git whatchanged</p>
+<p> 有哪些修改<br> 7. pull  &#x2F; fetch</p>
+<p> pull 将remote repository下载下来，跟本地repository合并</p>
+<p> fetch 也是把remote repository下载，但是不跟本地合并，而是建立一个新的分支</p>
+<h3 id="git分支管理"><a href="#git分支管理" class="headerlink" title="git分支管理"></a>git分支管理</h3><h4 id="1-git-branch"><a href="#1-git-branch" class="headerlink" title="1. git branch"></a>1. git branch</h4><p> git branch 查看有哪些分支</p>
+<p> git branch branchname 新建立一个分支</p>
+<p> git checkout branchname 切换到另一个分支</p>
+<p> git show-branch 显示分支的差异</p>
+<p> git diff branch1 branch2 比较分支</p>
+<h4 id="2-合并分支-merge"><a href="#2-合并分支-merge" class="headerlink" title="2. 合并分支 merge"></a>2. 合并分支 merge</h4><h5 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h5><p> 假如当前分支是master，</p>
+<p> git merge “merge message随便写” HEAD branchname</p>
+<p> HEAD就是当前分支master的最新版本，不写的话默认，branchname是要合并过来的分支</p>
+<h3 id="撤销添加或者提交的内容"><a href="#撤销添加或者提交的内容" class="headerlink" title="撤销添加或者提交的内容"></a>撤销添加或者提交的内容</h3><p>参考自CSDN<a target="_blank" rel="noopener" href="https://blog.csdn.net/kongbaidepao/article/details/52253774"><strong>git add ， git commit 添加错文件 撤销</strong></a></p>
+<h4 id="1-git-add-添加-多余文件"><a href="#1-git-add-添加-多余文件" class="headerlink" title="1. git add 添加 多余文件"></a>1. git add 添加 多余文件</h4><p>这样的错误是由于， 有的时候 可能</p>
+<p>git add . （空格+ 点） 表示当前目录所有文件，不小心就会提交其他文件</p>
+<p>git add 如果添加了错误的文件的话</p>
+<p>撤销操作</p>
+<p>git status 先看一下add 中的文件<br>git reset HEAD 如果后面什么都不跟的话 就是上一次add 里面的全部撤销了<br>git reset HEAD XXX&#x2F;XXX&#x2F;XXX.java 就是对某个文件进行撤销了</p>
+<h4 id="2-git-commit-错误"><a href="#2-git-commit-错误" class="headerlink" title="2. git commit 错误"></a>2. git commit 错误</h4><p>如果不小心 弄错了 git add后 ， 又 git commit 了。<br>先使用<br>git log 查看节点<br>commit xxxxxxxxxxxxxxxxxxxxxxxxxx<br>Merge:<br>Author:<br>Date:</p>
+<p>然后<br>git reset commit_id</p>
+<p>over</p>
+<p>PS：还没有 push 也就是 repo upload 的时候</p>
+<p>git reset commit_id （回退到上一个 提交的节点 代码还是原来你修改的）<br>git reset –hard commit_id （回退到上一个commit节点， 代码也发生了改变，变成上一次的）</p>
+<h4 id="3-如果要是-提交了以后，可以使用-git-revert"><a href="#3-如果要是-提交了以后，可以使用-git-revert" class="headerlink" title="3.如果要是 提交了以后，可以使用 git revert"></a>3.如果要是 提交了以后，可以使用 git revert</h4><p>还原已经提交的修改<br>此次操作之前和之后的commit和history都会保留，并且把这次撤销作为一次最新的提交<br>git revert HEAD 撤销前一次 commit<br>git revert HEAD^ 撤销前前一次 commit<br>git revert commit-id (撤销指定的版本，撤销也会作为一次提交进行保存）<br>git revert是提交一个新的版本，将需要revert的版本的内容再反向修改回去，版本会递增，不影响之前提交的内容。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/tools/">tools</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/git/">git</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/11/others/%E6%AC%A2%E8%BF%8E%E4%BD%BF%E7%94%A8%20Cmd%20Markdown%20%E7%BC%96%E8%BE%91%E9%98%85%E8%AF%BB%E5%99%A8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">欢迎使用 Cmd Markdown 编辑阅读器</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/09/C++/C++11%E6%96%B0%E7%89%B9%E6%80%A7/">
+                        <span class="hidden-mobile">C++11 新特性</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -1,0 +1,553 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="2019-10-24 SystemVerilog Associative Arrays​    When size of a collection is unknown or the data space is sparse, an associative array is a better option. Associative arrays do not have any storage al">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ch2-Associative Arrays">
+<meta property="og:url" content="http://example.com/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_associative%20array/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="2019-10-24 SystemVerilog Associative Arrays​    When size of a collection is unknown or the data space is sparse, an associative array is a better option. Associative arrays do not have any storage al">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-07-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.807Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="SV">
+<meta property="article:tag" content="ChipVerif_Web">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>ch2-Associative Arrays - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="ch2-Associative Arrays">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-07-15 00:00" pubdate>
+        July 15, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.2k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      28 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ch2-Associative Arrays</h1>
+            
+            <div class="markdown-body">
+              <p>2019-10-24</p>
+<h1 id="SystemVerilog-Associative-Arrays"><a href="#SystemVerilog-Associative-Arrays" class="headerlink" title="SystemVerilog Associative Arrays"></a>SystemVerilog Associative Arrays</h1><p>​    When size of a collection is unknown or the data space is sparse, an associative array is a better option. <strong>Associative arrays do not have any storage allocated until it is used, and the index expression is not restricted to integral expressions, but can be of any type.</strong></p>
+<p>​    An associative array implements a look-up table of the elements of its declared type. The data type to be used as an index serves as the lookup key and imposes an ordering.</p>
+<h2 id="Syntax"><a href="#Syntax" class="headerlink" title="Syntax"></a>Syntax</h2><figure class="highlight abnf"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><pre><code class="hljs abnf">// Value     Array_Name          [ key ]<span class="hljs-comment">;</span><br>data_type    array_identifier    [ index_type ]<span class="hljs-comment">;</span><br> <br></code></pre></td></tr></table></figure>
+
+<h2 id="Initialization-Example"><a href="#Initialization-Example" class="headerlink" title="Initialization Example"></a>Initialization Example</h2><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> tb;<br> <br>  <span class="hljs-keyword">int</span>     array1 [<span class="hljs-keyword">int</span>];       <span class="hljs-comment">// An integer array with integer index</span><br>  <span class="hljs-keyword">int</span>     array2 [<span class="hljs-keyword">string</span>];     <span class="hljs-comment">// An integer array with string index</span><br>  <span class="hljs-keyword">string</span>  array3 [<span class="hljs-keyword">string</span>];     <span class="hljs-comment">// A string array with string index</span><br> <br>    <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>        <span class="hljs-comment">// Initialize each dynamic array with some values</span><br>      array1 = &#x27;&#123; <span class="hljs-number">1</span> : <span class="hljs-number">22</span>,<br>                <span class="hljs-number">6</span> : <span class="hljs-number">34</span> &#125;;<br> <br>    array2 = &#x27;&#123; <span class="hljs-string">&quot;Ross&quot;</span> : <span class="hljs-number">100</span>,<br>                <span class="hljs-string">&quot;Joey&quot;</span> : <span class="hljs-number">60</span> &#125;;<br> <br>    array3 = &#x27;&#123; <span class="hljs-string">&quot;Apples&quot;</span> : <span class="hljs-string">&quot;Oranges&quot;</span>,<br>                <span class="hljs-string">&quot;Pears&quot;</span> : <span class="hljs-string">&quot;44&quot;</span> &#125;;<br> <br>        <span class="hljs-comment">// Print each array</span><br>      <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;array1 = %p&quot;</span>, array1);<br>      <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;array2 = %p&quot;</span>, array2);<br>      <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;array3 = %p&quot;</span>, array3);<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br> <br></code></pre></td></tr></table></figure>
+
+<h2 id="Associative-Array-Methods"><a href="#Associative-Array-Methods" class="headerlink" title="Associative Array Methods"></a>Associative Array Methods</h2><table>
+<thead>
+<tr>
+<th align="left">Function</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">function int num ();</td>
+<td align="left">Returns the number of entries in the associative array</td>
+</tr>
+<tr>
+<td align="left">function int <strong>size</strong> ();</td>
+<td align="left">Also returns the number of entries, if empty 0 is returned</td>
+</tr>
+<tr>
+<td align="left">function void <strong>delete</strong> ( [input index] );</td>
+<td align="left"><em>index</em> when specified deletes the entry at that index, else the whole array is deleted</td>
+</tr>
+<tr>
+<td align="left">function int <strong>exists</strong> (input index);</td>
+<td align="left">Checks whether an element exists at specified index; returns 1 if it does, else 0</td>
+</tr>
+<tr>
+<td align="left">function int first (ref index);</td>
+<td align="left">Assigns to the given index variable the value of the first index; returns 0 for empty array</td>
+</tr>
+<tr>
+<td align="left">function int last (ref index);</td>
+<td align="left">Assigns to given index variable the value of the last index; returns 0 for empty array</td>
+</tr>
+<tr>
+<td align="left">function int next (ref index);</td>
+<td align="left">Finds the smallest index whose value is greater than the given index</td>
+</tr>
+<tr>
+<td align="left">function int prev (ref index);</td>
+<td align="left">Finds the largest index whose value is smaller than the given index</td>
+</tr>
+</tbody></table>
+<h2 id="Creating-a-dynamic-array-of-associative-arrays"><a href="#Creating-a-dynamic-array-of-associative-arrays" class="headerlink" title="Creating a dynamic array of associative arrays"></a>Creating a dynamic array of associative arrays</h2><p>dynamic array的每一个元素都是associative array</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> tb;<br>  <span class="hljs-comment">// Create an associative array with key of type string and value of type int</span><br>  <span class="hljs-comment">// for each index in a dynamic array</span><br>  <span class="hljs-keyword">int</span> fruits [] [<span class="hljs-keyword">string</span>];<br> <br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-comment">// Create a dynamic array with size 2</span><br>    fruits = <span class="hljs-keyword">new</span> [<span class="hljs-number">2</span>];<br> <br>    <span class="hljs-comment">// Initialize the associative array inside each dynamic array index</span><br>    fruits [<span class="hljs-number">0</span>] = &#x27;&#123; <span class="hljs-string">&quot;apple&quot;</span> : <span class="hljs-number">1</span>, <span class="hljs-string">&quot;grape&quot;</span> : <span class="hljs-number">2</span> &#125;;<br>    fruits [<span class="hljs-number">1</span>] = &#x27;&#123; <span class="hljs-string">&quot;melon&quot;</span> : <span class="hljs-number">3</span>, <span class="hljs-string">&quot;cherry&quot;</span> : <span class="hljs-number">4</span> &#125;;<br> <br>    <span class="hljs-comment">// Iterate through each index of dynamic array</span><br>    <span class="hljs-keyword">foreach</span> (fruits[i])<br>      <span class="hljs-comment">// Iterate through each key of the current index in dynamic array</span><br>      <span class="hljs-keyword">foreach</span> (fruits[i][fruit])<br>        <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;fruits[%0d][%s] = %0d&quot;</span>, i, fruit, fruits[i][fruit]);<br> <br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="Embedding-a-dynamic-array-within-each-index-of-an-associative-array"><a href="#Embedding-a-dynamic-array-within-each-index-of-an-associative-array" class="headerlink" title="Embedding a dynamic array within each index of an associative array"></a>Embedding a dynamic array within each index of an associative array</h2><p>每个associative array的元素都是一个dynamic array</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-comment">// Create a new typedef that represents a dynamic array</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">int</span> int_da [];<br> <br><span class="hljs-keyword">module</span> tb;<br>  <span class="hljs-comment">// Create an associative array where key is a string </span><br>  <span class="hljs-comment">// and value is a dynamic array</span><br>  int_da fruits [<span class="hljs-keyword">string</span>];<br> <br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-comment">// For key &quot;apple&quot;, create a dynamic array that can hold 2 items </span><br>    fruits [<span class="hljs-string">&quot;apple&quot;</span>] = <span class="hljs-keyword">new</span> [<span class="hljs-number">2</span>];<br> <br>    <span class="hljs-comment">// Initialize the dynamic array with some values</span><br>    fruits [<span class="hljs-string">&quot;apple&quot;</span>] = &#x27;&#123; <span class="hljs-number">4</span>, <span class="hljs-number">5</span>&#125;;<br> <br>    <span class="hljs-comment">// Iterate through each key, where key represented by str1</span><br>    <span class="hljs-keyword">foreach</span> (fruits[str1]) <br>      <span class="hljs-comment">// Iterate through each item inside the current dynamic array ie.fruits[str1]</span><br>      <span class="hljs-keyword">foreach</span> (fruits[str1][i])<br>        <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;fruits[%s][%0d] = %0d&quot;</span>, str1, i, fruits[str1][i]);<br> <br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/">Verification</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/System-Verilog/">System Verilog</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/SV/">SV</a>
+                    
+                      <a class="hover-with-bg" href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_dynamic%20array/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ch2-Dynamic Arrays</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch02_Data%20type/ch02_manipulation%20array/">
+                        <span class="hidden-mobile">ch2-Array Manipulation</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

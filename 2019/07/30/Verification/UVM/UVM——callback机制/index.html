@@ -1,0 +1,641 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="参考UVM_CALLBACK—VerificationGuide网站 《UVM实战1》 1. 介绍Where callbacks can be implemented?Callbacks can be implemented in an object or component. What are the benefits of callback?Different flavors of the c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UVM——callback机制">
+<meta property="og:url" content="http://example.com/2019/07/30/Verification/UVM/UVM%E2%80%94%E2%80%94callback%E6%9C%BA%E5%88%B6/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="参考UVM_CALLBACK—VerificationGuide网站 《UVM实战1》 1. 介绍Where callbacks can be implemented?Callbacks can be implemented in an object or component. What are the benefits of callback?Different flavors of the c">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/07/callback/callback1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/07/callback/callback2.png">
+<meta property="article:published_time" content="2019-07-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.818Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="IC">
+<meta property="article:tag" content="SV">
+<meta property="article:tag" content="Verification">
+<meta property="article:tag" content="UVM">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/07/callback/callback1.png">
+  
+  
+  <title>UVM——callback机制 - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="UVM——callback机制">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-07-30 00:00" pubdate>
+        July 30, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      7.6k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      64 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">UVM——callback机制</h1>
+            
+            <div class="markdown-body">
+              <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://www.verificationguide.com/p/uvm-callback.html">UVM_CALLBACK—VerificationGuide网站</a></p>
+<p>《UVM实战1》</p>
+<h3 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h3><h4 id="Where-callbacks-can-be-implemented"><a href="#Where-callbacks-can-be-implemented" class="headerlink" title="Where callbacks can be implemented?"></a>Where callbacks can be implemented?</h4><p>Callbacks can be implemented in an object or component.</p>
+<h4 id="What-are-the-benefits-of-callback"><a href="#What-are-the-benefits-of-callback" class="headerlink" title="What are the benefits of callback?"></a>What are the benefits of callback?</h4><p>Different flavors of the component can be obtained by customizing the empty callback methods.</p>
+<h4 id="About-UVM-Callbacks"><a href="#About-UVM-Callbacks" class="headerlink" title="About UVM Callbacks"></a>About UVM Callbacks</h4><p>UVM provides a set of classes, methods, and macros to implement the callbacks.</p>
+<p>Only the required callback methods are explained here. refer to <a target="_blank" rel="noopener" href="https://www.verificationguide.com/p/uvm-callback-classes-methods-macros.html">UVM Callback Classes</a> for UVM Callback classes, methods, and macros.</p>
+<h3 id="2-callback"><a href="#2-callback" class="headerlink" title="2. callback"></a>2. callback</h3><p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/07/callback/callback1.png" srcset="/img/loading.gif" lazyload></p>
+<p>callback中的机制分成三步：</p>
+<ul>
+<li>Adding callback support</li>
+<li>Implementing the callback methods</li>
+<li>Using callback</li>
+</ul>
+<h4 id="2-1-Adding-callback-support"><a href="#2-1-Adding-callback-support" class="headerlink" title="2.1  Adding callback support"></a>2.1  Adding callback support</h4><p><strong>自定义callback类，继承自uvm_callback；在callback类中，自定义要回调的虚函数。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> driver_callback <span class="hljs-keyword">extends</span> uvm_callback;   <br>  `uvm_object_utils(driver_callback)   <br>  <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name = <span class="hljs-string">&quot;driver_callback&quot;</span>);<br>    <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name);<br>  <span class="hljs-keyword">endfunction</span><br>  <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> pre_drive; <span class="hljs-keyword">endtask</span><br>  <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> post_drive; <span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>用宏&#96;uvm_register_do将callback类注册到将要被使用到的component类。</strong></p>
+<p><strong>将回调钩子（callback hook）放到要使用callback的object或者component类中。</strong>（或许只能放在component中）</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> driver <span class="hljs-keyword">extends</span> uvm_component;<br>  `uvm_component_utils(driver)<br>    `uvm_register_cb(driver,driver_callback)   <span class="hljs-comment">//注册</span><br>  <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name, uvm_component parent);<br>    <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name,parent);<br>  <span class="hljs-keyword">endfunction</span>   <br>  <span class="hljs-keyword">task</span> run_phase(uvm_phase phase);<br>      `uvm_do_callbacks(driver,driver_callback,pre_drive());    <span class="hljs-comment">// 添加回调钩子   </span><br>      drive_pkt();       <br>      `uvm_do_callbacks(driver,driver_callback,post_drive());<br>  <span class="hljs-keyword">endtask</span>  <br>  <span class="hljs-keyword">task</span> drive_pkt();<br>    `uvm_info(<span class="hljs-string">&quot;DRIVER&quot;</span>,<span class="hljs-string">&quot;Inside drive_pkt method&quot;</span>,UVM_LOW);<br>  <span class="hljs-keyword">endtask</span>  <br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="2-2-Implementing-the-callback-methods"><a href="#2-2-Implementing-the-callback-methods" class="headerlink" title="2.2 Implementing the callback methods"></a>2.2 Implementing the callback methods</h4><p>之前的那一步是VIP设计者要做的工作，在代码中预留出一些接口（回调钩子），供程序使用者扩展功能。接下来的两小节是VIP使用者（验证师）要做的。</p>
+<p><strong>用户自定义回调类，继承自上面的driver_callback类。</strong></p>
+<p><strong>重载回调的虚函数。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> user_callback <span class="hljs-keyword">extends</span> driver_callback;   <span class="hljs-comment">//必须继承</span><br>  `uvm_object_utils(user_callback)   <br>  <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name = <span class="hljs-string">&quot;user_callback&quot;</span>);<br>    <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name);<br>  <span class="hljs-keyword">endfunction</span>  <br>  <span class="hljs-keyword">task</span> pre_drive;<br>    `uvm_info(<span class="hljs-string">&quot;USER_CALLBACK&quot;</span>,<span class="hljs-string">&quot;Inside pre_drive method&quot;</span>,UVM_LOW);<br>  <span class="hljs-keyword">endtask</span>   <br>  <span class="hljs-keyword">task</span> post_drive;<br>    `uvm_info(<span class="hljs-string">&quot;USER_CALLBACK&quot;</span>,<span class="hljs-string">&quot;Inside post_drive method&quot;</span>,UVM_LOW);<br>  <span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-3-Using-callback"><a href="#2-3-Using-callback" class="headerlink" title="2.3 Using callback"></a>2.3 Using callback</h4><p>在testcase中：</p>
+<h5 id="1-定义user-callback回调类。"><a href="#1-定义user-callback回调类。" class="headerlink" title="1.  定义user_callback回调类。"></a>1.  定义user_callback回调类。</h5><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">user_callback callback_1;<br></code></pre></td></tr></table></figure>
+
+<h5 id="2-创建回调对象。"><a href="#2-创建回调对象。" class="headerlink" title="2. 创建回调对象。"></a>2. 创建回调对象。</h5><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">callback_1 = user_callback::type_id::create(<span class="hljs-string">&quot;callback_1&quot;</span>, <span class="hljs-keyword">this</span>);<br></code></pre></td></tr></table></figure>
+
+<h5 id="3-将回调对象添加到要使用回调的component中（这里是driver）的回调池子。"><a href="#3-将回调对象添加到要使用回调的component中（这里是driver）的回调池子。" class="headerlink" title="3. 将回调对象添加到要使用回调的component中（这里是driver）的回调池子。"></a>3. 将回调对象添加到要使用回调的component中（这里是driver）的回调池子。</h5><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">uvm_callbacks<span class="hljs-variable">#(driver,driver_callback)::add(env.driv,callback_1)</span>; <br></code></pre></td></tr></table></figure>
+
+<p>类的参数类型和两个参数对应。</p>
+<p><strong>UVM会自动调用回调池子中所有对象的回调函数。类似于SV中的回调，在SV中回调池子是一个回调基类的队列。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> user_callback_test <span class="hljs-keyword">extends</span> basic_test;<br>  user_callback callback_1;   <span class="hljs-comment">// 定义回调类</span><br>  `uvm_component_utils(user_callback_test)   <br>  <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name = <span class="hljs-string">&quot;user_callback_test&quot;</span>, uvm_component parent=<span class="hljs-literal">null</span>);<br>    <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name,parent);<br>  <span class="hljs-keyword">endfunction</span>   <br>  <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> build_phase(uvm_phase phase);<br>    <span class="hljs-keyword">super</span><span class="hljs-variable">.build_phase</span>(phase);<br>    uvm_config_db<span class="hljs-variable">#(uvm_object_wrapper)::set(this,&quot;env0.i_agt.sqr.run_phase&quot;,&quot;default_sequence&quot;,sequence0::type_id::get())</span>;<br>  <span class="hljs-keyword">endfunction</span><br>    <br>    <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> connect_phase(uvm_phase phase);<br>        callback_1 = user_callback::type_id::create(<span class="hljs-string">&quot;callback_1&quot;</span>, <span class="hljs-keyword">this</span>);     <span class="hljs-comment">//创建对象，这里有this</span><br>      uvm_callbacks<span class="hljs-variable">#(driver,driver_callback)::add(env.driv,callback_1)</span>; <span class="hljs-comment">//添加</span><br>    <span class="hljs-keyword">endfunction</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>这里一定要注意，启动sequence写在build phase中，而callback_1对象在connect_phase中创建、添加，如果都写在build phase中，会出错。</strong></p>
+<h3 id="3-注册了多个callback类"><a href="#3-注册了多个callback类" class="headerlink" title="3. 注册了多个callback类"></a>3. 注册了多个callback类</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> user_callback_2_test <span class="hljs-keyword">extends</span> basic_test;<br>  user_callback_1 callback_1;<br>  user_callback_2 callback_2;<br>   <br>  `uvm_component_utils(user_callback_2_test)<br>   <br>  <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name = <span class="hljs-string">&quot;user_callback_2_test&quot;</span>, uvm_component parent=<span class="hljs-literal">null</span>);<br>    <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name,parent);<br>  <span class="hljs-keyword">endfunction</span><br>   <br>  <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> build_phase(uvm_phase phase);<br>    <span class="hljs-keyword">super</span><span class="hljs-variable">.build_phase</span>(phase);<br>    callback_1 = user_callback_1::type_id::create(<span class="hljs-string">&quot;callback_1&quot;</span>, <span class="hljs-keyword">this</span>);<br>    callback_2 = user_callback_2::type_id::create(<span class="hljs-string">&quot;callback_2&quot;</span>, <span class="hljs-keyword">this</span>);<br>     <br>      uvm_callbacks<span class="hljs-variable">#(driver,driver_callback)::add(env.driv,callback_2)</span>; <span class="hljs-comment">//2 先注册</span><br>    uvm_callbacks<span class="hljs-variable">#(driver,driver_callback)::add(env.driv,callback_1)</span>;<br>  <span class="hljs-keyword">endfunction</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs oxygene">UVM_INFO @ <span class="hljs-number">0</span>: reporter [RNTST] Running test user_callback_2_test...<br>UVM_INFO user_callback.sv(<span class="hljs-number">39</span>) @ <span class="hljs-number">0</span>: reporter [USER_CALLBACK-<span class="hljs-number">2</span>] Inside pre_drive <span class="hljs-keyword">method</span><br><span class="hljs-title function_">UVM_INFO</span> <span class="hljs-title function_">user_callback</span>.<span class="hljs-title function_">sv</span><span class="hljs-params">(18)</span> @ 0: reporter [USER_CALLBACK-<span class="hljs-number">1</span>] Inside pre_drive <span class="hljs-keyword">method</span><br><span class="hljs-title function_">UVM_INFO</span> <span class="hljs-title function_">slave_driver</span>.<span class="hljs-title function_">sv</span><span class="hljs-params">(23)</span> @ 0: uvm_test_top.env.driver [DRIVER] Inside drive_pkt <span class="hljs-keyword">method</span><br><span class="hljs-title function_">UVM_INFO</span> <span class="hljs-title function_">user_callback</span>.<span class="hljs-title function_">sv</span><span class="hljs-params">(43)</span> @ 0: reporter [USER_CALLBACK-<span class="hljs-number">2</span>] Inside post_drive <span class="hljs-keyword">method</span><br><span class="hljs-title function_">UVM_INFO</span> <span class="hljs-title function_">user_callback</span>.<span class="hljs-title function_">sv</span><span class="hljs-params">(22)</span> @ 0: reporter [USER_CALLBACK-<span class="hljs-number">1</span>] Inside post_drive <span class="hljs-keyword">method</span><br></code></pre></td></tr></table></figure>
+
+<p>​    user_callback_1、user_callback_2继承自driver_callback；上面代码中向driver添加了两个回调类，那么执行顺序是根据自定义回调类（user_callback_1、user_callback_2）注册到dirver（add函数）的顺序，来执行回调虚函数的。</p>
+<h3 id="4-子类继承父类的回调机制"><a href="#4-子类继承父类的回调机制" class="headerlink" title="4. 子类继承父类的回调机制"></a>4. 子类继承父类的回调机制</h3><p>如果要在原来的验证环境基础上开发第二代验证环境，并且需要扩展my_driver的功能，新的new_driver继承自driver，我们希望new_driver中也可以用driver中的callback函数。</p>
+<p><strong>需要使用下面这个宏将子类父类关联起来。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">`uvm_set_super_type(new_driver,driver);<br></code></pre></td></tr></table></figure>
+
+<p><strong>在new_driver中添加的回调钩子是原来的my_driver</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">`uvm_do_callbacks(driver,driver_callback,pre_drive()); <br></code></pre></td></tr></table></figure>
+
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> new_driver <span class="hljs-keyword">extends</span> driver;<br>  `uvm_component_utils(new_driver)<br>  <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name, uvm_component parent);<br>    <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name,parent);<br>  <span class="hljs-keyword">endfunction</span>   <br>  <span class="hljs-keyword">task</span> run_phase(uvm_phase phase);<br>      `uvm_do_callbacks(driver,driver_callback,pre_drive());    <span class="hljs-comment">// 还是driver   </span><br>      drive_pkt();       <br>      `uvm_do_callbacks(driver,driver_callback,post_drive());<br>  <span class="hljs-keyword">endtask</span>  <br>  <span class="hljs-keyword">task</span> drive_pkt();<br>    `uvm_info(<span class="hljs-string">&quot;DRIVER&quot;</span>,<span class="hljs-string">&quot;Inside drive_pkt method&quot;</span>,UVM_LOW);<br>  <span class="hljs-keyword">endtask</span>  <br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="5-在sequence中使用callback"><a href="#5-在sequence中使用callback" class="headerlink" title="5. 在sequence中使用callback"></a>5. 在sequence中使用callback</h3><p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/07/callback/callback2.png" srcset="/img/loading.gif" lazyload></p>
+<p>拆成5步：</p>
+<ul>
+<li>Write callback class</li>
+<li>Register the callback class</li>
+<li>Place the callback hook</li>
+<li>Implement the callback method</li>
+<li>Create and register the callback object</li>
+</ul>
+<h4 id="5-1-Write-callback-class"><a href="#5-1-Write-callback-class" class="headerlink" title="5.1 Write callback class"></a>5.1 Write callback class</h4><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> mem_callback <span class="hljs-keyword">extends</span> uvm_callback;<br>    <br>  `uvm_object_utils(mem_callback)<br>    <br>  <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name = <span class="hljs-string">&quot;mem_callback&quot;</span>);<br>    <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name);<br>  <span class="hljs-keyword">endfunction</span><br>    <br>    <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> update_pkt(<span class="hljs-keyword">ref</span> mem_seq_item pkt); <span class="hljs-keyword">endtask</span> <span class="hljs-comment">//回调函数</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="5-2-Register-the-callback-class"><a href="#5-2-Register-the-callback-class" class="headerlink" title="5.2 Register the callback class"></a>5.2 Register the callback class</h4><p>callback类需要注册在component中，因为sequence是动态的。将callback类注册在sequencer中。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> mem_sequencer <span class="hljs-keyword">extends</span> uvm_sequencer<span class="hljs-variable">#(mem_seq_item)</span>; <br>  `uvm_component_utils(mem_sequencer)<br>    `uvm_register_cb(mem_sequencer,mem_callback) <span class="hljs-comment">//将回调基类注册到sqr中</span><br>  <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name, uvm_component parent);<br>    <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name,parent);<br>  <span class="hljs-keyword">endfunction</span>   <br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="5-3-Place-the-callback-hook"><a href="#5-3-Place-the-callback-hook" class="headerlink" title="5.3 Place the callback hook"></a>5.3 Place the callback hook</h4><p>回调钩子要放在sequence类中，因为是在sequence中回调。</p>
+<p>&#96;uvm_do_obj_callbacks的第一个参数是mem_sequencer，因为回调注册在mem_sequencer</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> mem_sequence <span class="hljs-keyword">extends</span> uvm_sequence<span class="hljs-variable">#(mem_seq_item)</span>;   <br>  `uvm_object_utils(mem_sequence)<br>  <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name = <span class="hljs-string">&quot;mem_sequence&quot;</span>);<br>    <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name);<br>  <span class="hljs-keyword">endfunction</span><br>   <br>  `uvm_declare_p_sequencer(mem_sequencer)<br>   <br>  <span class="hljs-comment">//---------------------------------------</span><br>  <span class="hljs-comment">// create, randomize and send the item to driver</span><br>  <span class="hljs-comment">//---------------------------------------</span><br>  <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> body();<br>    req = mem_seq_item::type_id::create(<span class="hljs-string">&quot;req&quot;</span>);<br>    wait_for_grant();<br>    req<span class="hljs-variable">.randomize</span>();<br>      `uvm_do_obj_callbacks(mem_sequencer,mem_callback,p_sequencer,update_pkt(req));<span class="hljs-comment">//在sequence中使用sqr中的回调函数。</span><br>    send_request(req);<br>    wait_for_item_done();<br>  <span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="5-4-Implement-the-callback-method"><a href="#5-4-Implement-the-callback-method" class="headerlink" title="5.4 Implement the callback method"></a>5.4 Implement the callback method</h4><p>自定义回调类和回调函数。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> user_callback <span class="hljs-keyword">extends</span> mem_callback; <span class="hljs-comment">//继承自回调基类</span><br>   <br>  `uvm_object_utils(user_callback)<br>   <br>  <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name = <span class="hljs-string">&quot;user_callback&quot;</span>);<br>    <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name);<br>  <span class="hljs-keyword">endfunction</span><br>   <br>    <span class="hljs-keyword">task</span> update_pkt(<span class="hljs-keyword">ref</span> mem_seq_item pkt); <span class="hljs-comment">//重载回调函数</span><br>    `uvm_info(<span class="hljs-string">&quot;USER_CALLBACK&quot;</span>,<span class="hljs-string">&quot;[update_pkt] before packet modification&quot;</span>,UVM_LOW);<br>    pkt<span class="hljs-variable">.print</span>();<br>    pkt<span class="hljs-variable">.addr</span> = ~pkt<span class="hljs-variable">.addr</span>;<br>    `uvm_info(<span class="hljs-string">&quot;USER_CALLBACK&quot;</span>,<span class="hljs-string">&quot;[update_pkt] after packet modification&quot;</span>,UVM_LOW);<br>    pkt<span class="hljs-variable">.print</span>();<br>  <span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="5-5-Create-and-register-the-callback-object"><a href="#5-5-Create-and-register-the-callback-object" class="headerlink" title="5.5 Create and register the callback object"></a>5.5 Create and register the callback object</h4><p><strong>将回调对象添加到回调注册的地方，在这里注册到了sequencer。所以在add函数中用的是sequencer而不是sequence。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> user_callback_test <span class="hljs-keyword">extends</span> mem_test;<br>  user_callback callback_1; <span class="hljs-comment">// 回调对象</span><br>   <br>  `uvm_component_utils(user_callback_test)<br>   <br>  <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name = <span class="hljs-string">&quot;user_callback_test&quot;</span>, uvm_component parent=<span class="hljs-literal">null</span>);<br>    <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name,parent);<br>  <span class="hljs-keyword">endfunction</span><br>   <br>  <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> build_phase(uvm_phase phase);<br>    <span class="hljs-keyword">super</span><span class="hljs-variable">.build_phase</span>(phase);<br>      callback_1 = user_callback::type_id::create(<span class="hljs-string">&quot;callback_1&quot;</span>, <span class="hljs-keyword">this</span>); <span class="hljs-comment">// 创建</span><br>  <span class="hljs-keyword">endfunction</span><br>   <br>  <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> end_of_elaboration();<br>      uvm_callbacks<span class="hljs-variable">#(mem_sequencer,mem_callback)::add(env.mem_agnt.sequencer,callback_1)</span>;<span class="hljs-comment">//注册到sequencer中</span><br>  <span class="hljs-keyword">endfunction</span> : end_of_elaboration<br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/">Verification</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/UVM/">UVM</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/SV/">SV</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Verification/">Verification</a>
+                    
+                      <a class="hover-with-bg" href="/tags/UVM/">UVM</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/08/06/Verilog/Verilog%E2%80%94%E2%80%94%E5%88%86%E9%A2%91%E5%99%A8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Verilog——分频器</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/07/30/Verification/UVM/UVM%E2%80%94%E2%80%94RAL/">
+                        <span class="hidden-mobile">UVM——RAL</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

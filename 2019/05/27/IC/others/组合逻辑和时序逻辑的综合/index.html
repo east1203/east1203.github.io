@@ -1,0 +1,634 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="综合工具工作的步骤： 检测并消除冗余逻辑 查找组合反馈回路 利用无关紧要条件 检测出未使用的状态 查找并消除等价的状态； 进行状态分配； 在满足物理工艺的面积、速度限制的条件下，综合出最优的多级逻辑实现。既包括了最优化技术，又包括了工艺映射。  1. 综合简介电路模型可以分成三个层次：**架构级(architectural level model)、逻辑级(logic level model)、物">
+<meta property="og:type" content="article">
+<meta property="og:title" content="组合逻辑和时序逻辑的综合">
+<meta property="og:url" content="http://example.com/2019/05/27/IC/others/%E7%BB%84%E5%90%88%E9%80%BB%E8%BE%91%E5%92%8C%E6%97%B6%E5%BA%8F%E9%80%BB%E8%BE%91%E7%9A%84%E7%BB%BC%E5%90%88/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="综合工具工作的步骤： 检测并消除冗余逻辑 查找组合反馈回路 利用无关紧要条件 检测出未使用的状态 查找并消除等价的状态； 进行状态分配； 在满足物理工艺的面积、速度限制的条件下，综合出最优的多级逻辑实现。既包括了最优化技术，又包括了工艺映射。  1. 综合简介电路模型可以分成三个层次：**架构级(architectural level model)、逻辑级(logic level model)、物">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn6.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn9.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn10.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn12.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn11.png">
+<meta property="article:published_time" content="2019-05-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.800Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="IC">
+<meta property="article:tag" content="Synthesis">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn1.png">
+  
+  
+  <title>组合逻辑和时序逻辑的综合 - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="组合逻辑和时序逻辑的综合">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-05-27 00:00" pubdate>
+        May 27, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.9k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      33 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">组合逻辑和时序逻辑的综合</h1>
+            
+            <div class="markdown-body">
+              <h3 id="综合工具工作的步骤："><a href="#综合工具工作的步骤：" class="headerlink" title="综合工具工作的步骤："></a>综合工具工作的步骤：</h3><ol>
+<li>检测并消除冗余逻辑</li>
+<li>查找组合反馈回路</li>
+<li>利用无关紧要条件</li>
+<li>检测出未使用的状态</li>
+<li>查找并消除等价的状态；</li>
+<li>进行状态分配；</li>
+<li>在满足物理工艺的面积、速度限制的条件下，综合出最优的多级逻辑实现。既包括了最优化技术，又包括了工艺映射。</li>
+</ol>
+<h3 id="1-综合简介"><a href="#1-综合简介" class="headerlink" title="1. 综合简介"></a>1. 综合简介</h3><p>电路模型可以分成三个层次：**架构级(architectural level model)<strong>、</strong>逻辑级(logic level model)<strong>、</strong>物理级(physical level model)**。</p>
+<p><strong>架构级</strong>：必须由电路执行的、将一组输入转换成输出的操作，不与时钟相关联。架构的内部组成可以由不同结构的、互连的、同步的功能单元来实现（我认为是功能单元或模块的互联）。这里的设计关键是从架构描述中提取出一个实现所需功能的算法。</p>
+<p><strong>逻辑级</strong>：由电路实现的一组变量和一组布尔函数。它描述了寄存器资源和功能单元的架构、逻辑级的时序行为。这里的设计是将布尔逻辑转换成可满足功能的组合门电路和存储寄存器的最优化的网表。<strong>综合工具就是用来实现这一步的。综合工具先将Verilog代码翻译成布尔函数形式，然后进行优化、映射。</strong></p>
+<p><strong>物理级</strong>：先不考虑。</p>
+<p>从电路的高级别抽象模型到最终的物理实现。HDL可以对电路进行不同层次的描述来简化设计过程。</p>
+<p>有三种描述层次：行为描述(behavioral)、结构描述(structral)、物理描述(physical)。</p>
+<p>比如：一个架构模型的行为描述可以是定义一组数据变换的算法；同一个架构模型的结构描述是由实现这组算法的数据通路（寄存器、存储器、加法器等）和控制器组成（功能模块的组合）。一个逻辑级的行为描述包括状态转移图(STG)、算法状态机图(ASM)等；其结构描述是实现行为级所描述功能的门级网表。</p>
+<p><strong>其实这里不是很明白。直接从书上摘下来的。</strong></p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn1.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="2-1-逻辑综合"><a href="#2-1-逻辑综合" class="headerlink" title="2.1  逻辑综合"></a>2.1  逻辑综合</h4><p>逻辑综合是将电路从逻辑级描述转换成结构描述，最终生成结构化的原语网表。</p>
+<p>逻辑级描述是一组布尔方程。这些方程由连续赋值语句或等效的电平敏感的行为构成。</p>
+<p>逻辑综合：</p>
+<p>  给定的原语网表 &gt;&gt; 优化的Verilog原语网表 &gt;&gt; 由目标工艺资源(asic单元)组成的等效电路。</p>
+<p>综合工具的组成结构如下图：</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn2.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>综合要保证综合前后电路的等效性以及生成电路的可测性。</strong></p>
+<p><strong>逻辑综合是进行逻辑优化，之后要进行性能优化，寻找在物理工艺上最优性能的电路。（比如功耗、面试、时序等)</strong></p>
+<h3 id="2-组合逻辑的综合"><a href="#2-组合逻辑的综合" class="headerlink" title="2 组合逻辑的综合"></a>2 组合逻辑的综合</h3><p>可综合的组合逻辑有：</p>
+<ol>
+<li>结构化的原语网表</li>
+<li>一系列连续赋值语句</li>
+</ol>
+<figure class="highlight verilog"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">assign</span> y = a &amp; b;<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>电平敏感的周期性行为（<strong>无反馈、无锁存器</strong>）</li>
+</ol>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">always</span>@(a <span class="hljs-keyword">or</span> b ) <span class="hljs-keyword">begin</span>  <span class="hljs-comment">//对于每个输入值都有对应的输出、</span><br>	.....     <span class="hljs-comment">//逻辑中没有反馈回路、不生成锁存器</span><br>    		 <span class="hljs-comment">// case \if语句要写全</span><br>    		<span class="hljs-comment">// 不能有时间控制语句 @ # 等</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>能够去除电路中的冗余逻辑。</p>
+<h4 id="2-1-优先级结构的综合"><a href="#2-1-优先级结构的综合" class="headerlink" title="2.1 优先级结构的综合"></a>2.1 优先级结构的综合</h4><p>对于case和if语句，综合工具可能综合出有优先级的电路，也可能是没有优先级的电路，这要看HDL如何写的。</p>
+<p>如果case语句中的*<em>分支选项都是互斥</em>***的，那么综合出 的电路没有优先级，会是个多路选择器结构。如果不是互斥的，那么case语句通常是对于首先匹配到的选项有高 的优先级，当然一般用的时候都是互斥结构。</p>
+<p>如果if语句中的*<em>分支选项是互斥</em>***的，那么也不会出现优先级结构，而是多路选择器</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-comment">/*</span><br><span class="hljs-comment">以下是一个会综合出优先级顺序的块。</span><br><span class="hljs-comment">因为sel_a与sel_b之间没有关系，if的分支选项不是互斥的。</span><br><span class="hljs-comment">比如，如果是没有优先级，当sel_a ==1 ，则y=a。此时sel_b也可能为1，那么y=b。没有优先级的话，</span><br><span class="hljs-comment">就不知道到底是匹配了哪一条分支。</span><br><span class="hljs-comment">所以要综合出优先级结构，且第一个条件分支的优先级最高。</span><br><span class="hljs-comment">*/</span><br><span class="hljs-keyword">always</span>@(sel_a <span class="hljs-keyword">or</span> sel_b) <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">if</span>(sel_a ==<span class="hljs-number">1</span> ) y = a;<br>	<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sel_b == <span class="hljs-number">1</span>) y = b;<br>	<span class="hljs-keyword">else</span> y = c;<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-2-ASIC资源共享"><a href="#2-2-ASIC资源共享" class="headerlink" title="2.2 ASIC资源共享"></a>2.2 ASIC资源共享</h4><p>这跟编码风格有关。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-comment">// 一种 ， 两个加法器</span><br><span class="hljs-keyword">assign</span> sum = sel ? (a+b) : (a+c);<br><span class="hljs-comment">// 另一中 ， 一个加法器</span><br><span class="hljs-keyword">assign</span> sum = a + (sel ? b : c) ;<br></code></pre></td></tr></table></figure>
+
+<p><strong>用括号来控制操作符分组来降低电路尺寸</strong></p>
+<p>比如下面的Verilog描述的加法器综合成ASIC库中的全加器，如下图中(a)所示，(b)图是为了提高速度而得到的另一种综合结果。(a)中的电路面积小于(b)。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> add_4(<span class="hljs-keyword">output</span> [<span class="hljs-number">3</span>:<span class="hljs-number">0</span>] sum,<span class="hljs-keyword">output</span> C,<span class="hljs-keyword">input</span> [<span class="hljs-number">3</span>:<span class="hljs-number">0</span>]a,b,c);<br><span class="hljs-keyword">assign</span> &#123;sum,C&#125;=a+b+c;<br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn3.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="3-带锁存器的时序逻辑综合"><a href="#3-带锁存器的时序逻辑综合" class="headerlink" title="3  带锁存器的时序逻辑综合"></a>3  带锁存器的时序逻辑综合</h3><p><strong>无反馈的原语网表、连续赋值综合出无锁存器的组合逻辑。</strong></p>
+<p><strong>带反馈的条件操作符综合出锁存器</strong>，如：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">assign</span> Out = (cs==<span class="hljs-number">0</span>)?(we==<span class="hljs-number">0</span>)?:In:Out:<span class="hljs-number">1&#x27;bz</span>;<br><span class="hljs-comment">//如果cs==0，we==1，那么Out = Out，Out会被锁存。</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="3-1-无意综合出锁存器"><a href="#3-1-无意综合出锁存器" class="headerlink" title="3.1 无意综合出锁存器"></a>3.1 无意综合出锁存器</h4><p>综合出锁存器的情况：</p>
+<ol>
+<li>电平敏感的always的敏感列表不全；</li>
+<li>if,case的分支条件不全；</li>
+<li>带反馈的连续赋值语句。</li>
+</ol>
+<h3 id="4-三态总线接口的综合"><a href="#4-三态总线接口的综合" class="headerlink" title="4 三态总线接口的综合"></a>4 三态总线接口的综合</h3><p>三态输出端口</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn4.png" srcset="/img/loading.gif" lazyload></p>
+<p>双向总线端口</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn5.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn6.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="5-带有触发器的时序逻辑综合"><a href="#5-带有触发器的时序逻辑综合" class="headerlink" title="5  带有触发器的时序逻辑综合"></a>5  带有触发器的时序逻辑综合</h3><p>记着在阿里的实习面试的时候被问到，RTL中的reg变量都能综合处寄存器吗，在边沿触发的always中的reg变量都能被综合成寄存器吗？当时说reg只是Verilog语法，用来块语句中。至于沿触发的always中的reg变量可能会被综合工具优化掉。那个人说了句嗯，好像是表示同意。不过最后还是没有offer。</p>
+<p><strong>这一节的内容就能很好回答面试官的问题了</strong></p>
+<p><strong>触发器仅由边沿敏感的always块综合而成，但并不是在边沿敏感的行为中的寄存器变量都被综合成触发器。</strong></p>
+<p>综合出触发器的情况——<strong>变量对存储有需求</strong>：</p>
+<ol>
+<li><strong>该寄存器变量在行为描述范围以外被使用 （后面有例子）</strong></li>
+<li><strong>该寄存器变量在未被赋值以前就在行为描述中用到 （后面有例子）</strong></li>
+<li><strong>寄存器变量仅在行为的某些分支（if分支等）上被赋值。 （后面的例子好像不大实用）</strong></li>
+</ol>
+<p>在边沿敏感的行为语句中，如果if语句分支不完全，会综合出一个控制时钟使能的信号。这样即使在时钟变化时，寄存器变量也不会改变，除非满足分支条件，也就是时钟使能了。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">always</span>@(<span class="hljs-keyword">posedge</span> clk)<br><span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">if</span>(enable) data_out &lt;= data_in;<br>    <span class="hljs-comment">// enable 信号控制时钟使能，enable有效，data_out改变，否则data_out被存储起来。</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<ul>
+<li><strong>寄存器变量在边沿触发的行为块之外被使用，那么综合工具会综合出触发器。如果没被使用，那么综合工具会忽略，不会综合出触发器</strong></li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> test(    <span class="hljs-keyword">input</span> clk,    <span class="hljs-keyword">input</span> a,    <span class="hljs-keyword">output</span> b    );<br>    <span class="hljs-keyword">reg</span> b_r;<br>    <span class="hljs-keyword">reg</span> e_r;<br>    <span class="hljs-keyword">assign</span> b = b_r;<br>    <span class="hljs-keyword">always</span>@(<span class="hljs-keyword">posedge</span> clk) <span class="hljs-keyword">begin</span><br>        b_r &lt;= a;<br>        e_r &lt;= a;  <br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+
+<p>寄存器变量b_r在always块之外用到了，给到了输出端。e_r没有被用到，所以vivado综合忽略了e_r寄存器变量，只为b_r生成一个触发器。如下图：</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn9.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li><p><strong>寄存器变量在未被赋值以前就在边沿触发的块中被用到，会生成触发器</strong></p>
+<p><strong>b_r寄存器变量在快语句之外没有被使用</strong></p>
+</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> test(    <span class="hljs-keyword">input</span> clk,    <span class="hljs-keyword">input</span> a,    <span class="hljs-keyword">output</span> b    );<br>    <span class="hljs-keyword">reg</span> b_r;<br>    <span class="hljs-keyword">reg</span> e_r;<br>    <span class="hljs-keyword">assign</span> b = b_r;<br>    <span class="hljs-keyword">always</span>@(<span class="hljs-keyword">posedge</span> clk) <span class="hljs-keyword">begin</span><br>        b_r &lt;= e_r;  <span class="hljs-comment">//e_r在被赋值以前在always块中被用到</span><br>        e_r &lt;= a;  <br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn10.png" srcset="/img/loading.gif" lazyload></p>
+<p>如果e_r先被赋值，然后被使用，也会综合出触发器。网表与上面一样。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> test(    <span class="hljs-keyword">input</span> clk,    <span class="hljs-keyword">input</span> a,    <span class="hljs-keyword">output</span> b    );<br>    <span class="hljs-keyword">reg</span> b_r;<br>    <span class="hljs-keyword">reg</span> e_r;<br>    <span class="hljs-keyword">assign</span> b = b_r;<br>    <span class="hljs-keyword">always</span>@(<span class="hljs-keyword">posedge</span> clk) <span class="hljs-keyword">begin</span><br>        e_r &lt;= a; <br>        b_r &lt;= e_r;  <span class="hljs-comment">//e_r先赋值再使用      </span><br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+
+<p>但如果不给e_r赋值，则不会出现触发器</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> test(    <span class="hljs-keyword">input</span> clk,    <span class="hljs-keyword">input</span> a,    <span class="hljs-keyword">output</span> b    );<br>    <span class="hljs-keyword">reg</span> b_r;<br>    <span class="hljs-keyword">reg</span> e_r;<br>    <span class="hljs-keyword">assign</span> b = b_r;<br>    <span class="hljs-keyword">always</span>@(<span class="hljs-keyword">posedge</span> clk) <span class="hljs-keyword">begin</span>  <br>        b_r &lt;= e_r;  <span class="hljs-comment">//不给e_r赋值     </span><br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span>	<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn12.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>所以应该改成寄存器变量被赋值，也被使用，那么就生成触发器，若只满足其一，不行。</strong></p>
+<ul>
+<li><strong>寄存器变量仅在行为描述的某些分支上出现，但在行为之外没有被使用，不能综合处触发器。</strong></li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> test(    <span class="hljs-keyword">input</span> clk,    <span class="hljs-keyword">input</span> a,    <span class="hljs-keyword">input</span> sel,    <span class="hljs-keyword">output</span> b    );<br>    <span class="hljs-keyword">reg</span> b_r;<br>    <span class="hljs-keyword">reg</span> e_r;<br>    <span class="hljs-keyword">reg</span> f_r;<br>    <span class="hljs-keyword">assign</span> b = b_r;<br>    <span class="hljs-keyword">always</span>@(<span class="hljs-keyword">posedge</span> clk) <span class="hljs-keyword">begin</span><br>        b_r &lt;= a;<br>        <span class="hljs-keyword">if</span>(sel) <span class="hljs-keyword">begin</span> e_r &lt;= a;f_r &lt;= a;<span class="hljs-keyword">end</span><br>        <span class="hljs-keyword">else</span> f_r &lt;= ~a;   <span class="hljs-comment">//e_r只出现在if的一条分支上        </span><br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br><span class="hljs-comment">// 两个电路的综合结果一样</span><br><span class="hljs-keyword">module</span> test(    <span class="hljs-keyword">input</span> clk,    <span class="hljs-keyword">input</span> a,    <span class="hljs-keyword">input</span> sel,    <span class="hljs-keyword">output</span> b    );<br>    <span class="hljs-keyword">reg</span> b_r;<br>    <span class="hljs-keyword">reg</span> e_r;   <br>    <span class="hljs-keyword">assign</span> b = b_r;<br>    <span class="hljs-keyword">always</span>@(<span class="hljs-keyword">posedge</span> clk) <span class="hljs-keyword">begin</span><br>        b_r &lt;= a;<br>        <span class="hljs-keyword">if</span>(sel) <span class="hljs-keyword">begin</span> e_r &lt;= a;<span class="hljs-keyword">end</span><br>          <span class="hljs-comment">//e_r只出现在if的一条分支上       </span><br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+
+<p>无论是e_r只出现在if的部分分支，还是f_r出现在if的所有分支，都不能综合出触发器。</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/05/syn11.png" srcset="/img/loading.gif" lazyload></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/categories/IC/others/">others</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Synthesis/">Synthesis</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/05/28/tools/vcs/SV%E4%BB%BF%E7%9C%9F/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">SystemVerilog仿真</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/05/25/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%88%97%E8%A1%A8%E3%80%81%E6%95%B0%E7%BB%84/">
+                        <span class="hidden-mobile">perl语言——列表、数组</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -1,0 +1,568 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="阶段计划：关于IC：  《Verilog and SystemVerilog Gotchas》  看一下 1800   关于论文：  第二章写完全。 第一章 第三章开始实验  其他：  看完《应物兄》、《旱魃》。 看完”积极心理学“公开课。  第二十八周： 第二章改好，发给老师 《应物兄》搞定。 论文继续看着  12-02 周一 晴晚上：  卡一下《应物兄》 看一下论文的算法代码怎么写，修改一下公">
+<meta property="og:type" content="website">
+<meta property="og:title" content="page.title">
+<meta property="og:url" content="http://example.com/dailystudy/2019-12-02%E8%87%B32020-01-05.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="阶段计划：关于IC：  《Verilog and SystemVerilog Gotchas》  看一下 1800   关于论文：  第二章写完全。 第一章 第三章开始实验  其他：  看完《应物兄》、《旱魃》。 看完”积极心理学“公开课。  第二十八周： 第二章改好，发给老师 《应物兄》搞定。 论文继续看着  12-02 周一 晴晚上：  卡一下《应物兄》 看一下论文的算法代码怎么写，修改一下公">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-03-12T03:51:25.836Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.836Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="芯片 验证 读书 编程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>page.title - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="page.title">
+              
+            </span>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<article class="page-content">
+  <h1 id="阶段计划："><a href="#阶段计划：" class="headerlink" title="阶段计划："></a>阶段计划：</h1><p>关于IC：</p>
+<ol>
+<li><p>《Verilog and SystemVerilog Gotchas》</p>
+</li>
+<li><p>看一下 1800</p>
+</li>
+</ol>
+<p>关于论文：</p>
+<ol>
+<li>第二章写完全。</li>
+<li>第一章</li>
+<li>第三章开始实验</li>
+</ol>
+<p>其他：</p>
+<ol>
+<li>看完《应物兄》、《旱魃》。</li>
+<li>看完”积极心理学“公开课。</li>
+</ol>
+<h2 id="第二十八周："><a href="#第二十八周：" class="headerlink" title="第二十八周："></a>第二十八周：</h2><ol>
+<li>第二章改好，发给老师</li>
+<li>《应物兄》搞定。</li>
+<li>论文继续看着</li>
+</ol>
+<h3 id="12-02-周一-晴"><a href="#12-02-周一-晴" class="headerlink" title="12-02 周一 晴"></a>12-02 周一 晴</h3><p>晚上：</p>
+<ol>
+<li>卡一下《应物兄》</li>
+<li>看一下论文的算法代码怎么写，修改一下公式什么的。</li>
+<li>日记</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>日记</li>
+<li>看《应物兄&gt;</li>
+</ol>
+<h3 id="12-03-周二-晴"><a href="#12-03-周二-晴" class="headerlink" title="12-03 周二 晴"></a>12-03 周二 晴</h3><ol>
+<li>修改论文第二章——上午</li>
+<li>看《Verilog and SystemVerilog Gotchas》</li>
+<li>看一点论文——大体看一下低电压分析 的，然后看寄存器分组的。</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>修改论文第二章——上午</li>
+<li>看《Verilog and SystemVerilog Gotchas》</li>
+</ol>
+<h3 id="12-04-周三-晴"><a href="#12-04-周三-晴" class="headerlink" title="12-04 周三 晴"></a>12-04 周三 晴</h3><ol>
+<li>修改论文第二章——上午</li>
+<li>看《Verilog and SystemVerilog Gotchas》——早上</li>
+<li>看一节”积极心理学“公开课</li>
+</ol>
+<h3 id="12-05-周四-晴"><a href="#12-05-周四-晴" class="headerlink" title="12-05 周四 晴"></a>12-05 周四 晴</h3><ol>
+<li>看低电压分析论文。</li>
+<li>规划第二张最后一节</li>
+<li>”积极心理学“公开课</li>
+<li>学习HPICE仿真一个MOS管的电流。</li>
+<li>看《Verilog and SystemVerilog Gotchas》</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>规划第二张最后一节</li>
+<li>”积极心理学“公开课</li>
+<li>看《Verilog and SystemVerilog Gotchas》</li>
+</ol>
+<h3 id="12-06-周五"><a href="#12-06-周五" class="headerlink" title="12-06 周五"></a>12-06 周五</h3><ol>
+<li>看低电压分析论文。——上午</li>
+<li>”积极心理学“公开课</li>
+<li>学习HPICE仿真一个MOS管的电流。</li>
+<li>看《Verilog and SystemVerilog Gotchas》</li>
+<li>看昨天的报告</li>
+<li>看一下王老师发群里的文章</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看《Verilog and SystemVerilog Gotchas》</li>
+</ol>
+<h3 id="12-08-周日"><a href="#12-08-周日" class="headerlink" title="12-08 周日"></a>12-08 周日</h3><ol>
+<li>看一下上周的报告</li>
+<li>写完第二章、第一章前两个小节</li>
+<li>看一下王老师发群里的文章</li>
+<li>看《Verilog and SystemVerilog Gotchas》</li>
+<li>”积极心理学“公开课</li>
+<li>看《环球时报》《人民日报》——晚上</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>第二章</li>
+<li>第一章第一节</li>
+<li>看《环球时报》《人民日报》——晚上</li>
+</ol>
+<h2 id="第二十九周"><a href="#第二十九周" class="headerlink" title="第二十九周"></a>第二十九周</h2><h3 id="12-09-周一"><a href="#12-09-周一" class="headerlink" title="12-09 周一"></a>12-09 周一</h3><ol>
+<li>看一下上周的报告</li>
+<li>写完第一章第两小节——上午 </li>
+<li>看一下王老师发群里的文章</li>
+<li>看《Verilog and SystemVerilog Gotchas》</li>
+<li>”积极心理学“公开课</li>
+<li>看《环球时报》</li>
+</ol>
+<h3 id="12-12-周四-晴"><a href="#12-12-周四-晴" class="headerlink" title="12-12 周四 晴"></a>12-12 周四 晴</h3><ol>
+<li>整理寄存器分组表格</li>
+<li>看寄存器时序相关论文</li>
+<li>整理提纲思路</li>
+<li>看这个周的报告</li>
+</ol>
+<h3 id="12-13-周五"><a href="#12-13-周五" class="headerlink" title="12-13 周五"></a>12-13 周五</h3><ol>
+<li>继续昨天工作</li>
+<li>《Verilog and SystemVerilog Gotchas》</li>
+</ol>
+<h3 id="12-14-周六"><a href="#12-14-周六" class="headerlink" title="12-14 周六"></a>12-14 周六</h3><ol>
+<li>几篇关于placement的论文</li>
+<li>常耀文引用的三篇</li>
+<li>刘檬引用的三篇</li>
+<li>《Verilog and SystemVerilog Gotchas》</li>
+</ol>
+<h2 id="第三十周"><a href="#第三十周" class="headerlink" title="第三十周"></a>第三十周</h2><h3 id="12-18-周三"><a href="#12-18-周三" class="headerlink" title="12-18 周三"></a>12-18 周三</h3><ol>
+<li>发一篇博客</li>
+<li>看论文</li>
+<li>写提纲</li>
+</ol>
+<h3 id="12-19-周四"><a href="#12-19-周四" class="headerlink" title="12-19 周四"></a>12-19 周四</h3><ol>
+<li>补充论文</li>
+<li>看《Verilog and SystemVerilog Gotchas》</li>
+<li>看积极心理学公开课</li>
+<li>背几个单词</li>
+</ol>
+<p>完成:</p>
+<ol>
+<li>补充论文</li>
+<li>看了一篇”如何成为高效的工程师“</li>
+<li>背几个单词</li>
+</ol>
+<h3 id="12-20-周五"><a href="#12-20-周五" class="headerlink" title="12-20 周五"></a>12-20 周五</h3><ol>
+<li>补充论文</li>
+<li>看《Verilog and SystemVerilog Gotchas》</li>
+<li>看积极心理学公开课</li>
+<li>背几个单词</li>
+<li>练习听力</li>
+<li>报纸</li>
+<li>看二十分钟UVM</li>
+<li><del>看二十分钟SV</del></li>
+</ol>
+<p>完成:</p>
+<ol>
+<li>练习听力</li>
+<li>看二十分钟UVM</li>
+<li>补充论文</li>
+<li>看《Verilog and SystemVerilog Gotchas》</li>
+<li>报纸</li>
+</ol>
+<h3 id="12-21-周六"><a href="#12-21-周六" class="headerlink" title="12-21 周六"></a>12-21 周六</h3><ol>
+<li>论文改好</li>
+<li></li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>论文写了一点，进步很慢。</li>
+</ol>
+<h3 id="12-26-周四"><a href="#12-26-周四" class="headerlink" title="12-26 周四"></a>12-26 周四</h3><h3 id="12-27"><a href="#12-27" class="headerlink" title="12-27"></a>12-27</h3><ol>
+<li>DME算法</li>
+<li>有用偏差调度算法</li>
+</ol>
+<h3 id="12-28-小郭"><a href="#12-28-小郭" class="headerlink" title="12-28 小郭"></a>12-28 小郭</h3><h3 id="12-29-小郭"><a href="#12-29-小郭" class="headerlink" title="12-29 小郭"></a>12-29 小郭</h3><h2 id="第三十一周"><a href="#第三十一周" class="headerlink" title="第三十一周"></a>第三十一周</h2><ol>
+<li>《Verilog and SystemVerilog Gotchas》</li>
+</ol>
+<h3 id="12-30-周一"><a href="#12-30-周一" class="headerlink" title="12-30 周一"></a>12-30 周一</h3><ol>
+<li>DME算法</li>
+<li>有用偏差调度算法</li>
+<li>改一下论文的引用</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>改一下论文的引用</li>
+</ol>
+<h3 id="01-02-周四"><a href="#01-02-周四" class="headerlink" title="01-02 周四"></a>01-02 周四</h3><ol>
+<li>改第二章</li>
+<li>听英语听力</li>
+<li>被几个单词</li>
+<li>抽时间看一点书</li>
+<li>看一点《Verilog and SystemVerilog Gotchas》</li>
+<li>写日记，总结</li>
+</ol>
+<h2 id="阶段总结："><a href="#阶段总结：" class="headerlink" title="阶段总结："></a>阶段总结：</h2><p>这一阶段完成的东西不多，本来第二章应该写完了，开始进行第三章了，但是王老师说不行，第二章重写，说她之前给定提纲不好，让我自己写，醉了。打击了我的积极性，又蹉跎了一个月，现在第二章还没通过。</p>
+<p>本来应该把《Verilog and SystemVerilog Gotchas》看完，但是从南京回来两个月没怎么看，真的是醉了。</p>
+
+
+  
+</article>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

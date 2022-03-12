@@ -1,0 +1,707 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="1. 寄存器模型介绍每个IP都有总线接口，连接到总线上，用来对DUT中寄存器进行配置，改变其行为。 再验证环境中，如果改变了DUT的行为，那么参考模型需要知道DUT做了哪些改变，并同步改变，否则参考模型和当前DUT的功能不一致。 参考模型要想获得寄存器值，需要做两件事：  在参考模型中启动sequence用来产生一个读取DUT寄存器的操作。 读取的值传递给参考模型。  如果有了寄存器模型，可以直接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UVM——RAL">
+<meta property="og:url" content="http://example.com/2019/07/30/Verification/UVM/UVM%E2%80%94%E2%80%94RAL/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="1. 寄存器模型介绍每个IP都有总线接口，连接到总线上，用来对DUT中寄存器进行配置，改变其行为。 再验证环境中，如果改变了DUT的行为，那么参考模型需要知道DUT做了哪些改变，并同步改变，否则参考模型和当前DUT的功能不一致。 参考模型要想获得寄存器值，需要做两件事：  在参考模型中启动sequence用来产生一个读取DUT寄存器的操作。 读取的值传递给参考模型。  如果有了寄存器模型，可以直接">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-07-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.818Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="IC">
+<meta property="article:tag" content="SV">
+<meta property="article:tag" content="Verification">
+<meta property="article:tag" content="UVM">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>UVM——RAL - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="UVM——RAL">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-07-30 00:00" pubdate>
+        July 30, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      13k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      107 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">UVM——RAL</h1>
+            
+            <div class="markdown-body">
+              <h3 id="1-寄存器模型介绍"><a href="#1-寄存器模型介绍" class="headerlink" title="1. 寄存器模型介绍"></a>1. 寄存器模型介绍</h3><p>每个IP都有总线接口，连接到总线上，用来对DUT中寄存器进行配置，改变其行为。</p>
+<p>再验证环境中，如果改变了DUT的行为，那么参考模型需要知道DUT做了哪些改变，并同步改变，否则参考模型和当前DUT的功能不一致。</p>
+<p>参考模型要想获得寄存器值，需要做两件事：</p>
+<ol>
+<li>在参考模型中启动sequence用来产生一个读取DUT寄存器的操作。</li>
+<li>读取的值传递给参考模型。</li>
+</ol>
+<p>如果有了寄存器模型，可以直接在参考模型中读取DUT中寄存器的值，如下：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> model <span class="hljs-keyword">extends</span> uvm_model;<br>	<span class="hljs-keyword">task</span> main_phase(uvm_phase phase);<br>		..<br>        reg_model<span class="hljs-variable">.INVERT_REG</span><span class="hljs-variable">.read</span>(status,value,UVM_FRONTEND); <span class="hljs-comment">//读取寄存器值</span><br>		..<br>	<span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>无论是读取还是设置寄存器都由参考模型处理。</strong></p>
+<h4 id="1-1-基本概念"><a href="#1-1-基本概念" class="headerlink" title="1.1 基本概念"></a>1.1 基本概念</h4><p>uvm_reg_filed：field是寄存器中最小单位。比如一个16bit的寄存器，它的0-7位表示地址，8-15位表示数据，那么8位的地址是一个field，8位的数据也是一个filed</p>
+<p>uvm_reg：比field高一个级别，reg中可以有一个或者多个field。每个寄存器模型中至少一个reg。</p>
+<p>uvm_reg_block：这就是寄存器模型，其中可以有很多个uvm_reg</p>
+<p>uvm_reg_map：每个寄存器加入到寄存器模型中都有其地址，map就是用来存这些地址的，并将地址转化成可以访问的物理地址（加入寄存器模型中的地址一般是偏移地址，而不是绝对地址）。在进行读写时，map将寄存器地址转化成绝对地址。每个block中至少有一个（通常只有一个）map。</p>
+<h4 id="1-2-前门访问"><a href="#1-2-前门访问" class="headerlink" title="1.2 前门访问"></a>1.2 前门访问</h4><p>前门操作有两种：读和写。模拟CPU在总线上发出读指令，仿真时间一直往前走。</p>
+<h4 id="1-3-后门访问"><a href="#1-3-后门访问" class="headerlink" title="1.3 后门访问"></a>1.3 后门访问</h4><p>后门操作不进行总线读写，通过层次化引用来改变寄存器的值。</p>
+<p>有时DUT中的计数器没法通过前门总线来进行读取</p>
+<h4 id="1-4-前门后门的不同"><a href="#1-4-前门后门的不同" class="headerlink" title="1.4 前门后门的不同"></a>1.4 前门后门的不同</h4><p>后门访问的优点：</p>
+<ol>
+<li><p>不需要仿真时间，大型设计中前门访问中的寄存器配置可能需要几个小时，后门缩短为1&#x2F;100。</p>
+<ol start="2">
+<li>有些DUT中的计数器没法通过前门写入值，当我们需要测试它的进位的时候，需要一直仿真到它进位；但如果通过后门访问，给它设置了一个很大的初始值，那么只需要几次累加就能产生进位信号。</li>
+</ol>
+</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>后门访问不能产生波形，只能通过打印信息来查看结果。</li>
+</ol>
+<h4 id="1-5-注意"><a href="#1-5-注意" class="headerlink" title="1.5 注意"></a>1.5 注意</h4><p>寄存器模型一般例化在base_test中，便于env级集成验证。</p>
+<h3 id="2-简单的寄存器模型"><a href="#2-简单的寄存器模型" class="headerlink" title="2. 简单的寄存器模型"></a>2. 简单的寄存器模型</h3><h4 id="2-1-寄存器模型"><a href="#2-1-寄存器模型" class="headerlink" title="2.1 寄存器模型"></a>2.1 寄存器模型</h4><h5 id="2-1-1-创建一个uvm-reg类。"><a href="#2-1-1-创建一个uvm-reg类。" class="headerlink" title="2.1.1 创建一个uvm_reg类。"></a><strong>2.1.1 创建一个uvm_reg类。</strong></h5><p>可以在reg类中定义多个field。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> reg_invert <span class="hljs-keyword">extends</span> uvm_reg;<br>    <span class="hljs-keyword">rand</span> uvm_reg_field reg_data; <span class="hljs-comment">//在reg中定义field</span><br>    <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> build(); <span class="hljs-comment">//build</span><br>        reg_data = uvm_reg_field::type_id::create(<span class="hljs-string">&quot;reg_data&quot;</span>);<br>        <span class="hljs-comment">// parameter: parent, size, lsb_pos, access, volatile, reset value, has_reset, is_rand, individually accessible</span><br>        reg_data<span class="hljs-variable">.configure</span>(<span class="hljs-keyword">this</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-string">&quot;RW&quot;</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>); <span class="hljs-comment">//上面一行是参数介绍</span><br>    <span class="hljs-keyword">endfunction</span><br>    `uvm_object_utils(reg_invert)<br>    <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">input</span> <span class="hljs-keyword">string</span> name=<span class="hljs-string">&quot;reg_invert&quot;</span>);<br>        <span class="hljs-comment">//parameter: name, size, has_coverage</span><br>        <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name, <span class="hljs-number">16</span>, UVM_NO_COVERAGE); <span class="hljs-comment">//16是这个寄存器的宽度，</span><br>    <span class="hljs-keyword">endfunction</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>每个派生自uvm_reg的类都有一个build（）函数，它只能手工调用.</strong></p>
+<h5 id="2-1-2-创建uvm-reg-block-寄存器模块类"><a href="#2-1-2-创建uvm-reg-block-寄存器模块类" class="headerlink" title="2.1.2 创建uvm_reg_block 寄存器模块类"></a><strong>2.1.2 创建uvm_reg_block 寄存器模块类</strong></h5><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> reg_model <span class="hljs-keyword">extends</span> uvm_reg_block;<br>   <span class="hljs-keyword">rand</span> reg_invert invert; <span class="hljs-comment">// 定义reg</span><br><br>   <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> build();<br>      default_map = create_map(<span class="hljs-string">&quot;default_map&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>, UVM_BIG_ENDIAN, <span class="hljs-number">0</span>);<br>      invert = reg_invert::type_id::create(<span class="hljs-string">&quot;invert&quot;</span>, , get_full_name());<br>      invert<span class="hljs-variable">.configure</span>(<span class="hljs-keyword">this</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;&quot;</span>);<br>      invert<span class="hljs-variable">.build</span>();<br>      default_map<span class="hljs-variable">.add_reg</span>(invert, <span class="hljs-number">&#x27;h9</span>, <span class="hljs-string">&quot;RW&quot;</span>);<br>   <span class="hljs-keyword">endfunction</span><br><br>   `uvm_object_utils(reg_model)<br><br>    <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">input</span> <span class="hljs-keyword">string</span> name=<span class="hljs-string">&quot;reg_model&quot;</span>);<br>        <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name, UVM_NO_COVERAGE);<br>    <span class="hljs-keyword">endfunction</span> <br><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>在uvm_reg_block中已经声明好了map——default_map。只需创建create_map.</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">function</span> uvm_reg_map create_map(<span class="hljs-keyword">string</span> 	name, uvm_reg_addr_t 	base_addr,	  	<br><span class="hljs-keyword">int</span> 	<span class="hljs-keyword">unsigned</span> 	n_bytes, uvm_endianness_e endian, <span class="hljs-keyword">bit</span> byte_addressing = 	<span class="hljs-number">1</span>	)<br></code></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>base_addr</td>
+<td>the base address for the map.  All registers, memories, and sub-blocks within the map will be at offsets to this address</td>
+</tr>
+<tr>
+<td>n_bytes</td>
+<td>the byte-width of the bus on which this map is used</td>
+</tr>
+<tr>
+<td>endian</td>
+<td>the endian format.  See <a href="uvm_reg_model-svh.html#uvm_endianness_e">uvm_endianness_e</a> for possible values</td>
+</tr>
+<tr>
+<td>byte_addressing</td>
+<td>specifies whether consecutive addresses refer are 1 byte apart (TRUE) or <em>n_bytes</em> apart (FALSE).  Default is TRUE</td>
+</tr>
+</tbody></table>
+<p><strong>configure（）函数主要用来指定后门访问的路径。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> configure (	uvm_reg_block 	blk_parent,	uvm_reg_file 	regfile_parent	 = 	<span class="hljs-literal">null</span>,<span class="hljs-keyword">string</span> 	hdl_path	 = 	<span class="hljs-string">&quot;&quot;</span>	)<br></code></pre></td></tr></table></figure>
+
+<p><strong>add_reg（）将寄存器添加到default_map中。</strong></p>
+<h4 id="2-2-将寄存器模型集成到验证平台"><a href="#2-2-将寄存器模型集成到验证平台" class="headerlink" title="2.2 将寄存器模型集成到验证平台"></a>2.2 将寄存器模型集成到验证平台</h4><h5 id="2-2-1-先写一个转换器adapter"><a href="#2-2-1-先写一个转换器adapter" class="headerlink" title="2.2.1 先写一个转换器adapter"></a><strong>2.2.1 先写一个转换器adapter</strong></h5><p>通过寄存器模型进行前门读写操作时，寄存器模型都会通过sequence产生一个uvm_reg_bus_op（uvm结构体）的变量，其中保存操作类型（RW）、地址、数据等。此变量需要经过一个转换器（adapter）交给bus_sequencer。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-comment">// uvm_reg_tiem.svh</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> &#123;<br>  <span class="hljs-comment">// Kind of access: READ or WRITE.</span><br>  uvm_access_e kind;<br>  <span class="hljs-comment">// The bus address.</span><br>  uvm_reg_addr_t addr;<br>  <span class="hljs-comment">// The data to write. If the bus width is smaller than the register or</span><br>  <span class="hljs-comment">// memory width, ~data~ represents only the portion of ~value~ that is</span><br>  uvm_reg_data_t data;  <br>  <span class="hljs-comment">// The number of bits of &lt;uvm_reg_item::value&gt; being transferred by</span><br>  <span class="hljs-comment">// this transaction.</span><br>  <span class="hljs-keyword">int</span> n_bits;<br>  <span class="hljs-comment">// Enables for the byte lanes on the bus. Meaningful only when the</span><br>  <span class="hljs-comment">// bus supports byte enables and the operation originates from a field  write/read.</span><br>  uvm_reg_byte_en_t byte_en;<br>  <span class="hljs-comment">// The result of the transaction: UVM_IS_OK, UVM_HAS_X, UVM_NOT_OK.</span><br>  <span class="hljs-comment">// See &lt;uvm_status_e&gt;.</span><br>  uvm_status_e status;<br>&#125; uvm_reg_bus_op;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> my_adapter <span class="hljs-keyword">extends</span> uvm_reg_adapter;<br>    <span class="hljs-keyword">string</span> tID = get_type_name();<br>    `uvm_object_utils(my_adapter)<br>   <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name=<span class="hljs-string">&quot;my_adapter&quot;</span>);<br>      <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name);<br>   <span class="hljs-keyword">endfunction</span> : <span class="hljs-keyword">new</span><br>    <span class="hljs-comment">// uvm_reg_bus_op转换成bus_transaction类型</span><br>   <span class="hljs-keyword">function</span> uvm_sequence_item reg2bus(<span class="hljs-keyword">const</span> <span class="hljs-keyword">ref</span> uvm_reg_bus_op rw);<br>      bus_transaction tr;<br>      tr = <span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;tr&quot;</span>); <br>      tr<span class="hljs-variable">.addr</span> = rw<span class="hljs-variable">.addr</span>;<br>      tr<span class="hljs-variable">.bus_op</span> = (rw<span class="hljs-variable">.kind</span> == UVM_READ) ? BUS_RD: BUS_WR;<br>      <span class="hljs-keyword">if</span> (tr<span class="hljs-variable">.bus_op</span> == BUS_WR)<br>         tr<span class="hljs-variable">.wr_data</span> = rw<span class="hljs-variable">.data</span>; <br>      <span class="hljs-keyword">return</span> tr;<br>   <span class="hljs-keyword">endfunction</span> : reg2bus<br><span class="hljs-comment">// bus_transaction转换成uvm_reg_bus_op</span><br>   <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> bus2reg(uvm_sequence_item bus_item, <span class="hljs-keyword">ref</span> uvm_reg_bus_op rw);<br>      bus_transaction tr;<br>      <span class="hljs-keyword">if</span>(!<span class="hljs-built_in">$cast</span>(tr, bus_item)) <span class="hljs-keyword">begin</span><br>         `uvm_fatal(tID,<br>          <span class="hljs-string">&quot;Provided bus_item is not of the correct type. Expecting bus_transaction&quot;</span>)<br>          <span class="hljs-keyword">return</span>;<br>      <span class="hljs-keyword">end</span><br>      rw<span class="hljs-variable">.kind</span> = (tr<span class="hljs-variable">.bus_op</span> == BUS_RD) ? UVM_READ : UVM_WRITE;<br>      rw<span class="hljs-variable">.addr</span> = tr<span class="hljs-variable">.addr</span>;<br>      rw<span class="hljs-variable">.byte_en</span> = <span class="hljs-number">&#x27;h3</span>;<br>      rw<span class="hljs-variable">.data</span> = (tr<span class="hljs-variable">.bus_op</span> == BUS_RD) ? tr<span class="hljs-variable">.rd_data</span> : tr<span class="hljs-variable">.wr_data</span>;<br>      rw<span class="hljs-variable">.status</span> = UVM_IS_OK;<br>   <span class="hljs-keyword">endfunction</span> : bus2reg<br><br><span class="hljs-keyword">endclass</span> : my_adapter<br></code></pre></td></tr></table></figure>
+
+<p>bus_driver在驱动总线进行读操作的时候，它能顺便获取到要读的值，如下面代码所示。将这个值在bus_transaction中，传给bus_sequencer，然后通过bus2reg函数传给寄存器模型。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs VERILOG"><span class="hljs-keyword">task</span> bus_driver::drive_one_pkt(bus_transaction tr);<br>   `uvm_info(<span class="hljs-string">&quot;bus_driver&quot;</span>, <span class="hljs-string">&quot;begin to drive one pkt&quot;</span>, UVM_LOW);<br>   <span class="hljs-keyword">repeat</span>(<span class="hljs-number">1</span>) @(<span class="hljs-keyword">posedge</span> vif<span class="hljs-variable">.clk</span>);<br>   <br>   vif<span class="hljs-variable">.bus_cmd_valid</span> &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>   vif<span class="hljs-variable">.bus_op</span> &lt;= ((tr<span class="hljs-variable">.bus_op</span> == BUS_RD) ? <span class="hljs-number">0</span> : <span class="hljs-number">1</span>);<br>   vif<span class="hljs-variable">.bus_addr</span> = tr<span class="hljs-variable">.addr</span>;<br>   vif<span class="hljs-variable">.bus_wr_data</span> &lt;= ((tr<span class="hljs-variable">.bus_op</span> == BUS_RD) ? <span class="hljs-number">0</span> : tr<span class="hljs-variable">.wr_data</span>);<br><br>   @(<span class="hljs-keyword">posedge</span> vif<span class="hljs-variable">.clk</span>);<br>   vif<span class="hljs-variable">.bus_cmd_valid</span> &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>   vif<span class="hljs-variable">.bus_op</span> &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>   vif<span class="hljs-variable">.bus_addr</span> &lt;= <span class="hljs-number">15&#x27;b0</span>;<br>   vif<span class="hljs-variable">.bus_wr_data</span> &lt;= <span class="hljs-number">15&#x27;b0</span>;<br><br>   @(<span class="hljs-keyword">posedge</span> vif<span class="hljs-variable">.clk</span>);<br>   <span class="hljs-keyword">if</span>(tr<span class="hljs-variable">.bus_op</span> == BUS_RD) <span class="hljs-keyword">begin</span><br>      tr<span class="hljs-variable">.rd_data</span> = vif<span class="hljs-variable">.bus_rd_data</span>;   <br>      <span class="hljs-comment">//$display(&quot;@%0t, rd_data is %0h&quot;, $time, tr.rd_data);</span><br>   <span class="hljs-keyword">end</span><br><br>   <span class="hljs-comment">//`uvm_info(&quot;bus_driver&quot;, &quot;end drive one pkt&quot;, UVM_LOW);</span><br><span class="hljs-keyword">endtask</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="2-2-2-在base-test中添加寄存器模型"><a href="#2-2-2-在base-test中添加寄存器模型" class="headerlink" title="2.2.2 在base_test中添加寄存器模型"></a>2.2.2 在base_test中添加寄存器模型</h5><p>​    寄存器模型要写在base_test中，如果写在env中，那么当在芯片级验证中，env复用的时候不能在顶层env中指定各个ip寄存器模型的偏移地址。env中的只是寄存器模型句柄。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs VERILOG"><span class="hljs-keyword">class</span> base_test <span class="hljs-keyword">extends</span> uvm_test;<br><br>   my_env         env;<br>   my_vsqr        v_sqr;<br>   reg_model      rm; <span class="hljs-comment">// 声明</span><br>   my_adapter     reg_sqr_adapter;<br><br>...<br>   `uvm_component_utils(base_test)<br><span class="hljs-keyword">endclass</span><br><br><span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> base_test::build_phase(uvm_phase phase);<br>   <span class="hljs-keyword">super</span><span class="hljs-variable">.build_phase</span>(phase);<br>   env  =  my_env::type_id::create(<span class="hljs-string">&quot;env&quot;</span>, <span class="hljs-keyword">this</span>); <br>   v_sqr =  my_vsqr::type_id::create(<span class="hljs-string">&quot;v_sqr&quot;</span>, <span class="hljs-keyword">this</span>);<br>    rm = reg_model::type_id::create(<span class="hljs-string">&quot;rm&quot;</span>, <span class="hljs-keyword">this</span>);<span class="hljs-comment">//创建寄存器模型</span><br>    rm<span class="hljs-variable">.configure</span>(<span class="hljs-literal">null</span>, <span class="hljs-string">&quot;&quot;</span>); <br>    rm<span class="hljs-variable">.build</span>();<span class="hljs-comment">// 实例化所有寄存器</span><br>    rm<span class="hljs-variable">.lock_model</span>(); <span class="hljs-comment">//调用此函数后，寄存器模型中不能再添加寄存器</span><br>    rm<span class="hljs-variable">.reset</span>(); <span class="hljs-comment">// 设置寄存器的值为复位值，如果不用这个函数，那么寄存器都为0</span><br>   reg_sqr_adapter = <span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;reg_sqr_adapter&quot;</span>);<br>   env<span class="hljs-variable">.p_rm</span> = <span class="hljs-keyword">this</span><span class="hljs-variable">.rm</span>; <span class="hljs-comment">//给env中句柄赋值</span><br><span class="hljs-keyword">endfunction</span><br><br><span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> base_test::connect_phase(uvm_phase phase);<br>   <span class="hljs-keyword">super</span><span class="hljs-variable">.connect_phase</span>(phase);<br>   v_sqr<span class="hljs-variable">.p_my_sqr</span> = env<span class="hljs-variable">.i_agt</span><span class="hljs-variable">.sqr</span>;<br>   v_sqr<span class="hljs-variable">.p_bus_sqr</span> = env<span class="hljs-variable">.bus_agt</span><span class="hljs-variable">.sqr</span>;<br>   v_sqr<span class="hljs-variable">.p_rm</span> = <span class="hljs-keyword">this</span><span class="hljs-variable">.rm</span>;<br>    rm<span class="hljs-variable">.default_map</span><span class="hljs-variable">.set_sequencer</span>(env<span class="hljs-variable">.bus_agt</span><span class="hljs-variable">.sqr</span>, reg_sqr_adapter);<span class="hljs-comment">// 将adapter和sqr告诉map</span><br>   rm<span class="hljs-variable">.default_map</span><span class="hljs-variable">.set_auto_predict</span>(<span class="hljs-number">1</span>);<br><span class="hljs-keyword">endfunction</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-3-在验证平台使用寄存器模型"><a href="#2-3-在验证平台使用寄存器模型" class="headerlink" title="2.3 在验证平台使用寄存器模型"></a>2.3 在验证平台使用寄存器模型</h4><p><strong>可以再sequence和component中使用寄存器模型。</strong></p>
+<h5 id="2-3-1-在参考模型中有个模型指针"><a href="#2-3-1-在参考模型中有个模型指针" class="headerlink" title="2.3.1 在参考模型中有个模型指针"></a>2.3.1 在参考模型中有个模型指针</h5><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> my_model <span class="hljs-keyword">extends</span> uvm_model;<br>	reg_model p_rm;<br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="2-3-2-在env中连接指针和参考模型"><a href="#2-3-2-在env中连接指针和参考模型" class="headerlink" title="2.3.2 在env中连接指针和参考模型"></a>2.3.2 在env中连接指针和参考模型</h5><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> my_env <span class="hljs-keyword">extends</span> uvm_env;<br>	<span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> connect_phase(uvm_phase phase);<br>		mdl<span class="hljs-variable">.p_rm</span> = <span class="hljs-keyword">this</span><span class="hljs-variable">.p_rm</span>;<br>	endfucntion<br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="2-3-3-在参考模型中读取寄存器"><a href="#2-3-3-在参考模型中读取寄存器" class="headerlink" title="2.3.3 在参考模型中读取寄存器"></a>2.3.3 在参考模型中读取寄存器</h5><table>
+<thead>
+<tr>
+<th>uvm_status_e</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UVM_IS_OK</td>
+<td>Operation completed successfully</td>
+</tr>
+<tr>
+<td>UVM_NOT_OK</td>
+<td>Operation completed with error</td>
+</tr>
+<tr>
+<td>UVM_HAS_X</td>
+<td>Operation completed successfully bit had unknown bits</td>
+</tr>
+</tbody></table>
+<p><strong>uvm_reg_data_t 是64bit的数据。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">task</span> my_model::main_phase(uvm_phase phase);<br>   my_transaction tr;<br>   my_transaction new_tr;<br>   uvm_status_e status;<br>   uvm_reg_data_t value;<br>   <span class="hljs-keyword">super</span><span class="hljs-variable">.main_phase</span>(phase);<br>    p_rm<span class="hljs-variable">.invert</span><span class="hljs-variable">.read</span>(status, value, UVM_FRONTDOOR); <span class="hljs-comment">//read是寄存器的函数</span><br>   <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>) <span class="hljs-keyword">begin</span><br>      port<span class="hljs-variable">.get</span>(tr);<br>      new_tr = <span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;new_tr&quot;</span>);<br>      new_tr<span class="hljs-variable">.copy</span>(tr);<br>      <span class="hljs-comment">//`uvm_info(&quot;my_model&quot;, &quot;get one transaction, copy and print it:&quot;, UVM_LOW)</span><br>      <span class="hljs-comment">//new_tr.print();</span><br>      <span class="hljs-keyword">if</span>(value)<br>         invert_tr(new_tr);<br>      ap<span class="hljs-variable">.write</span>(new_tr);<br>   <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endtask</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> uvm_reg::write(	<span class="hljs-keyword">output</span> 	uvm_status_e 	status,	  	<br>        <span class="hljs-keyword">input</span> 	uvm_reg_data_t 	value,	  	<br>        <span class="hljs-keyword">input</span> 	uvm_path_e 	path	 = 	UVM_DEFAULT_PATH,<br>        <span class="hljs-keyword">input</span> 	uvm_reg_map 	map	 = 	<span class="hljs-literal">null</span>,<br>        <span class="hljs-keyword">input</span> 	uvm_sequence_base 	parent	 = 	<span class="hljs-literal">null</span>,<br>        <span class="hljs-keyword">input</span> 	<span class="hljs-keyword">int</span> 	prior	 = 	-<span class="hljs-number">1</span>,<br>        <span class="hljs-keyword">input</span> 	uvm_object 	extension	 = 	<span class="hljs-literal">null</span>,<br>        <span class="hljs-keyword">input</span> 	<span class="hljs-keyword">string</span> 	fname	 = 	<span class="hljs-string">&quot;&quot;</span>,<br>        <span class="hljs-keyword">input</span> 	<span class="hljs-keyword">int</span> 	lineno	 = 	<span class="hljs-number">0</span>	)<br><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> uvm_reg::read(	<span class="hljs-keyword">output</span> 	uvm_status_e 	status,	  	<br>        <span class="hljs-keyword">output</span> 	uvm_reg_data_t 	value,	  	<br>        <span class="hljs-keyword">input</span> 	uvm_path_e 	path	 = 	UVM_DEFAULT_PATH,<br>        <span class="hljs-keyword">input</span> 	uvm_reg_map 	map	 = 	<span class="hljs-literal">null</span>,<br>        <span class="hljs-keyword">input</span> 	uvm_sequence_base 	parent	 = 	<span class="hljs-literal">null</span>,<br>        <span class="hljs-keyword">input</span> 	<span class="hljs-keyword">int</span> 	prior	 = 	-<span class="hljs-number">1</span>,<br>        <span class="hljs-keyword">input</span> 	uvm_object 	extension	 = 	<span class="hljs-literal">null</span>,<br>        <span class="hljs-keyword">input</span> 	<span class="hljs-keyword">string</span> 	fname	 = 	<span class="hljs-string">&quot;&quot;</span>,<br>        <span class="hljs-keyword">input</span> 	<span class="hljs-keyword">int</span> 	lineno	 = 	<span class="hljs-number">0</span>	)<br></code></pre></td></tr></table></figure>
+
+<h5 id="2-3-4-在sequence中写寄存器"><a href="#2-3-4-在sequence中写寄存器" class="headerlink" title="2.3.4 在sequence中写寄存器"></a>2.3.4 在sequence中写寄存器</h5><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> case0_cfg_vseq::body();<br>      uvm_status_e   status;<br>      uvm_reg_data_t value;<br>      <span class="hljs-keyword">if</span>(starting_phase != <span class="hljs-literal">null</span>) <br>         starting_phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>);<br>      p_sequencer<span class="hljs-variable">.p_rm</span><span class="hljs-variable">.invert</span><span class="hljs-variable">.write</span>(status, <span class="hljs-number">1</span>, UVM_FRONTDOOR);<br>      p_sequencer<span class="hljs-variable">.p_rm</span><span class="hljs-variable">.invert</span><span class="hljs-variable">.read</span>(status, value, UVM_FRONTDOOR);<br>      `uvm_info(<span class="hljs-string">&quot;case0_cfg_vseq&quot;</span>, <span class="hljs-built_in">$sformatf</span>(<span class="hljs-string">&quot;after set, invert&#x27;s value is %0h&quot;</span>, value), UVM_LOW)<br>      <span class="hljs-keyword">if</span>(starting_phase != <span class="hljs-literal">null</span>) <br>         starting_phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br>   <span class="hljs-keyword">endtask</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-前门操作"><a href="#3-前门操作" class="headerlink" title="3. 前门操作"></a>3. 前门操作</h3><p>前门操作有两种：读和写。模拟CPU在总线上发出读指令，仿真时间一直往前走。</p>
+<p>上面讲的就是前门操作的读写 UVM_FRONTDOOR。</p>
+<h3 id="4-后门操作"><a href="#4-后门操作" class="headerlink" title="4. 后门操作"></a>4. 后门操作</h3><p>后门操作不进行总线读写，通过层次化引用来改变寄存器的值。</p>
+<p>有时DUT中的计数器没法通过前门总线来进行读取。</p>
+<h4 id="4-1-不用UVM进行后门读写"><a href="#4-1-不用UVM进行后门读写" class="headerlink" title="4.1 不用UVM进行后门读写"></a>4.1 不用UVM进行后门读写</h4><p>方法一、直接在top层设置</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs VERILOG"><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>   @(<span class="hljs-keyword">posedge</span> rst_n);<br>   my_dut<span class="hljs-variable">.counter</span> = <span class="hljs-number">32&#x27;hFFFD</span>;<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<p>方法二、在接口中定义函数</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">interface</span> backdoor_if(<span class="hljs-keyword">input</span> clk, <span class="hljs-keyword">input</span> rst_n);<br><br>   <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> poke_counter(<span class="hljs-keyword">input</span> <span class="hljs-keyword">bit</span>[<span class="hljs-number">31</span>:<span class="hljs-number">0</span>] value);<br>      top_tb<span class="hljs-variable">.my_dut</span><span class="hljs-variable">.counter</span> = value;<br>   <span class="hljs-keyword">endfunction</span><br><br>   <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> peek_counter(<span class="hljs-keyword">output</span> <span class="hljs-keyword">bit</span>[<span class="hljs-number">31</span>:<span class="hljs-number">0</span>] value);<br>      value = top_tb<span class="hljs-variable">.my_dut</span><span class="hljs-variable">.counter</span>;<br>   <span class="hljs-keyword">endfunction</span><br><span class="hljs-keyword">endinterface</span><br><span class="hljs-comment">/////////////////////////////////////</span><br><span class="hljs-keyword">task</span> my_case0::configure_phase(uvm_phase phase);<br>   phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>);<br>   @(<span class="hljs-keyword">posedge</span> vif<span class="hljs-variable">.rst_n</span>);<br>    vif<span class="hljs-variable">.poke_counter</span>(<span class="hljs-number">32&#x27;hFFFD</span>); <span class="hljs-comment">//设置reg</span><br>   phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br><span class="hljs-keyword">endtask</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="4-2-UVM中的后门访问"><a href="#4-2-UVM中的后门访问" class="headerlink" title="4.2 UVM中的后门访问"></a>4.2 UVM中的后门访问</h4><p><strong>在寄存器configure（）函数中的第三个参数设置路径。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> reg_model::build();<br>     default_map = create_map(<span class="hljs-string">&quot;default_map&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>, UVM_BIG_ENDIAN, <span class="hljs-number">0</span>);<br><br>     invert = reg_invert::type_id::create(<span class="hljs-string">&quot;invert&quot;</span>, , get_full_name());<br>    invert<span class="hljs-variable">.configure</span>(<span class="hljs-keyword">this</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;invert&quot;</span>); <span class="hljs-comment">//第三个参数是后门路径</span><br>     invert<span class="hljs-variable">.build</span>();<br>     default_map<span class="hljs-variable">.add_reg</span>(invert, <span class="hljs-number">&#x27;h9</span>, <span class="hljs-string">&quot;RW&quot;</span>);<br>    ...<br><span class="hljs-keyword">endfunction</span>    <br></code></pre></td></tr></table></figure>
+
+<p><strong>设置根路径hdl_root</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> base_test::build_phase(uvm_phase phase);<br>   <span class="hljs-keyword">super</span><span class="hljs-variable">.build_phase</span>(phase);<br>  ...<br>   rm = reg_model::type_id::create(<span class="hljs-string">&quot;rm&quot;</span>, <span class="hljs-keyword">this</span>);<br> ...<br>    rm<span class="hljs-variable">.set_hdl_path_root</span>(<span class="hljs-string">&quot;top_tb.my_dut&quot;</span>); <span class="hljs-comment">//设置跟路径</span><br>   reg_sqr_adapter = <span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;reg_sqr_adapter&quot;</span>);<br>   env<span class="hljs-variable">.p_rm</span> = <span class="hljs-keyword">this</span><span class="hljs-variable">.rm</span>;<br><span class="hljs-keyword">endfunction</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>上面两个路径合起来就是寄存器的路径。</strong></p>
+<h4 id="4-3-后门访问函数"><a href="#4-3-后门访问函数" class="headerlink" title="4.3 后门访问函数"></a>4.3 后门访问函数</h4><p>后门访问也有write和read。这两个函数在操作的时候会模拟DUT的行为，如果寄存器是只读的，如果要写，那么写不进去。</p>
+<p><strong>还有poke（写）和peek（读）这两个函数。可以使用poke向一个只读寄存器写入值。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> poke(	<span class="hljs-keyword">output</span> 	uvm_status_e 	status,	  	<br>    <span class="hljs-keyword">input</span> 	uvm_reg_data_t 	value,	  	<br>    <span class="hljs-keyword">input</span> 	<span class="hljs-keyword">string</span> 	kind	 = 	<span class="hljs-string">&quot;&quot;</span>,<br>    <span class="hljs-keyword">input</span> 	uvm_sequence_base 	parent	 = 	<span class="hljs-literal">null</span>,<br>    <span class="hljs-keyword">input</span> 	uvm_object 	extension	 = 	<span class="hljs-literal">null</span>,<br>    <span class="hljs-keyword">input</span> 	<span class="hljs-keyword">string</span> 	fname	 = 	<span class="hljs-string">&quot;&quot;</span>,<br>    <span class="hljs-keyword">input</span> 	<span class="hljs-keyword">int</span> 	lineno	 = 	<span class="hljs-number">0</span>	)<br><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> peek(	<span class="hljs-keyword">output</span> 	uvm_status_e 	status,	  	<br>    <span class="hljs-keyword">output</span> 	uvm_reg_data_t 	value,	  	<br>    <span class="hljs-keyword">input</span> 	<span class="hljs-keyword">string</span> 	kind	 = 	<span class="hljs-string">&quot;&quot;</span>,<br>    <span class="hljs-keyword">input</span> 	uvm_sequence_base 	parent	 = 	<span class="hljs-literal">null</span>,<br>    <span class="hljs-keyword">input</span> 	uvm_object 	extension	 = 	<span class="hljs-literal">null</span>,<br>    <span class="hljs-keyword">input</span> 	<span class="hljs-keyword">string</span> 	fname	 = 	<span class="hljs-string">&quot;&quot;</span>,<br>    <span class="hljs-keyword">input</span> 	<span class="hljs-keyword">int</span> 	lineno	 = 	<span class="hljs-number">0</span>	)<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="4-4-使用后门操作"><a href="#4-4-使用后门操作" class="headerlink" title="4.4  使用后门操作"></a>4.4  使用后门操作</h4><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> case0_cfg_vseq::body();<br>     uvm_status_e   status;<br>     uvm_reg_data_t value;<br>    p_sequencer<span class="hljs-variable">.p_rm</span><span class="hljs-variable">.counter_low</span><span class="hljs-variable">.poke</span>(status, <span class="hljs-number">16&#x27;hFFFD</span>); <span class="hljs-comment">// 后门写寄存器</span><br>    p_sequencer<span class="hljs-variable">.p_rm</span><span class="hljs-variable">.counter_low</span><span class="hljs-variable">.read</span>(status, value, UVM_FRONTDOOR); <span class="hljs-comment">// 前门读	</span><br>    <br><span class="hljs-keyword">endtask</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-层次化寄存器模型"><a href="#5-层次化寄存器模型" class="headerlink" title="5. 层次化寄存器模型"></a>5. 层次化寄存器模型</h3><p>​    层次化寄存器模型就是uvm_reg_block（第一级）中有uvm_reg_block（第二级），一般只在第二级block中添加寄存器。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> global_blk <span class="hljs-keyword">extends</span> uvm_reg_block;<br>    ...<br><span class="hljs-keyword">endclass</span><br><span class="hljs-keyword">class</span> buf_blk <span class="hljs-keyword">extends</span> uvm_reg_block;<br>    ...<br><span class="hljs-keyword">endclass</span><br><span class="hljs-keyword">class</span> mac_blk <span class="hljs-keyword">extends</span> uvm_reg_block;<br>    ...<br><span class="hljs-keyword">endclass</span><br><span class="hljs-keyword">class</span> reg_model <span class="hljs-keyword">extends</span> uvm_reg_block;<br>   <span class="hljs-keyword">rand</span> global_blk gb_ins;<br>   <span class="hljs-keyword">rand</span> buf_blk    bb_ins;<br>   <span class="hljs-keyword">rand</span> mac_blk    mb_ins;<br>   <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> build();<br>      default_map = create_map(<span class="hljs-string">&quot;default_map&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>, UVM_BIG_ENDIAN, <span class="hljs-number">0</span>);<br>      gb_ins = global_blk::type_id::create(<span class="hljs-string">&quot;gb_ins&quot;</span>);<br>       gb_ins<span class="hljs-variable">.configure</span>(<span class="hljs-keyword">this</span>, <span class="hljs-string">&quot;&quot;</span>); <span class="hljs-comment">// 这里只有两个参数</span><br>      gb_ins<span class="hljs-variable">.build</span>();<br>      gb_ins<span class="hljs-variable">.lock_model</span>();<br>       default_map<span class="hljs-variable">.add_submap</span>(gb_ins<span class="hljs-variable">.default_map</span>, <span class="hljs-number">16&#x27;h0</span>); <span class="hljs-comment">//将子map添加到父map</span><br>     ...<br>   <span class="hljs-keyword">endfunction</span><br>..<br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p>​    子block的default_map不知道寄存器的基地址，只知道偏移地址。add_submap（）函数将子block的map添加到父block的map中，并告诉子map的基地址。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> configure(	uvm_reg_block 	parent	 = 	<span class="hljs-literal">null</span>,<span class="hljs-keyword">string</span>	hdl_path = 	<span class="hljs-string">&quot;&quot;</span>	)<br>    <span class="hljs-comment">// 第二个参数是reg block的hdl路径</span><br></code></pre></td></tr></table></figure>
+
+<p>使用方法跟之前一样，只是层次化路径多了一层：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">p_rm<span class="hljs-variable">.gb_ins</span><span class="hljs-variable">.invert</span><span class="hljs-variable">.poke</span>(...);<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="6-reg-file"><a href="#6-reg-file" class="headerlink" title="6. reg_file"></a>6. reg_file</h3><p>主要用来区分不同的hdl路径。</p>
+<p>如果有寄存器:</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs stylus">top_tb<span class="hljs-selector-class">.dut</span><span class="hljs-selector-class">.fileA</span><span class="hljs-selector-class">.rega</span><br>top_tb<span class="hljs-selector-class">.dut</span><span class="hljs-selector-class">.fileA</span><span class="hljs-selector-class">.regb</span><br>top_tb<span class="hljs-selector-class">.dut</span><span class="hljs-selector-class">.fileA</span><span class="hljs-selector-class">.regc</span><br>...<br>top_tb<span class="hljs-selector-class">.dut</span><span class="hljs-selector-class">.fileB</span><span class="hljs-selector-class">.rega</span><br>top_tb<span class="hljs-selector-class">.dut</span><span class="hljs-selector-class">.fileB</span><span class="hljs-selector-class">.regb</span><br>top_tb<span class="hljs-selector-class">.dut</span><span class="hljs-selector-class">.fileB</span><span class="hljs-selector-class">.regc</span><br>...<br></code></pre></td></tr></table></figure>
+
+<p>那么需要将寄存器的hdl路径告诉寄存器模型</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs verilog">rega<span class="hljs-variable">.configure</span>(<span class="hljs-keyword">this</span>,<span class="hljs-literal">null</span>,<span class="hljs-string">&quot;fileA.rega&quot;</span>);<br>rega<span class="hljs-variable">.configure</span>(<span class="hljs-keyword">this</span>,<span class="hljs-literal">null</span>,<span class="hljs-string">&quot;fileA.regb&quot;</span>);<br>rega<span class="hljs-variable">.configure</span>(<span class="hljs-keyword">this</span>,<span class="hljs-literal">null</span>,<span class="hljs-string">&quot;fileA.regc&quot;</span>);<br>....<br></code></pre></td></tr></table></figure>
+
+<p>需要写好多fileA，并且如果fileA改成其他的值，需要重写。</p>
+<p>可以单独把fileA拿出来，这就是uvm_reg_file。</p>
+<p>uvm_reg_file是个纯虚基类，需要扩展后使用。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> regfile <span class="hljs-keyword">extends</span> uvm_reg_file;<br>   <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name = <span class="hljs-string">&quot;regfile&quot;</span>);<br>      <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name);<br>   <span class="hljs-keyword">endfunction</span><br><br>   `uvm_object_utils(regfile)<br><span class="hljs-keyword">endclass</span><br><span class="hljs-keyword">class</span> mac_blk <span class="hljs-keyword">extends</span> uvm_reg_block;<br><br>   <span class="hljs-keyword">rand</span> regfile file_a; <span class="hljs-comment">//定义reg file</span><br>   <span class="hljs-keyword">rand</span> reg_regA rega;<br>   <span class="hljs-keyword">rand</span> reg_regB regb;<br>   <span class="hljs-keyword">rand</span> reg_vlan vlan;<br>   <br>   <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> build();<br>      default_map = create_map(<span class="hljs-string">&quot;default_map&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>, UVM_BIG_ENDIAN, <span class="hljs-number">0</span>);<br><br>      file_a = regfile::type_id::create(<span class="hljs-string">&quot;file_a&quot;</span>, , get_full_name());<br>       file_a<span class="hljs-variable">.configure</span>(<span class="hljs-keyword">this</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;fileA&quot;</span>); <span class="hljs-comment">//配置reg file路径</span><br>      <br>      regA = reg_regA::type_id::create(<span class="hljs-string">&quot;regA&quot;</span>, , get_full_name());<br>       regA<span class="hljs-variable">.configure</span>(<span class="hljs-keyword">this</span>, file_a, <span class="hljs-string">&quot;regA&quot;</span>); <span class="hljs-comment">// reg configure函数第二个参数是reg_file</span><br>      regA<span class="hljs-variable">.build</span>();<br>      default_map<span class="hljs-variable">.add_reg</span>(regA, <span class="hljs-number">&#x27;h31</span>, <span class="hljs-string">&quot;RW&quot;</span>);<br>       regB = reg_regB::type_id::create(<span class="hljs-string">&quot;regB&quot;</span>, , get_full_name());<br>      regB<span class="hljs-variable">.configure</span>(<span class="hljs-keyword">this</span>, file_a, <span class="hljs-string">&quot;regB&quot;</span>);<br>      regB<span class="hljs-variable">.build</span>();<br>      default_map<span class="hljs-variable">.add_reg</span>(regB, <span class="hljs-number">&#x27;h32</span>, <span class="hljs-string">&quot;RW&quot;</span>);<br>   <span class="hljs-keyword">endfunction</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/">Verification</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/UVM/">UVM</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/SV/">SV</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Verification/">Verification</a>
+                    
+                      <a class="hover-with-bg" href="/tags/UVM/">UVM</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/07/30/Verification/UVM/UVM%E2%80%94%E2%80%94callback%E6%9C%BA%E5%88%B6/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">UVM——callback机制</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/07/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94SV%E4%B8%8EC%E7%9A%84%E6%8E%A5%E5%8F%A3/">
+                        <span class="hidden-mobile">SV——SV与C的接口</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

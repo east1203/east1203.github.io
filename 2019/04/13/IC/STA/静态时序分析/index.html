@@ -1,0 +1,586 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="目录 概念 为什么要进行时序分析？ 分类   STA优缺点 STA作用 STA的过程 时序分析基本概念   概念 为什么要进行时序分析？   设计都会有性能指标，为了保证在物理制造后的电路功能正确并且满足设计指标，需要保证电路的时序满足设计要求，这就需要在电路设计好后对电路进行时序分析，满足时序才能进行接下来的设计和制造。  分类   动态时序仿真  动态时序仿真是针对给定的输入信号波形，模拟电">
+<meta property="og:type" content="article">
+<meta property="og:title" content="静态时序分析STA">
+<meta property="og:url" content="http://example.com/2019/04/13/IC/STA/%E9%9D%99%E6%80%81%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="目录 概念 为什么要进行时序分析？ 分类   STA优缺点 STA作用 STA的过程 时序分析基本概念   概念 为什么要进行时序分析？   设计都会有性能指标，为了保证在物理制造后的电路功能正确并且满足设计指标，需要保证电路的时序满足设计要求，这就需要在电路设计好后对电路进行时序分析，满足时序才能进行接下来的设计和制造。  分类   动态时序仿真  动态时序仿真是针对给定的输入信号波形，模拟电">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E9%9D%99%E6%80%81%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E9%9D%99%E6%80%81%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E9%9D%99%E6%80%81%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E9%9D%99%E6%80%81%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/4.png">
+<meta property="article:published_time" content="2019-04-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.798Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="IC">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E9%9D%99%E6%80%81%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/1.png">
+  
+  
+  <title>静态时序分析STA - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="静态时序分析STA">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-04-13 00:00" pubdate>
+        April 13, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.3k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      11 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">静态时序分析STA</h1>
+            
+            <div class="markdown-body">
+              <hr>
+<h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><ul>
+<li><h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><ul>
+<li><h5 id="为什么要进行时序分析？"><a href="#为什么要进行时序分析？" class="headerlink" title="为什么要进行时序分析？"></a>为什么要进行时序分析？</h5></li>
+<li><h5 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h5></li>
+</ul>
+</li>
+<li><h4 id="STA优缺点"><a href="#STA优缺点" class="headerlink" title="STA优缺点"></a>STA优缺点</h4></li>
+<li><h4 id="STA作用"><a href="#STA作用" class="headerlink" title="STA作用"></a>STA作用</h4></li>
+<li><h4 id="STA的过程"><a href="#STA的过程" class="headerlink" title="STA的过程"></a>STA的过程</h4></li>
+<li><h4 id="时序分析基本概念"><a href="#时序分析基本概念" class="headerlink" title="时序分析基本概念"></a>时序分析基本概念</h4></li>
+</ul>
+<hr>
+<h3 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h3><ul>
+<li><h4 id="为什么要进行时序分析？-1"><a href="#为什么要进行时序分析？-1" class="headerlink" title="为什么要进行时序分析？"></a>为什么要进行时序分析？</h4></li>
+</ul>
+<p> 设计都会有性能指标，为了保证在物理制造后的电路功能正确并且满足设计指标，需要保证电路的时序满足设计要求，这就需要在电路设计好后对电路进行时序分析，满足时序才能进行接下来的设计和制造。</p>
+<ul>
+<li><h4 id="分类-1"><a href="#分类-1" class="headerlink" title="分类"></a>分类</h4></li>
+</ul>
+<ol>
+<li><strong>动态时序仿真</strong></li>
+</ol>
+<p>动态时序仿真是针对给定的输入信号波形，模拟电路实际工作时候的功能和延迟情况，给出相应的仿真输出波形。它主要用于验证设计在器件实际延时情况下的逻辑功能。由动态时序仿真报告无法得到设计的各项时序性能指标，如最高时钟频率等.(<strong>但是到底怎么来做不会</strong>）<br><strong>既能验证设计的功能，也能验证设计的时序。</strong></p>
+<ol start="2">
+<li><strong>静态时序分析</strong></li>
+</ol>
+<p> 静态时序分析是分析每条路径上器件和连线延迟信息,计算出设计的各项性能，比如最高时钟频率，建立保持时间等。<br>    <strong>只能验证设计的时序信息，不能验证设计的功能。</strong></p>
+<hr>
+<h3 id="STA优缺点-1"><a href="#STA优缺点-1" class="headerlink" title="STA优缺点"></a>STA优缺点</h3><ol>
+<li><strong>从动态时序仿真转到静态时序分析</strong><br> 在初期集成电路设计中，动态时许仿真来验证设计的时序很流行。但是随着设计规模不断增大，进行动态时序仿真需要花费大量时间设计时序向量和功能向量（用来验真功能和时序的），并且还不一定能保证100%覆盖率。所以快捷的静态时序分析受到青睐。</li>
+<li><strong>STA优点</strong><ol>
+<li>分析速度块</li>
+<li>不需要仿真向量<br> 3）覆盖率几乎100%</li>
+<li>静态分析还能完成动态仿真不能完成的复杂分析。例如最大最小路径延迟、建立保持时间分析、时钟信号质量分析。</li>
+</ol>
+</li>
+<li><strong>STA缺点</strong><ol>
+<li>不能验证设计的功能<br> 2）STA只能分析<strong>同步时序电路</strong>，对于异步电路，只能在门级动态仿真来验证<br> 3）不能自动识别特殊路径。比如多周期路径(multi-cycle path)，非正常路径(fault paths)，多时钟周期关系(multiple clocks）<strong>（这些到底是什么现在还不清楚txtx）</strong></li>
+</ol>
+<p> <em><strong>所以STA并不能完全取代动态时序仿真，二者必须协同存在</strong></em></p>
+</li>
+</ol>
+<hr>
+<h3 id="STA的作用"><a href="#STA的作用" class="headerlink" title="STA的作用"></a>STA的作用</h3><ol>
+<li><strong>确定芯片的最高工作频率</strong><br>通过时序分析可以控制工程的综合、映射、布局布线等环节，减少延迟，从而尽可能提高工作频率</li>
+<li><strong>检查时序是否满足</strong><br> 可以通过时序分析来查看目标模块是否满足约束，如不满足，可以定位到不满足约束的部分，并给出具体原因，进一步修改程序直至满足时序要求</li>
+<li><strong>分析时钟质量</strong><br> 时钟存在抖动、偏移、占空比失真等不可避免的缺陷。通过时序分析可以验证其对目标模块的影响</li>
+</ol>
+<hr>
+<h3 id="STA的过程-1"><a href="#STA的过程-1" class="headerlink" title="STA的过程"></a>STA的过程</h3><ol>
+<li>将设计打散成一个个timing paths</li>
+<li>计算每一条path上的延迟</li>
+<li>检验延迟是否满足设计要求</li>
+</ol>
+<hr>
+<h3 id="时序分析基本概念-1"><a href="#时序分析基本概念-1" class="headerlink" title="时序分析基本概念"></a>时序分析基本概念</h3><ol>
+<li>建立时间(setup time)</li>
+<li>保持时间(hold time)</li>
+<li>恢复时间(recovery time)<br>置位或复位信号在时钟信号有效之前需要保持有效的最小时间，类似于setup time</li>
+<li>移除时间(removal time)<br>置位或复位信号在时钟有效沿之后需要继续有效的时间。</li>
+</ol>
+<hr>
+<h3 id="时序路径"><a href="#时序路径" class="headerlink" title="时序路径"></a>时序路径</h3><ul>
+<li><h4 id="种类"><a href="#种类" class="headerlink" title="种类"></a>种类</h4></li>
+</ul>
+<ol>
+<li>触发器到触发器</li>
+<li>输入端口到触发器</li>
+<li>触发器到输出端口</li>
+<li>输入端口到输出端口</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E9%9D%99%E6%80%81%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/1.png" srcset="/img/loading.gif" lazyload></p>
+<hr>
+<h3 id="静态时序分析的基本方法"><a href="#静态时序分析的基本方法" class="headerlink" title="静态时序分析的基本方法"></a>静态时序分析的基本方法</h3><ul>
+<li><h4 id="时序图"><a href="#时序图" class="headerlink" title="时序图"></a>时序图</h4> 时序图主要包括逻辑节点、连接关系、主要的输入输出。</li>
+</ul>
+<p> 下图是一个逻辑电路图<br> <img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E9%9D%99%E6%80%81%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/2.png" srcset="/img/loading.gif" lazyload></p>
+<p> 设定好逻辑节点，可以得到时序图中间结果</p>
+<p> <img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E9%9D%99%E6%80%81%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/3.png" srcset="/img/loading.gif" lazyload><br> 确定好时序图的输入和输出，得到最终的时序图<br> <img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/%E9%9D%99%E6%80%81%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/4.png" srcset="/img/loading.gif" lazyload></p>
+<p> <strong>时序图的起点：输入端口、时序单元的输出和存储器输出</strong></p>
+<p> <strong>时序图的中点：输出端口、时序单元的输入和存储器输入</strong></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/categories/IC/STA/">STA</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/IC/">IC</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/04/14/tools/vcs/vcs%E4%BD%BF%E7%94%A8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">vcs使用</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/04/13/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/%E5%90%8C%E6%AD%A5FIFO/">
+                        <span class="hidden-mobile">同步FIFO</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

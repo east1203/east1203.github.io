@@ -1,0 +1,695 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="阶段计划： 敲定毕业论文的思路，并且做相关实验仿真 每周要写两篇技术文章（2020-02-20） 看别人的分组硕士论文 看另一半积极心理学公开课 看ICC使用笔记 每日英语听力  第三十八周周计划： 确定边权重依据。 确定分组的方法 看完《金字塔原理》  02-24 周一完成： :one: 学习了DME算法，并作了笔记 :two:  日记 :three:  英语听力一篇 02-25 周二 ICC中">
+<meta property="og:type" content="website">
+<meta property="og:title" content="page.title">
+<meta property="og:url" content="http://example.com/dailystudy/2020-02-24%E8%87%B32020-03-22.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="阶段计划： 敲定毕业论文的思路，并且做相关实验仿真 每周要写两篇技术文章（2020-02-20） 看别人的分组硕士论文 看另一半积极心理学公开课 看ICC使用笔记 每日英语听力  第三十八周周计划： 确定边权重依据。 确定分组的方法 看完《金字塔原理》  02-24 周一完成： :one: 学习了DME算法，并作了笔记 :two:  日记 :three:  英语听力一篇 02-25 周二 ICC中">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-03-12T03:51:25.837Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.837Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="芯片 验证 读书 编程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>page.title - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="page.title">
+              
+            </span>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<article class="page-content">
+  <h1 id="阶段计划："><a href="#阶段计划：" class="headerlink" title="阶段计划："></a>阶段计划：</h1><ol>
+<li>敲定毕业论文的思路，并且做相关实验仿真</li>
+<li>每周要写两篇技术文章（2020-02-20）</li>
+<li>看别人的分组硕士论文</li>
+<li>看另一半积极心理学公开课</li>
+<li>看ICC使用笔记</li>
+<li>每日英语听力</li>
+</ol>
+<h2 id="第三十八周"><a href="#第三十八周" class="headerlink" title="第三十八周"></a>第三十八周</h2><h3 id="周计划："><a href="#周计划：" class="headerlink" title="周计划："></a>周计划：</h3><ol>
+<li>确定边权重依据。</li>
+<li>确定分组的方法</li>
+<li>看完《金字塔原理》</li>
+</ol>
+<h3 id="02-24-周一"><a href="#02-24-周一" class="headerlink" title="02-24 周一"></a>02-24 周一</h3><p>完成：</p>
+<p>:one: 学习了DME算法，并作了笔记</p>
+<p>:two:  日记</p>
+<p>:three:  英语听力一篇</p>
+<h3 id="02-25-周二"><a href="#02-25-周二" class="headerlink" title="02-25 周二"></a>02-25 周二</h3><ol>
+<li>ICC中的优化是否太好了，使skew太小，slack太好</li>
+<li>写报告</li>
+<li>继续看时序论文，</li>
+<li>想一下权重怎么设置</li>
+</ol>
+<p>完成：</p>
+<p>:one: 写报告</p>
+<p>:two:  想出了一个分组实现流程</p>
+<p>:three:  英语听力</p>
+<p>:four:  安装了anaconda环境</p>
+<h3 id="02-26-周三"><a href="#02-26-周三" class="headerlink" title="02-26 周三"></a>02-26 周三</h3><ol>
+<li>看前一天下的两篇论文</li>
+<li>看一眼王老师给的论文</li>
+<li>看一下写的思路</li>
+</ol>
+<p>完成：</p>
+<p>:one: 英语</p>
+<p>:two:  优化了一下思路</p>
+<p>:three:  看一眼王老师给的论文</p>
+<h3 id="02-27-周四"><a href="#02-27-周四" class="headerlink" title="02-27 周四"></a>02-27 周四</h3><p>完成：</p>
+<p>:one: 英语</p>
+<p>:two:  看了一篇介绍时钟网络的综述论文</p>
+<h3 id="02-28-周五"><a href="#02-28-周五" class="headerlink" title="02-28 周五"></a>02-28 周五</h3><ol>
+<li>写tcl脚本——提取寄存器的时序信息到文件</li>
+<li></li>
+</ol>
+<p>完成：</p>
+<p>:one: 英语听力</p>
+<p>:two:  获取寄存器位置脚本</p>
+<p>:three:  获取路径slack的脚本</p>
+<p>:four:  写的过程中学了一下   tcl</p>
+<p>:five:学习金字塔原理</p>
+<h3 id="02-29-周六"><a href="#02-29-周六" class="headerlink" title="02-29 周六"></a>02-29 周六</h3><ol>
+<li>看一下Python</li>
+<li>开始写分组脚本</li>
+<li>想一下分组思路中的细节问题，比如slack阈值、群组尺寸、群组电容等</li>
+<li>金字塔原理</li>
+</ol>
+<p>完成：</p>
+<p>:one: 英语听力</p>
+<p>:two:  读取信息的脚本</p>
+<p>:three:  </p>
+<h3 id="03-01-周日"><a href="#03-01-周日" class="headerlink" title="03-01 周日"></a>03-01 周日</h3><ol>
+<li>继续昨天的工作</li>
+</ol>
+<p>完成：</p>
+<p>:one: 英语听力</p>
+<p>:two:  写了networkx相关的代码，一丢丢</p>
+<p>:three:金字塔原理 看完  </p>
+<h3 id="周总结："><a href="#周总结：" class="headerlink" title="周总结："></a>周总结：</h3><p>完成：</p>
+<ol>
+<li>看完《金字塔原理》</li>
+<li>想了寄存器分组的思路和程序实现流程，并写了一部分脚本。</li>
+<li>英语听力七篇</li>
+</ol>
+<h2 id="第三十九周"><a href="#第三十九周" class="headerlink" title="第三十九周"></a>第三十九周</h2><h3 id="周计划：-1"><a href="#周计划：-1" class="headerlink" title="周计划："></a>周计划：</h3><ol>
+<li>写完寄存器分组程序第一版，并开始实验</li>
+<li>写的过程中整理思路，当做论文的草稿。</li>
+<li>每天英语听力</li>
+</ol>
+<h3 id="03-02-周一"><a href="#03-02-周一" class="headerlink" title="03-02 周一"></a>03-02 周一</h3><ol>
+<li>根据边属性提取 子连通图集合</li>
+<li></li>
+</ol>
+<p>完成：</p>
+<p>:one: 英语听力一篇</p>
+<p>:two:  定义了一部分类 Node Edge Cluster</p>
+<p>:three:  将信息保存在勒种</p>
+<p>:four:  </p>
+<h3 id="03-03-周二"><a href="#03-03-周二" class="headerlink" title="03-03 周二"></a>03-03 周二</h3><ol>
+<li>保存边信息到群组</li>
+</ol>
+<p>完成：</p>
+<p>:one: 英语</p>
+<p>:two:  yi’d</p>
+<h3 id="03-04-周三"><a href="#03-04-周三" class="headerlink" title="03-04 周三"></a>03-04 周三</h3><p>完成：</p>
+<p>:one: 一部分代码</p>
+<p>:two:  英语听力</p>
+<p>:three:  周报</p>
+<p>:four:  </p>
+<h3 id="03-05-周四"><a href="#03-05-周四" class="headerlink" title="03-05 周四"></a>03-05 周四</h3><ol>
+<li>完成寄存器分组的.py代码</li>
+<li>用一下hspice</li>
+</ol>
+<p>完成：</p>
+<p>:one: 英语听力</p>
+<p>:two:  分组：修改分组部分</p>
+<p>:three:  提交周报</p>
+<p>:four:  </p>
+<h3 id="03-06-周五"><a href="#03-06-周五" class="headerlink" title="03-06 周五"></a>03-06 周五</h3><ol>
+<li>写完分组程序</li>
+<li>试一下spice环境</li>
+<li>仿一下spice，看结果</li>
+</ol>
+<p>完成：</p>
+<p>:one: 以为写完了一个初级的分组脚本，谁知道晚上睡觉前一想又不对</p>
+<h3 id="03-07-周六"><a href="#03-07-周六" class="headerlink" title="03-07 周六"></a>03-07 周六</h3><ol>
+<li>10点抢口罩——done</li>
+<li>英语听力：听+改——done</li>
+<li>宋相男的分组思路-小论文——done</li>
+<li>记录每一个半小时的状态——done</li>
+<li>根据2009论文，修改分组——done</li>
+<li>添加最大负载约束（MST)</li>
+<li>第三章开个头——done</li>
+<li>出仿真结果</li>
+<li>将毕业论文 过一下</li>
+<li>看一下别人的实验怎么做的</li>
+</ol>
+<p>完成：</p>
+<p>:one: 10点抢口罩</p>
+<p>:two:  宋相男的分组思路-小论文</p>
+<p>:three:  记录每一个半小时的状态</p>
+<p>:four:  看了2009论文</p>
+<p>:five:  第三章开个头</p>
+<p>:six:   根据2009论文，修改分组</p>
+<p>:seven:  英语听力：听+改</p>
+<p>:eight: 记录每一个半小时的状态——done</p>
+<p>:nine:</p>
+<p>:keycap_ten:</p>
+<h3 id="03-08-周日"><a href="#03-08-周日" class="headerlink" title="03-08 周日"></a>03-08 周日</h3><ol>
+<li>看寄存器分组目录下的关于时序的其他论文</li>
+<li>将毕业论文 过一下— done</li>
+<li>看一下别人的实验怎么做的</li>
+<li>调一下DC ICC脚本，使slack为负</li>
+<li>查一下手机卡账单——done</li>
+<li>英语听力听写-校对——done</li>
+<li>听两节的学习力课程</li>
+<li>跑通插入buffer的过程——done</li>
+</ol>
+<p>完成：</p>
+<p>:one: 英语听力听写-校对</p>
+<p>:two:  查一下手机卡账单</p>
+<p>:three:  将毕业论文 过一下— done</p>
+<p>:four:  跑通插入buffer的过程——done</p>
+<p>:five:  </p>
+<h3 id="周总结：-1"><a href="#周总结：-1" class="headerlink" title="周总结："></a>周总结：</h3><ol>
+<li>写完寄存器分组程序第一版，并开始实验</li>
+<li>写的过程中整理思路，当做论文的草稿。</li>
+<li>每天英语听力</li>
+<li>将毕业论文 过一下</li>
+<li>六篇英语听力</li>
+</ol>
+<h2 id="第四十周"><a href="#第四十周" class="headerlink" title="第四十周"></a>第四十周</h2><h3 id="周计划：-2"><a href="#周计划：-2" class="headerlink" title="周计划："></a>周计划：</h3><ol>
+<li>跑通spice测试蒙卡</li>
+<li>完善实验——增加负载电容约束</li>
+<li>完善实验——增加寄存器距离约束</li>
+<li>逐步补充第三章论文</li>
+<li>每天英语听力</li>
+<li>听完学习力课程</li>
+<li>早起</li>
+</ol>
+<h3 id="03-09-周一"><a href="#03-09-周一" class="headerlink" title="03-09 周一"></a>03-09 周一</h3><ol start="2">
+<li>早点起来将dc icc脚本存到服务器——done</li>
+<li>gVim如何全选内容——done</li>
+<li>补充一点第三章论文——done</li>
+<li>英语听力</li>
+<li>spice的脚本</li>
+<li>看下宋相男小论文的ppt</li>
+<li>看寄存器分组目录下的关于时序的其他论文</li>
+<li>看一下别人的实验怎么做的</li>
+</ol>
+<p>完成：</p>
+<p>:one: 早点起来将dc icc脚本存到服务器</p>
+<p>:two:  gVim如何全选内容：全选vG         全部复制yG</p>
+<p>:three:  补充一点第三章论文——done</p>
+<p>:four:  英语听力</p>
+<p>:five:  spice的脚本——还是有问题</p>
+<h3 id="03-10-周二"><a href="#03-10-周二" class="headerlink" title="03-10 周二"></a>03-10 周二</h3><ol>
+<li>check .py是否分组中的reg是有时序关系，用图显示出来</li>
+<li>修改。py，只用setup slack</li>
+<li>学些spice</li>
+<li>spice脚本</li>
+<li>看下宋相男小论文的ppt</li>
+<li>看寄存器分组目录下的关于时序的其他论文</li>
+<li>看一下别人的实验怎么做的</li>
+</ol>
+<p>完成：</p>
+<p>:one: check .py是否分组中的reg是有时序关系，用图显示出来</p>
+<p>:two:  修改。py，只用setup slack</p>
+<p>:three:  学些spice</p>
+<p>:four:英语听力完成一半  </p>
+<h3 id="03-11-周三"><a href="#03-11-周三" class="headerlink" title="03-11 周三"></a>03-11 周三</h3><ol>
+<li>网表</li>
+<li>问问王广英或者宋相男他们用的什么库。</li>
+</ol>
+<p>完成：</p>
+<p>:one: 英语听力一篇</p>
+<p>:two:  </p>
+<h3 id="03-12-周四"><a href="#03-12-周四" class="headerlink" title="03-12 周四"></a>03-12 周四</h3><ol>
+<li>英语</li>
+<li>看一下其他人的文档</li>
+<li>把实验环境设置好</li>
+<li>hspice仿真</li>
+</ol>
+<p>完成：</p>
+<p>\1. 英语听力</p>
+<p>\2. 看了别人的文档</p>
+<p>\3. 写了一点论文</p>
+<h3 id="03-13-周五"><a href="#03-13-周五" class="headerlink" title="03-13 周五"></a>03-13 周五</h3><p>\1. 熟了hspice仿真流</p>
+<p>\2. 看其他人的论文。怎么做的实验</p>
+<p>\2. 将spice仿真结果保存在.csv文件中</p>
+<p>\2. 将spice中的延迟值分析，计算skew，slack</p>
+<p>\3. 修改约束脚本</p>
+<p>\4. 对比时序分组和ocv_clustering的优劣</p>
+<p>完成：</p>
+<p>\1. 英语听力</p>
+<p>\2. 学习spice使用</p>
+<h3 id="03-14-周六"><a href="#03-14-周六" class="headerlink" title="03-14 周六"></a>03-14 周六</h3><p>\1. 弄好spice</p>
+<p>\2. 计算出结果</p>
+<p>\3. 实在不行就问别人</p>
+<p>完成：</p>
+<p>\1. 弄好spice</p>
+<p>\2. 出了结果，但是不好</p>
+<p>\3. 英语听力</p>
+<h3 id="03-15-周日"><a href="#03-15-周日" class="headerlink" title="03-15 周日"></a>03-15 周日</h3><p>\1. 写论文</p>
+<p>\2. 英语听力</p>
+<p>\3. 下午学习学习力课程</p>
+<p>完成：</p>
+<p>\1. 写了两千多字的论文</p>
+<p>\2. 英语听力</p>
+<h3 id="周总结：-2"><a href="#周总结：-2" class="headerlink" title="周总结："></a>周总结：</h3><p>完成：</p>
+<p>\1. hspice学习</p>
+<p>\2. hspice仿真出结果，但是不好</p>
+<p>\3. 写了一点论文</p>
+<p>\4. 英语听力七篇</p>
+<p>未完成：</p>
+<p>\1. 完善实验——增加负载电容约束</p>
+<p>\2. 完善实验——增加寄存器距离约束</p>
+<p>\3. 学习动力课程</p>
+<h2 id="第四十一周"><a href="#第四十一周" class="headerlink" title="第四十一周"></a>第四十一周</h2><h3 id="周计划：-3"><a href="#周计划：-3" class="headerlink" title="周计划："></a>周计划：</h3><p>\1. 完善毕业论文，先把论文写出来在完善它。</p>
+<p>\2. 计划写完第三章</p>
+<p>\3. 找论文思路，并实践</p>
+<p>\4. 学完学习力课程</p>
+<p>\5. 每天英语听力</p>
+<h3 id="03-16-周一"><a href="#03-16-周一" class="headerlink" title="03-16 周一"></a>03-16 周一</h3><p>\1. 看论文找思路</p>
+<p>\2. 继续写论文</p>
+<p>\3. 试一下服务器上孙一然的环境测试一下分组</p>
+<p>\4. 看看服务器上怎么向下、向上复制数据</p>
+<p>完成：</p>
+<p>\1. 写了点论文</p>
+<p>\2. 服务器上的环境弄好了</p>
+<p>\3. 跑了一点数据下来，接着要用脚本仿真</p>
+<h3 id="03-17-周二"><a href="#03-17-周二" class="headerlink" title="03-17 周二"></a>03-17 周二</h3><p>\1. 如果有思路，将思路写成程序验证一下。</p>
+<p>\2. 完善论文</p>
+<p>\3. 晚上写一下报告</p>
+<p>\4. 最小生成树程序，电容计算</p>
+<p>\5. 选了一个尺寸的buffer，采用它的最大负载电容</p>
+<p>完成：</p>
+<p>\1. 写完第三章第二节</p>
+<p>\2. 写完报告</p>
+<h3 id="03-18-周三"><a href="#03-18-周三" class="headerlink" title="03-18 周三"></a>03-18 周三</h3><p>\1. 写一下寄存器分组问题规划（付世聪论文等分组论文都有涉及）</p>
+<p>\2. 写一下确定权重（王老师之前给了一个截图和一篇将非公共路径的论文）</p>
+<p>\2. 将分组算法改进一下，根据负载约束下分组</p>
+<p>\4. 英语听力</p>
+<p>完成：</p>
+<p>\1. 英语听力</p>
+<p>\2. 第三章第三节</p>
+<p>\3. 寄存器分组问题规划</p>
+<h3 id="03-19-周四"><a href="#03-19-周四" class="headerlink" title="03-19 周四"></a>03-19 周四</h3><p>\1. 写完第三章第四、五节</p>
+<p>\2. 英语听力一篇</p>
+<p>完成：</p>
+<p>\1. 第三章第五节</p>
+<p>\2. 第三章第六节写了一半</p>
+<p>\3. 英语听力一篇</p>
+<h3 id="03-20-周五"><a href="#03-20-周五" class="headerlink" title="03-20 周五"></a>03-20 周五</h3><p>\1. 组内有人仿真过buffer的等效电阻。</p>
+<p>\2. 第六节写完</p>
+<p>\3. 写第四节</p>
+<p>\4. 如果有时间写完第一节的主要内容部分，完成第三章</p>
+<p>完成：</p>
+<p>\1. 写完第六节</p>
+<p>\2. 英语听力</p>
+<h3 id="03-21-周六"><a href="#03-21-周六" class="headerlink" title="03-21 周六"></a>03-21 周六</h3><p>\1. 写MST程序，进行基于最大负载和最大扇出的分组实验</p>
+<p>\2. 完成第三章论文</p>
+<p>完成：</p>
+<p>\1. 第三章论文初稿完成</p>
+<p>\2. 修改第二章字体</p>
+<p>\3. 英语听力</p>
+<h3 id="3-22-周日"><a href="#3-22-周日" class="headerlink" title="3-22 周日"></a>3-22 周日</h3><p>\1. 研究一下第一章论文。</p>
+<p>\2. 写MST程序，进行基于最大负载和最大扇出的分组实验</p>
+<p>\3. 学习力课程</p>
+<h2 id="阶段总结："><a href="#阶段总结：" class="headerlink" title="阶段总结："></a>阶段总结：</h2><p>完成：</p>
+<p>\1. 敲定毕业论文的思路，并且做相关实验仿真</p>
+<p>\2. 硕士螺纹第三章写完</p>
+<p>\3. 看别人的分组硕士论文</p>
+<p>\4. 用Python写了分组脚本，并用spice仿真，也是服务器上弄了环境。</p>
+<p>\5. 看ICC使用笔记</p>
+<p>\6. 每日英语听力</p>
+<p>未完成：</p>
+<p>\1.  每周要写两篇技术文章（2020-02-20）</p>
+<p>\2.  看另一半积极心理学公开课</p>
+
+
+  
+</article>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

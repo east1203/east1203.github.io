@@ -1,0 +1,566 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="阶段计划： 面完华为、中兴、展锐、歌尔 第二遍 UVM UG——第一个周 验证平台、代码再熟悉一下——第一个周 计算机体系结构的知识：cache、流水线、DMA SOC架构：AMBA总线、CPU内核 《轻松成为verilog设计高手》 查一下infra  第二十周：周计划： 第二遍 UVM UG——第一个周 计算机体系结构的知识：cache、流水线、DMA SOC架构：AMBA总线、CPU内核">
+<meta property="og:type" content="website">
+<meta property="og:title" content="page.title">
+<meta property="og:url" content="http://example.com/dailystudy/2019-09-23%E8%87%B310-20.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="阶段计划： 面完华为、中兴、展锐、歌尔 第二遍 UVM UG——第一个周 验证平台、代码再熟悉一下——第一个周 计算机体系结构的知识：cache、流水线、DMA SOC架构：AMBA总线、CPU内核 《轻松成为verilog设计高手》 查一下infra  第二十周：周计划： 第二遍 UVM UG——第一个周 计算机体系结构的知识：cache、流水线、DMA SOC架构：AMBA总线、CPU内核">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-03-12T03:51:25.836Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.836Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="芯片 验证 读书 编程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>page.title - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="page.title">
+              
+            </span>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<article class="page-content">
+  <h1 id="阶段计划："><a href="#阶段计划：" class="headerlink" title="阶段计划："></a>阶段计划：</h1><ol>
+<li>面完华为、中兴、展锐、歌尔</li>
+<li>第二遍 UVM UG——第一个周</li>
+<li>验证平台、代码再熟悉一下——第一个周</li>
+<li>计算机体系结构的知识：cache、流水线、DMA</li>
+<li>SOC架构：AMBA总线、CPU内核</li>
+<li>《轻松成为verilog设计高手》</li>
+<li>查一下infra</li>
+</ol>
+<h2 id="第二十周："><a href="#第二十周：" class="headerlink" title="第二十周："></a>第二十周：</h2><h3 id="周计划："><a href="#周计划：" class="headerlink" title="周计划："></a>周计划：</h3><ol>
+<li>第二遍 UVM UG——第一个周</li>
+<li>计算机体系结构的知识：cache、流水线、DMA</li>
+<li>SOC架构：AMBA总线、CPU内核</li>
+</ol>
+<h3 id="09-23-周一"><a href="#09-23-周一" class="headerlink" title="09-23 周一"></a>09-23 周一</h3><ol>
+<li>看UG</li>
+<li>读一下昨天的文章</li>
+<li>中兴综合面试风格</li>
+<li>准备一下英伟达的电话面试</li>
+<li>看一下cache</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>读一下昨天的文章</li>
+<li>看一下cache</li>
+<li>看UG</li>
+</ol>
+<h3 id="09-24-周二"><a href="#09-24-周二" class="headerlink" title="09-24 周二"></a>09-24 周二</h3><ol>
+<li>下午中兴面试</li>
+<li>晚上英伟达面试</li>
+<li>上午复习一下简历，看一下AHB、AXI等。</li>
+<li>再看一下寄存器模型</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>下午中兴面试</li>
+<li>晚上英伟达面试</li>
+<li>上午复习一下简历，看一下AHB、AXI等。</li>
+</ol>
+<h3 id="09-25-周三"><a href="#09-25-周三" class="headerlink" title="09-25 周三"></a>09-25 周三</h3><ol>
+<li>看一下寄存器模型——上午</li>
+<li>cache那篇文章继续看完</li>
+<li>查一下Cmake</li>
+<li>IC笔试题</li>
+<li>看一下歌尔的进度</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看一下寄存器模型——上午</li>
+<li>看一下歌尔的进度</li>
+<li>查一下Cmake——挺复杂，没空看</li>
+<li>cache那篇文章继续看完——看了一半，很复杂</li>
+<li></li>
+</ol>
+<h3 id="09-26-周四"><a href="#09-26-周四" class="headerlink" title="09-26 周四"></a>09-26 周四</h3><ol>
+<li>AMD两个电话面试</li>
+<li>蛋壳退房证据</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>AMD电话</li>
+</ol>
+<h3 id="09-27-周五"><a href="#09-27-周五" class="headerlink" title="09-27 周五"></a>09-27 周五</h3><ol>
+<li>蛋壳退租</li>
+<li>整理昨天面试的问题</li>
+<li>看UVM UG</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>整理了<a target="_blank" rel="noopener" href="https://www.cnblogs.com/east1203/p/11595813.html">SV——类型转换$cast</a></li>
+<li>整理<a target="_blank" rel="noopener" href="https://www.cnblogs.com/east1203/p/11598194.html">sv——static关键字</a></li>
+<li>整理<a target="_blank" rel="noopener" href="https://www.cnblogs.com/east1203/p/11598095.html">SV——override</a></li>
+<li>整理<a target="_blank" rel="noopener" href="https://www.cnblogs.com/east1203/p/11598033.html">SV——声明和例化</a></li>
+<li>整理<a target="_blank" rel="noopener" href="https://www.cnblogs.com/east1203/p/11597361.html">SV——automatic</a></li>
+</ol>
+<h3 id="09-28-周六"><a href="#09-28-周六" class="headerlink" title="09-28 周六"></a>09-28 周六</h3><ol>
+<li>看UVM UG寄存器部分看完</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>计划继续在微信公众号写文章，发了一篇。</li>
+<li>UVM UG寄存器部分看完</li>
+</ol>
+<h3 id="09-29-周日"><a href="#09-29-周日" class="headerlink" title="09-29 周日"></a>09-29 周日</h3><ol>
+<li>UVM UG sixth chapter</li>
+<li>计算机体系结构</li>
+</ol>
+<h3 id="周总结："><a href="#周总结：" class="headerlink" title="周总结："></a>周总结：</h3><ol>
+<li>AMBA总结了总线仲裁、HREADY。</li>
+<li>cache、DMA也整理了一下。</li>
+<li>整理面试笔记</li>
+<li>看了一些UVM UG</li>
+<li>公众号又开始了。</li>
+</ol>
+<h2 id="第二十一周："><a href="#第二十一周：" class="headerlink" title="第二十一周："></a>第二十一周：</h2><h3 id="周计划：-1"><a href="#周计划：-1" class="headerlink" title="周计划："></a>周计划：</h3><ol>
+<li>《快速成为verilog设计高手》。</li>
+<li>3号要回家了。</li>
+<li>《UVM PRIMER》。</li>
+<li>把买的计算机体系的课程看了。</li>
+<li>有时间看《微机原理与接口》那个网课。</li>
+</ol>
+<h3 id="09-30-周一"><a href="#09-30-周一" class="headerlink" title="09-30 周一"></a>09-30 周一</h3><ol>
+<li>看《快速成为verilog设计高手》</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>UVM UG看完，代码也看了一下。</li>
+</ol>
+<h3 id="10-01-周二"><a href="#10-01-周二" class="headerlink" title="10-01 周二"></a>10-01 周二</h3><ol>
+<li>看了点《快速成为verilog高手》</li>
+<li>上午看了一上午的 ”国庆阅兵“。</li>
+</ol>
+<h3 id="10-02-周三"><a href="#10-02-周三" class="headerlink" title="10-02 周三"></a>10-02 周三</h3><ol>
+<li>继续看《快速成为verilog高手》</li>
+<li>去打疫苗。</li>
+</ol>
+<h3 id="10-04-周五"><a href="#10-04-周五" class="headerlink" title="10-04 周五"></a>10-04 周五</h3><ol>
+<li>回家了。</li>
+<li>晚上看一下《UVMPrimer》</li>
+<li>选一下礼物</li>
+<li>记录一下昨天在青岛玩的。</li>
+</ol>
+<h3 id="10-05-周六"><a href="#10-05-周六" class="headerlink" title="10-05 周六"></a>10-05 周六</h3><ol>
+<li><p>去舅家看姥爷</p>
+</li>
+<li><p>记录了一下青岛玩的情况。</p>
+</li>
+</ol>
+<h3 id="10-06-周日"><a href="#10-06-周日" class="headerlink" title="10-06 周日"></a>10-06 周日</h3><ol>
+<li>去打疫苗</li>
+<li>看UVMPrimer</li>
+<li>买一下告别礼物</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>打了疫苗</li>
+<li>买了告别礼物。</li>
+<li>下午去帮爷干活了。</li>
+</ol>
+<h2 id="第二十二周："><a href="#第二十二周：" class="headerlink" title="第二十二周："></a>第二十二周：</h2><h3 id="周计划：-2"><a href="#周计划：-2" class="headerlink" title="周计划："></a>周计划：</h3><ol>
+<li>看完《谈美》。</li>
+</ol>
+<h3 id="10-07-周一"><a href="#10-07-周一" class="headerlink" title="10-07 周一"></a>10-07 周一</h3><ol>
+<li>看了点朱光潜的《谈美》，并且在Markdown摘抄笔记。</li>
+<li>微信公众号上，把文章分了一下类</li>
+<li>今天给爸爸过生日了。</li>
+</ol>
+<h3 id="10-08-周二"><a href="#10-08-周二" class="headerlink" title="10-08 周二"></a>10-08 周二</h3><ol>
+<li>回南京。</li>
+</ol>
+<h3 id="10-09-周三"><a href="#10-09-周三" class="headerlink" title="10-09 周三"></a>10-09 周三</h3><ol>
+<li>去听艾为宣讲</li>
+</ol>
+<h3 id="10-10-周四"><a href="#10-10-周四" class="headerlink" title="10-10 周四"></a>10-10 周四</h3><ol>
+<li>发《给青年的十二封信》</li>
+<li>奥捷科技面试</li>
+<li>看乘法器设计</li>
+<li>fifo设计看一下</li>
+</ol>
+<h3 id="10-11-周五"><a href="#10-11-周五" class="headerlink" title="10-11 周五"></a>10-11 周五</h3><ol>
+<li>艾为面试</li>
+</ol>
+<h3 id="10-11-周六"><a href="#10-11-周六" class="headerlink" title="10-11 周六"></a>10-11 周六</h3><ol>
+<li>发《给青年的十二封信》</li>
+<li>fifo设计</li>
+<li>打印床发科技offer</li>
+</ol>
+<h2 id="第二十三周："><a href="#第二十三周：" class="headerlink" title="第二十三周："></a>第二十三周：</h2><h3 id="周计划：-3"><a href="#周计划：-3" class="headerlink" title="周计划："></a>周计划：</h3><h3 id="10-19-周六"><a href="#10-19-周六" class="headerlink" title="10-19 周六"></a>10-19 周六</h3><ol>
+<li>写一下日记</li>
+<li>摘抄一下读书笔记</li>
+<li>看一下和郭浪认识多久了。 (08-11初次见面，到今天认识70天了)</li>
+<li></li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>摘抄读书笔记</li>
+<li>认识70天。</li>
+</ol>
+<h2 id="阶段总结："><a href="#阶段总结：" class="headerlink" title="阶段总结："></a>阶段总结：</h2><p>​    主要是找到了工作，地平线的数字芯片验证岗位，工资优厚，公司牛逼，非常nice，而且还找到了女朋友，可以说这个阶段大获丰收，直接从“屌丝”走向了人生巅峰，实力完成了逆袭。</p>
+
+
+  
+</article>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

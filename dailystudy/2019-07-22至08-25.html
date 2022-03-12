@@ -1,0 +1,866 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="阶段计划：​    这一个阶段主要是为了找工作了，准备笔试、面试。对于一些知识，验证的我已经学了两个月，看了四本书，书中有很多内容还没有被吸收，毕竟我并不擅长记忆力，一些东西当时理解了，现在又忘了，需要我仔细回顾一下，并动手敲代码。对照简历上的东西把零散一些的内容先回顾并且整理出来，写成笔记。  验证的四本书——看 《轻松成为Verilog高手》——已看 回顾一下Verilog的语法 《数字集成电">
+<meta property="og:type" content="website">
+<meta property="og:title" content="page.title">
+<meta property="og:url" content="http://example.com/dailystudy/2019-07-22%E8%87%B308-25.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="阶段计划：​    这一个阶段主要是为了找工作了，准备笔试、面试。对于一些知识，验证的我已经学了两个月，看了四本书，书中有很多内容还没有被吸收，毕竟我并不擅长记忆力，一些东西当时理解了，现在又忘了，需要我仔细回顾一下，并动手敲代码。对照简历上的东西把零散一些的内容先回顾并且整理出来，写成笔记。  验证的四本书——看 《轻松成为Verilog高手》——已看 回顾一下Verilog的语法 《数字集成电">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-03-12T03:51:25.835Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.835Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="芯片 验证 读书 编程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>page.title - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="page.title">
+              
+            </span>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<article class="page-content">
+  <h1 id="阶段计划："><a href="#阶段计划：" class="headerlink" title="阶段计划："></a>阶段计划：</h1><p>​    这一个阶段主要是为了找工作了，准备笔试、面试。对于一些知识，验证的我已经学了两个月，看了四本书，书中有很多内容还没有被吸收，毕竟我并不擅长记忆力，一些东西当时理解了，现在又忘了，需要我仔细回顾一下，并动手敲代码。对照简历上的东西把零散一些的内容先回顾并且整理出来，写成笔记。</p>
+<ol>
+<li>验证的四本书——看</li>
+<li>《轻松成为Verilog高手》——已看</li>
+<li>回顾一下Verilog的语法</li>
+<li>《数字集成电路》</li>
+<li>DC综合概念、脚本——已看</li>
+<li>ICC流程</li>
+<li>perl、tcl语言——看着</li>
+<li>时序分析——已看</li>
+<li>看笔试题</li>
+<li>继续补充相关面试问题</li>
+<li>抽时间看一下论文</li>
+<li>额外学一下git管理的东西。</li>
+<li>看一下关于AI的书</li>
+</ol>
+<h2 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h2><h2 id="第十一周："><a href="#第十一周：" class="headerlink" title="第十一周："></a>第十一周：</h2><h3 id="周计划："><a href="#周计划：" class="headerlink" title="周计划："></a>周计划：</h3><ol>
+<li>绿皮书——看完 07-28</li>
+<li>和白皮书</li>
+<li>DC脚本——看完</li>
+<li>ICC流程——完成07-27</li>
+<li>整理相关博客——整理了</li>
+<li>将面试可能问的整理完毕，打印出来。  ** ** </li>
+<li>关注一下路科验证的消息</li>
+<li>路科验证官网上有验证的实验——看了一遍，还需要动手</li>
+<li>做一些公务员考试中的图形题——做了</li>
+<li><del>SV中对文件的读写，$fopen fwrite fdisplay fmonitor fread readmemb——放弃</del></li>
+</ol>
+<h3 id="07-22-周一"><a href="#07-22-周一" class="headerlink" title="07-22 周一"></a>07-22 周一</h3><ol>
+<li>绿皮书——端口和面向对象的概念</li>
+<li>路科验证官网上有验证的实验</li>
+<li>看一下面试题，程序题</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>绿皮书——端口和面向对象的概念</li>
+</ol>
+<h3 id="07-23-周二"><a href="#07-23-周二" class="headerlink" title="07-23  周二"></a>07-23  周二</h3><ol>
+<li>绿皮书——高级OOP、进程通信、随机</li>
+<li>路科验证官网上有验证的实验</li>
+<li>看一下面试题，程序题</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>绿皮书——高级OOP、进程通信、</li>
+</ol>
+<h3 id="07-24-周三"><a href="#07-24-周三" class="headerlink" title="07-24 周三"></a>07-24 周三</h3><ol>
+<li>下午——路科验证官网上有验证的实验</li>
+<li>晚上——看一下面试题，程序题</li>
+<li>早上——DC脚本</li>
+<li>上午——perl 正则、文本操作</li>
+<li>晚上——绿皮书的后几章</li>
+<li>看白皮书</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>早上——DC脚本</li>
+<li>看白皮书</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li><del>下午——路科验证官网上有验证的实验</del></li>
+<li>晚上——看一下面试题，程序题</li>
+<li><del>上午——perl 正则、文本操作</del></li>
+<li>晚上——绿皮书的后几章</li>
+</ol>
+<h3 id="07-25-周四"><a href="#07-25-周四" class="headerlink" title="07-25  周四"></a>07-25  周四</h3><ol>
+<li>上午——有面试，准备一下</li>
+<li>下午——路科验证官网上有验证的实验</li>
+<li>绿皮书弄完，</li>
+<li>上午——看是白皮书UVM——sequence</li>
+<li>ICC流程</li>
+<li>晚上——大疆测试</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>上午——有面试，准备一下</li>
+<li>上午——看是白皮书UVM——sequence</li>
+<li>上午——perl 正则、文本操作</li>
+<li>下午——路科验证官网上有验证的实验</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>绿皮书弄完，</li>
+<li>ICC流程</li>
+<li><del>晚上——大疆测试</del></li>
+</ol>
+<h3 id="07-26-周五"><a href="#07-26-周五" class="headerlink" title="07-26 周五"></a>07-26 周五</h3><ol>
+<li>回顾整理的面试问题、项目</li>
+<li>整理面试问题（使完整）</li>
+<li>白皮书</li>
+<li>晚上——做一些公务员考试中的图形题</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>晚上——大疆测试</li>
+<li>白皮书</li>
+<li>绿皮书</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>回顾整理的面试问题、项目</li>
+<li>整理面试问题（使完整）</li>
+<li><del>晚上——做一些公务员考试中的图形题</del></li>
+</ol>
+<h3 id="07-27-周六"><a href="#07-27-周六" class="headerlink" title="07-27 周六"></a>07-27 周六</h3><ol>
+<li>下午——SV中对文件的读写，$fopen fwrite fdisplay fmonitor fread readmemb</li>
+<li>完成sysnopsys公司的UVM实验</li>
+<li>绿皮书弄完，</li>
+<li>白皮书</li>
+<li>下午——ICC流程</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>完成sysnopsys公司的UVM实验</li>
+<li>下午——ICC流程</li>
+<li>做一些公务员考试中的图形题</li>
+</ol>
+<h3 id="07-28-周日"><a href="#07-28-周日" class="headerlink" title="07-28 周日"></a>07-28 周日</h3><ol>
+<li>白皮书弄完——看打印报告、最后的章节 ** ** **</li>
+<li>开始红皮书</li>
+<li>看能不能写一下论文的东西。应该上个周做，一直拖着，如果去了南京更没法写了。</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>绿皮书弄完，</li>
+<li>整理了sv与c 的交互</li>
+</ol>
+<h3 id="周总结："><a href="#周总结：" class="headerlink" title="周总结："></a>周总结：</h3><p>完成：</p>
+<ol>
+<li>绿皮书——看完 07-28</li>
+<li>DC脚本——看完</li>
+<li>ICC流程——完成07-27</li>
+<li>整理相关博客——整理了</li>
+<li>将面试可能问的整理完毕，打印出来。  ** ** </li>
+<li>路科验证官网上有验证的实验——看了一遍，还需要动手</li>
+<li>做一些公务员考试中的图形题——做了</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>关注一下路科验证的消息</li>
+<li>毕业论文写作</li>
+<li>SV中对文件的读写，$fopen fwrite fdisplay fmonitor fread readmemb——放弃</li>
+</ol>
+<h2 id="第十二周："><a href="#第十二周：" class="headerlink" title="第十二周："></a>第十二周：</h2><h3 id="周计划：-1"><a href="#周计划：-1" class="headerlink" title="周计划："></a>周计划：</h3><ol>
+<li>把手头的笔试、面试题多看看</li>
+<li>白皮书翻看、绿皮书、红皮书同时翻看，每天看别丢了 ** ** **</li>
+<li>AMBA——看了一下</li>
+</ol>
+<h3 id="07-29-周一"><a href="#07-29-周一" class="headerlink" title="07-29  周一"></a>07-29  周一</h3><ol>
+<li>白皮书翻看、绿皮书、红皮书同时翻看，每天看别丢了 ** ** **</li>
+<li>看笔试题</li>
+<li>看整理的验证面试</li>
+<li>看一下路科验证的公众号</li>
+<li>写一下论文</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>白皮书——打印report，整理笔记了。</li>
+<li>复习了昨天整理的sv与c 的交互</li>
+<li>看笔试题 接口、OPP、线程通信</li>
+<li>看一下路科验证的公众号</li>
+</ol>
+<h3 id="07-30-周二"><a href="#07-30-周二" class="headerlink" title="07-30 周二"></a>07-30 周二</h3><ol>
+<li>白皮书翻看、绿皮书、红皮书同时翻看，每天看别丢了 ** ** **</li>
+<li>看SV中的变量、接口</li>
+<li>看一下 verificationguide中的面试问题。</li>
+<li>寄存器模型</li>
+<li>callback机制整理</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>整理了callback</li>
+<li>这里寄存器模型</li>
+<li>看SV中的变量、接口</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>看一下 verificationguide中的面试问题。</li>
+</ol>
+<h3 id="07-31-周三-回家"><a href="#07-31-周三-回家" class="headerlink" title="07-31 周三 回家"></a>07-31 周三 回家</h3><ol>
+<li>白皮书翻看、绿皮书、红皮书同时翻看，每天看别丢了 ** ** **</li>
+<li>看一下 verificationguide中的面试问题。</li>
+<li>Cummings的第三篇论文</li>
+</ol>
+<h3 id="08-01-周四-回家"><a href="#08-01-周四-回家" class="headerlink" title="08-01 周四 回家"></a>08-01 周四 回家</h3><ol>
+<li>白皮书翻看、绿皮书、红皮书同时翻看，每天看别丢了 ** ** **</li>
+</ol>
+<h3 id="08-02-周五-回家"><a href="#08-02-周五-回家" class="headerlink" title="08-02 周五 回家"></a>08-02 周五 回家</h3><ol>
+<li>白皮书翻看、绿皮书、红皮书同时翻看，每天看别丢了 ** ** **</li>
+</ol>
+<h3 id="08-03-周六-回家"><a href="#08-03-周六-回家" class="headerlink" title="08-03 周六 回家"></a>08-03 周六 回家</h3><h3 id="08-04-周日-回家"><a href="#08-04-周日-回家" class="headerlink" title="08-04 周日 回家"></a>08-04 周日 回家</h3><h3 id="周总结：-1"><a href="#周总结：-1" class="headerlink" title="周总结："></a>周总结：</h3><p>上个周突然家里有点事，爸爸去医院检查身体，我去陪床，所幸检查结果很好，没有什么问题。</p>
+<ol>
+<li>整理了寄存器模型、callback机制</li>
+<li>看了之前整理的SV的blog</li>
+<li>做了一个视频面试</li>
+</ol>
+<h2 id="第十三周"><a href="#第十三周" class="headerlink" title="第十三周"></a>第十三周</h2><h3 id="周计划：-2"><a href="#周计划：-2" class="headerlink" title="周计划："></a>周计划：</h3><ol>
+<li>查看面试攻略、套路</li>
+<li>主要做笔试题</li>
+<li>回顾之前看的书、笔记等</li>
+<li>C++的笔记看一下</li>
+<li>perl笔记经常回顾</li>
+<li>System C，参考模型</li>
+<li>UVM中的objection，好像UVMPrimer那本书中提出了别的方法。</li>
+</ol>
+<h3 id="08-05-周一-回家"><a href="#08-05-周一-回家" class="headerlink" title="08-05 周一 回家"></a>08-05 周一 回家</h3><h3 id="08-06-周二-晴"><a href="#08-06-周二-晴" class="headerlink" title="08-06 周二  晴"></a>08-06 周二  晴</h3><ol>
+<li>下午——整理大疆的笔试</li>
+<li>下午——整理奥比中光的面试</li>
+<li>晚上——看笔试题，看面试攻略</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>投递了几个简历</li>
+<li>整理了一下分频器电路</li>
+<li>下午——整理大疆的笔试</li>
+<li>下午——整理奥比中光的面试</li>
+</ol>
+<h3 id="08-07-周三"><a href="#08-07-周三" class="headerlink" title="08-07 周三"></a>08-07 周三</h3><ol>
+<li><p>看笔试题，看面试攻略</p>
+</li>
+<li><p>Cummings的第三篇论文</p>
+</li>
+<li><p>Cummings关于SV、验证的论文。</p>
+</li>
+<li><p>查一下银行的秋招</p>
+</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>Verilog仿真原理</li>
+<li>查一下银行的秋招——没有合适的岗位，或许工作几年再社招</li>
+<li>Cummings的第三篇论文</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>Cummings关于SV、验证的论文。</li>
+</ol>
+<h3 id="08-08-周四-晴"><a href="#08-08-周四-晴" class="headerlink" title="08-08 周四 晴"></a>08-08 周四 晴</h3><ol>
+<li>早上——看sequence——OK</li>
+<li>上午——看perl整理的——OK</li>
+<li>下午——看项目代码，问一下怎么搭一个SOC环境</li>
+<li>看一下红皮书前几章</li>
+<li>上午——复习一下DC</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>早上——看sequence</li>
+<li>上午——看perl整理的</li>
+<li>上午——复习一下DC</li>
+<li>红皮书第一章</li>
+</ol>
+<h3 id="08-09-周五-晴"><a href="#08-09-周五-晴" class="headerlink" title="08-09 周五 晴"></a>08-09 周五 晴</h3><ol>
+<li>早上——红皮书二三四章</li>
+<li>上午——笔记本弄好hexo、git</li>
+<li>看factory和端口通信</li>
+<li>看C++语法</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>早上——红皮书二三四五六章</li>
+</ol>
+<h3 id="08-10-周六"><a href="#08-10-周六" class="headerlink" title="08-10 周六"></a>08-10 周六</h3><ol>
+<li>复习项目、代码结构</li>
+<li>面试整理、自我介绍</li>
+<li>红皮书</li>
+<li>看一下UVMPrimer</li>
+<li>看一下systemC</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>上午——笔记本弄好hexo、git——弄了差不多一天，把台式机的搞坏了，又修好，现在笔记本还没弄好，等到了那边再弄。</li>
+<li>复习项目、代码结构</li>
+<li>面试整理、自我介绍</li>
+</ol>
+<h3 id="08-11-周日"><a href="#08-11-周日" class="headerlink" title="08-11 周日"></a>08-11 周日</h3><p>​    来南京</p>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>完成：</p>
+<ol>
+<li>查看面试攻略、套路</li>
+<li>主要做笔试题</li>
+<li>回顾之前看的书、笔记等</li>
+<li>perl笔记经常回顾</li>
+<li>参考模型</li>
+<li>UVM中的objection，好像UVMPrimer那本书中提出了别的方法。</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>C++的笔记看一下</li>
+<li>System C</li>
+</ol>
+<h2 id="第十四周"><a href="#第十四周" class="headerlink" title="第十四周"></a>第十四周</h2><h3 id="周计划：-3"><a href="#周计划：-3" class="headerlink" title="周计划："></a>周计划：</h3><ol>
+<li>总结面试的过程、被提问的问题。</li>
+<li>把面试中暴露的问题解决掉。</li>
+<li>看一下开题报告，准备一下面试的项目。</li>
+<li>学习一下System C</li>
+<li>看一下计算机体系结构中面试的要点</li>
+<li>看一下集成电路设计那本书</li>
+<li>看一下红皮书</li>
+<li>看一下UVMPrimer</li>
+</ol>
+<h3 id="08-12-周一"><a href="#08-12-周一" class="headerlink" title="08-12 周一"></a>08-12 周一</h3><ol>
+<li>参数化的类 ——完成</li>
+<li>把发到微信的项目图片整理——完成</li>
+<li>自我介绍、项目介绍——完成</li>
+<li>SV约束、覆盖率——完成</li>
+<li>sequence \ factory\register\callback\port\phase——完成</li>
+<li>SV数据类型、接口——完成</li>
+<li>验证平台代码、driver怎么写——完成</li>
+<li>参考模型——完成</li>
+<li>C接口——完成</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>自我介绍、项目介绍</li>
+<li>参数化的类</li>
+<li>SV约束、覆盖率</li>
+<li>SV数据类型、接口</li>
+<li>把发到微信的项目图片整理</li>
+<li>验证平台代码、driver怎么写</li>
+<li>参考模型</li>
+<li>callback</li>
+<li>sequence </li>
+<li>factory</li>
+<li>register</li>
+<li>C接口</li>
+</ol>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="08-13-周二"><a href="#08-13-周二" class="headerlink" title="08-13 周二"></a>08-13 周二</h3><p>面试中兴、芯启源</p>
+<h3 id="08-14-周三"><a href="#08-14-周三" class="headerlink" title="08-14 周三"></a>08-14 周三</h3><ol>
+<li>整理昨天面试的问题？</li>
+<li>学习一下System C</li>
+<li>看开题报告</li>
+</ol>
+<h3 id="08-15-周四"><a href="#08-15-周四" class="headerlink" title="08-15 周四"></a>08-15 周四</h3><ol>
+<li><del>去网吧把文件传出来</del></li>
+<li>投一下简历</li>
+<li>ICC流程</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看了自己的开题报告</li>
+<li></li>
+</ol>
+<h3 id="08-16-周五"><a href="#08-16-周五" class="headerlink" title="08-16 周五"></a>08-16 周五</h3><ol>
+<li>ICC流程</li>
+<li>整理昨天面试的问题？</li>
+<li>tcl语法</li>
+<li>更新一下笔记本上的东西，明天会无锡不带笔记本。</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>投递英伟达、展锐简历</li>
+<li>tcl语法</li>
+</ol>
+<h3 id="接下来三天："><a href="#接下来三天：" class="headerlink" title="接下来三天："></a>接下来三天：</h3><ol>
+<li><p>项目的相关考虑：</p>
+<p>项目架构的理解、数据流、各个模块的功能，怎么实现低功耗、怎么体现AI、我在其中的作用、我完成了什么功能、还有什么改进。负责任务中每一步都干了什么</p>
+</li>
+<li><p>ICC的流程。</p>
+</li>
+<li><p>perl的常用语法 +实践。</p>
+</li>
+<li><p>UVM的验证平台框架，相关问题。</p>
+</li>
+<li><p>之前的程序状态机复习一下。</p>
+</li>
+<li><p>FIFO相关设计复习。</p>
+</li>
+<li><p>UVMPrimer中的验证平台框架。</p>
+</li>
+<li><p>SV和UVM的知识也不能丢掉。</p>
+</li>
+<li><p>有时间看几个笔试中常用的设计，防止现场写代码。</p>
+</li>
+</ol>
+<h3 id="08-17-周六"><a href="#08-17-周六" class="headerlink" title="08-17 周六"></a>08-17 周六</h3><ol>
+<li>上午——回学校，整理、计划一下任务</li>
+<li>下午——考虑项目问题</li>
+<li>复习SV和UVM的知识</li>
+<li>写个笔试题</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>上午——回学校，整理、计划一下任务</li>
+</ol>
+<h3 id="08-18-周日"><a href="#08-18-周日" class="headerlink" title="08-18 周日"></a>08-18 周日</h3><ol>
+<li>上午——之前的程序状态机复习一下。</li>
+<li>FIFO相关设计复习。</li>
+<li>UVMPrimer中的验证平台框架。</li>
+<li>晚上——有时间看几个笔试中常用的设计，防止现场写代码。看一下FIFO的代码</li>
+<li>perl的常用语法 +实践。</li>
+<li>看一下watchdog的写法</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>perl的常用语法 +实践。</li>
+<li>上午——之前的程序状态机复习一下。</li>
+<li>看一下watchdog的写法</li>
+</ol>
+<h2 id="第十五周"><a href="#第十五周" class="headerlink" title="第十五周"></a>第十五周</h2><h3 id="周计划：-4"><a href="#周计划：-4" class="headerlink" title="周计划："></a>周计划：</h3><ol>
+<li>准备面试，并且把面试中遇到的问题补全。</li>
+</ol>
+<h3 id="08-19-周一"><a href="#08-19-周一" class="headerlink" title="08-19 周一"></a>08-19 周一</h3><ol>
+<li>考虑项目问题。</li>
+<li>看一下SV、uvm的仿真环境设置。</li>
+<li>vim中删除某些行</li>
+<li>AXI和AHB的比较</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>FIFO相关设计复习。</li>
+<li>vim中删除某些行</li>
+<li>考虑项目问题。</li>
+</ol>
+<h3 id="08-20-周二"><a href="#08-20-周二" class="headerlink" title="08-20 周二"></a>08-20 周二</h3><ol>
+<li>上午——去上海面试。</li>
+<li>投递几个简历</li>
+<li>补全今天面试中的问题和不足。</li>
+</ol>
+<h3 id="08-21-周三"><a href="#08-21-周三" class="headerlink" title="08-21 周三"></a>08-21 周三</h3><ol>
+<li>补面试中的问题。</li>
+<li>** ** ** ** 写验证平台 ** ** ** ** **</li>
+<li>sdio配置的代码看一下</li>
+<li>objection的机制。</li>
+<li>starting_phase不好用，发不了seq——路径写错了</li>
+</ol>
+<h3 id="08-22-周四"><a href="#08-22-周四" class="headerlink" title="08-22 周四"></a>08-22 周四</h3><ol>
+<li>做汇顶科技的在线测评</li>
+<li>** ** ** ** 写验证平台 ** ** ** ** **</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>验真平台可以run，scoreboard成功。接下来继续完善</li>
+</ol>
+<h3 id="08-23-周五"><a href="#08-23-周五" class="headerlink" title="08-23 周五"></a>08-23 周五</h3><ol>
+<li>投递几个公司兆芯、兆易创新等</li>
+<li>做汇顶科技的在线测试</li>
+<li>浪潮的测试</li>
+<li>** ** ** 完善验证平台 ** ** **</li>
+<li>objection的机制。</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>浪潮的测试</li>
+<li>投递兆芯、思科、兆易创新</li>
+<li>做汇顶科技的在线测评</li>
+<li>兆芯的测评</li>
+<li>写了一些纯SV的代码，包括callback、blueprint，并整理了blog</li>
+<li>整理的sed的用法</li>
+</ol>
+<h3 id="08-24-周六"><a href="#08-24-周六" class="headerlink" title="08-24 周六"></a>08-24 周六</h3><ol>
+<li>** ** ** 完善验证平台 ** ** **</li>
+<li>复习一下项目内容——下午</li>
+<li>翻一番白皮书</li>
+<li>整理一下objection机制。</li>
+<li>uvm  UG</li>
+<li>synopsys 的lab</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>整理一下objection机制。并写了blog</li>
+<li>** ** ** 完善验证平台 ** ** **</li>
+<li>复习一下项目内容——下午</li>
+</ol>
+<h3 id="08-25-周日"><a href="#08-25-周日" class="headerlink" title="08-25 周日"></a>08-25 周日</h3><ol>
+<li>把这几天写的验证平台整理成blog</li>
+<li>想验证平台添加回调生成激励</li>
+<li>想验证平台添加回调C model</li>
+<li>写一个生成斐波那契数列的seq</li>
+<li>写WD的tb</li>
+<li>uvm  UG</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>把这几天写的验证平台整理成blog</li>
+<li>想验证平台添加回调生成激励</li>
+<li>写一个生成斐波那契数列的seq</li>
+<li>翻一番白皮书</li>
+<li>写WD的tb——写了一半了吧</li>
+</ol>
+
+
+  
+</article>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

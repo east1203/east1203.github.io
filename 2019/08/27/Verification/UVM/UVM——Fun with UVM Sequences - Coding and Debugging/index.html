@@ -1,0 +1,594 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="0. 介绍​    今天早上，发现Mentor Verification给我发了一封推送邮件，说有关于验证的最新研究。我是要做验证工程师的男人，看到这，能不打开吗，找了一篇关于UVM sequence的文章—— Fun with UVM Sequences - Coding and Debugging。哇，这个外国人写得确实不错，一上午拜读，也自己跑了其中的一些东西，顺便也整理了一下这篇文章的东西">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UVM——Fun with UVM Sequences - Coding and Debugging">
+<meta property="og:url" content="http://example.com/2019/08/27/Verification/UVM/UVM%E2%80%94%E2%80%94Fun%20with%20UVM%20Sequences%20-%20Coding%20and%20Debugging/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="0. 介绍​    今天早上，发现Mentor Verification给我发了一封推送邮件，说有关于验证的最新研究。我是要做验证工程师的男人，看到这，能不打开吗，找了一篇关于UVM sequence的文章—— Fun with UVM Sequences - Coding and Debugging。哇，这个外国人写得确实不错，一上午拜读，也自己跑了其中的一些东西，顺便也整理了一下这篇文章的东西">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-08-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.817Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="IC">
+<meta property="article:tag" content="SV">
+<meta property="article:tag" content="Verification">
+<meta property="article:tag" content="UVM">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>UVM——Fun with UVM Sequences - Coding and Debugging - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="UVM——Fun with UVM Sequences - Coding and Debugging">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-08-27 00:00" pubdate>
+        August 27, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      20k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      165 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">UVM——Fun with UVM Sequences - Coding and Debugging</h1>
+            
+            <div class="markdown-body">
+              <h3 id="0-介绍"><a href="#0-介绍" class="headerlink" title="0. 介绍"></a>0. 介绍</h3><p>​    今天早上，发现Mentor Verification给我发了一封推送邮件，说有关于验证的最新研究。我是要做验证工程师的男人，看到这，能不打开吗，找了一篇关于UVM sequence的文章—— <a target="_blank" rel="noopener" href="https://verificationacademy.com/verification-horizons/june-2019-volume-15-issue-2/fun-with-uvm-sequences-coding-and-debugging?mid=29813506&PC=L&c=2019_08_26_verification_tech_news_aug_201"><strong>Fun with UVM Sequences - Coding and Debugging</strong></a>。哇，这个外国人写得确实不错，一上午拜读，也自己跑了其中的一些东西，顺便也整理了一下这篇文章的东西。原文都是复制的，中文的地方是我自己的理解。</p>
+<h3 id="CREATING-A-SEQUENCE"><a href="#CREATING-A-SEQUENCE" class="headerlink" title="CREATING A SEQUENCE"></a><strong>CREATING A SEQUENCE</strong></h3><p>​    The test below creates a sequence inside a fork&#x2F;join_none. There will be four sequences running in parallel. Each sequence has a LIMIT variable set and starts to run at the end of the fork&#x2F;join_none. Once all of the forks are done, the test completes.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><pre><code class="hljs VERILOG"><span class="hljs-keyword">class</span> test <span class="hljs-keyword">extends</span> uvm_test;<br>  `uvm_component_utils(test)<br> <br>  my_sequence seq;<br>  ...<br>  <span class="hljs-keyword">task</span> run_phase(uvm_phase phase);<br>    phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>);<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) <span class="hljs-keyword">begin</span><br>      <span class="hljs-keyword">fork</span><br>        <span class="hljs-keyword">automatic</span> <span class="hljs-keyword">int</span> j = i; <span class="hljs-comment">//automatic自动变量，每隔进程中都不同</span><br>        seq = <span class="hljs-keyword">new</span>(<span class="hljs-built_in">$sformatf</span>(<span class="hljs-string">&quot;seq%0d&quot;</span>, j));<br>        seq<span class="hljs-variable">.LIMIT</span> = <span class="hljs-number">25</span> * (j+<span class="hljs-number">1</span>);<br>        seq<span class="hljs-variable">.start</span>(sqr);<br>      <span class="hljs-keyword">join_none</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">wait</span> <span class="hljs-keyword">fork</span>;<br>    phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br>  <span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="RUNNING-A-SEQUENCE-—-CREATING-AND-SENDING-A-SEQUENCE-ITEM"><a href="#RUNNING-A-SEQUENCE-—-CREATING-AND-SENDING-A-SEQUENCE-ITEM" class="headerlink" title="RUNNING A SEQUENCE — CREATING AND SENDING A SEQUENCE ITEM"></a><strong>RUNNING A SEQUENCE — CREATING AND SENDING A SEQUENCE ITEM</strong></h3><p>​    Within the for-loop, a transaction object is constructed by calling new () or using the factory. Then start_item is called to begin the interaction with the sequencer. <strong>At this point the sequencer halts the execution of the sequence until the driver is ready. Once the driver is ready, the sequencer causes ‘start_item’ to return. Once start_item has returned, then this sequence has been granted permission to use the driver. Start_item should really be called “REQUEST_TO_SEND”. Now that the sequence has permission to use the driver, it randomizes the transaction, or sets the data values as needed. This is the so-called “LATE RANDOMIZATION” that is a desirable feature. The transactions should be randomized as close to executing as possible, that way they capture the most recent state information in any constraints.</strong></p>
+<p>​    <strong>sequence执行start_item(tr)，等待driver准备好接受数据，如果driver准备好了，start_item(tr)结束；finish_item(tr)是sequence向driver发送数据，如果driver接受了数据并且执行完，调用了seq_item_port.item_done()，那么finish_item(tr)返回。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs VERILOG"><span class="hljs-keyword">class</span> my_sequence <span class="hljs-keyword">extends</span> uvm_sequence<span class="hljs-variable">#(transaction)</span>;<br>  `uvm_object_utils(my_sequence)<br> <br>  transaction t;<br>  <span class="hljs-keyword">int</span> LIMIT;<br>  ...<br>  <span class="hljs-keyword">task</span> body();<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; LIMIT; i++) <span class="hljs-keyword">begin</span><br>      t = <span class="hljs-keyword">new</span>(“t”);<br>        start_item(t);<span class="hljs-comment">///</span><br>      t<span class="hljs-variable">.data</span> = i+<span class="hljs-number">1</span>;<br>      <span class="hljs-keyword">if</span> (!t<span class="hljs-variable">.randomize</span>())<br>        `uvm_fatal(get_type_name(), <span class="hljs-string">&quot;Randomize FAILED&quot;</span>)<br>          finish_item(t);<span class="hljs-comment">//</span><br>    <span class="hljs-keyword">end</span><br>  <span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="EXECUTING-A-SEQUENCE-ITEM-—-THE-DRIVER"><a href="#EXECUTING-A-SEQUENCE-ITEM-—-THE-DRIVER" class="headerlink" title="EXECUTING A SEQUENCE ITEM — THE DRIVER"></a><strong>EXECUTING A SEQUENCE ITEM — THE DRIVER</strong></h3><p>​    The driver code is relatively simple. It derives from a uvm_driver and contains a run_phase. The run_phase is a thread started automatically by the UVM core. T<strong>he run_phase is implemented as a forever begin-end loop</strong>. In the begin-end block the driver calls seq_item_port.get_next_item (t). This is a task which will cause execution in the sequencer – essentially asking the sequencer for the next transaction that should be executed. <strong>It may be that no transaction is available, in which case this call will block. (There are other non-blocking calls that can be used, but are beyond the scope of this article, and not a recommended usage)</strong>. When the sequencer has a transaction to execute, then the get_next_item call will unblock and return the transaction handle in the task argument list (variable ‘t’ in the example below). Now the driver can execute the transaction.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs VERILOG"><span class="hljs-keyword">class</span> driver <span class="hljs-keyword">extends</span> uvm_driver<span class="hljs-variable">#(transaction)</span>;<br>  `uvm_component_utils(driver)<br> <br>  transaction t;<br>  ...<br>  <span class="hljs-keyword">task</span> run_phase(uvm_phase phase);<br>      <span class="hljs-keyword">forever</span> <span class="hljs-keyword">begin</span> <span class="hljs-comment">//这里用的是forever，我之前用while(1)</span><br>      seq_item_port<span class="hljs-variable">.get_next_item</span>(t);<br>      `uvm_info(get_type_name(), <br>               <span class="hljs-built_in">$sformatf</span>(<span class="hljs-string">&quot;Got %s&quot;</span>, t<span class="hljs-variable">.convert2string</span>()), UVM_MEDIUM)<br>      <span class="hljs-variable">#(t.duration)</span>; <span class="hljs-comment">// Execute...</span><br>      seq_item_port<span class="hljs-variable">.item_done</span>();<br>    <span class="hljs-keyword">end</span><br>  <span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="有用-CONTROLLING-OTHER-SEQUENCES"><a href="#有用-CONTROLLING-OTHER-SEQUENCES" class="headerlink" title="有用-CONTROLLING OTHER SEQUENCES"></a><strong>有用-CONTROLLING OTHER SEQUENCES</strong></h3><p>Sequences can have handles to other sequences; after all, a sequence is just a class object with data members, and a “task body()”, which will run as a thread.</p>
+<h4 id="Virtual-Sequences"><a href="#Virtual-Sequences" class="headerlink" title="Virtual Sequences"></a><strong>Virtual Sequences</strong></h4><p>T<strong>he so-called “virtual sequence” – a sequence which may not generate sequence items, but rather starts sequences on other sequencers.</strong> This is a convenient way to create parallel operations from one control point.</p>
+<p>A virtual sequence simply has handles to other sequences and sequencers. It starts them or otherwise manages them. <strong>The virtual sequence may have acquired the sequencer handles by being assigned from above, or by using a configuration database lookup, or other means</strong>. It may have constructed the sequence objects, or have acquired them by similar other means. The virtual sequence is like a puppet master, controlling other sequences.</p>
+<p><strong>这里说可以用config机制来获得sequencer，那么就是说可以在virtual sequence写成如下：</strong></p>
+<p><strong>但我写成下面这样出错：还没解决</strong></p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gauss">UVM_FATAL <span class="hljs-comment">@ 0: reporter@</span><span class="hljs-comment">@vseq.seq0 [SEQ] neither the item&#x27;s sequencer nor dedicated sequencer has been supplied to start item in vseq.seq0</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> sequence0 <span class="hljs-keyword">extends</span> uvm_sequence<span class="hljs-variable">#(transaction)</span>;<br>`uvm_object_utils(sequence0);<br><span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name=<span class="hljs-string">&quot;sequence0&quot;</span>);<br>  <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name);<br><span class="hljs-keyword">endfunction</span><br><br><span class="hljs-keyword">task</span> body();<br>  transaction tr;<br>  <span class="hljs-keyword">repeat</span>(<span class="hljs-number">5</span>) <span class="hljs-keyword">begin</span><br>    `uvm_do(tr);<br>  <span class="hljs-keyword">end</span> <br><span class="hljs-keyword">endtask</span><br><br><span class="hljs-keyword">endclass</span><br><br><span class="hljs-keyword">class</span> vsequence <span class="hljs-keyword">extends</span> uvm_sequence<span class="hljs-variable">#(transaction)</span>;<span class="hljs-comment">//virtual sequence</span><br>`uvm_object_utils(vsequence);<br><br><span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name=<span class="hljs-string">&quot;vsequence&quot;</span>);<br>  <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name);<br><span class="hljs-keyword">endfunction</span><br><br><span class="hljs-keyword">task</span> pre_body();<br>  <span class="hljs-keyword">if</span>(starting_phase!=<span class="hljs-literal">null</span>)<br>    starting_phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>);<br><span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">task</span> body();<br>  sequence0 seq0;<br>  sequencer sqr;<br>  <span class="hljs-keyword">string</span> sqr_name;<br>  <span class="hljs-keyword">if</span>(!uvm_config_db<span class="hljs-variable">#(sequencer)::get(null,get_full_name(),&quot;sqr&quot;,sqr))</span><br>    `uvm_fatal(get_type_name(),<span class="hljs-string">&quot;Failed get sequencer&quot;</span>);<br>    `uvm_info(get_type_name(),<span class="hljs-string">&quot;vsequence start a seq&quot;</span>,UVM_LOW);<br>    `uvm_do_on(seq0,sqr);<br><span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">task</span> post_body();<br>  <span class="hljs-keyword">if</span>(starting_phase!=<span class="hljs-literal">null</span>)<br>    starting_phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br><span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br><br><span class="hljs-keyword">class</span> case0 <span class="hljs-keyword">extends</span> base_case;<br>`uvm_component_utils(case0);<br><span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name=<span class="hljs-string">&quot;case0&quot;</span>,uvm_component parent=<span class="hljs-literal">null</span>);<br>  <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name,parent);<br><span class="hljs-keyword">endfunction</span><br><br><span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> build_phase(uvm_phase phase);<br>  <span class="hljs-keyword">super</span><span class="hljs-variable">.build_phase</span>(phase);<br>  uvm_config_db<span class="hljs-variable">#(sequencer)::set(null,&quot;*&quot;,&quot;sqr&quot;,env.sqr)</span>;<br><span class="hljs-keyword">endfunction</span><br><br><span class="hljs-keyword">task</span> run_phase(uvm_phase phase);<br>  vsequence vseq;<br>  <span class="hljs-keyword">super</span><span class="hljs-variable">.run_phase</span>(phase);<br>  vseq=<span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;vseq&quot;</span>);<br>  vseq<span class="hljs-variable">.starting_phase</span>=phase;<br>    vseq<span class="hljs-variable">.start</span>(<span class="hljs-literal">null</span>); <span class="hljs-comment">//virtual sequence 没有sequencer</span><br><span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p>所以我就改成了另一个方法，在virtual sequence中，<strong>通过top.find(“*.env.sqr”)找到env上的sequencer，使seq在他上面启动，注意find返回类型使uvm_component，需要用cast转换成sequencer类型。</strong></p>
+<p>代码如下，base_test 不变。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> sequence0 <span class="hljs-keyword">extends</span> uvm_sequence<span class="hljs-variable">#(transaction)</span>;<br>`uvm_object_utils(sequence0);<br><br><span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name=<span class="hljs-string">&quot;sequence0&quot;</span>);<br>  <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name);<br><span class="hljs-keyword">endfunction</span><br><br><span class="hljs-keyword">task</span> body();<br>  transaction tr;<br>  <span class="hljs-keyword">repeat</span>(<span class="hljs-number">5</span>) <span class="hljs-keyword">begin</span><br>    `uvm_do(tr);<br>  <span class="hljs-keyword">end</span> <br><span class="hljs-keyword">endtask</span><br><br><span class="hljs-keyword">endclass</span><br><br><span class="hljs-keyword">class</span> vsequence <span class="hljs-keyword">extends</span> uvm_sequence<span class="hljs-variable">#(transaction)</span>;<br>`uvm_object_utils(vsequence);<br>uvm_component component_h;<br>sequencer sequencer_h;<br><span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name=<span class="hljs-string">&quot;vsequence&quot;</span>);<br>  <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name);<br>    component_h = uvm_top<span class="hljs-variable">.find</span>(<span class="hljs-string">&quot;*.env.sqr&quot;</span>);<span class="hljs-comment">//找到启动sequencer</span><br>    <span class="hljs-keyword">if</span>(!<span class="hljs-built_in">$cast</span>(sequencer_h,component_h))<span class="hljs-comment">//类型转换</span><br>    `uvm_fatal(get_type_name(),<span class="hljs-string">&quot;cast errror&quot;</span>);<br><span class="hljs-keyword">endfunction</span><br><br><span class="hljs-keyword">task</span> pre_body();<br>  <span class="hljs-keyword">if</span>(starting_phase!=<span class="hljs-literal">null</span>)<br>    starting_phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>);<br><span class="hljs-keyword">endtask</span><br><br><span class="hljs-keyword">task</span> body();<br>  sequence0 seq0;<br>    `uvm_do_on(seq0,sequencer_h);<span class="hljs-comment">//启动seq</span><br><span class="hljs-keyword">endtask</span><br><br><span class="hljs-keyword">task</span> post_body();<br>  <span class="hljs-keyword">if</span>(starting_phase!=<span class="hljs-literal">null</span>)<br>    starting_phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br><span class="hljs-keyword">endtask</span><br><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p>今天（第二天）我不死心有用config_source_db来试，还是不行，上午看UVM UG的时候发现上面就有给配置sequencer的例子，但是他跟我用的一样，那么我确信确实可以这样配置，然后我又研究了一下，突然想到我的sequencer是有参数的，我是不是也应该加上，试了一下，果然可以，开心，哈哈。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">task</span> sequence0::body();<br>  sequence0 seq0;<br>    sequencer<span class="hljs-variable">#(transaction)</span> sequencer_h;<br>    uvm_config_db<span class="hljs-variable">#(sequencer#(transaction))::get(null,get_full_name(),&quot;sqr&quot;,sequencer_h)</span>;<br>  `uvm_info(get_type_name(),<span class="hljs-string">&quot;vsequence start a seq&quot;</span>,UVM_LOW);<br>  `uvm_do_on(seq0,sequencer_h);<br><span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> case0::connect_phase(uvm_phase phase);<br>  <span class="hljs-keyword">super</span><span class="hljs-variable">.connect_phase</span>(phase);<br>    uvm_config_db<span class="hljs-variable">#(sequencer#(transaction))::set(null,&quot;*&quot;,&quot;sqr&quot;,env.sqr)</span>;<br><span class="hljs-keyword">endfunction</span><br></code></pre></td></tr></table></figure>
+
+<p>然而，我又理解错了，我之所以这次对并不是因为加了参数，而且这里也不应该给sequencer加参数，它是我自己定义的类，不是个参数类，会报警告，<strong>真正原因是我把set的语句放在的build_phase之后的conncet_phase中，之前我写在case0的build_phase中，至于为什么可以不太明白，难道是因为case0的build先执行？</strong></p>
+<p>前面的代码中，我使用了virtual sequence，但其实不用virtual sequence，直接在sequence启动就可以。</p>
+<p>当然也可以用一个virtual sequencer来传递子sequence的sequencer句柄。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-comment">// 2019-08-27</span><br><span class="hljs-keyword">class</span> vsequencer <span class="hljs-keyword">extends</span> uvm_sequencer<span class="hljs-variable">#(transaction)</span>;<br>    sequencerA seqA;<br>    sequencerB seqB;<br><span class="hljs-keyword">endclass</span><br><span class="hljs-keyword">class</span> base_test <span class="hljs-keyword">extends</span> uvm_test;<br>    enviroment env<br>    vsquencer vsqr;<br>    ...<br>    <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> connect_phase(uvm_phase phase);<br>        <span class="hljs-keyword">super</span><span class="hljs-variable">.connect_phase</span>(phase);<br>        vsqr<span class="hljs-variable">.seqA</span>=env<span class="hljs-variable">.i_agtA</span><span class="hljs-variable">.sqr</span>;<br>        vsqr<span class="hljs-variable">.seqB</span>=env<span class="hljs-variable">.i_agtB</span><span class="hljs-variable">.sqr</span>;<br>    <span class="hljs-keyword">endfunction</span><br><span class="hljs-keyword">endclass</span><br><span class="hljs-keyword">class</span> vsequence <span class="hljs-keyword">extends</span> uvm_sequence<span class="hljs-variable">#(transaction)</span><br>    <span class="hljs-keyword">task</span> body()<br>        sequenceA seqA;<br>        sequenceB seqB;<br>        seqA<span class="hljs-variable">.start</span>(p_sequencer<span class="hljs-variable">.seqA</span>);<br>        seqB<span class="hljs-variable">.start</span>(p_sequencer<span class="hljs-variable">.seqB</span>);<br>    <span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br><span class="hljs-keyword">class</span> case0 <span class="hljs-keyword">extends</span> base_test;<br>    <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> build_phase(uvm_phase phase)<br>        uvm_config_db<span class="hljs-variable">#(uvm_object_wrapper)</span>::set(<span class="hljs-keyword">this</span>,<span class="hljs-string">&quot;vsqr.run_phase&quot;</span>,<br>        <span class="hljs-string">&quot;default_sequence&quot;</span>,vsequence::type_id::get());<br>    <span class="hljs-keyword">endfunction</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p>A virtual sequence might look like:</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs verilog">sequenceA_t sequenceA;<br>sequenceB_t sequenceB;<br>sequencerA sqrA;<br>sequencerB sqrB; <br> <br><span class="hljs-keyword">task</span> body();<br> sequenceA<span class="hljs-variable">.start</span>(sqrA);<br> sequenceB<span class="hljs-variable">.start</span>(sqrB);<br> …<br></code></pre></td></tr></table></figure>
+
+<h4 id="WRITING-A-SELF-CHECKING-SEQUENCE"><a href="#WRITING-A-SELF-CHECKING-SEQUENCE" class="headerlink" title="WRITING A SELF-CHECKING SEQUENCE"></a><strong>WRITING A SELF-CHECKING SEQUENCE</strong></h4><p>​    A self-checking sequence is a sequence which causes some activity and then <strong>checks the results</strong> for proper behavior. The simplest self-checking sequence issues a WRITE at an address, then a READ from the same address. Now the data read is compared to the data written. In some ways the sequence becomes the GOLDEN model.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> write_read_sequence <span class="hljs-keyword">extends</span> my_sequence;<br>  `uvm_object_utils(write_read_sequence)<br>  ...<br> <br>  <span class="hljs-keyword">task</span> body();<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; LIMIT; i++) <span class="hljs-keyword">begin</span><br>      t = <span class="hljs-keyword">new</span>(<span class="hljs-built_in">$sformatf</span>(<span class="hljs-string">&quot;t%0d&quot;</span>, i));<br>      start_item(t);<br>      <span class="hljs-keyword">if</span> (!t<span class="hljs-variable">.randomize</span>())<br>        `uvm_fatal(get_type_name(), <span class="hljs-string">&quot;Randomize FAILED&quot;</span>)<br>        <span class="hljs-comment">// 可以用get_type_name()这里就返回write_read_sequence类名</span><br>      t<span class="hljs-variable">.rw</span> = WRITE;<br>      finish_item(t);<br>    <span class="hljs-keyword">end</span><br> <br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; LIMIT; i++) <span class="hljs-keyword">begin</span><br>      t = <span class="hljs-keyword">new</span>(<span class="hljs-built_in">$sformatf</span>(<span class="hljs-string">&quot;t%0d&quot;</span>, i));<br>      start_item(t);<br>      <span class="hljs-keyword">if</span> (!t<span class="hljs-variable">.randomize</span>())<br>        `uvm_fatal(get_type_name(), <span class="hljs-string">&quot;Randomize FAILED&quot;</span>)<br>      t<span class="hljs-variable">.rw</span> = READ;<br>      t<span class="hljs-variable">.data</span> = <span class="hljs-number">0</span>;<br>      finish_item(t);<br> <br>      <span class="hljs-comment">// Check</span><br>      <span class="hljs-keyword">if</span> (t<span class="hljs-variable">.addr</span> != t<span class="hljs-variable">.data</span>) <span class="hljs-keyword">begin</span><br>        `uvm_info(get_type_name(), <span class="hljs-built_in">$sformatf</span>(<span class="hljs-string">&quot;Mismatch. </span><br><span class="hljs-string">	           Wrote %0d, Read %0d&quot;</span>, <br>           t<span class="hljs-variable">.addr</span>, t<span class="hljs-variable">.data</span>), UVM_MEDIUM)<br>        `uvm_fatal(get_type_name(), <span class="hljs-string">&quot;Compare FAILED&quot;</span>)<br>      <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span><br>  <span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="WRITING-A-TRAFFIC-GENERATOR-SEQUENCE"><a href="#WRITING-A-TRAFFIC-GENERATOR-SEQUENCE" class="headerlink" title="WRITING A TRAFFIC GENERATOR SEQUENCE"></a><strong>WRITING A TRAFFIC GENERATOR SEQUENCE</strong></h3><p>​    A video traffic generator can be written to generate a stream of background traffic that mimics or models the amount of data a video display might require. There is a minimum bandwidth that is required for video. That calculation will change with the load on the interface or bus, but a simplistic calculation is good enough for this example. The video traffic will generate a “screen” of data 60 times a second. Each screen will have 1920 by 1024 dots. Each dot is represented by a 32 bit word. Using these numbers, the traffic generator must create 471MB per second.</p>
+<p><strong>这算是一个sequence的小例子</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> video <span class="hljs-keyword">extends</span> my_sequence;<br>  `uvm_object_utils(video)<br> <br>  <span class="hljs-keyword">int</span> xpixels = <span class="hljs-number">1920</span>;<br>  <span class="hljs-keyword">int</span> ypixels = <span class="hljs-number">1024</span>;<br>  <span class="hljs-keyword">int</span> screendots;<br>  <span class="hljs-keyword">int</span> rate;<br>  <span class="hljs-keyword">bit</span> [<span class="hljs-number">31</span>:<span class="hljs-number">0</span>] addr;<br> <br>  <span class="hljs-keyword">int</span> x;<br>  <span class="hljs-keyword">int</span> y;<br> <br>  video_transaction t;<br> <br>  <span class="hljs-keyword">task</span> body();<br>    screendots = xpixels * ypixels;<br>    rate = <span class="hljs-number">1_000_000_000</span> / (<span class="hljs-number">60</span> * screendots);<br>    <span class="hljs-comment">//周期是1ns，1s内10^9个周期，每隔rate周期发送一个数据。</span><br>    <span class="hljs-keyword">forever</span> <span class="hljs-keyword">begin</span><br>      addr = <span class="hljs-number">0</span>;<br>      <span class="hljs-keyword">for</span> (x = <span class="hljs-number">0</span>; x &lt; xpixels; x++) <span class="hljs-keyword">begin</span><br>        <span class="hljs-keyword">for</span> (y = <span class="hljs-number">0</span>; y &lt; ypixels; y++) <span class="hljs-keyword">begin</span><br>          t = <span class="hljs-keyword">new</span>(<span class="hljs-built_in">$sformatf</span>(<span class="hljs-string">&quot;t%0d_%0d&quot;</span>, x, y));<br>          start_item(t);<br>          <span class="hljs-keyword">if</span> (!t<span class="hljs-variable">.randomize</span>())<br>            `uvm_fatal(get_type_name(), <span class="hljs-string">&quot;Randomize FAILED&quot;</span>)<br>          t<span class="hljs-variable">.rw</span> = WRITE;<br>          t<span class="hljs-variable">.addr</span> = addr++;<br>          t<span class="hljs-variable">.duration</span> = rate;<br>          finish_item(t);<br>        <span class="hljs-keyword">end</span><br>      <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span><br>  <span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="有用-WRITING-SEQUENCES-THAT-ARE-SYNCHRONIZED-WITH-EACH-OTHER"><a href="#有用-WRITING-SEQUENCES-THAT-ARE-SYNCHRONIZED-WITH-EACH-OTHER" class="headerlink" title="有用-WRITING SEQUENCES THAT ARE SYNCHRONIZED WITH EACH OTHER"></a><strong>有用-WRITING SEQUENCES THAT ARE SYNCHRONIZED WITH EACH OTHER</strong></h3><p>​    Sequences will be used to synchronize other sequences (so called virtual sequences). Often two sequences need to have a relationship between them formalized. For example they cannot enter their critical regions together – they must go single-file. Or they can only run after some common critical region has passed.</p>
+<p><strong>The code below declares two sequences which are to be synchronized (synchro_A_h and synchro_B_h). It also declares a synchronizer.</strong> There is nothing special about these classes – they have simply agreed to use some technique to be synchronized.</p>
+<p><strong>在virtual sequence中通过synchronizer来控制synchro_A和synchro_B。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> vsequence <span class="hljs-keyword">extends</span> uvm_sequence;<br>synchro synchro_A_h;<br> synchro synchro_B_h;<br> synchronizer s;<br> <br> <span class="hljs-keyword">task</span> body();<br>  s = <span class="hljs-keyword">new</span>();<br>  <span class="hljs-comment">//declares two sequences which are to be synchronized</span><br>  synchro_A_h = <span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;synchroA&quot;</span>);<br>  synchro_B_h = <span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;synchroB&quot;</span>);<br><br>   <span class="hljs-comment">//The synchronized sequences get a handle to </span><br>   <span class="hljs-comment">//the synchronizer and a starting address.</span><br>  synchro_A_h<span class="hljs-variable">.s</span> = s;<br>  synchro_A_h<span class="hljs-variable">.start_addr</span> = <span class="hljs-number">2</span>;<br>  synchro_B_h<span class="hljs-variable">.s</span> = s;<br>  synchro_B_h<span class="hljs-variable">.start_addr</span> = <span class="hljs-number">2002</span>;<br>  <span class="hljs-comment">//The synchronizer control is rather simple. </span><br>  <span class="hljs-comment">//It just says “GO” for 20 ticks and “STOP” for 100 ticks.</span><br>  <span class="hljs-keyword">fork</span> <span class="hljs-comment">//通过控制s.state来控制两个seq的运行</span><br>     <span class="hljs-keyword">forever</span> <span class="hljs-keyword">begin</span><br>      #<span class="hljs-number">100</span>;<br>      s<span class="hljs-variable">.state</span> = GO;<span class="hljs-comment">//运行seq</span><br>      #<span class="hljs-number">20</span>;<br>      s<span class="hljs-variable">.state</span> = STOP;<span class="hljs-comment">//停止运行</span><br>     <span class="hljs-keyword">end</span><br>   <span class="hljs-keyword">join_none</span><br>   <span class="hljs-comment">//The synchronized sequences are started. </span><br>   <span class="hljs-comment">//They run to completion and then simply get restarted. </span><br>   <span class="hljs-comment">//They run forever.</span><br>   <span class="hljs-keyword">fork</span><span class="hljs-comment">//不停地尝试启动，当s.state为GO的使用产生tr</span><br>     <span class="hljs-keyword">forever</span> <span class="hljs-keyword">begin</span><br>      synchro_A_h<span class="hljs-variable">.start</span>(sqr);<br>     <span class="hljs-keyword">end</span><br>     <span class="hljs-keyword">forever</span> <span class="hljs-keyword">begin</span><br>      synchro_B_h<span class="hljs-variable">.start</span>(sqr);<br>     <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">join_none</span><br>  <span class="hljs-keyword">endtask</span><br>  <span class="hljs-keyword">endclass</span><br><br></code></pre></td></tr></table></figure>
+
+<p>The simple synchronizer with two states — GO and STOP.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">enum</span> <span class="hljs-keyword">bit</span> &#123; STOP, GO &#125; synchro_t;<br><br><span class="hljs-keyword">class</span> synchronizer;<br>  synchro_t state;<br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>The class that uses a synchronizer to NOT execute until told to do so.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> synchro <span class="hljs-keyword">extends</span> my_sequence;<span class="hljs-comment">// 子sequence</span><br>  `uvm_object_utils(synchro)<br> <br>  <span class="hljs-keyword">bit</span> [<span class="hljs-number">31</span>:<span class="hljs-number">0</span>] start_addr;<br>  <span class="hljs-keyword">bit</span> [<span class="hljs-number">31</span>:<span class="hljs-number">0</span>] addr;<br>  synchronizer s;<br> <br>  synchro_transaction t;<br> <br>    <span class="hljs-keyword">task</span> body(); <span class="hljs-comment">//子sequence中的body任务</span><br>    <span class="hljs-keyword">forever</span> <span class="hljs-keyword">begin</span><br>      addr = start_addr;<br>      <span class="hljs-comment">// Is it safe?</span><br>      <span class="hljs-keyword">while</span> (s<span class="hljs-variable">.state</span> == STOP) <span class="hljs-keyword">begin</span> <span class="hljs-comment">//如果STOP则一直在这里阻塞</span><br>        #<span class="hljs-number">10</span>;<br>        `uvm_info(get_type_name(), <span class="hljs-string">&quot;Waiting...&quot;</span>, UVM_MEDIUM)<br>      <span class="hljs-keyword">end</span><br>      <span class="hljs-comment">//state为GO，跳过阻塞，发送seq</span><br>      t = <span class="hljs-keyword">new</span>(<span class="hljs-built_in">$sformatf</span>(<span class="hljs-string">&quot;t%0d&quot;</span>, addr));<br>      start_item(t);<br>      <span class="hljs-keyword">if</span> (!t<span class="hljs-variable">.randomize</span>())<br>        `uvm_fatal(get_type_name(), <span class="hljs-string">&quot;Randomize FAILED&quot;</span>)<br>      t<span class="hljs-variable">.rw</span> = WRITE;<br>      t<span class="hljs-variable">.addr</span> = addr++;<br>      finish_item(t);<br>    <span class="hljs-keyword">end</span><br>  <span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p>In simulation, the sequence waits until the synchronizer is in the GO state. Once in the GO state, then the synchronized code generates a transaction using new, and then calls start_item&#x2F;finish_item to execute it. After waiting for access to the driver and then executing, the synchronized sequence comes back to the top of the loop and checks the synchronizer state. It will either GO again, or STOP&#x2F;WAIT</p>
+<h3 id="有用-IMPLEMENTING-AN-INTERRUPT-SERVICE-ROUTINE-WITH-SEQUENCES"><a href="#有用-IMPLEMENTING-AN-INTERRUPT-SERVICE-ROUTINE-WITH-SEQUENCES" class="headerlink" title="有用-IMPLEMENTING AN INTERRUPT SERVICE ROUTINE WITH SEQUENCES"></a><strong>有用-IMPLEMENTING AN INTERRUPT SERVICE ROUTINE WITH SEQUENCES</strong></h3><p>Sequences will be used to provide an “<strong>interrupt service routine”</strong>. <strong>Interrupt service routines “sleep” until needed</strong>. This is a unique kind of sequence. In this example implementation it creates an “interrupt service transaction” and does start_item and finish_item. In this way, <strong>it can send that ISR transaction handle to the driver. The driver is then going to hold that handle UNTIL there is an interrupt.</strong></p>
+<p>As part of the drivers’ job of handling the SystemVerilog Interface, it will handle the interrupts. In this case, <strong>handling the interrupt means that some data is put into the “held handle” and then the handle is marked done. Meanwhile, the interrupt service sequence has been waiting for the transaction to be marked DONE</strong>. In some parlance（说法） this is known as ITEM REALLY DONE. In the UVM, there are other mechanisms for handling this kind of thing, but they are unreliable and more complicated than this solution.</p>
+<p><strong>就是说，driver驱动transaction到接口，driver怎么知道DUT执行完了呢，这需要driver从接口中读个数据，返回给sequence，它显示DUT是否执行完，如果执行完那么sequence就可以产生下一个transaction。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> interrupt_transaction <span class="hljs-keyword">extends</span> transaction;<br>  `uvm_object_utils(transaction)<br>  <span class="hljs-keyword">int</span> VALUE;<br>  <span class="hljs-keyword">bit</span> DONE; <span class="hljs-comment">//这个DONE的值是从driver返回的。在sequence中做判断</span><br><span class="hljs-keyword">endclass</span><br> <br><span class="hljs-keyword">class</span> interrupt_sequence <span class="hljs-keyword">extends</span> my_sequence;<br>  `uvm_object_utils(interrupt_sequence)<br> <br>  interrupt_transaction t;<br> <br>  <span class="hljs-keyword">task</span> body();<br>    <span class="hljs-keyword">forever</span> <span class="hljs-keyword">begin</span><br>      t = <span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;isr_transaction&quot;</span>);<br>      start_item(t);<br>      finish_item(t);<br>      <span class="hljs-keyword">wait</span>(t<span class="hljs-variable">.DONE</span> == <span class="hljs-number">1</span>);<span class="hljs-comment">//t还是指向刚才发送的transaction，</span><br>                          <span class="hljs-comment">//等待中断发生并执行完</span><br>      `uvm_info(get_type_name(), <span class="hljs-built_in">$sformatf</span>(<span class="hljs-string">&quot;Serviced %0d&quot;</span>,<br>	         t<span class="hljs-variable">.VALUE</span>), UVM_MEDIUM)<br>    <span class="hljs-keyword">end</span><br>  <span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br> <br><span class="hljs-keyword">class</span> driver <span class="hljs-keyword">extends</span> uvm_driver<span class="hljs-variable">#(transaction)</span>;<br>  `uvm_component_utils(driver)<br> <br>  transaction t;<br>  interrupt_transaction isr;<br>  <span class="hljs-keyword">bit</span> done;<br>  <span class="hljs-keyword">int</span> value;<br> <br>  <span class="hljs-keyword">bit</span> [<span class="hljs-number">31</span>:<span class="hljs-number">0</span>] mem[<span class="hljs-number">1920</span>*<span class="hljs-number">1024</span>];<br> <br>  <span class="hljs-keyword">task</span> interrupt_service_routine(interrupt_transaction isr_h);<br>    `uvm_info(get_type_name(), <span class="hljs-string">&quot;Setting ISR&quot;</span>, UVM_MEDIUM)<br>    done = <span class="hljs-number">0</span>;<br>    isr_h<span class="hljs-variable">.DONE</span> = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">wait</span>(done == <span class="hljs-number">1</span>); <span class="hljs-comment">//等待中断发生</span><br>    isr_h<span class="hljs-variable">.VALUE</span> = value; <span class="hljs-comment">//中断服务程序运行。</span><br>    isr_h<span class="hljs-variable">.DONE</span> = <span class="hljs-number">1</span>;  <span class="hljs-comment">//运行完，返回DONE，那么sequence中可以发送下一个transaction</span><br>  <span class="hljs-keyword">endtask</span><br> <br>  <span class="hljs-keyword">task</span> run_phase(uvm_phase phase);<br>    <span class="hljs-keyword">forever</span> <span class="hljs-keyword">begin</span><br>      seq_item_port<span class="hljs-variable">.get_next_item</span>(t);<br> <br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">$cast</span>(isr, t)) <span class="hljs-keyword">begin</span><span class="hljs-comment">//如果是isr transaction，则进入ISR，ISR是否执行还要看后面的</span><br>            				 		<span class="hljs-comment">//transaction是否触发中断。</span><br>        <span class="hljs-keyword">fork</span>                 <br>          interrupt_service_routine(isr);<span class="hljs-comment">//SIR</span><br>        <span class="hljs-keyword">join_none</span><br>      <span class="hljs-keyword">end</span><br>      <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><span class="hljs-comment">//如果是普通 transaction</span><br>        ... <br>        <span class="hljs-comment">// REGULAR driver processing</span><br>        ...<br>        <span class="hljs-keyword">if</span> (AN INTERRUPT OCCURS) <span class="hljs-keyword">begin</span> <span class="hljs-comment">//如果发生了中断，那么进行一些操作</span><br>          done = <span class="hljs-number">1</span>;                     <span class="hljs-comment">// 并将done置一，上面的ISR就会执行完。</span><br>          value = mem[t<span class="hljs-variable">.addr</span>];<br>        <span class="hljs-keyword">end</span><br>          <span class="hljs-comment">//如果没有发生中断，那么ISR不会执行</span><br>      <span class="hljs-keyword">end</span><br>      seq_item_port<span class="hljs-variable">.item_done</span>();<br>    <span class="hljs-keyword">end</span><br>  <span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="有用-SEQUENCES-WITH-“UTILITY-LIBRARIES”"><a href="#有用-SEQUENCES-WITH-“UTILITY-LIBRARIES”" class="headerlink" title="有用-SEQUENCES WITH “UTILITY LIBRARIES”"></a><strong>有用-SEQUENCES WITH “UTILITY LIBRARIES”</strong></h3><p>Sequence “utility libraries” will be created and used. Utility libraries are simple bits of code that are useful for the sequence writer – helper functions or other abstractions of the verification process.</p>
+<p>The open_door sequence below does just as its name implies. It opens the door to the sequencer and driver. Outside calls can now be made at will using the sequence object handle (seq.read () and seq.write () for example).</p>
+<p><strong>这个很好用，也是一种启动sequence的方式。</strong></p>
+<p><strong>在sequence外，通过sequence句柄调用sequence中发送transaction的任务。</strong></p>
+<p><strong>原理是：之前把发送transaction的语句写在了body中，sequence启动后，自动调用body，所以我们也可以把发送transaction语句写在其他任务中，让body为空。我们在sequence启动后，手动调用这些任务发送transaction。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> open_door <span class="hljs-keyword">extends</span> my_sequence;<br>  `uvm_object_utils(open_door)<br> <br>  read_transaction r;<br>  write_transaction w;<br> <br>  <span class="hljs-keyword">task</span> read(<span class="hljs-keyword">input</span> <span class="hljs-keyword">bit</span>[<span class="hljs-number">31</span>:<span class="hljs-number">0</span>]addr, <span class="hljs-keyword">output</span> <span class="hljs-keyword">bit</span>[<span class="hljs-number">31</span>:<span class="hljs-number">0</span>]data);<br>    r = <span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;r&quot;</span>);<br>    start_item(r);<br>    <span class="hljs-keyword">if</span> (!r<span class="hljs-variable">.randomize</span>())<br>      `uvm_fatal(get_type_name(), <span class="hljs-string">&quot;Randomize FAILED&quot;</span>)<br>    r<span class="hljs-variable">.rw</span> = READ;<br>    r<span class="hljs-variable">.addr</span> = addr;<br>    finish_item(r);<br>    data = r<span class="hljs-variable">.data</span>;<br>  <span class="hljs-keyword">endtask</span><br> <br>  <span class="hljs-keyword">task</span> write(<span class="hljs-keyword">input</span> <span class="hljs-keyword">bit</span>[<span class="hljs-number">31</span>:<span class="hljs-number">0</span>]addr, <span class="hljs-keyword">input</span> <span class="hljs-keyword">bit</span>[<span class="hljs-number">31</span>:<span class="hljs-number">0</span>]data);<br>    w = <span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;w&quot;</span>);<br>    start_item(w);<br>    <span class="hljs-keyword">if</span> (!w<span class="hljs-variable">.randomize</span>())<br>      `uvm_fatal(get_type_name(), <span class="hljs-string">&quot;Randomize FAILED&quot;</span>)<br>    w<span class="hljs-variable">.rw</span> = WRITE;<br>    w<span class="hljs-variable">.addr</span> = addr;<br>    w<span class="hljs-variable">.data</span> = data;<br>    finish_item(w);<br>  <span class="hljs-keyword">endtask</span><br> <br>  <span class="hljs-keyword">task</span> body();<br>    `uvm_info(get_type_name(), <span class="hljs-string">&quot;Starting&quot;</span>, UVM_MEDIUM)<br>    <span class="hljs-keyword">wait</span>(<span class="hljs-number">0</span>);<br>    `uvm_info(get_type_name(), <span class="hljs-string">&quot;Finished&quot;</span>, UVM_MEDIUM)<br>  <span class="hljs-keyword">endtask</span><br>    <span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p>The open_door is constructed and then started using normal means. Then a test program can issue reads and writes simply as in the RED lines below.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs verilog">open_door open_door_h;<br> <br>    open_door_h = <span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;open_door&quot;</span>);<br>    <span class="hljs-keyword">fork</span><br>      open_door_h<span class="hljs-variable">.start</span>(sqr);<br>      <span class="hljs-keyword">begin</span><br>        <span class="hljs-keyword">bit</span> [<span class="hljs-number">31</span>:<span class="hljs-number">0</span>] rdata;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++) <span class="hljs-keyword">begin</span><br>          open_door_h<span class="hljs-variable">.write</span>(i, i+<span class="hljs-number">1</span>);<br>          open_door_h<span class="hljs-variable">.read</span>(i, rdata);<br>          <span class="hljs-keyword">if</span> ( rdata != i+<span class="hljs-number">1</span> ) <span class="hljs-keyword">begin</span><br>            `uvm_info(get_type_name(), <span class="hljs-built_in">$sformatf</span>(<span class="hljs-string">&quot;Error: Wrote &#x27;%0d&#x27;, Read &#x27;%0d&#x27;&quot;</span>,<br>               i+<span class="hljs-number">1</span>, rdata), UVM_MEDIUM)<br>            <span class="hljs-comment">//`uvm_fatal(get_type_name(), &quot;MISMATCH&quot;);</span><br>          <span class="hljs-keyword">end</span><br>        <span class="hljs-keyword">end</span><br>      <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">join_none</span><br></code></pre></td></tr></table></figure>
+
+<p>下面是我自己写的，在case中启动sequence，并调用其函数</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> sequence1 <span class="hljs-keyword">extends</span> uvm_sequence<span class="hljs-variable">#(transaction)</span>;<br><br>`uvm_object_utils(sequence1);<br><span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name=<span class="hljs-string">&quot;sequence1&quot;</span>);<br>  <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name);<br><span class="hljs-keyword">endfunction</span><br><span class="hljs-keyword">task</span> write();<br>  transaction tr;<br><br>  `uvm_info(get_type_name(),<span class="hljs-string">&quot;write&quot;</span>,UVM_LOW)<br>  `uvm_do(tr);<br><span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">task</span> read();<br><br>  transaction tr;<br>  `uvm_info(get_type_name(),<span class="hljs-string">&quot;read&quot;</span>,UVM_LOW)<br>  `uvm_do(tr);<br><span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">task</span> pre_body();<br>  <span class="hljs-keyword">if</span>(starting_phase != <span class="hljs-literal">null</span>)<br>    starting_phase<span class="hljs-variable">.raise_objection</span>(<span class="hljs-keyword">this</span>);<br>  `uvm_info(get_type_name(),<span class="hljs-string">&quot;pre_body&quot;</span>,UVM_LOW)<br><span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">task</span> body();<br>  `uvm_info(get_type_name(),<span class="hljs-string">&quot;body&quot;</span>,UVM_LOW)<br>  <span class="hljs-keyword">wait</span>(<span class="hljs-number">0</span>);<br><br><span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">task</span> post_body();<br>  `uvm_info(get_type_name(),<span class="hljs-string">&quot;post_body&quot;</span>,UVM_LOW)<br> <span class="hljs-keyword">if</span>(starting_phase!=<span class="hljs-literal">null</span>)<br>    starting_phase<span class="hljs-variable">.drop_objection</span>(<span class="hljs-keyword">this</span>);<br><span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br><span class="hljs-comment">//在case中启动启动</span><br><span class="hljs-keyword">class</span> case0 <span class="hljs-keyword">extends</span> base_test;<br>  `uvm_component_utils(case0);<br><br>  <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">string</span> name=<span class="hljs-string">&quot;case0&quot;</span>,uvm_component parent=<span class="hljs-literal">null</span>);<br>    <span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(name,parent);<br>  <span class="hljs-keyword">endfunction</span><br><br>  <span class="hljs-keyword">task</span> run_phase(uvm_phase phase);<br>  sequence1 seq1;<br>    seq1=<span class="hljs-keyword">new</span>(<span class="hljs-string">&quot;seq1&quot;</span>);<br>  <span class="hljs-keyword">fork</span><br>      <span class="hljs-keyword">begin</span><br>    seq1<span class="hljs-variable">.starting_phase</span> = phase;<br>    seq1<span class="hljs-variable">.start</span>(env0<span class="hljs-variable">.sqr</span>);<br>      <span class="hljs-keyword">end</span><br>      <span class="hljs-keyword">begin</span><br>          <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">10</span>;i++) <span class="hljs-keyword">begin</span><br>              seq1<span class="hljs-variable">.write</span>();<span class="hljs-comment">//手动调用任务发送transaction</span><br>            seq1<span class="hljs-variable">.read</span>();<br>          <span class="hljs-keyword">end</span><br>      <span class="hljs-keyword">end</span><br>  <span class="hljs-keyword">join_none</span><br>  <span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br><br></code></pre></td></tr></table></figure>
+
+<p>结果如下：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-number">27</span>:UVM_INFO seq/sequence1<span class="hljs-variable">.sv</span>(<span class="hljs-number">13</span>) @ <span class="hljs-number">0</span>: uvm_test_top<span class="hljs-variable">.env0</span><span class="hljs-variable">.sqr</span>@@seq1 [sequence1] write<br><span class="hljs-number">28</span>:UVM_INFO seq/sequence1<span class="hljs-variable">.sv</span>(<span class="hljs-number">25</span>) @ <span class="hljs-number">0</span>: uvm_test_top<span class="hljs-variable">.env0</span><span class="hljs-variable">.sqr</span>@@seq1 [sequence1] pre_body<br><span class="hljs-number">29</span>:UVM_INFO seq/sequence1<span class="hljs-variable">.sv</span>(<span class="hljs-number">28</span>) @ <span class="hljs-number">0</span>: uvm_test_top<span class="hljs-variable">.env0</span><span class="hljs-variable">.sqr</span>@@seq1 [sequence1] body<br><span class="hljs-number">54</span>:UVM_INFO seq/sequence1<span class="hljs-variable">.sv</span>(<span class="hljs-number">19</span>) @ <span class="hljs-number">0</span>: uvm_test_top<span class="hljs-variable">.env0</span><span class="hljs-variable">.sqr</span>@@seq1 [sequence1] read<br><span class="hljs-number">79</span>:UVM_INFO seq/sequence1<span class="hljs-variable">.sv</span>(<span class="hljs-number">13</span>) @ <span class="hljs-number">0</span>: uvm_test_top<span class="hljs-variable">.env0</span><span class="hljs-variable">.sqr</span>@@seq1 [sequence1] write<br>....<br><span class="hljs-number">454</span>:UVM_INFO seq/sequence1<span class="hljs-variable">.sv</span>(<span class="hljs-number">19</span>) @ <span class="hljs-number">0</span>: uvm_test_top<span class="hljs-variable">.env0</span><span class="hljs-variable">.sqr</span>@@seq1 [sequence1] read<br><span class="hljs-number">479</span>:UVM_INFO seq/sequence1<span class="hljs-variable">.sv</span>(<span class="hljs-number">13</span>) @ <span class="hljs-number">0</span>: uvm_test_top<span class="hljs-variable">.env0</span><span class="hljs-variable">.sqr</span>@@seq1 [sequence1] write<br><span class="hljs-number">504</span>:UVM_INFO seq/sequence1<span class="hljs-variable">.sv</span>(<span class="hljs-number">19</span>) @ <span class="hljs-number">0</span>: uvm_test_top<span class="hljs-variable">.env0</span><span class="hljs-variable">.sqr</span>@@seq1 [sequence1] read<br><span class="hljs-number">529</span>:UVM_INFO seq/sequence1<span class="hljs-variable">.sv</span>(<span class="hljs-number">33</span>) @ <span class="hljs-number">1000000</span>: uvm_test_top<span class="hljs-variable">.env0</span><span class="hljs-variable">.sqr</span>@@seq1 [sequence1] post_body<br><span class="hljs-number">543</span>:[sequence1]    <span class="hljs-number">23</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="CALLING-C-CODE-FROM-SEQUENCES"><a href="#CALLING-C-CODE-FROM-SEQUENCES" class="headerlink" title="CALLING C CODE FROM SEQUENCES"></a><strong>CALLING C CODE FROM SEQUENCES</strong></h3><p>这个就跟在SV中调用C一样，通过“DPI-C”，没什么好说的。</p>
+<h3 id="CALLING-SEQUENCES-FROM-C-CODE"><a href="#CALLING-SEQUENCES-FROM-C-CODE" class="headerlink" title="CALLING SEQUENCES FROM C CODE"></a><strong>CALLING SEQUENCES FROM C CODE</strong></h3><p>这个光提了一下没讲。</p>
+<p><strong>REFERENCES</strong></p>
+<p>[1] <a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/document/8299595/citations#citations">SystemVerilog, 1800-2017 - IEEE Standard for SystemVerilog–Unified Hardware Design, Specification, and Verification Language</a></p>
+<p>[2] <a target="_blank" rel="noopener" href="https://standards.ieee.org/standard/1800_2-2017.html">UVM LRM: IEEE Standard for Universal Verification Methodology Language Reference Manual</a></p>
+<p><em>All source code is available from the author. Contact</em> <a href="mailto:rich_edelman@mentor.com"><em>rich_edelman@mentor.com</em></a> <em>for access or download from the</em> <a target="_blank" rel="noopener" href="https://verificationacademy.com/uvm-sequences_source-code"><em>Verification Academy</em></a><em>.</em></p>
+<p><em>This article was previously presented at DVCon US 2019.</em></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/">Verification</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/UVM/">UVM</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/SV/">SV</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Verification/">Verification</a>
+                    
+                      <a class="hover-with-bg" href="/tags/UVM/">UVM</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/08/31/others/linux/vim%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">vim常用操作</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/08/25/Verification/UVM/UVM%E2%80%94%E2%80%94ALU%E7%94%9F%E6%88%90fabonacci%E6%95%B0%E5%88%97/">
+                        <span class="hidden-mobile">UVM——ALU生成fabonacci数列</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -1,0 +1,729 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="阶段计划：关于验证：  chipverify网站上的SV tutorial 《Verilog and SystemVerilog Gotchas》 cummings的验证论文 路科验证的论文。 Mentor的视频  关于论文：  提纲  前两章  《快速成为Verilog设计高手》   第二十四周：周计划： Cummings论文  10-21 周一 cummings论文–上午 看一点chipver">
+<meta property="og:type" content="website">
+<meta property="og:title" content="page.title">
+<meta property="og:url" content="http://example.com/dailystudy/2019-10-21%E8%87%B312-01.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="阶段计划：关于验证：  chipverify网站上的SV tutorial 《Verilog and SystemVerilog Gotchas》 cummings的验证论文 路科验证的论文。 Mentor的视频  关于论文：  提纲  前两章  《快速成为Verilog设计高手》   第二十四周：周计划： Cummings论文  10-21 周一 cummings论文–上午 看一点chipver">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-03-12T03:51:25.836Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.836Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="芯片 验证 读书 编程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>page.title - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="page.title">
+              
+            </span>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<article class="page-content">
+  <h1 id="阶段计划："><a href="#阶段计划：" class="headerlink" title="阶段计划："></a>阶段计划：</h1><p>关于验证：</p>
+<ol>
+<li>chipverify网站上的SV tutorial</li>
+<li>《Verilog and SystemVerilog Gotchas》</li>
+<li>cummings的验证论文</li>
+<li>路科验证的论文。</li>
+<li>Mentor的视频</li>
+</ol>
+<p>关于论文：</p>
+<ol>
+<li><p>提纲</p>
+</li>
+<li><p>前两章</p>
+</li>
+<li><p><del>《快速成为Verilog设计高手》</del></p>
+</li>
+</ol>
+<h2 id="第二十四周："><a href="#第二十四周：" class="headerlink" title="第二十四周："></a>第二十四周：</h2><h3 id="周计划："><a href="#周计划：" class="headerlink" title="周计划："></a>周计划：</h3><ol>
+<li>Cummings论文</li>
+</ol>
+<h3 id="10-21-周一"><a href="#10-21-周一" class="headerlink" title="10-21 周一"></a>10-21 周一</h3><ol>
+<li>cummings论文–上午</li>
+<li>看一点chipverify文章</li>
+<li>查一下generate语法</li>
+<li>看一下这些公司的应聘进展。</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>cummings论文–上午</li>
+<li>查一下generate语法</li>
+</ol>
+<h3 id="10-22-周二"><a href="#10-22-周二" class="headerlink" title="10-22 周二"></a>10-22 周二</h3><ol>
+<li>复习昨天的cummings论文</li>
+<li>看QQ群里关于签三方协议的流程</li>
+<li>看chipverify文章</li>
+<li>整理一下generate的用法。</li>
+<li>看一下这些公司的应聘进展。</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>整理一下generate的用法。</li>
+<li>看一下这些公司的应聘进展。</li>
+</ol>
+<h3 id="10-23-周三"><a href="#10-23-周三" class="headerlink" title="10-23 周三"></a>10-23 周三</h3><ol>
+<li>整理了一篇文章</li>
+</ol>
+<h3 id="10-24-周四"><a href="#10-24-周四" class="headerlink" title="10-24 周四"></a>10-24 周四</h3><ol>
+<li>看chipverify文章</li>
+<li>看一点《人生的智慧》</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看了文章“Introduction about Advanced Functional Verification”</li>
+<li>看了一些chipverify中SV的data type文章，并且摘抄了一点笔记。</li>
+</ol>
+<h3 id="10-25-周五"><a href="#10-25-周五" class="headerlink" title="10-25 周五"></a>10-25 周五</h3><ol>
+<li>看chipverify文章</li>
+<li>看一点《人生的智慧》</li>
+<li>看一下路科验证推荐的书籍</li>
+<li></li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看chipverify文章</li>
+<li>看一下路科验证推荐的书籍</li>
+</ol>
+<h3 id="10-26-周六"><a href="#10-26-周六" class="headerlink" title="10-26 周六"></a>10-26 周六</h3><ol>
+<li>看chipverify文章——晚上</li>
+<li>看《 03_Verilog and SystemVerilog Gotchas》路科验证推荐的。</li>
+<li>写一篇文章，什么都行，最近的感悟吧</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>写了篇日记。</li>
+<li>看《 03_Verilog and SystemVerilog Gotchas》第二章</li>
+</ol>
+<h3 id="10-27-周日"><a href="#10-27-周日" class="headerlink" title="10-27 周日"></a>10-27 周日</h3><ol>
+<li>看chipverify文章——晚上</li>
+<li>《 03_Verilog and SystemVerilog Gotchas》第三章</li>
+</ol>
+<h3 id="10-29-周二"><a href="#10-29-周二" class="headerlink" title="10-29 周二"></a>10-29 周二</h3><ol>
+<li>日记</li>
+<li>chipverify</li>
+<li>《 03_Verilog and SystemVerilog Gotchas》第三章</li>
+</ol>
+<h2 id="第二十四周"><a href="#第二十四周" class="headerlink" title="第二十四周"></a>第二十四周</h2><h3 id="周计划：-1"><a href="#周计划：-1" class="headerlink" title="周计划："></a>周计划：</h3><ol>
+<li>回学校</li>
+<li>论文计划</li>
+</ol>
+<h3 id="11-04-周一"><a href="#11-04-周一" class="headerlink" title="11-04 周一"></a>11-04 周一</h3><ol>
+<li>回学校</li>
+<li>搞一下网站</li>
+<li>日记</li>
+</ol>
+<h3 id="11-05-周二"><a href="#11-05-周二" class="headerlink" title="11-05 周二"></a>11-05 周二</h3><ol>
+<li>熟悉一下课题</li>
+<li>写一下PPT</li>
+<li><del>晚上打篮球</del></li>
+<li>晚上看一点chipverify web</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>熟悉一下课题</li>
+<li>写一下PPT</li>
+<li>跑了一会步，身体不允许不运动啊</li>
+<li>日记</li>
+</ol>
+<h3 id="11-06-周三"><a href="#11-06-周三" class="headerlink" title="11-06 周三"></a>11-06 周三</h3><ol>
+<li>看《UVMPimer》</li>
+<li>再看一下论文提纲、PPT</li>
+<li>搜一下最近的关于时钟树的论文、或者看看王老师发到群里的。</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看《UVMPimer》</li>
+<li>再看一下论文提纲、PPT</li>
+<li>搜一下最近的关于时钟树的论文、或者看看王老师发到群里的。</li>
+</ol>
+<h3 id="11-07-周四"><a href="#11-07-周四" class="headerlink" title="11-07 周四"></a>11-07 周四</h3><ol>
+<li>开组会</li>
+<li>查一下如何正确洗冷水澡</li>
+<li>离异女性找伴侣应注意</li>
+<li>看一下SemiWiki文章</li>
+<li>看一下chipverify文章</li>
+<li>一本好书 综艺节目</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>开组会</li>
+<li>查一下如何正确洗冷水澡</li>
+<li>离异女性找伴侣应注意</li>
+<li>看一下SemiWiki文章</li>
+</ol>
+<h3 id="11-08-周五"><a href="#11-08-周五" class="headerlink" title="11-08 周五"></a>11-08 周五</h3><ol>
+<li>看论文笔记</li>
+<li>看UVMPrimer</li>
+<li>GPU和CPU</li>
+</ol>
+<p>完成:</p>
+<ol>
+<li>GPU和CPU</li>
+<li>日记</li>
+<li>看UVMPrimer</li>
+</ol>
+<h2 id="第二十五周"><a href="#第二十五周" class="headerlink" title="第二十五周"></a>第二十五周</h2><h3 id="周计划：-2"><a href="#周计划：-2" class="headerlink" title="周计划："></a>周计划：</h3><ol>
+<li>总结方法论：记忆、保持精力、学习方法</li>
+<li>看完chipverify</li>
+<li>开始看《 03_Verilog and SystemVerilog Gotchas》</li>
+<li>论文开始写了</li>
+</ol>
+<h3 id="11-12-周二"><a href="#11-12-周二" class="headerlink" title="11-12 周二"></a>11-12 周二</h3><ol>
+<li>看完《UVMPrimer》</li>
+<li>总结学习方法、记忆力、精力保持——上午</li>
+<li>看论文，写一下论文第一章内容。</li>
+<li>晚上看一点chipverify</li>
+<li>找一下C的学习资料，是否要买点书，还是先看着C+++primer</li>
+<li>晚上看一点Mentor视频</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看完《UVMPrimer》</li>
+<li>总结学习方法、记忆力、精力保持——上午</li>
+<li>晚上看一点chipverify</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>看论文，写一下论文第一章内容。</li>
+<li>找一下C的学习资料，是否要买点书，还是先看着C+++primer</li>
+<li>晚上看一点Mentor视频</li>
+</ol>
+<h3 id="11-13-周三-阴-小雨"><a href="#11-13-周三-阴-小雨" class="headerlink" title="11-13 周三 阴 小雨"></a>11-13 周三 阴 小雨</h3><ol>
+<li>看论文，写一下论文第一章内容。 ** ** **</li>
+<li>看点《邓小平文选》</li>
+<li>看chipverify</li>
+<li>看一点Mentor视频</li>
+<li>看一嗲积极心理学视频</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>看论文，写一下论文第二章内容。 ** ** **</li>
+<li>看点《邓小平文选》</li>
+<li>看一嗲积极心理学视频</li>
+</ol>
+<h3 id="11-14-周四"><a href="#11-14-周四" class="headerlink" title="11-14 周四"></a>11-14 周四</h3><ol>
+<li>写第二章论文的一小节</li>
+<li>chipverify</li>
+<li></li>
+</ol>
+<p>每天必做：</p>
+<ol>
+<li>看一点Mentor视频</li>
+<li>记一首诗</li>
+<li>看课外书</li>
+<li>积极心理学视频</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li><p>写第二章论文的一小节</p>
+</li>
+<li><p>chipverify</p>
+</li>
+<li><p>看一点Mentor视频</p>
+</li>
+<li><p>记一首诗</p>
+</li>
+<li><p>看课外书</p>
+</li>
+</ol>
+<h3 id="11-15-周五"><a href="#11-15-周五" class="headerlink" title="11-15 周五"></a>11-15 周五</h3><ol>
+<li>chipverify</li>
+</ol>
+<p>每天必做：</p>
+<ol>
+<li>看一点Mentor视频</li>
+<li>记一首诗</li>
+<li>看课外书</li>
+<li>积极心理学视频</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>chipverify完成</li>
+<li>积极心理学视频</li>
+</ol>
+<p>未完成：</p>
+<ol>
+<li>看一点Mentor视频</li>
+<li>看课外书</li>
+</ol>
+<h3 id="11-16-周六"><a href="#11-16-周六" class="headerlink" title="11-16 周六"></a>11-16 周六</h3><ol>
+<li>论文第二章</li>
+</ol>
+<p>每天必做：</p>
+<ol>
+<li>看一点Mentor视频</li>
+<li>记一首诗</li>
+<li>看课外书</li>
+<li>积极心理学视频</li>
+</ol>
+<h2 id="第二十六周"><a href="#第二十六周" class="headerlink" title="第二十六周"></a>第二十六周</h2><ol>
+<li>chipverify的SOC部分</li>
+<li>周三之前把第二章写完</li>
+<li>每天看积极心理学公开课</li>
+<li>Meditation</li>
+<li>每天记一首诗</li>
+</ol>
+<h3 id="11-18-周一"><a href="#11-18-周一" class="headerlink" title="11-18 周一"></a>11-18 周一</h3><ol>
+<li>写论文</li>
+<li>积极心里学——晚上</li>
+<li>把ToBe写在纸上</li>
+<li>回忆下一昨天、今天</li>
+<li>写日记</li>
+</ol>
+<p>每天必做：</p>
+<ol>
+<li>Meditation</li>
+<li>记一首诗</li>
+</ol>
+<p>完成：</p>
+<ol>
+<li>把ToBe写在纸上</li>
+<li>记一首诗</li>
+<li>hexo d -g</li>
+<li>论文写了一小节</li>
+</ol>
+<h3 id="11-19-周二"><a href="#11-19-周二" class="headerlink" title="11-19 周二"></a>11-19 周二</h3><ol>
+<li>论文两小节——上午</li>
+<li>写日记</li>
+<li>积极心里学—</li>
+</ol>
+<p>每天必做：</p>
+<ol>
+<li>Meditation</li>
+<li>记一首诗</li>
+</ol>
+<h3 id="周总结："><a href="#周总结：" class="headerlink" title="周总结："></a>周总结：</h3><ol>
+<li>周三之前把第二章写完</li>
+<li>每天看积极心理学公开课</li>
+<li>Meditation</li>
+<li>每天记一首诗——记了几次</li>
+</ol>
+<h2 id="第二十七周"><a href="#第二十七周" class="headerlink" title="第二十七周"></a>第二十七周</h2><h3 id="周计划：-3"><a href="#周计划：-3" class="headerlink" title="周计划："></a>周计划：</h3><ol>
+<li>chipverify的SOC部分</li>
+<li>继续写论文，写完第一章，规划一下第三章</li>
+<li>查一下关于学历的问题</li>
+<li>看完 ”积极心理学“课程</li>
+</ol>
+<p>每天必做：</p>
+<ol>
+<li>Meditation</li>
+<li>记一首诗</li>
+</ol>
+<h3 id="11-25-周一-阴有小雨"><a href="#11-25-周一-阴有小雨" class="headerlink" title="11-25 周一 阴有小雨"></a>11-25 周一 阴有小雨</h3><ol>
+<li>看《应物兄》</li>
+<li>查学历相关东西</li>
+<li>改一下论文</li>
+</ol>
+<p>每天必做：</p>
+<ol>
+<li>Meditation</li>
+<li>记一首诗</li>
+</ol>
+<h3 id="11-26-周二"><a href="#11-26-周二" class="headerlink" title="11-26 周二"></a>11-26 周二</h3><ol>
+<li>看论文，写一下第一章东西</li>
+<li>查一下hold-time violation的文章</li>
+</ol>
+<p>每天必做：</p>
+<ol>
+<li>Meditation</li>
+<li>记一首诗</li>
+</ol>
+<h3 id="11-27-周三"><a href="#11-27-周三" class="headerlink" title="11-27 周三"></a>11-27 周三</h3><ol>
+<li>看论文，改第一章和第二章最后一节</li>
+</ol>
+<p>每天必做：</p>
+<ol>
+<li>Meditation</li>
+<li>记一首诗</li>
+</ol>
+<h3 id="11-28-周四"><a href="#11-28-周四" class="headerlink" title="11-28 周四"></a>11-28 周四</h3><ol>
+<li>看论文，整理笔记</li>
+<li>看一下《Verilog and SystemVerilog Gotchas》</li>
+<li>看了一点《数字集成电路——电路、系统与设计》</li>
+</ol>
+<p>每天必做：</p>
+<ol>
+<li>Meditation</li>
+<li>记一首诗</li>
+</ol>
+<h2 id="阶段总结："><a href="#阶段总结：" class="headerlink" title="阶段总结："></a>阶段总结：</h2><p>完成：</p>
+<p>关于验证：</p>
+<ol>
+<li>chipverify网站上的SV tutorial</li>
+</ol>
+<p>关于论文：</p>
+<ol>
+<li>提纲</li>
+<li>前两章</li>
+</ol>
+<p>​    好多东西没有完成，偷懒了，那本书《《Verilog and SystemVerilog Gotchas》没有看完，之前在南京的时候已经看了一半了，但是回来一个月竟然都没有打开继续看，醉了。还有一些关于验证的东西最近一个月也没有在看，美其名曰正在忙着写论文，幸好王老师给了我提纲，已经把第二章写的差不多了。</p>
+<p>​    打算把哈佛大学的《积极心理学》公开课看完，一开始看得挺多的，看了一半了，但是这两个周没怎么看了，还要补上。还有Mentor的验证的视频，打算没听都要看一看，但是也没有看，一是因为网络问题，而是时间安排没到位。两个周前买了几本书，看了《应物兄》，两大本，已经看了百分之七十了吧，希望这个周看完它。</p>
+<p>​    虽然这一个阶段也花了不少时间去找郭浪，上一次去了四天，这一次她来无锡三天，然后我又送她回去，又住了一晚上，但是时间还是在自己手里，要把有限的时间高效的利用起来，每天做好计划，一定要按照计划来。</p>
+<p>​    下一个阶段要好好努力一下了，最重要的当然是论文了，每天要安排至少四个小时的论文时间，看或者写。其他时间也可以看看课外书、验证的、计算机架构方面的东西。关心一下社会、行业、趣事。总之，让生活充实、多彩，有向上的趋势。</p>
+
+
+  
+</article>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

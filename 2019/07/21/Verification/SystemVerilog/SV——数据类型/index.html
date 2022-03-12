@@ -1,0 +1,607 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="SystemVerilog中扩展了Verilog中的数据类型，增加双状态数据、动态数组、队列等。 1. 内建类型1.1 logic类型SV中将reg类型替换成logic关键字，logic既可以在块语句中被赋值，也可以在assign中被赋值，可以用wire的地方都可以用logic来替换，但logic不能有多个驱动，比如双向总线建模的时候需要用wire。 1.2 双状态数据类型只有0 1两个状态，没有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SV——数据类型">
+<meta property="og:url" content="http://example.com/2019/07/21/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="SystemVerilog中扩展了Verilog中的数据类型，增加双状态数据、动态数组、队列等。 1. 内建类型1.1 logic类型SV中将reg类型替换成logic关键字，logic既可以在块语句中被赋值，也可以在assign中被赋值，可以用wire的地方都可以用logic来替换，但logic不能有多个驱动，比如双向总线建模的时候需要用wire。 1.2 双状态数据类型只有0 1两个状态，没有">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-07-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.815Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="IC">
+<meta property="article:tag" content="SV">
+<meta property="article:tag" content="Verification">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>SV——数据类型 - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="SV——数据类型">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-07-21 00:00" pubdate>
+        July 21, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5.5k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      47 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">SV——数据类型</h1>
+            
+            <div class="markdown-body">
+              <p>SystemVerilog中扩展了Verilog中的数据类型，增加双状态数据、动态数组、队列等。</p>
+<h3 id="1-内建类型"><a href="#1-内建类型" class="headerlink" title="1. 内建类型"></a>1. 内建类型</h3><h4 id="1-1-logic类型"><a href="#1-1-logic类型" class="headerlink" title="1.1 logic类型"></a>1.1 logic类型</h4><p>SV中将reg类型替换成logic关键字，logic既可以在块语句中被赋值，也可以在assign中被赋值，可以用wire的地方都可以用logic来替换，但logic不能有多个驱动，比如双向总线建模的时候需要用wire。</p>
+<h4 id="1-2-双状态数据类型"><a href="#1-2-双状态数据类型" class="headerlink" title="1.2 双状态数据类型"></a>1.2 双状态数据类型</h4><p>只有0 1两个状态，没有x z，有利于提高仿真器性能，减少内存使用。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">bit</span> b; <span class="hljs-comment">//sigle bit</span><br><span class="hljs-keyword">bit</span> [<span class="hljs-number">31</span>:<span class="hljs-number">0</span>] b32 ;<span class="hljs-comment">// 32bit unsigned integer</span><br><span class="hljs-keyword">int</span> <span class="hljs-keyword">unsigned</span> ui ;<span class="hljs-comment">// 32bit unsigned integer</span><br><span class="hljs-keyword">int</span> i ;<span class="hljs-comment">//// 32bit signed integer</span><br><span class="hljs-keyword">byte</span> b8; <span class="hljs-comment">// 8bit signed integer</span><br><span class="hljs-keyword">shortint</span> s; <span class="hljs-comment">// 16bit signed integer</span><br><span class="hljs-keyword">longint</span> l;<span class="hljs-comment">//4bit signed integer</span><br><span class="hljs-keyword">integer</span> i4; <span class="hljs-comment">// 32bit signed integer</span><br><span class="hljs-keyword">time</span> t;<span class="hljs-comment">//64bit unsigned integer</span><br><span class="hljs-keyword">real</span> r; <span class="hljs-comment">// double precision floating point</span><br></code></pre></td></tr></table></figure>
+
+<p>如果将双状态的变量连接到DUT的输出，那么如果输出x或z，将被转换成0或1，而不能检测到x z。使用$isunknown操作符可以在表达式位x或z的时候返回1.</p>
+<h3 id="2-定位宽的数组"><a href="#2-定位宽的数组" class="headerlink" title="2. 定位宽的数组"></a>2. 定位宽的数组</h3><h4 id="2-1-定义和初始化"><a href="#2-1-定义和初始化" class="headerlink" title="2.1 定义和初始化"></a>2.1 定义和初始化</h4><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">int</span> lo_hi[<span class="hljs-number">0</span>:<span class="hljs-number">15</span>]; <span class="hljs-comment">//声明16个元素的数组</span><br><span class="hljs-keyword">int</span> c_type[<span class="hljs-number">16</span>];<span class="hljs-comment">//声明16个元素的数组</span><br></code></pre></td></tr></table></figure>
+
+<p>初始化用<strong>单引号和花括号</strong>组合。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">int</span> ascend[<span class="hljs-number">4</span>] = &#x27;&#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>&#125;; <br>ascend[<span class="hljs-number">0</span>:<span class="hljs-number">1</span>] = &#x27;&#123;<span class="hljs-number">1</span>,<span class="hljs-number">1</span>&#125;; <span class="hljs-comment">//修改前两个元素值</span><br>ascend=&#x27;&#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-keyword">default</span>:<span class="hljs-number">1</span>&#125;; <span class="hljs-comment">//最后两个元素默认1</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="2-2-foreach遍历数组"><a href="#2-2-foreach遍历数组" class="headerlink" title="2.2 foreach遍历数组"></a>2.2 foreach遍历数组</h4><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">int</span> ascend[<span class="hljs-number">4</span>] = &#x27;&#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>&#125;; <br>    <span class="hljs-keyword">foreach</span> (ascend[i])  <span class="hljs-comment">// 不需要定义i，可以之间拿来用</span><br>    	ascend[i]*=<span class="hljs-number">2</span>;<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="2-3-遍历多维数组"><a href="#2-3-遍历多维数组" class="headerlink" title="2.3 遍历多维数组"></a>2.3 遍历多维数组</h4><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">int</span> arr[<span class="hljs-number">2</span>][<span class="hljs-number">3</span>] = &#x27;&#123;&#x27;&#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>&#125;,&#x27;&#123;<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>&#125;&#125;;<br>    <span class="hljs-keyword">foreach</span>(arr[i，j])<br>		<span class="hljs-built_in">$display</span>(<span class="hljs-string">&quot;%d\n&quot;</span>,arr[i][j]); <span class="hljs-comment">//打印6个值</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<p>也可以分开遍历</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">int</span> arr[<span class="hljs-number">2</span>][<span class="hljs-number">3</span>] = &#x27;&#123;&#x27;&#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>&#125;,&#x27;&#123;<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>&#125;&#125;;<br>	<span class="hljs-keyword">foreach</span>(arr[i]) <span class="hljs-keyword">begin</span><br>		<span class="hljs-built_in">$display</span>(<span class="hljs-string">&quot;%d:\n&quot;</span>,i); <span class="hljs-comment">//打印6个值</span><br>		<span class="hljs-keyword">foreach</span>(arr[,j])<br>			<span class="hljs-built_in">$display</span>(<span class="hljs-string">&quot;%d\n&quot;</span>,arr[i][j]); <span class="hljs-comment">//打印6个值</span><br>	<span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-4-赋值和比较"><a href="#2-4-赋值和比较" class="headerlink" title="2.4 赋值和比较"></a>2.4 赋值和比较</h4><p>两个数组间可以直接赋值，比较</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog">arr1 = arr2;<br>arr1 == arr2;<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-5-合并数组"><a href="#2-5-合并数组" class="headerlink" title="2.5 合并数组"></a>2.5 合并数组</h4><p>既可以当作单独的数据，也可以分成几个小份作为数组。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-keyword">bit</span> [<span class="hljs-number">3</span>:<span class="hljs-number">0</span>][<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] bytes;  <span class="hljs-comment">//4字节组装成的32bit</span><br>bytes = <span class="hljs-number">32&#x27;hCafe_Dada</span>;<br>bytes; <span class="hljs-comment">// 32bit</span><br>bytes[<span class="hljs-number">3</span>]; <span class="hljs-comment">//Ca字节</span><br>bytes[<span class="hljs-number">3</span>][<span class="hljs-number">0</span>];<span class="hljs-comment">//单bit</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>用途：</strong></p>
+<ol>
+<li><p>如果需要标量与数组的转换用合并数组。</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">bit </span>[<span class="hljs-number">31</span>:<span class="hljs-number">0</span>]  <span class="hljs-keyword">b32 </span>= <span class="hljs-keyword">bytes </span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>如果需要等待信号变化，用合并数组，比如唤醒@操作符</p>
+</li>
+</ol>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">bit</span> [<span class="hljs-number">0</span>:<span class="hljs-number">3</span>][<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] bytes;<br><span class="hljs-keyword">bit</span> [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] arr[<span class="hljs-number">4</span>];<br>@bytes ;<span class="hljs-comment">//正确，合并数组</span><br>@arr;<span class="hljs-comment">//错误，非合并数组</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-动态数组"><a href="#3-动态数组" class="headerlink" title="3. 动态数组"></a>3. 动态数组</h3><p>​    定宽数组的宽读在编译的时候就确定了。如果想在仿真时生成事务，但事务的总量是随机的，那么就需要用一个很宽的数组，但实际上可能只需要很小的数组，造成存储空间浪费。<strong>SV中提供动态数组，数组在仿真时分配存储空间。用[ ].用new[]来分配空间，delete()删除元素。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">int</span> dyn[],dyn2[]; <span class="hljs-comment">//[]符号</span><br>    dyn = <span class="hljs-keyword">new</span>[<span class="hljs-number">4</span>]; <span class="hljs-comment">//分配4个元素</span><br>    <span class="hljs-keyword">foreach</span>(dyn[i]) dyn[i] = i;<br>    dyn2=<span class="hljs-keyword">new</span>[<span class="hljs-number">4</span>](dyn); <span class="hljs-comment">// 将dyn的值给dyn2</span><br>    dyn<span class="hljs-variable">.delete</span>(); <br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>定宽数组可以给动态数组赋值，编译器自动调用new函数。</strong></p>
+<h3 id="4-队列-queue"><a href="#4-队列-queue" class="headerlink" title="4. 队列 queue"></a>4. 队列 queue</h3><p>可以在队列任何地方增加或者删除元素，在性能上的损耗比数组小。**$符号。**</p>
+<p><strong>还括号初始化，但不需要单引号。</strong></p>
+<p>最后一个索引是$.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">int</span> j=<span class="hljs-number">0</span>;<br>	q1[$] = &#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>&#125;;<br>	q2[$] = &#123;<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>&#125;;<br>    q1<span class="hljs-variable">.insert</span>(<span class="hljs-number">1</span>,<span class="hljs-number">10</span>);<span class="hljs-comment">//在索引1处插入10</span><br>    q1<span class="hljs-variable">.insert</span>(<span class="hljs-number">1</span>,q2);<span class="hljs-comment">//插入队列</span><br>    q1<span class="hljs-variable">.delete</span>(<span class="hljs-number">1</span>);<span class="hljs-comment">//删除索引1处元素</span><br>	q1<span class="hljs-variable">.push_front</span>(<span class="hljs-number">1</span>);<br>	j=q1<span class="hljs-variable">.pop_front</span>;<br>	q1<span class="hljs-variable">.push_back</span>(<span class="hljs-number">1</span>);<br>	j=q1<span class="hljs-variable">.pop_back</span>();<br>	<span class="hljs-keyword">foreach</span> (q1[m]) q1[m];<br>    q1 = &#123;q1[<span class="hljs-number">0</span>],q1[<span class="hljs-number">1</span>:<span class="hljs-number">4</span>]&#125;; <span class="hljs-comment">// 最后一个索引是$</span><br>    q1 = &#123;q1[<span class="hljs-number">0</span>],j,q1[<span class="hljs-number">1</span>:$]&#125;; <span class="hljs-comment">// 在任意位置插入元素、队列</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="5-关联数组"><a href="#5-关联数组" class="headerlink" title="5. 关联数组"></a>5. 关联数组</h3><p>关联数组就是哈希，保存键值对。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-comment">//文件内容：</span><br><span class="hljs-number">12</span> min_address<br><span class="hljs-number">123</span> max_address<br><span class="hljs-comment">//</span><br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">int</span> switch[<span class="hljs-keyword">string</span>]；<span class="hljs-comment">//定义，int是值类型，string是键类型</span><br>	<span class="hljs-keyword">int</span> min_add,max_add;<span class="hljs-comment">//</span><br>	<span class="hljs-keyword">int</span> i,r,file;<br>	<span class="hljs-keyword">string</span> s,idx;<br>	file = <span class="hljs-built_in">$fopen</span>(<span class="hljs-string">&quot;switch.txt&quot;</span>,<span class="hljs-string">&quot;r&quot;</span>);<br>    <span class="hljs-keyword">while</span>(!<span class="hljs-built_in">$feof</span>(file)) <span class="hljs-keyword">begin</span><br>		r = <span class="hljs-built_in">$fscanf</span>(file,<span class="hljs-string">&quot;%d %s&quot;</span>,i,s);<br>		switch[s] = i;  <span class="hljs-comment">// 赋值</span><br>	<span class="hljs-keyword">end</span><br>	switch<span class="hljs-variable">.exist</span>(<span class="hljs-string">&quot;max_address&quot;</span>); <span class="hljs-comment">//是否存在某个键</span><br>	switch<span class="hljs-variable">.first</span>(idx);<span class="hljs-comment">// 将第一个键值对的键（索引）保存在idx</span><br>    switch<span class="hljs-variable">.next</span>(idx);<span class="hljs-comment">//得到下一个键值对的键，保存在idx</span><br>	switch<span class="hljs-variable">.delete</span>(idx);<span class="hljs-comment">//删除idx的键对应的键值对</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="6-数组的方法"><a href="#6-数组的方法" class="headerlink" title="6. 数组的方法"></a>6. 数组的方法</h3><h4 id="6-1-size"><a href="#6-1-size" class="headerlink" title="6.1 $size"></a>6.1 $size</h4><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">int</span> arr[<span class="hljs-number">4</span>] = &#x27;&#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>&#125;; <br>	<span class="hljs-built_in">$size</span>(arr);<span class="hljs-comment">//返回数组长度</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="6-2-sum-product-or-xor"><a href="#6-2-sum-product-or-xor" class="headerlink" title="6.2 sum\product\or\xor"></a>6.2 sum\product\or\xor</h4><p>sum方法，返回元素宽度的值。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">bit</span>[<span class="hljs-number">0</span>:<span class="hljs-number">7</span>] arr[<span class="hljs-number">4</span>] = &#x27;&#123;<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>&#125;;<br>	arr<span class="hljs-variable">.sum</span>;<span class="hljs-comment">//返回8bit的值，也就是返回元素宽度的值</span><br>	<span class="hljs-number">32</span>‘b + arr<span class="hljs-variable">.sum</span>; <span class="hljs-comment">//返回32bit</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="6-3-定位数组元素"><a href="#6-3-定位数组元素" class="headerlink" title="6.3 定位数组元素"></a>6.3 定位数组元素</h4><p>max最大值、min最小值、unique返回不重复的元素。</p>
+<p><strong>这些方法可以用在定宽数组、动态数组、队列中。返回类型是队列。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">int</span> f[<span class="hljs-number">6</span>] = &#x27;&#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>&#125;;<br><span class="hljs-keyword">int</span> q[$];<br>q = f<span class="hljs-variable">.max</span>; <span class="hljs-comment">//&#123;4&#125;</span><br>q = f<span class="hljs-variable">.min</span>; <span class="hljs-comment">//&#123;0&#125;</span><br>q = f<span class="hljs-variable">.unique</span>; <span class="hljs-comment">// &#123;0,1,2,4&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>with用来定位数组中的元素，与其他方法一起使用。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Verilog">q = f<span class="hljs-variable">.find</span> <span class="hljs-keyword">with</span>(item &gt; <span class="hljs-number">2</span>); /找到大于<span class="hljs-number">2</span>的元素，也是返回队列<br>q = f<span class="hljs-variable">.find_index</span> <span class="hljs-keyword">with</span>(item &gt;<span class="hljs-number">2</span>); <span class="hljs-comment">//大于2 的元素的索引</span><br>q = f<span class="hljs-variable">.find_first</span> <span class="hljs-keyword">with</span>(item &gt;<span class="hljs-number">2</span>);<br>q = f<span class="hljs-variable">.find_first_index</span> <span class="hljs-keyword">with</span>(item &gt;<span class="hljs-number">2</span>);<br>q = f<span class="hljs-variable">.find_last</span> <span class="hljs-keyword">with</span>(item &gt;<span class="hljs-number">2</span>);<br>q = f<span class="hljs-variable">.find_last_index</span> <span class="hljs-keyword">with</span>(item &gt;<span class="hljs-number">2</span>);<br>sum = f<span class="hljs-variable">.sum</span> <span class="hljs-keyword">with</span> (item &gt;<span class="hljs-number">2</span>);<span class="hljs-comment">//对大于2的元素求和</span><br></code></pre></td></tr></table></figure>
+
+<p>在条件语句with中item是重复参数，默认是item，也可以制定其他值</p>
+<h4 id="6-4-数组排序"><a href="#6-4-数组排序" class="headerlink" title="6.4 数组排序"></a>6.4 数组排序</h4><p>reverse，sort（从小到大），rsort（从大到小）</p>
+<h3 id="7-元素类型选择"><a href="#7-元素类型选择" class="headerlink" title="7. 元素类型选择"></a>7. 元素类型选择</h3><p>动态数组：子程序中最好用动态数组，这样子程序可以对不同长度的数组进行处理，只需要程序参数匹配就行了。</p>
+<p>关联数组：用在索引不规则的时候。比如由于随机值产生的分布索引</p>
+<p>队列：当数组的元素数目变化很大的时候用队列，比如保存预期值的记分板中。</p>
+<p>$size(array) 返回数组宽度</p>
+<h3 id="8-typedef定义类型"><a href="#8-typedef定义类型" class="headerlink" title="8. typedef定义类型"></a>8. typedef定义类型</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> u32;<br></code></pre></td></tr></table></figure>
+
+<h3 id="9-创建自定义结构"><a href="#9-创建自定义结构" class="headerlink" title="9. 创建自定义结构"></a>9. 创建自定义结构</h3><h4 id="9-1-struct"><a href="#9-1-struct" class="headerlink" title="9.1 struct"></a>9.1 struct</h4><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span>&#123;<br>		<span class="hljs-keyword">int</span> a;<br>		<span class="hljs-keyword">string</span> b;&#125; my_struct;<br>my_struct st = &#x27;&#123;<span class="hljs-number">1</span>,&#x27;dong&#x27;&#125;;<br></code></pre></td></tr></table></figure>
+
+<p><strong>用单引号和花括号来初始化。</strong></p>
+<h4 id="9-2-合并结构packed"><a href="#9-2-合并结构packed" class="headerlink" title="9.2 合并结构packed"></a>9.2 合并结构packed</h4><p>合并结构以连续的bit集来存放数据，</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-keyword">packed</span> &#123;<span class="hljs-keyword">bit</span>[<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] a,b,c;&#125; p_s;<br></code></pre></td></tr></table></figure>
+
+<p>合并struct和非合并struct的区别在于仿真的效率上。P42《绿皮书》</p>
+<h3 id="10-枚举类型"><a href="#10-枚举类型" class="headerlink" title="10. 枚举类型"></a>10. 枚举类型</h3><h4 id="10-1-定义"><a href="#10-1-定义" class="headerlink" title="10.1 定义"></a>10.1 定义</h4><p>枚举类型可以为列表中的每个名称赋值。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">enum</span> &#123;INIT,DECODE,IDLE&#125; fstate_e; <span class="hljs-comment">//定义枚举类型</span><br>fstate_e nstate,pstate;<span class="hljs-comment">//创建枚举变量</span><br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">case</span>(pstete)<br>	IDLE:nstate &lt;= INIT;<br>	INIT:nstate &lt;= DECODE;<br>	DECODE:nstate &lt;= IDLE;<br>	<span class="hljs-keyword">endcase</span><br>    <span class="hljs-built_in">$display</span>(<span class="hljs-string">&quot;nstate name is %s&quot;</span>,nstate<span class="hljs-variable">.name</span>()); <span class="hljs-comment">//</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<p>name()函数返回当前枚举值的符号名。</p>
+<p><strong>声明了枚举变量fstate_e之后，INIT,DECODE,IDLE这些名字可以直接拿过来用。它们的默认值是从0开始，递增，当然也可以自己设置.</strong></p>
+<p><strong>注意：枚举类型被当作int来存在，如果定义变量的时候没有初始化，那么默认将枚举变量初始化为0，但如果在定义枚举变量的时候没有0，那么出错。如下面：</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">enum</span> &#123;INIT=<span class="hljs-number">1</span>,DECODE&#125; state_e;<br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	state_e p=<span class="hljs-number">1</span>;<span class="hljs-comment">//正确</span><br>	state_e pp;<span class="hljs-comment">//错误，默认给pp赋值0，但state_e中没0</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="10-2-枚举子程序"><a href="#10-2-枚举子程序" class="headerlink" title="10.2 枚举子程序"></a>10.2 枚举子程序</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c">first（）;<span class="hljs-comment">//返回第一个</span><br>last（）<br>next（）下一个，会绕回<br>next（N）下N个<br>prev（）前一个<br>prev（N）前N个<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="11-常量-const"><a href="#11-常量-const" class="headerlink" title="11. 常量 const"></a>11. 常量 const</h3><h3 id="12-字符串-string"><a href="#12-字符串-string" class="headerlink" title="12. 字符串 string"></a>12. 字符串 string</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c">getc(index)<br><span class="hljs-built_in">tolower</span>()<br>tohigher()<br>len()<br>substr(index1,index2);<br>$psprintf();<span class="hljs-comment">//产生格式化的字符串</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="13-类型转换"><a href="#13-类型转换" class="headerlink" title="13. 类型转换"></a>13. 类型转换</h3><h4 id="13-1-静态转换"><a href="#13-1-静态转换" class="headerlink" title="13.1 静态转换"></a>13.1 静态转换</h4><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">int</span> i;<br>	i = <span class="hljs-keyword">int</span>&#x27;(<span class="hljs-number">10</span><span class="hljs-variable">.0</span>-<span class="hljs-number">0</span><span class="hljs-variable">.1</span>);<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="13-2-动态-cast"><a href="#13-2-动态-cast" class="headerlink" title="13.2 动态 $cast"></a>13.2 动态 $cast</h4><h4 id="13-3-流操作符"><a href="#13-3-流操作符" class="headerlink" title="13.3 流操作符"></a>13.3 流操作符</h4><p>“&gt;&gt;”是将bit从左到右排列，转换成一个数据。</p>
+<p>“&lt;&lt;”是将bit从右到左排列，转换成一个数据。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	<span class="hljs-keyword">int</span> h;<br>	<span class="hljs-keyword">bit</span>[<span class="hljs-number">0</span>:<span class="hljs-number">7</span>] g[<span class="hljs-number">4</span>],j[<span class="hljs-number">4</span>] = &#x27;&#123;<span class="hljs-number">8&#x27;ha</span>,<span class="hljs-number">8&#x27;hb</span>,<span class="hljs-number">8&#x27;hc</span>&#x27;<span class="hljs-number">8&#x27;hd</span>&#125;;<br>	<span class="hljs-keyword">bit</span>[<span class="hljs-number">0</span>:<span class="hljs-number">7</span>] q;<br>    <span class="hljs-keyword">bit</span>[<span class="hljs-number">0</span>:<span class="hljs-number">7</span>] b1,b2,b3,b4;<br>	h = &#123;&gt;&gt;&#123;j&#125;&#125;; <span class="hljs-comment">//以bit为单位将数组j从左到右打包成整数 0a0b0c0d</span><br>	h = &#123;&lt;&lt;&#123;j&#125;&#125;; <span class="hljs-comment">//以bit为单位将数组j从右到左打包成整数 b030d050</span><br>	h = &#123;&lt;&lt;<span class="hljs-keyword">byte</span>&#123;j&#125;&#125;; <span class="hljs-comment">//以byte为单位将数组j从左到右打包成整数 0d0c0b0a</span><br>	g = &#123;&lt;&lt;<span class="hljs-keyword">byte</span>&#123;j&#125;&#125;;<br>	q = &#123;&lt;&lt;<span class="hljs-number">4</span>&#123;<span class="hljs-number">8&#x27;b0001_1000</span>&#125;&#125;; <span class="hljs-comment">//1000_0001 半字节倒序</span><br>    &#123;&gt;&gt;<span class="hljs-keyword">byte</span>&#123;b1,b2,b3,b4&#125;&#125; = &#123;&gt;&gt;<span class="hljs-keyword">byte</span>&#123;j&#125;&#125;;<span class="hljs-comment">//先将数组j以byte为单位pack，然后再以byte为单位unpack，并赋值给b1,b2,b3,b4</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/">Verification</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/System-Verilog/">System Verilog</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/SV/">SV</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Verification/">Verification</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/07/22/Verification/UVM/UVM%E2%80%94%E2%80%94%E6%8E%A7%E5%88%B6%E6%89%93%E5%8D%B0%E4%BF%A1%E6%81%AF/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">UVM——控制打印信息</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/07/18/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/Cummings%E2%80%94%E2%80%94%E5%BC%82%E6%AD%A5FIFO%E7%AC%AC%E4%BA%8C%E8%AE%B2/">
+                        <span class="hidden-mobile">Cummings——异步FIFO第二讲</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

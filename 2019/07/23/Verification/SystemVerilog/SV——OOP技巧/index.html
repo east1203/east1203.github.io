@@ -1,0 +1,571 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="1. 事务传递​    在事务生成器中，每次新建transaction，随机化后发送给接收器，这样每次发送函数transmit(tr)发送的transaction都不同。避免了transmit程序需要多个cycle，后面的随机化将前面还没有发送完成的数据覆盖了。 ​    下面这种写法是只创建一个transaction对象，对对象进行多次随机化，后面的随机化可能会覆盖前面没发送的数据。 12345">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SV——OOP技巧">
+<meta property="og:url" content="http://example.com/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94OOP%E6%8A%80%E5%B7%A7/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="1. 事务传递​    在事务生成器中，每次新建transaction，随机化后发送给接收器，这样每次发送函数transmit(tr)发送的transaction都不同。避免了transmit程序需要多个cycle，后面的随机化将前面还没有发送完成的数据覆盖了。 ​    下面这种写法是只创建一个transaction对象，对对象进行多次随机化，后面的随机化可能会覆盖前面没发送的数据。 12345">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-07-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.813Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="IC">
+<meta property="article:tag" content="SV">
+<meta property="article:tag" content="Verification">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>SV——OOP技巧 - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="SV——OOP技巧">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-07-23 00:00" pubdate>
+        July 23, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.6k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      31 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">SV——OOP技巧</h1>
+            
+            <div class="markdown-body">
+              <h3 id="1-事务传递"><a href="#1-事务传递" class="headerlink" title="1. 事务传递"></a>1. 事务传递</h3><p>​    在事务生成器中，每次新建transaction，随机化后发送给接收器，这样每次发送函数transmit(tr)发送的transaction都不同。避免了transmit程序需要多个cycle，后面的随机化将前面还没有发送完成的数据覆盖了。</p>
+<p>​    下面这种写法是只创建一个transaction对象，对对象进行多次随机化，后面的随机化可能会覆盖前面没发送的数据。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-keyword">class</span> Generator;<br>	Transaction tr; <span class="hljs-comment">//声明句柄</span><br>	<span class="hljs-keyword">task</span> gen(<span class="hljs-keyword">int</span> n);<br>		tr = <span class="hljs-keyword">new</span>(); <span class="hljs-comment">// 新建一个对象</span><br>		<span class="hljs-keyword">repeat</span>(n) <span class="hljs-keyword">begin</span><br>			tr<span class="hljs-variable">.randomize</span>(); <span class="hljs-comment">//随机化transaction</span><br>			transmit(tr); <span class="hljs-comment">//发送transaction</span><br>		<span class="hljs-keyword">end</span><br>	<span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p>​    <strong>每次新建新的对象，再随机化之后发送。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-keyword">class</span> Generator;<br>	Transaction tr; <span class="hljs-comment">//声明句柄</span><br>	<span class="hljs-keyword">task</span> gen(<span class="hljs-keyword">int</span> n);<br>		<span class="hljs-keyword">repeat</span>(n) <span class="hljs-keyword">begin</span><br>			tr = <span class="hljs-keyword">new</span>(); <span class="hljs-comment">// 每次新建一个对象</span><br>			tr<span class="hljs-variable">.randomize</span>(); <span class="hljs-comment">//随机化transaction</span><br>			transmit(tr); <span class="hljs-comment">//发送transaction</span><br>		<span class="hljs-keyword">end</span><br>	<span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="2-继承"><a href="#2-继承" class="headerlink" title="2. 继承"></a>2. 继承</h3><p>在子类的构造函数中，第一行先调用父类的构造函数，如果父类的构造函数有传入参数，那么子类构造也要有参数。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> Parent;<br>	<span class="hljs-keyword">int</span> <span class="hljs-keyword">var</span>;<br>	<span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">int</span> n);<br>		<span class="hljs-keyword">var</span> = n;<br>	<span class="hljs-keyword">endfunction</span><br><span class="hljs-keyword">endclass</span><br><span class="hljs-keyword">class</span> Child <span class="hljs-keyword">extends</span> Parent;<br>    <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">int</span> n); <span class="hljs-comment">//必须传入参数</span><br>		<span class="hljs-keyword">super</span><span class="hljs-variable">.new</span>(n);<br>	<span class="hljs-keyword">endfunction</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-blueprint模式"><a href="#3-blueprint模式" class="headerlink" title="3. blueprint模式"></a>3. blueprint模式</h3><p>​    蓝图（blueprint）模式可以在不改变生成器代码的前提下，让生成器生成并发送不同的transaction。</p>
+<p>​    在生成器中定义hook对象，也可以叫他蓝图对象，然后再testbench将这个对象通过层次引用的方式替换成需要的对象。</p>
+<p>​    作用：不需要修改generator代码，就可以生成不同的transaction。</p>
+<p>​    在第一节中，将事务创建和发送写在一起，避免覆盖的问题，但那也使得没法通过层次引用来替换generator中的对象，因为一创建对象，立马就随机化并发送了。所以必须营造这样的流程：</p>
+<p>​    <strong>generator中的new函数创建transaction —-&gt;&gt;&gt; tb中在对象创建后将对象替换 —-&gt;&gt;&gt;generator中随机化对象，并发送对象的一个深拷贝（避免覆盖问题）。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-keyword">class</span> Generator;<br>	Transaction blueprint; <span class="hljs-comment">//声明句柄</span><br>    mailbox mlb;<br>    <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">input</span> mailbox mlb_i);<br>        mlb = mlb_i;<br>        blueprint = <span class="hljs-keyword">new</span>(); <span class="hljs-comment">// 在new函数中新建一个对象</span><br>    <span class="hljs-keyword">endfunction</span><br>	<span class="hljs-keyword">task</span> run(<span class="hljs-keyword">int</span> n);		<br>		<span class="hljs-keyword">repeat</span>(n) <span class="hljs-keyword">begin</span><br>			blueprint<span class="hljs-variable">.randomize</span>(); <span class="hljs-comment">//随机化blueprint</span><br>            mlb<span class="hljs-variable">.put</span>(blueprint<span class="hljs-variable">.copy</span>()); <span class="hljs-comment">//发送blueprint的深拷贝</span><br>		<span class="hljs-keyword">end</span><br>	<span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p>在使用的时候，在testbench中：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> Env;<br>    Generator gen;<br>    Driver drv;<br>    mailbox mlb;<br>    ....<br><span class="hljs-keyword">endclass</span><br><span class="hljs-keyword">module</span> tb;<br>	Env env;<br>    <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>        env=<span class="hljs-keyword">new</span>();<br>        env<span class="hljs-variable">.build</span>(); <span class="hljs-comment">//创建验证平台对象（结构）</span><br>        BadTr bad=<span class="hljs-keyword">new</span>(); <span class="hljs-comment">// 新的事务</span><br>        env<span class="hljs-variable">.gen</span><span class="hljs-variable">.blueprint</span>=bad; <span class="hljs-comment">//验证平台对象创建后，将新事务替换blueprint，那么发送的就是bad</span><br>        env<span class="hljs-variable">.run</span>(); <span class="hljs-comment">//运行平台（发送接受tr）</span><br>        env<span class="hljs-variable">.wrap_up</span>();<span class="hljs-comment">//清理</span><br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-纯虚方法和抽象类"><a href="#4-纯虚方法和抽象类" class="headerlink" title="4. 纯虚方法和抽象类"></a>4. 纯虚方法和抽象类</h3><p><strong>抽象类可以被扩展但不能被实例化，用virtual关键字定义。</strong></p>
+<p><strong>纯虚方法没有实体，只有声明。只能定义在抽象类中，但抽象类中可以由其他非纯虚方法。****pure</strong></p>
+<p>由抽象类扩展的子类，必须将抽象类中的纯虚方法都重定义了才能用。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">class</span> Base;<br>	<span class="hljs-keyword">pure</span> <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> get();<br>	<span class="hljs-keyword">pure</span> <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> cmp(<span class="hljs-keyword">int</span> i);<br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-回调-callback"><a href="#5-回调-callback" class="headerlink" title="5.回调 callback"></a>5.回调 callback</h3><p>​    希望创建一个不需要修改就可以生成所有激励的验证平台。方法是在测试平台上提供一些hook，使得测试程序在不改变验证平台代码的前提下，向测试平台注入一些代码，改变发生器的行为，产生需要的激励。</p>
+<p>​    通过<strong>继承</strong>的方法来实现。</p>
+<h4 id="5-1-创建并使用回调"><a href="#5-1-创建并使用回调" class="headerlink" title="5.1 创建并使用回调"></a>5.1 创建并使用回调</h4><p>1）定义回调基类，可以定义为纯虚方法</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">class</span> CallBack;<br>	<span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> pre_tx(<span class="hljs-keyword">ref</span> Transaction tr,<span class="hljs-keyword">ref</span> <span class="hljs-keyword">bit</span> drop);<br>		<span class="hljs-comment">//空方法</span><br>	<span class="hljs-keyword">endtask</span><br>	<span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> post_tx(<span class="hljs-keyword">ref</span> Transaction tr);<br>	<span class="hljs-comment">//	空方法</span><br>	<span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p>2）driver中使用回调基类</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> Driver ;<br>    CallBack cbs[$]; <span class="hljs-comment">//队列保存回调类</span><br>	Transaction tr;<br>	<span class="hljs-keyword">bit</span> drop;<br>    mailbox mlb;<br>    <span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(mailbox m);mlb=m;<span class="hljs-keyword">endfunction</span><br>	taks run();<br>        <span class="hljs-keyword">forever</span> <span class="hljs-keyword">begin</span><br>			drop=<span class="hljs-number">0</span>;<br>			mlb<span class="hljs-variable">.get</span>(tr);<br>            <span class="hljs-keyword">foreach</span>(cbs[i]) cbs<span class="hljs-variable">.pre_tx</span>(tr,drop); <span class="hljs-comment">// 调用回调基类</span><br>			<span class="hljs-keyword">if</span>(drop) <span class="hljs-keyword">continue</span>; <span class="hljs-comment">//结束这一次循环，不发送这个tr。</span><br>			transmit(tr);<span class="hljs-comment">//发送tr</span><br>			<span class="hljs-keyword">foreach</span>(cbs[i]) cbs<span class="hljs-variable">.post_tx</span>(tr);<br>        <span class="hljs-keyword">end</span><br>	<span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p>此时cbs是空的，不会调用foreach语句。</p>
+<p>3）定义回调类、回调函数。</p>
+<p>回调类继承回调基类</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-keyword">class</span> CallBack_drop <span class="hljs-keyword">extends</span> CallBack;<br>    <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> pre_tx(<span class="hljs-keyword">ref</span> Transaction tr,<span class="hljs-keyword">ref</span> <span class="hljs-keyword">bit</span> drop);<br>	 	<span class="hljs-comment">// 没100个tr取消一个</span><br>		drop=(<span class="hljs-built_in">$random</span>(<span class="hljs-number">0</span>,<span class="hljs-number">99</span>)==<span class="hljs-number">0</span>);<br>	<span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p>4）在顶层注入回调函数</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-keyword">program</span> <span class="hljs-keyword">automatic</span> test;<br>	Env env;<br>	<span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>		env=<span class="hljs-keyword">new</span>();<br>		env<span class="hljs-variable">.gen_cfg</span>();<br>		env<span class="hljs-variable">.build</span>();<br>		<span class="hljs-keyword">begin</span><br>			CallBack_drop cb=<span class="hljs-keyword">new</span>();<br>            env<span class="hljs-variable">.drv</span><span class="hljs-variable">.cbs</span><span class="hljs-variable">.push_back</span>(cb); <span class="hljs-comment">//注入回调</span><br>		<span class="hljs-keyword">end</span><br>        env<span class="hljs-variable">.run</span>();<br>        env<span class="hljs-variable">.wrap_up</span>();<br>	<span class="hljs-keyword">end</span><br><span class="hljs-keyword">endprogram</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="5-2-回调与记分板连接"><a href="#5-2-回调与记分板连接" class="headerlink" title="5.2 回调与记分板连接"></a>5.2 回调与记分板连接</h4><p>在driver的回调中假如记分板，<strong>可以将driver发送的tr保存在记分板中。</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs Verilog"><span class="hljs-keyword">class</span> CallBack_scb extend CallBack;<br>	Scb scb;<br>	<span class="hljs-keyword">function</span> <span class="hljs-keyword">new</span>(Scb s);<br>		<span class="hljs-keyword">this</span><span class="hljs-variable">.scb</span> = s;<br>	<span class="hljs-keyword">endfunction</span><br>	<span class="hljs-keyword">virtual</span> <span class="hljs-keyword">task</span> pre_tx(<span class="hljs-keyword">ref</span> Transaction tr,<span class="hljs-keyword">ref</span> <span class="hljs-keyword">bit</span> drop);<br>		scb<span class="hljs-variable">.save_expected</span>(tr);<span class="hljs-comment">// 保存发送的tr到记分板</span><br>	<span class="hljs-keyword">endtask</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<p>也可以对覆盖率用回调，将发送的tr收集到覆盖率的类中。</p>
+<p>使用的时候也是在tb上注入到Driver中。</p>
+<h3 id="6-参数化的类"><a href="#6-参数化的类" class="headerlink" title="6. 参数化的类"></a>6. 参数化的类</h3><p>要用<strong>type</strong>关键字定义类型。</p>
+<p>要写一个参数化类，先要写一个非参数化的类，然后将他转换成参数化。</p>
+<p>下面实现一个参数化的堆栈。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">class</span> Stack<span class="hljs-variable">#(type T=int)</span>;	<br>	<span class="hljs-keyword">local</span> T stack[<span class="hljs-number">100</span>];<br>	<span class="hljs-keyword">local</span> <span class="hljs-keyword">int</span> top;<br>	<span class="hljs-keyword">function</span> <span class="hljs-keyword">void</span> push(T t);<br>		stack[top++]=t;<br>	<span class="hljs-keyword">endfunction</span><br>	<span class="hljs-keyword">function</span> T pop();<br>		pop=stack[top--];<br>	<span class="hljs-keyword">endfunction</span><br><span class="hljs-keyword">endclass</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	Stack<span class="hljs-variable">#(real)</span> s;<br>	s<span class="hljs-variable">.push</span>(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>);<br>	<span class="hljs-built_in">$display</span>(<span class="hljs-string">&quot;%f&quot;</span>,s<span class="hljs-variable">.pop</span>());<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="7-总结"><a href="#7-总结" class="headerlink" title="7. 总结"></a>7. 总结</h3><ol>
+<li>使用blueprint模式和callback都可以生成不同的transaction，并且不需要改变tb代码。</li>
+<li>记分板、覆盖率可以通过回调来收集transaction信息。</li>
+<li><strong>callback是一种思想——向验证环境中注入代码。至于实现什么功能，由你向其中注入的代码决定。</strong></li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/">Verification</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/System-Verilog/">System Verilog</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/SV/">SV</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Verification/">Verification</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/07/24/IC/Synthesis/%E9%80%BB%E8%BE%91%E7%BB%BC%E5%90%88%E2%80%94%E2%80%94%E8%AE%BE%E7%BD%AE%E5%BA%93/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">逻辑综合——设置库</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89/">
+                        <span class="hidden-mobile">SV——线程及线程间的通信（一）</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

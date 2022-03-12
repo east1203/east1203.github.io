@@ -1,0 +1,557 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="2019-10-24 SystemVerilog EventAn event is a static object handle to synchronize between two or more concurrently active processes. One process will trigger the event, and another process waits for the">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ch3-Event">
+<meta property="og:url" content="http://example.com/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch03_Control%20Flow/ch03_event/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="2019-10-24 SystemVerilog EventAn event is a static object handle to synchronize between two or more concurrently active processes. One process will trigger the event, and another process waits for the">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.chipverify.com/images/site/eda-playground-logo.png">
+<meta property="og:image" content="https://www.chipverify.com/images/site/eda-playground-logo.png">
+<meta property="og:image" content="https://www.chipverify.com/images/site/eda-playground-logo.png">
+<meta property="article:published_time" content="2019-07-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.808Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="SV">
+<meta property="article:tag" content="ChipVerif_Web">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.chipverify.com/images/site/eda-playground-logo.png">
+  
+  
+  <title>ch3-Event - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="ch3-Event">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-07-15 00:00" pubdate>
+        July 15, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.6k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      39 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ch3-Event</h1>
+            
+            <div class="markdown-body">
+              <p>2019-10-24</p>
+<h1 id="SystemVerilog-Event"><a href="#SystemVerilog-Event" class="headerlink" title="SystemVerilog Event"></a>SystemVerilog Event</h1><p>An <code>event</code> is a static object handle <strong>to synchronize</strong> between two or more concurrently active processes. One process will <em>trigger</em> the event, and another process <em>waits</em> for the event.</p>
+<ul>
+<li><p><strong>Can be assigned or compared to other event variables</strong></p>
+</li>
+<li><ul>
+<li><strong>Can be assigned to <code>null</code></strong></li>
+<li><strong>When assigned to another event, both variables point to same synchronization object</strong></li>
+</ul>
+</li>
+<li><p><strong>Can be passed to queues, functions and tasks</strong></p>
+</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">event</span>  over;                     <span class="hljs-comment">// a new event is created called over</span><br><span class="hljs-keyword">event</span>  over_again = over;        <span class="hljs-comment">// over_again becomes an alias to over</span><br><span class="hljs-keyword">event</span>  empty = <span class="hljs-literal">null</span>;             <span class="hljs-comment">// event variable with no synchronization object</span><br> <br></code></pre></td></tr></table></figure>
+
+<h2 id="How-to-trigger-and-wait-for-an-event"><a href="#How-to-trigger-and-wait-for-an-event" class="headerlink" title="How to trigger and wait for an event?"></a>How to trigger and wait for an event?</h2><ul>
+<li>Named events can be triggered using <code>-&gt;</code> or <code>-&gt;&gt;</code> operator</li>
+<li>Processes can wait for an event using <code>@</code> operator or <code>.triggered</code></li>
+</ul>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> tb;<br> <br>  <span class="hljs-comment">// Create an event variable that processes can use to trigger and wait</span><br>  <span class="hljs-keyword">event</span> event_a;<br> <br>  <span class="hljs-comment">// Thread1: Triggers the event using &quot;-&gt;&quot; operator</span><br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    #<span class="hljs-number">20</span> -&gt;event_a;<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;[%0t] Thread1: triggered event_a&quot;</span>, <span class="hljs-built_in">$time</span>);<br>  <span class="hljs-keyword">end</span><br> <br>  <span class="hljs-comment">// Thread2: Waits for the event using &quot;@&quot; operator</span><br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;[%0t] Thread2: waiting for trigger &quot;</span>, <span class="hljs-built_in">$time</span>);<br>    @(event_a);<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;[%0t] Thread2: received event_a trigger &quot;</span>, <span class="hljs-built_in">$time</span>);<br>  <span class="hljs-keyword">end</span><br> <br>  <span class="hljs-comment">// Thread3: Waits for the event using &quot;.triggered&quot;</span><br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;[%0t] Thread3: waiting for trigger &quot;</span>, <span class="hljs-built_in">$time</span>);<br>    <span class="hljs-keyword">wait</span>(event_a<span class="hljs-variable">.triggered</span>);<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;[%0t] Thread3: received event_a trigger&quot;</span>, <span class="hljs-built_in">$time</span>);<br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span>  <br> <br></code></pre></td></tr></table></figure>
+
+<p><strong>Simulation Log</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">ncsim&gt; run<br><span class="hljs-string">[0]</span> Thread2: waiting <span class="hljs-keyword">for</span> trigger <br><span class="hljs-string">[0]</span> Thread3: waiting <span class="hljs-keyword">for</span> trigger <br><span class="hljs-string">[20]</span> Thread1: triggered event_a<br><span class="hljs-string">[20]</span> Thread2: received event_a trigger <br><span class="hljs-string">[20]</span> Thread3: received event_a trigger<br>ncsim: *W,RNQUIE: Simulation <span class="hljs-keyword">is</span> complete.<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.edaplayground.com/x/eX_">Click to try this example in a simulator!  <img src="https://www.chipverify.com/images/site/eda-playground-logo.png" srcset="/img/loading.gif" lazyload alt="img"></a></p>
+<h2 id="What-is-the-difference-between-and-triggered"><a href="#What-is-the-difference-between-and-triggered" class="headerlink" title="What is the difference between @ and .triggered ?"></a>What is the difference between @ and .triggered ?</h2><p>​    <strong>An event’s <code>triggered</code> state persists throughout the time step（triggered状态在时间片内都敏感）</strong>, until simulation advances. <strong>Hence if both <code>wait</code> for the event and trigger of the event happens at the same time there will be a race condition and the <code>triggered</code> property helps to avoid that.</strong></p>
+<p>A process that waits on the <code>triggered</code> state always unblocks, regardless of the order of wait and trigger.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> tb;<br> <br>  <span class="hljs-comment">// Create an event variable that processes can use to trigger and wait</span><br>  <span class="hljs-keyword">event</span> event_a;<br> <br>  <span class="hljs-comment">// Thread1: Triggers the event using &quot;-&gt;&quot; operator at 20ns</span><br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    #<span class="hljs-number">20</span> -&gt;event_a;<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;[%0t] Thread1: triggered event_a&quot;</span>, <span class="hljs-built_in">$time</span>);<br>  <span class="hljs-keyword">end</span><br> <br>  <span class="hljs-comment">// Thread2: Starts waiting for the event using &quot;@&quot; operator at 20ns</span><br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;[%0t] Thread2: waiting for trigger &quot;</span>, <span class="hljs-built_in">$time</span>);<br>    #<span class="hljs-number">20</span> @(event_a);<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;[%0t] Thread2: received event_a trigger &quot;</span>, <span class="hljs-built_in">$time</span>);<br>  <span class="hljs-keyword">end</span><br> <br>  <span class="hljs-comment">// Thread3: Starts waiting for the event using &quot;.triggered&quot; at 20ns</span><br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;[%0t] Thread3: waiting for trigger &quot;</span>, <span class="hljs-built_in">$time</span>);<br>    #<span class="hljs-number">20</span> <span class="hljs-keyword">wait</span>(event_a<span class="hljs-variable">.triggered</span>);<br>    <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;[%0t] Thread3: received event_a trigger&quot;</span>, <span class="hljs-built_in">$time</span>);<br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br> <br></code></pre></td></tr></table></figure>
+
+<p>Note that Thread2 never received a trigger, because of the race condition between <code>@</code> and <code>-&gt;</code> operations.<strong>（但是triggered状态能够采样到-&gt;操作）</strong></p>
+<p><strong>Simulation Log</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">ncsim&gt; run<br><span class="hljs-string">[0]</span> Thread2: waiting <span class="hljs-keyword">for</span> trigger <br><span class="hljs-string">[0]</span> Thread3: waiting <span class="hljs-keyword">for</span> trigger <br><span class="hljs-string">[20]</span> Thread1: triggered event_a<br><span class="hljs-string">[20]</span> Thread3: received event_a trigger<br>ncsim: *W,RNQUIE: Simulation <span class="hljs-keyword">is</span> complete.<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.edaplayground.com/x/4uCK">Click to try this example in a simulator!  <img src="https://www.chipverify.com/images/site/eda-playground-logo.png" srcset="/img/loading.gif" lazyload alt="img"></a></p>
+<h2 id="wait-order（顺序触发）"><a href="#wait-order（顺序触发）" class="headerlink" title="wait_order（顺序触发）"></a>wait_order（顺序触发）</h2><p>Waits for events to be triggered in the given order, and issues an error if any event executes out of order.</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> tb;<br>  <span class="hljs-comment">// Declare three events that can be triggered separately</span><br>  <span class="hljs-keyword">event</span> a, b, c;<br> <br>  <span class="hljs-comment">// This block triggers each event one by one</span><br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    #<span class="hljs-number">10</span> -&gt; a;<br>    #<span class="hljs-number">10</span> -&gt; b;<br>    #<span class="hljs-number">10</span> -&gt; c;<br>  <span class="hljs-keyword">end</span><br> <br>  <span class="hljs-comment">// This block waits until each event is triggered in the given order</span><br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br> <br>    <span class="hljs-keyword">wait_order</span> (a,b,c) <br>      <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;Events were executed in the correct order&quot;</span>);<br>    <span class="hljs-keyword">else</span> <br>        <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;Events were NOT executed in the correct order !&quot;</span>);  <br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br> <br></code></pre></td></tr></table></figure>
+
+<p><strong>Simulation Log</strong></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Compiler</span> version J-<span class="hljs-number">2014</span>.<span class="hljs-number">12</span>-SP1-<span class="hljs-number">1</span>; Runtime version J-<span class="hljs-number">2014</span>.<span class="hljs-number">12</span>-SP1-<span class="hljs-number">1</span>;<br><span class="hljs-attribute">Events</span> were executed in the correct order<br>           <span class="hljs-attribute">V</span> C S   S i m u l a t i o n   R e p o r t <br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.edaplayground.com/x/4TZp">Click to try this example in a simulator!  <img src="https://www.chipverify.com/images/site/eda-playground-logo.png" srcset="/img/loading.gif" lazyload alt="img"></a></p>
+<h2 id="Merging-Events"><a href="#Merging-Events" class="headerlink" title="Merging Events"></a>Merging Events</h2><p>When one event variable is assigned to another, all processes waiting for the first event to trigger will wait until the second variable is triggered.（这句话不知道是什么鸟语，看下面程序的执行结果和自己的理解，就是事件赋值而已）。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> tb;<br> <br>  <span class="hljs-comment">// Create event variables</span><br>  <span class="hljs-keyword">event</span> event_a, event_b;<br> <br>  <span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">fork</span><br>      <span class="hljs-comment">// Thread1: waits for event_a to be triggered</span><br>      <span class="hljs-keyword">begin</span><br>        <span class="hljs-keyword">wait</span>(event_a<span class="hljs-variable">.triggered</span>);<br>        <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;[%0t] Thread1: Wait for event_a is over&quot;</span>, <span class="hljs-built_in">$time</span>);<br>      <span class="hljs-keyword">end</span><br>      <span class="hljs-comment">// Thread2: waits for event_b to be triggered    </span><br>      <span class="hljs-keyword">begin</span><br>        <span class="hljs-keyword">wait</span>(event_b<span class="hljs-variable">.triggered</span>);<br>        <span class="hljs-built_in">$display</span> (<span class="hljs-string">&quot;[%0t] Thread2: Wait for event_b is over&quot;</span>, <span class="hljs-built_in">$time</span>);<br>      <span class="hljs-keyword">end</span><br> <br>      <span class="hljs-comment">// Thread3: triggers event_a at 20ns</span><br>      #<span class="hljs-number">20</span> -&gt;event_a;<br> <br>      <span class="hljs-comment">// Thread4: triggers event_b at 30ns</span><br>      #<span class="hljs-number">30</span> -&gt;event_b;<br> <br>      <span class="hljs-comment">// Thread5: Assigns event_b to event_a at 10ns</span><br>      <span class="hljs-keyword">begin</span><br>        <span class="hljs-comment">// Comment code below and try again to see Thread2 finish later</span><br>        #<span class="hljs-number">10</span> event_b = event_a;<br>      <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">join</span><br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br> <br></code></pre></td></tr></table></figure>
+
+<p><strong>Simulation Log</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs verilog">ncsim&gt; run<br>[<span class="hljs-number">20</span>] Thread1: Wait <span class="hljs-keyword">for</span> event_a is over<br>[<span class="hljs-number">20</span>] Thread2: Wait <span class="hljs-keyword">for</span> event_b is over<br>ncsim: *W,RNQUIE: Simulation is complete.<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/">Verification</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Verification/System-Verilog/">System Verilog</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/SV/">SV</a>
+                    
+                      <a class="hover-with-bg" href="/tags/ChipVerif-Web/">ChipVerif_Web</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch03_Control%20Flow/ch03_case/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ch3-Case</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/07/15/Verification/SystemVerilog/ChipVerif_web_SV/ch03_Control%20Flow/ch03_function/">
+                        <span class="hidden-mobile">ch3-Function</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

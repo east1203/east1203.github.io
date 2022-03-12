@@ -1,0 +1,544 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="注意：个人整理，有误无责。 0. CPU控制的数据传输方式介绍由CPU控制的数据传输方式有两种：查询、中断。 0.1 查询方式​    查询方式是由程序控制的，如果CPU中执行的程序需要进行数据传输，CPU查询外设状态，如果外设准备好，那么进行数据传输。 0.2 中断方式​    当外设需要与CPU进行数据交换的时候，外设向CPU发出中断请求，CPU中断当前执行的程序，相应外设的数据传输请求。当外">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DMA">
+<meta property="og:url" content="http://example.com/2019/09/14/IC/IC_Architecture/DMA/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="注意：个人整理，有误无责。 0. CPU控制的数据传输方式介绍由CPU控制的数据传输方式有两种：查询、中断。 0.1 查询方式​    查询方式是由程序控制的，如果CPU中执行的程序需要进行数据传输，CPU查询外设状态，如果外设准备好，那么进行数据传输。 0.2 中断方式​    当外设需要与CPU进行数据交换的时候，外设向CPU发出中断请求，CPU中断当前执行的程序，相应外设的数据传输请求。当外">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-09-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.798Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="IC">
+<meta property="article:tag" content="Architecture">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>DMA - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="DMA">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-09-14 00:00" pubdate>
+        September 14, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.7k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      31 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">DMA</h1>
+            
+            <div class="markdown-body">
+              <h3 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h3><p>个人整理，有误无责。</p>
+<h3 id="0-CPU控制的数据传输方式介绍"><a href="#0-CPU控制的数据传输方式介绍" class="headerlink" title="0. CPU控制的数据传输方式介绍"></a>0. CPU控制的数据传输方式介绍</h3><p>由CPU控制的数据传输方式有两种：查询、中断。</p>
+<h4 id="0-1-查询方式"><a href="#0-1-查询方式" class="headerlink" title="0.1 查询方式"></a>0.1 查询方式</h4><p>​    查询方式是由程序控制的，如果CPU中执行的程序需要进行数据传输，CPU查询外设状态，如果外设准备好，那么进行数据传输。</p>
+<h4 id="0-2-中断方式"><a href="#0-2-中断方式" class="headerlink" title="0.2 中断方式"></a>0.2 中断方式</h4><p>​    当外设需要与CPU进行数据交换的时候，外设向CPU发出中断请求，CPU中断当前执行的程序，相应外设的数据传输请求。当外设的数据传输结束后，CPU继续执行被中断的程序.</p>
+<p>上面两种方式，数据都需经过CPU来传递，下面介绍DMA控制的数据传递。</p>
+<h3 id="1-DMA介绍"><a href="#1-DMA介绍" class="headerlink" title="1. DMA介绍"></a>1. DMA介绍</h3><p>​    DMA方式，Direct Memory Access，也称为成组数据传送方式，有时也称为直接内存操作。DMA方式在数据传送过程中，没有保存现场、恢复现场之类的工作。</p>
+<p>​    由于CPU根本不参加传送操作，因此就省去了CPU取指令、取数、送数等操作。内存地址修改、传送字 个数的计数等等，也不是由软件实现，而是用硬件线路直接实现的。所以DMA方式能满足高速I&#x2F;O设备的要求，也有利于CPU效率的发挥。（参考自百度）</p>
+<p>​    </p>
+<h3 id="2-工作原理"><a href="#2-工作原理" class="headerlink" title="2. 工作原理"></a>2. 工作原理</h3><p>​    直接存储器存取(DMA)用来提供在外设和存储器之间或者存储器和存储器之间的高速数据传 输。无须CPU干预，数据可以通过DMA快速地移动，这就节省了CPU的资源来做其他操作。</p>
+<p>​    一个设备如果需要直接通过总线与内存进行数据传送，设备先通过DMA向CPU发送DMA请求（DMA接管总线），CPU接到请求信号后，在当前时钟周期结束后，CPU会根据DMA信号的优先级和请求的先后顺序来相应DMA请求。CPU相应DAM请求后，会让出总线的控制权，让DMA来控制总线。在DMA的管理下，外设和内存直接进行数据交换，不需要CPU的干预，数据传输结束之后，DMA将总线的控制权交给CPU。</p>
+<h3 id="3-DMA传输的特点"><a href="#3-DMA传输的特点" class="headerlink" title="3. DMA传输的特点"></a>3. DMA传输的特点</h3><p>（来自百度百科）</p>
+<p>​    DMA 是所有现代电脑的重要特色，他允许不同速度的硬件装置来沟通，而不需要依于 CPU 的大量中断负载。<strong>否则，CPU 需要从 来源 把每一片段的资料复制到暂存器，然后把他们再次写回到新的地方。在这个时间中，CPU 对于其他的工作来说就无法使用。</strong></p>
+<p>​    DMA 传输将一个内存区从一个装置复制到另外一个， CPU 初始化这个传输动作，传输动作本身是由 DMA控制器来实行和完成。典型的例子就是移动一个外部内存的区块到芯片内部更快的内存去。像是这样的操作并没有让处理器工作拖延，反而可以被重新排程去处理其他的工作。DMA 传输对于高效能嵌入式系统算法和网络是很重要的。</p>
+<p>​    举个例子，PC ISA DMA控制器拥有 8 个 DMA 通道，其中的 7 个通道是可以让 PC 的 CPU 所利用。每一个 DMA 通道有一个 16位元 位址暂存器和一个 16 位元计数暂存器。要初始化资料传输时，装置驱动程式一起设定 DMA 通道的位址和计数暂存器，以及资料传输的方向，读取或写入。然后指示 DMA 硬件开始这个传输动作。当传输结束的时候，装置就会以中断的方式通知 CPU。</p>
+<p>​    但是，DMA传输方式只是减轻了CPU的工作负担；系统总线仍然被占用。<strong>特别是在传输大容量文件时，CPU的占用率可能不到10%，但是用户会觉得运行部分程序时系统变得相当的缓慢。</strong>主要原因就是在运行这些应用程序（特别是一些大型软件），操作系统也需要从系统总线传输大量数据；<strong>故造成过长的等待时间。</strong></p>
+<h3 id="4-基本操作"><a href="#4-基本操作" class="headerlink" title="4. 基本操作"></a>4. 基本操作</h3><ol>
+<li>外设通过DMAC向CPU发送DMA请求</li>
+<li>CPU相应DMA请求，DMA获得总线的控制权</li>
+<li>由DMAC发送存储器的地址，并决定发送数据块的长度。</li>
+<li>执行DMA传输。</li>
+<li>DMA操作结束，把总线的控制权交还给CPU。</li>
+</ol>
+<h3 id="5-总线控制权问题"><a href="#5-总线控制权问题" class="headerlink" title="5. 总线控制权问题"></a>5. 总线控制权问题</h3><p>在DMA控制总线进行数据传输的时候，CPU是不占用总线的，如果此时其他外设或者程序需要CPU做其他一些事情怎么办？这就涉及到总线使用权的问题。</p>
+<h4 id="5-1-停止CPU访问内存"><a href="#5-1-停止CPU访问内存" class="headerlink" title="5.1 停止CPU访问内存"></a>5.1 停止CPU访问内存</h4><p>当外设请求DMA控制发送一段数据的时候，CPU放弃对总线的控制权，直到这一组数据发送完，CPU再接管总线。</p>
+<p>优点：控制简单</p>
+<p>缺点：在DMA访存阶段，会浪费一些内存周期，这是因为内存的存储周期一般是小于IO设备发送两个数据的时间间隔。</p>
+<h4 id="5-2-周期挪用"><a href="#5-2-周期挪用" class="headerlink" title="5.2 周期挪用"></a>5.2 <strong>周期挪用</strong></h4><p>​    （来源于百度百科）</p>
+<p>​    当I&#x2F;O设备没有DMA请求时，CPU按程序要求访问内存；一旦I&#x2F;O设备有DMA请求，则由I&#x2F;O设备挪用一个或几个内存周期。</p>
+<p>I&#x2F;O设备要求DMA传送时可能遇到两种情况：</p>
+<p>（1）此时CPU不需要访内，如CPU正在执行乘法指令。由于乘法指令执行时间较长，此时I&#x2F;O访内与CPU访内没有冲突，即I&#x2F;O设备挪用一二个内存周期对CPU执行程序没有任何影响。</p>
+<p>（2）I&#x2F;O设备要求访内时CPU也要求访内，这就产生了访内冲突，在这种情况下I&#x2F;O设备访内优先，因为I&#x2F;O访内有时间要求，前一个I&#x2F;O数据必须在下一个访内请求到来之前存取完毕。显然，在这种情况下I&#x2F;O设备挪用一二个内存周期，意味着CPU延缓了对指令的执行，或者更明确地说，在CPU执行访内指令的过程中插入DMA请求，挪用了一二个内存周期。</p>
+<p>​    与停止CPU访内的DMA方法比较，周期挪用的方法既实现了I&#x2F;O传送，又较好地发挥了内存和CPU的效率，是一种广泛采用的方法。但是I&#x2F;O设备每一次周期挪用都有申请总线控制权、建立总线控制权和归还总线控制权的过程，所以传送一个字对内存来说要占用一个周期，但对DMA控制器来说一般要2—5个 内存周期（视逻辑线路的延迟而定）。因此，周期挪用的方法适用于I&#x2F;O设备读写周期大于内存存储周期的情况。</p>
+<h4 id="5-3-DMA与CPU交替访内"><a href="#5-3-DMA与CPU交替访内" class="headerlink" title="5.3 DMA与CPU交替访内"></a>5.3 <strong>DMA与CPU交替访内</strong></h4><p>​        如果CPU的工作周期比内存存取周期长很多，此时采用交替访内的方法可以使DMA传送和CPU同时发挥最高的效率。假设CPU工作周期为 1.2μs，内存存取周期小于0.6μs，那么一个CPU周期可分为C1和C2两个分周期，其中C1供DMA控制器访内，C2专供CPU访内。</p>
+<p>​        这种方式不需要总线使用权的申请、建立和归还过程，总线使用权是通过C1和C2分时进行的。CPU和DMA控制器各自有自己的访内地址寄存器、数据寄存 器和读&#x2F;写信号等控制寄存器。在C1周期中，如果DMA控制器有访内请求，可将地址、数据等信号送到总线上。在C2周期中，如CPU有访内请求，同样传送 地址、数据等信号。事实上，对于总线，这是用C1，C2控制的一个多路转换器，这种总线控制权的转移几乎不需要什么时间，所以对DMA传送来讲效率是很高的。</p>
+<h3 id="6-工作过程"><a href="#6-工作过程" class="headerlink" title="6. 工作过程"></a>6. 工作过程</h3><p>DMA的工作过程主要分为三步：预处理阶段、数据传送、传送后处理。</p>
+<h4 id="6-1-预处理阶段"><a href="#6-1-预处理阶段" class="headerlink" title="6.1 预处理阶段"></a><strong>6.1 预处理阶段</strong></h4><p>​    测试设备状态；向DMA控制器的设备地址寄存器中送入设备号，并启动设备；向主存地址计数器中送入欲交换数据的主存起始地址；向字计数器中送入欲交换的数据个数 。</p>
+<p>​    外部设备准备好发送的数据（输入）或上次接收的数据已处理完毕（输出）时，将通知DMA控制器发出DMA请求，申请主存总线。</p>
+<h4 id="6-2-数据传送"><a href="#6-2-数据传送" class="headerlink" title="6.2 数据传送"></a>6.2 数据传送</h4><p>​    DMA的数据传输可以以单字节(或字)为基本单位，对于以数据块为单位的传送(如银盘)，DMA占用总线后的数据输入和输出操作都是通过循环来实现。需要特别之处的是，这一循环也是由DMA控制器(而不是通过CPU执行程序)实现的，即数据传送阶段是完全由DMA(硬件)来控制的。</p>
+<h4 id="6-4-处理"><a href="#6-4-处理" class="headerlink" title="6.4 处理"></a>6.4 处理</h4><p>​    DMA控制器向CPU发送中断请求，CPU执行中断服务程序做DMA结束处理，包括检验送入主存的数据是否正确，测试传送过程中是否出错(错误则转入诊断程序)和决定是否继续使用DMA传送其他数据块等。</p>
+<h4 id="7-为什么DMA传输速度快"><a href="#7-为什么DMA传输速度快" class="headerlink" title="7. 为什么DMA传输速度快"></a>7. 为什么DMA传输速度快</h4><p>​    外设与计算机内存之间的信息交换，可通过程序查询方式和中断方式进行。这两种方式都是在CPU的控制下，通过CPU执行指令来完成的。数据传送方向为外设→CPU→内存。这两种方式每传送一个字节都需要耗用较长时间。在程序查询方式时，CPU要反复测试外设状态，在外设未准备好时，CPU就处于等待状态，直到外设准备好，才进行数据传送。在中断方式下，每实现一次数据传送，CPU都要进行转入中断服务子程序、保护断点、保护现场、恢复现场、返回主程序等操作。显然对于高速的I&#x2F;O设备以及大量数据交换的场合(如软、硬磁盘等)，这两种传送方式就不能满足速度的要求了。对于这些高速外设，如果传送速度太慢，不仅降低传送效率，还会造成数据丢失，导致传送出错。 为此，提出了DMA(直接存储器存取)传输方式。这种传送方式是不经过CPU干预，直接在外设与内存储器之间进行数据传送的方式。实现DMA传送，需要一个专用硬件DMA控制器(DMAC)，在DMA传送期间，CPU要让出对系统总线的控制权，交给DMA控制。总线在DMA的控制下，数据直接在存储器和外设之间传送，而不经过CPU干预，其传送速度大大提高，可接近于存储器的最快存取速度。这种传送方式适用于图像显示、磁盘存取、磁盘间数据传送和高速的数据采集等系统。</p>
+<h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zhejfl/article/details/82555634">DMA之理解</a></p>
+<p><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/DMA%E6%96%B9%E5%BC%8F/8666476">百度百科——DMA</a></p>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/categories/IC/Architecture/">Architecture</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Architecture/">Architecture</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/09/15/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F%E4%BC%A0%E9%80%92%E6%95%B0%E6%8D%AE%E5%AE%9E%E4%BE%8B/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">跨时钟域传递数据实例</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/09/10/Verification/UVM/UVM%E2%80%94%E2%80%94layer%20sequence/">
+                        <span class="hidden-mobile">UVM——layer sequence</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

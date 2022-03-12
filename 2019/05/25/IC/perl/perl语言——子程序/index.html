@@ -1,0 +1,619 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="1. 定义子程序子程序由sub关键字定义花括号表示函数体范围。 子程序不需要事先声明。 如果定义了两个相同名字的子程序，后面的会覆盖前面的。 12345sub marine &amp;#123;  # marine是子程序名  print &quot;this is a test\n&quot;;&amp;#125;&amp;marine；#子程调用，&amp;marine写在程序定义之前也可以运行。# 也可以直">
+<meta property="og:type" content="article">
+<meta property="og:title" content="子程序sub">
+<meta property="og:url" content="http://example.com/2019/05/25/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%AD%90%E7%A8%8B%E5%BA%8F/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="1. 定义子程序子程序由sub关键字定义花括号表示函数体范围。 子程序不需要事先声明。 如果定义了两个相同名字的子程序，后面的会覆盖前面的。 12345sub marine &amp;#123;  # marine是子程序名  print &quot;this is a test\n&quot;;&amp;#125;&amp;marine；#子程调用，&amp;marine写在程序定义之前也可以运行。# 也可以直">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-05-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.801Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="IC">
+<meta property="article:tag" content="perl">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>子程序sub - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="子程序sub">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-05-25 00:00" pubdate>
+        May 25, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.4k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      29 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">子程序sub</h1>
+            
+            <div class="markdown-body">
+              <h4 id="1-定义子程序"><a href="#1-定义子程序" class="headerlink" title="1. 定义子程序"></a>1. 定义子程序</h4><p>子程序由<strong>sub</strong>关键字定义<strong>花括号</strong>表示函数体范围。</p>
+<p><strong>子程序不需要事先声明。</strong></p>
+<p><strong>如果定义了两个相同名字的子程序，后面的会覆盖前面的。</strong></p>
+<figure class="highlight perl"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><pre><code class="hljs perl"><span class="hljs-function"><span class="hljs-keyword">sub</span> <span class="hljs-title">marine</span> </span>&#123;  <span class="hljs-comment"># marine是子程序名</span><br>  <span class="hljs-keyword">print</span> <span class="hljs-string">&quot;this is a test\n&quot;</span>;<br>&#125;<br>&amp;marine；<span class="hljs-comment">#子程调用，&amp;marine写在程序定义之前也可以运行。</span><br><span class="hljs-comment"># 也可以直接用marine调用，这样必须写在程序定义之后</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-子程序调用-amp"><a href="#2-子程序调用-amp" class="headerlink" title="2. 子程序调用 &amp;"></a>2. 子程序调用 &amp;</h4><p>用<strong>”&amp;函数名（参数列表）；“</strong>来调用子程序，如果不需要传入参数，就不加，<strong>”&amp;函数名；“</strong></p>
+<p>&amp;符号可以省略：</p>
+<ol>
+<li>子程序在使用之前定义好了</li>
+<li>调用子程序时，参数列表放在括号里。</li>
+</ol>
+<p>&amp;不可省略：<strong>子程序名字和perl默认函数名字相同时绝对不可以省略</strong></p>
+<h4 id="3-返回值"><a href="#3-返回值" class="headerlink" title="3. 返回值"></a>3. 返回值</h4><p>perl中所有的子程序都有返回值，所以perl默认以最后一次运算的结果作为返回值。</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-function"><span class="hljs-keyword">sub</span> <span class="hljs-title">sum_of_fred_barney</span> </span>&#123;  <span class="hljs-comment">#函数求变量$fred,$barney的和</span><br>  <span class="hljs-keyword">print</span> (<span class="hljs-string">&quot;sum is &quot;</span>,($fred+$barney),<span class="hljs-string">&quot;\n&quot;</span>);<span class="hljs-comment"># 这里的$fred,$barney是全局变量</span><br>  $fred+$barney;  <span class="hljs-comment"># 最后一个表达式的结果作为返回值</span><br>&#125;<br>$fred = <span class="hljs-number">1</span>;<br>$barney = <span class="hljs-number">1</span>;<br><span class="hljs-keyword">print</span> &amp;sum_of_fred_barney,<span class="hljs-string">&quot;\n&quot;</span>;<br>输出：<br>sum is <span class="hljs-number">2</span><br><span class="hljs-number">2</span><br><span class="hljs-comment">### 另一种情况</span><br><span class="hljs-function"><span class="hljs-keyword">sub</span> <span class="hljs-title">sum_of_fred_barney</span> </span>&#123;  <span class="hljs-comment">#函数求变量$fred,$barney的和</span><br>  <span class="hljs-keyword">print</span> (<span class="hljs-string">&quot;sum is &quot;</span>,($fred+$barney),<span class="hljs-string">&quot;\n&quot;</span>);<span class="hljs-comment"># 这里的$fred,$barney是全局变量</span><br>  <span class="hljs-comment">#$fred+$barney;  # 将这一行注释掉</span><br>&#125;<br>$fred = <span class="hljs-number">1</span>;<br>$barney = <span class="hljs-number">1</span>;<br><span class="hljs-keyword">print</span> &amp;sum_of_fred_barney,<span class="hljs-string">&quot;\n&quot;</span>;<br>输出：<br>sum is <span class="hljs-number">2</span><br><span class="hljs-number">1</span>   <span class="hljs-comment"># 最后一条语句是print函数，这里函数返回1，表示成功执行函数</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>最后一次运算结果，而不是最后一行表达式</strong>，如下面这个例子</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs perl">$fred = <span class="hljs-number">2</span>;<br>$barney = <span class="hljs-number">1</span>;<br><span class="hljs-function"><span class="hljs-keyword">sub</span> <span class="hljs-title">sel</span> </span>&#123;<br>  <span class="hljs-keyword">if</span> ($fred &gt; $barney) &#123;<br>    $val = <span class="hljs-number">1</span>;  <span class="hljs-comment"># 这条语句是最后执行的。</span><br>  &#125;<br>    <span class="hljs-keyword">else</span> &#123;<br>    $val = <span class="hljs-number">0</span>;<br>  &#125;<br>&#125;<br>&amp;sel;<br><span class="hljs-keyword">print</span> <span class="hljs-string">&#x27;$val&#x27;</span>,<span class="hljs-string">&quot; is $val\n&quot;</span>;<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="return返回"><a href="#return返回" class="headerlink" title="return返回"></a>return返回</h5><p>如果子程序执行到一半需要返回，用return；</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-function"><span class="hljs-keyword">sub</span> <span class="hljs-title">find4</span></span>&#123; <span class="hljs-comment">#从列表中找到大于4的第一个值，找到后立马返回这个值，找不到返回-1</span><br> <span class="hljs-keyword">foreach</span>(@_) &#123;<br>  <span class="hljs-keyword">if</span> ($_ &gt; <span class="hljs-number">4</span>) &#123;<span class="hljs-keyword">return</span> $_;&#125;<br> &#125;<br> -<span class="hljs-number">1</span>;<br>&#125;<br>@f4 = <span class="hljs-keyword">qw</span>/<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span>/;<br><span class="hljs-keyword">print</span> &amp;find4(@f4);<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="4-参数"><a href="#4-参数" class="headerlink" title="4. 参数"></a>4. 参数</h4><p>perl自动将参数化列表保存在数组**@_**中，在子程序定义的时候不需要写参数表。</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-function"><span class="hljs-keyword">sub</span> <span class="hljs-title">max</span> </span>&#123; <span class="hljs-comment"># 返回两个数的最大值</span><br> <span class="hljs-keyword">if</span>($_[<span class="hljs-number">0</span>] &gt; $_[<span class="hljs-number">1</span>]) &#123; $_[<span class="hljs-number">0</span>] ;&#125; <span class="hljs-comment">#$_[0]是子程序调用时第一个参数，$_[1]是第二个参数。</span><br> <span class="hljs-keyword">else</span> &#123; $_[<span class="hljs-number">1</span>] ;&#125;<br>&#125;<br>$fred = <span class="hljs-number">2</span>;<br>$barney = <span class="hljs-number">1</span>;<br><span class="hljs-keyword">print</span> <span class="hljs-string">&quot;the max of &quot;</span>,<span class="hljs-string">&#x27;$fred&#x27;</span>,<span class="hljs-string">&quot; and &quot;</span>,<span class="hljs-string">&#x27;$barney&#x27;</span>,<span class="hljs-string">&quot; is &quot;</span>,&amp;max($fred,$barney),<span class="hljs-string">&quot;\n&quot;</span>; <br></code></pre></td></tr></table></figure>
+
+
+
+<p>子程序调用的时候有多余的参数，会被忽略，反正程序中也用不到。</p>
+<p>也可以根据 <strong>标量上下文中的列表</strong>这个概念来判断传入的参数个数对不对，如果多了就输出一段警告。</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-function"><span class="hljs-keyword">sub</span> <span class="hljs-title">max</span> </span>&#123;<br>	<span class="hljs-keyword">if</span>(@_ != <span class="hljs-number">2</span>)<br>		<span class="hljs-keyword">print</span> <span class="hljs-string">&quot;WARNING!\n&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>也可以传入任意长度的参数，只要是功能需要</strong></p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-function"><span class="hljs-keyword">sub</span> <span class="hljs-title">max</span></span>&#123;  <span class="hljs-comment"># 求一个列表中的最大值</span><br> $max_of_list = <span class="hljs-keyword">shift</span> @_;<br> <span class="hljs-keyword">foreach</span> (@_) &#123;<br>  <span class="hljs-keyword">if</span>($max_of_list &lt; $_) &#123;<br>  $max_of_list = $_;<br>  &#125;<br> &#125;<br> $max_of_list;<br>&#125;<br>@list = <span class="hljs-keyword">qw</span>/<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>/; <br><span class="hljs-keyword">print</span> <span class="hljs-string">&quot;the max of &quot;</span>,<span class="hljs-string">&#x27;$fred&#x27;</span>,<span class="hljs-string">&quot; and &quot;</span>,<span class="hljs-string">&#x27;$barney&#x27;</span>,<span class="hljs-string">&quot; is &quot;</span>,&amp;max(@list),<span class="hljs-string">&quot;\n&quot;</span>; <br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="5-子程序中的私有变量-my"><a href="#5-子程序中的私有变量-my" class="headerlink" title="5. 子程序中的私有变量 my"></a>5. 子程序中的私有变量 my</h4><p>用<strong>my</strong>操作符来定义子程序中的私有变量，作用域只是该子程序。</p>
+<p>可以用来对子程序参数重命名，也就是将参数保存在这些私有变量里，因为默认的@_数组保存变量不好识别，变量多了不知道各个变量是什么意思。</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-function"><span class="hljs-keyword">sub</span> <span class="hljs-title">max</span> </span>&#123;<br> <span class="hljs-keyword">my</span>($l,$r) = @_;<br> <span class="hljs-keyword">if</span>($l &gt; $r) &#123; $l; &#125;<br> <span class="hljs-keyword">else</span> &#123; $r; &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>my操作符不加（）的时候只能声明单个变量。</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-keyword">my</span> $fred,$barney; <span class="hljs-comment"># 只声明了$fred；</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="6-子程序持久性私有变量-state"><a href="#6-子程序持久性私有变量-state" class="headerlink" title="6. 子程序持久性私有变量 state"></a>6. 子程序持久性私有变量 state</h4><p>用state声明，子程序在多次调用的时候保留该变量的值，类似于C++中的static变量。</p>
+<h4 id="7-自定义-排序规则子程序-sort-definition-subroutine"><a href="#7-自定义-排序规则子程序-sort-definition-subroutine" class="headerlink" title="7. 自定义 排序规则子程序(sort-definition subroutine)"></a>7. 自定义 排序规则子程序(sort-definition subroutine)</h4><p>通过自己定义规则子程序对元素进行排序。可以是正序、反序、或者按照键值对哈希排序等。</p>
+<p>比如：</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-function"><span class="hljs-keyword">sub</span> <span class="hljs-title">sort_any</span> </span>&#123;<br>	<span class="hljs-keyword">if</span>($a&gt;$b) &#123;<span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;&#125;  <span class="hljs-comment"># 大的在前，降序</span><br>	<span class="hljs-keyword">else</span> &#123;<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>; &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>对于上面程序中的变量$a,$b是perl为我们定义好的，不需要自己定义，它们是来自排序列表中的两个元素。</p>
+<p>子程序会返回一个数字，用来描述两个元素的比较结果。如果返回-1，表示$a应该在$b之前，返回1，$a应该在$b之后，返回0表示无所谓谁先谁后。上面程序中$a&gt;$b时返回-1，表示将大的$a排在前面，也就是降序排列。</p>
+<p><strong>使用自定义排序规则</strong></p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs PERL"><span class="hljs-function"><span class="hljs-keyword">sub</span> <span class="hljs-title">sort_any</span> </span>&#123;<br>	<span class="hljs-keyword">if</span>($a&gt;$b) &#123;<span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;&#125;  <span class="hljs-comment"># 大的在前，降序</span><br>	<span class="hljs-keyword">else</span> &#123;<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>; &#125;<br>&#125;<br>@arr = <span class="hljs-keyword">qw</span>/<span class="hljs-number">10</span> <span class="hljs-number">2</span> <span class="hljs-number">20</span> <span class="hljs-number">40</span>/;<br>@arr_sort = <span class="hljs-keyword">sort</span> sort_any @arr;  <span class="hljs-comment">## 调用自定义排序函数</span><br><span class="hljs-keyword">print</span> <span class="hljs-string">&quot;@arr_sort\n&quot;</span>; <span class="hljs-comment"># output : 40 20 10 2</span><br><span class="hljs-keyword">print</span> <span class="hljs-string">&quot;@arr\n&quot;</span>;  <span class="hljs-comment"># output : 10 2 20 40 不会改变原来列表</span><br></code></pre></td></tr></table></figure>
+
+<p>另外，可以用飞船操作符&lt;&#x3D;&gt;，<strong>无分号结尾</strong></p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-function"><span class="hljs-keyword">sub</span> <span class="hljs-title">sort_any</span> </span>&#123; $a &lt;=&gt; $b &#125; <span class="hljs-comment">#表示升序排列</span><br><span class="hljs-function"><span class="hljs-keyword">sub</span> <span class="hljs-title">sort_any</span> </span>&#123; $b &lt;=&gt; $a &#125; <span class="hljs-comment">#表示降序排列</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>按照哈希值排序</strong></p>
+<p>其实是按照值对键进行排序，比如按照分数对人名进行排序。</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs PERL">%h = (<span class="hljs-string">&#x27;dong&#x27;</span>,<span class="hljs-number">10</span>,<span class="hljs-string">&#x27;wang&#x27;</span>,<span class="hljs-number">20</span>,<span class="hljs-string">&#x27;liu&#x27;</span>,<span class="hljs-number">30</span>);<br><span class="hljs-function"><span class="hljs-keyword">sub</span> <span class="hljs-title">sort_hash</span> </span>&#123;<br>$h&#123;$b&#125;&lt;=&gt;$h&#123;$a&#125; <span class="hljs-comment">#降序,根据值进行排序</span><br>&#125;<br>@l = <span class="hljs-keyword">sort</span> sort_hash <span class="hljs-keyword">keys</span> %h; <span class="hljs-comment"># 对键进行排序</span><br><span class="hljs-keyword">foreach</span> (@l) &#123;<span class="hljs-keyword">print</span> $_;<span class="hljs-keyword">print</span> <span class="hljs-string">&quot;\t&quot;</span>;&#125;<br><span class="hljs-comment"># output : liu wang dong</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/categories/IC/perl/">perl</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/perl/">perl</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/05/25/IC/perl/perl%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%88%97%E8%A1%A8%E3%80%81%E6%95%B0%E7%BB%84/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">perl语言——列表、数组</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/05/23/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F%E8%AE%BE%E8%AE%A1/">
+                        <span class="hidden-mobile">跨时钟域设计</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

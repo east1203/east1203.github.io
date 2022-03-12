@@ -1,0 +1,541 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="写在开头：  本文是对公众号C&#x2F;C++编程实验室中第一二章内容学习的总结.  主要内容： 自定义输出流对象输出到控制台 自定义输出流对象输出到文件 标准IO流对象(iostream)输出到控制台 打印自定义类型 fstream对文件进行读写    自定义输出流对象输出到控制台先要有一个My_String类通过自定义流对象，将My_String的对象输出到控制台  12345678910">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ IO流">
+<meta property="og:url" content="http://example.com/2019/03/09/C++/IO/IO%E6%B5%81/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="写在开头：  本文是对公众号C&#x2F;C++编程实验室中第一二章内容学习的总结.  主要内容： 自定义输出流对象输出到控制台 自定义输出流对象输出到文件 标准IO流对象(iostream)输出到控制台 打印自定义类型 fstream对文件进行读写    自定义输出流对象输出到控制台先要有一个My_String类通过自定义流对象，将My_String的对象输出到控制台  12345678910">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-03-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-12T03:51:25.795Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>C++ IO流 - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="C++ IO流">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-03-09 00:00" pubdate>
+        March 9, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.9k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      41 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">C++ IO流</h1>
+            
+            <div class="markdown-body">
+              <hr>
+<h4 id="写在开头："><a href="#写在开头：" class="headerlink" title="写在开头："></a>写在开头：</h4><p>  本文是对公众号<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/XjFIooBa9RMGt8qFw8gZqw">C&#x2F;C++编程实验室</a>中第一二章内容学习的总结.</p>
+<hr>
+<h3 id="主要内容："><a href="#主要内容：" class="headerlink" title="主要内容："></a>主要内容：</h3><ol>
+<li><h5 id="自定义输出流对象输出到控制台"><a href="#自定义输出流对象输出到控制台" class="headerlink" title="自定义输出流对象输出到控制台"></a>自定义输出流对象输出到控制台</h5></li>
+<li><h5 id="自定义输出流对象输出到文件"><a href="#自定义输出流对象输出到文件" class="headerlink" title="自定义输出流对象输出到文件"></a>自定义输出流对象输出到文件</h5></li>
+<li><h5 id="标准IO流对象-iostream-输出到控制台"><a href="#标准IO流对象-iostream-输出到控制台" class="headerlink" title="标准IO流对象(iostream)输出到控制台"></a>标准IO流对象(iostream)输出到控制台</h5></li>
+<li><h5 id="打印自定义类型"><a href="#打印自定义类型" class="headerlink" title="打印自定义类型"></a>打印自定义类型</h5></li>
+<li><h5 id="fstream对文件进行读写"><a href="#fstream对文件进行读写" class="headerlink" title="fstream对文件进行读写"></a>fstream对文件进行读写</h5></li>
+</ol>
+<hr>
+<ul>
+<li><h4 id="自定义输出流对象输出到控制台-1"><a href="#自定义输出流对象输出到控制台-1" class="headerlink" title="自定义输出流对象输出到控制台"></a>自定义输出流对象输出到控制台</h4><h6 id="先要有一个My-String类"><a href="#先要有一个My-String类" class="headerlink" title="先要有一个My_String类"></a>先要有一个My_String类</h6>通过自定义流对象，将My_String的对象输出到控制台</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></div></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">My_String</span> &#123;<br><span class="hljs-keyword">public</span>:<br>	<span class="hljs-built_in">My_String</span>();<br>	<span class="hljs-built_in">My_String</span>(<span class="hljs-type">const</span> <span class="hljs-type">char</span>* str);<br>	<span class="hljs-built_in">My_String</span>(<span class="hljs-type">const</span> My_String&amp;);<br>	~<span class="hljs-built_in">My_String</span>();<br>	<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">length</span><span class="hljs-params">()</span><span class="hljs-type">const</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-keyword">return</span> m_len;<br>	&#125;<br>	My_String&amp; <span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> My_String&amp;);<br>	My_String&amp; <span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> <span class="hljs-type">char</span>*);<br>	<span class="hljs-type">char</span>&amp; <span class="hljs-keyword">operator</span>[](<span class="hljs-type">int</span> i);<br>	<span class="hljs-type">const</span> <span class="hljs-type">char</span>&amp; <span class="hljs-keyword">operator</span>[](<span class="hljs-type">int</span> i) <span class="hljs-type">const</span>;<br>	<span class="hljs-keyword">friend</span> <span class="hljs-type">bool</span> <span class="hljs-built_in">operator</span>&lt;(<span class="hljs-type">const</span> My_String&amp; str1, <span class="hljs-type">const</span> My_String&amp; str2);<br>	<span class="hljs-keyword">friend</span> <span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span>&gt;(<span class="hljs-type">const</span> My_String&amp; str1, <span class="hljs-type">const</span> My_String&amp; str2);<br>	<span class="hljs-keyword">friend</span> <span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span>==(<span class="hljs-type">const</span> My_String&amp; str1, <span class="hljs-type">const</span> My_String&amp; str2);<br>	<span class="hljs-keyword">friend</span> ostream&amp; <span class="hljs-keyword">operator</span>&lt;&lt;(ostream &amp;os, <span class="hljs-type">const</span> My_String &amp;str);<br>	<span class="hljs-keyword">friend</span> istream&amp; <span class="hljs-keyword">operator</span> &gt;&gt; (istream &amp;is, My_String &amp;str);<br>	<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">size</span> <span class="hljs-params">()</span> <span class="hljs-type">const</span></span>&#123; <span class="hljs-keyword">return</span> <span class="hljs-built_in">strlen</span>(m_str); &#125;   <span class="hljs-comment">//const成员函数，不会改变对象</span><br>	<span class="hljs-function"><span class="hljs-type">char</span>* <span class="hljs-title">c_str</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123; <span class="hljs-keyword">return</span> m_str; &#125;<br><span class="hljs-keyword">private</span>:<br>	<span class="hljs-type">char</span>* m_str;<br>	<span class="hljs-type">int</span> m_len;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h6 id="定义输出流对象的基类MyStrIobase。"><a href="#定义输出流对象的基类MyStrIobase。" class="headerlink" title="定义输出流对象的基类MyStrIobase。"></a>定义输出流对象的基类MyStrIobase。</h6><p>  基类中的虚函数send用来在不同的子类中被继承，以实现多种功能（输出到控制台，或者输出到文件中），体现C++多态思想。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyStrIobase</span> &#123;<br><span class="hljs-keyword">public</span>:<br>	<span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">MyStrIobase</span>() &#123;&#125;<br>	<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">send</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span>* ptr, <span class="hljs-type">int</span> n)</span> </span>&#123;&#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h6 id="定义输出流对象类OStream，并继承基类"><a href="#定义输出流对象类OStream，并继承基类" class="headerlink" title="定义输出流对象类OStream，并继承基类"></a>定义输出流对象类OStream，并继承基类</h6><p>  OStream能将My_String打印到控制台</p>
+<p>  在OStream重载send函数，将字符数组打印到控制台</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-keyword">class</span> <span class="hljs-title class_">OStream</span> :<span class="hljs-keyword">public</span> MyStrIobase&#123;<br>	<span class="hljs-keyword">public</span>:<br>		<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">send</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span>* ptr, <span class="hljs-type">int</span> n)</span></span><br><span class="hljs-function">    <span class="hljs-comment">/*ptr要打印的字符数组，n字符长度*/</span></span><br><span class="hljs-function">		</span>&#123;<br>			<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i)<br>				<span class="hljs-built_in">putc</span>(*ptr++, stdout);<br>			<span class="hljs-built_in">putc</span>(<span class="hljs-string">&#x27;\n&#x27;</span>, stdout);<br>		&#125;<br>	&#125;;<br></code></pre></td></tr></table></figure>
+
+<h6 id="重载-lt-lt-运算符"><a href="#重载-lt-lt-运算符" class="headerlink" title="重载&lt;&lt;运算符"></a>重载&lt;&lt;运算符</h6><p>  可以用模板函数</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">template&lt;<span class="hljs-keyword">class</span> <span class="hljs-symbol">T</span>&gt; <span class="hljs-symbol">T</span>&amp; <span class="hljs-symbol">operator</span>&lt;&lt;(<span class="hljs-symbol">T</span>&amp; <span class="hljs-symbol">io, <span class="hljs-symbol">const</span></span> <span class="hljs-symbol">My_String</span>&amp; <span class="hljs-symbol">str</span>)<br>&#123;<br>	sendstr(io, str.c_str(), str.size());<br>	<span class="hljs-keyword">return</span> io;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>也可以专门为OStream重载一个&lt;&lt;</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs axapta">OStream&amp; operator &lt;&lt;(OStream&amp; io, <span class="hljs-keyword">const</span> My_String&amp; <span class="hljs-built_in">str</span>)<br>&#123;<br>	sendstr(io, <span class="hljs-built_in">str</span>.c_str(), <span class="hljs-built_in">str</span>.size());<br>	<span class="hljs-keyword">return</span> io;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h6 id="需要定义sendstr函数"><a href="#需要定义sendstr函数" class="headerlink" title="需要定义sendstr函数"></a>需要定义sendstr函数</h6><p>  这里参数是基类MyStrIobase，便于实现更多的功能，比如输出到文件的类，只需要继承基类MyStrIobase 就可以使用sendstr函数，不需要重新定义。</p>
+<figure class="highlight nim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs nim"><span class="hljs-type">void</span> sendstr(<span class="hljs-type">MyStrIobase</span>&amp; strio, <span class="hljs-keyword">const</span> <span class="hljs-type">char</span>* <span class="hljs-keyword">ptr</span>, <span class="hljs-type">int</span> n)<br>	&#123;<br>		strio.send(<span class="hljs-keyword">ptr</span>, n);<br>	&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<ul>
+<li><h4 id="自定义输出流对象输出到文件-1"><a href="#自定义输出流对象输出到文件-1" class="headerlink" title="自定义输出流对象输出到文件"></a>自定义输出流对象输出到文件</h4><h5 id="定义输出到文件的流对象类————FileOStream"><a href="#定义输出到文件的流对象类————FileOStream" class="headerlink" title="定义输出到文件的流对象类————FileOStream"></a>定义输出到文件的流对象类————FileOStream</h5><p>FileOStream也集成基类MyStrIobase，用来重载send函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs cpp"> <span class="hljs-keyword">class</span> <span class="hljs-title class_">FileOStream</span> :<span class="hljs-keyword">public</span> MyStrIobase &#123;<br><span class="hljs-keyword">public</span>:<br>	<span class="hljs-built_in">FileOStream</span>(<span class="hljs-type">const</span> <span class="hljs-type">char</span>* filename, <span class="hljs-type">char</span>* mode)<br>	&#123;<br>		m_File = <span class="hljs-built_in">fopen</span>(filename, mode);<br>	&#125;<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">send</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span>* str, <span class="hljs-type">int</span> len)</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-keyword">if</span> (m_File == <span class="hljs-literal">nullptr</span> || len &lt; <span class="hljs-number">0</span>)<br>			<span class="hljs-keyword">return</span>;<br>		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; len; ++i)<br>			<span class="hljs-built_in">putc</span>(*str++, m_File);<br>	&#125;<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">close</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-built_in">fclose</span>(m_File);<br>		m_File = <span class="hljs-literal">nullptr</span>;<br>	&#125;<br>       <span class="hljs-keyword">private</span>:<br>	FILE* m_File&#123; <span class="hljs-literal">nullptr</span> &#125;;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>在FileOStream 构造函数中打开文件。</p>
+</li>
+<li><h4 id="标准IO流对象-iostream-输出到控制台-1"><a href="#标准IO流对象-iostream-输出到控制台-1" class="headerlink" title="标准IO流对象(iostream)输出到控制台"></a>标准IO流对象(iostream)输出到控制台</h4><p>标准ostream对象也可以输出My_String对象,重载sendstr，是sendstr而不是send，因为ostream不能去继承自定义的类型MyStrIobase</p>
+<figure class="highlight nim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs nim"><span class="hljs-type">void</span> sendstr(ostream&amp; os, <span class="hljs-keyword">const</span> <span class="hljs-type">char</span>* <span class="hljs-keyword">ptr</span>, <span class="hljs-type">int</span> n)<br>	&#123;<br>		os.write(<span class="hljs-keyword">ptr</span>, n);<br>	&#125;<br></code></pre></td></tr></table></figure></li>
+<li><h4 id="ostream-打印自定义类型-MInt"><a href="#ostream-打印自定义类型-MInt" class="headerlink" title="ostream 打印自定义类型 MInt"></a>ostream 打印自定义类型 MInt</h4><p> 需要重载&lt;&lt; ,&gt;&gt;运算符</p>
+ <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">	<span class="hljs-comment">/*打印自定义类型  MInt*/</span><br>	<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MInt</span> </span>&#123;<br>	<span class="hljs-keyword">public</span>:<br>		MInt(int <span class="hljs-keyword">val</span>) :mVal(<span class="hljs-keyword">val</span>) &#123;&#125;<br>		MInt(<span class="hljs-keyword">const</span> MInt&amp; other) :mVal(other.mVal) &#123;&#125;<br>		friend ostream&amp; <span class="hljs-keyword">operator</span>&lt;&lt;(ostream&amp; os, <span class="hljs-keyword">const</span> MInt&amp; other);<br>		friend istream&amp; <span class="hljs-keyword">operator</span> &gt;&gt; (istream&amp; <span class="hljs-keyword">is</span>, MInt&amp; <span class="hljs-keyword">out</span>);<br>	<span class="hljs-keyword">private</span>:<br>		int mVal;<br>	&#125;;<br>		ostream&amp; <span class="hljs-keyword">operator</span>&lt;&lt;(ostream&amp; os, <span class="hljs-keyword">const</span> MInt&amp; other) &#123;<br>		os &lt;&lt; other.mVal;<br>		<span class="hljs-keyword">return</span> os;<br>	&#125;<br>	istream&amp; <span class="hljs-keyword">operator</span> &gt;&gt; (istream&amp; <span class="hljs-keyword">is</span>, MInt&amp; <span class="hljs-keyword">out</span>) &#123;<br>		<span class="hljs-keyword">is</span> &gt;&gt; <span class="hljs-keyword">out</span>.mVal;<br>		<span class="hljs-keyword">return</span> <span class="hljs-keyword">is</span>;<br>	&#125;<br>````<br>---<br>- #### fstream对文件进行读写<br></code></pre></td></tr></table></figure>
+<p>&#x2F;* 用标准库fstream来对文件进行读写*&#x2F;<br>  void writetofile1()<br>  {<br>  &#x2F;<em>构造函数中打开文件</em>&#x2F;<br>  &#x2F;<em>fstream对象的输入输出模式out in ,可以参考CPlusPlus网站</em>&#x2F;<br>  ofstream outFile(“2.txt”, std::ios::out);<br>  &#x2F;<em>因为fostream类中重载了&lt;&lt; &gt;&gt;，这里直接用</em>&#x2F;<br>  outFile &lt;&lt; “this is test writetofile1 pro!” &lt;&lt; endl;<br>  outFile.close();<br>  }<br>  void writetofile2()<br>  {<br>  ofstream outFile;<br>  &#x2F;<em>open函数打开文件</em>&#x2F;<br>  outFile.open(“3.txt”, std::ios::out);<br>  outFile &lt;&lt; “this is test writetofile2 pro!” &lt;&lt; endl;<br>  outFile.close();<br>  }<br>  void writefromfile1()<br>  {<br>  &#x2F;<em>先将内容写进文件</em>&#x2F;<br>  ofstream outFile;<br>  outFile.open(“4.txt”, std::ios::out);<br>  outFile &lt;&lt; “this is test writefromfile1 pro!” &lt;&lt; endl;<br>  outFile.close();<br>  ifstream inFile(“4.txt”, std::ios::in);<br>  &#x2F;<em>也可以用open函数打开</em>&#x2F;<br>  string str;<br>  &#x2F;<em>std::getline读一行内容，注意是std命名空间中的getline，fstream泪也有一个getline函数，<br>  但用法不一样，std::getline 原型istream&amp; getline (istream&amp;  is, string&amp; str);<br>  istream.getline()原型 istream&amp; getline (char</em> s, streamsize n );*&#x2F;<br>  std::getline(inFile, str);<br>  cout &lt;&lt; str &lt;&lt; endl;<br>  inFile.close();<br>  }</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-meta">---</span><br><span class="hljs-bullet">-</span> <span class="hljs-comment">#### 测试以上案例</span><br></code></pre></td></tr></table></figure>
+<p>void test1()<br>{<br>  static My_String str(“this is a test!”);<br>  OStream Out;<br>  Out &lt;&lt; str;<br>  &#x2F;*测试iostream输出My_String*&#x2F;<br>  cout &lt;&lt; str &lt;&lt; endl;;<br>  &#x2F;*测试输出到文件*&#x2F;<br>  FileOStream Fout(“1.txt”,”w+”);<br>  Fout &lt;&lt; str;<br>  Fout.close();<br>  &#x2F;*测试打印自定义类型MInt*&#x2F;<br>  MInt m(0);<br>  cout &lt;&lt; m &lt;&lt; endl;<br>  cout &lt;&lt; “enter a integer :” &lt;&lt; endl;<br>  cin &gt;&gt; m;<br>  cout &lt;&lt; m &lt;&lt; endl;<br>  writetofile1();<br>  writetofile2();<br>  writefromfile1();<br>}</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs clean">- #### [源代码](https:<span class="hljs-comment">//github.com/east1203/CPlusPlus.git)</span><br> io流 和 mycase文件<br>- #### 问题<br>模板函数如果定义在cases.h文件中出错，最后把它定义在main函数所在的文件中<br></code></pre></td></tr></table></figure>
+<p>&#x2F;<em>如果定义在cases.h中出错，识别不了My_String 类型</em>&#x2F;<br>template<class T> T&amp; operator&lt;&lt;(T&amp; io, const My_String&amp; str)<br>{<br>  sendstr(io, str.c_str(), str.size());<br>  return io;<br>}<br>&#96;&#96;&#96;</p>
+</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/C/">C++</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/C/">C++</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/09/links/links_softwares/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">softwares</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/09/C++/%E5%AE%B9%E5%99%A8/%E8%BF%AD%E4%BB%A3%E5%99%A8/">
+                        <span class="hidden-mobile">迭代器小结</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
