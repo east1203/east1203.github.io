@@ -210,6 +210,114 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2020/09/06/Verification/SystemVerilog/disable_fork%E4%B8%8E%E6%80%BB%E7%BA%BF%E4%BA%8B%E5%8A%A1/" target="_self">
+          SV——disable_fork与总线事务
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/09/06/Verification/SystemVerilog/disable_fork%E4%B8%8E%E6%80%BB%E7%BA%BF%E4%BA%8B%E5%8A%A1/" target="_self">
+          
+          对于下面的例子，假设实际中是thread1 先完成，thread0被disable。并且 signal&#x3D;&#x3D;1的时候，reg0的值恰好也会跳变为1。本意是再thread 2对reg 0 做的write clear. 123456789101112fork    begin  &#x2F;&#x2F; thread 0        while(rd_data &#x3D;&#x3D; 0) begin
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-06 00:00" pubdate>
+              2020-09-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/Verification/">Verification</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/06/06/Verification/UVM/UVM%E2%80%94%E2%80%94%E5%85%B3%E4%BA%8ERAL%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E6%B3%95/" target="_self">
+          UVM——关于RAL的一些方法
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/06/06/Verification/UVM/UVM%E2%80%94%E2%80%94%E5%85%B3%E4%BA%8ERAL%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E6%B3%95/" target="_self">
+          
+          0. 引言　　在UVM支持的寄存器操作中，有get、update、mirror、write等等一些方法，在这里整理一下他们的用法。 　　寄存器模型中的寄存器值应该与DUT保持同步，但是由于DUT的值是实时更新的，所以寄存器模型并不能实时知道这种更新，在寄存器模型中专门有个值来尽可能与DUT中寄存器的值保持一致，叫镜像值（mirrorred value）。 ​    寄存器模型中还有一个值叫期望值（
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-06-06 00:00" pubdate>
+              2020-06-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/UVM/">UVM</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/Verification/">Verification</a>
+            
+              <a href="/tags/UVM/">UVM</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2020/05/04/IC/%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91/%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91-IC%E6%9E%81%E5%AE%A2%E6%91%98%E8%A6%81/" target="_self">
           敏捷开发-IC极客摘要
         </a>
@@ -574,112 +682,6 @@
         <a href="/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94extern%20virtual%20function/" target="_self">
           
           如果在class 中对virtual function使用了extern声明，如下： class base_test extends uvm_test; extern virtual function void build_phase(uvm_phase(phase); endclass 那么要在class之后定义这个virtual function的实体，如下： function void bu
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-09-27 00:00" pubdate>
-              2019-09-27
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verification/">Verification</a>
-            
-              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/SV/">SV</a>
-            
-              <a href="/tags/Verification/">Verification</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94override/" target="_self">
-          SV——override
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94override/" target="_self">
-          
-          0. 介绍SV中引入OPP，也会有类似于C++里的override和overload考虑。 1. override 重写重写有数据成员重写和方法重写，看下面例子 1234567891011121314151617&#x2F;&#x2F; 来源 IEEE1800 8.14节class Packet;    integer i &#x3D; 1;    function integer get();    	get &#x3D; i;
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-09-27 00:00" pubdate>
-              2019-09-27
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verification/">Verification</a>
-            
-              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/SV/">SV</a>
-            
-              <a href="/tags/Verification/">Verification</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94static/" target="_self">
-          SV——static
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/09/27/Verification/SystemVerilog/SV%E2%80%94%E2%80%94static/" target="_self">
-          
-          static class property如果变量需要在不同的对象中共享，那么可以把这个变成定义成静态变量。 静态变量在声明对象句柄的时候就分配内存空间。 The static class properties can be used without creating an object of that type.  1234class Packet ;static integer fileID
         </a>
       </p>
 

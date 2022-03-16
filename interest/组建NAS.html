@@ -16,23 +16,21 @@
   <meta name="author" content="Yongkang Dong">
   <meta name="keywords" content="芯片 验证 读书 编程">
   
-    <meta name="description" content="AHB仲裁器信号：  仲裁过程包括四个基本步骤： 1．主设备使用HBuSREQx信号请求访问总线； 2．仲裁器置位相应的HGRATx信号，表示主设备的申请已成功，它将在当前传输完成时获得总线访问权； 3．主设备拥有地址／控制总线； 4．主设备拥有数据总线。 请求总线访问 \1. master使用HBUSREQx想arbiter请求总线的控制权，仲裁器在时钟上升沿采样HBUSREQx信号，然后通过仲">
+    <meta name="description" content="S NAS简介简介NAS（Network Attached Storage：网络附属存储）按字面简单说就是连接在网络上，具备资料存储功能的装置，因此也称为“网络存储器”。它是一种专用数据存储服务器。它以数据为中心，将存储设备与服务器彻底分离，集中管理数据，从而释放带宽、提高性能、降低总拥有成本、保护投资。其成本远远低于使用服务器存储，而效率却远远高于后者。 NAS被定义为一种特殊的专用数据存储服务">
 <meta property="og:type" content="website">
-<meta property="og:title" content="page.title">
-<meta property="og:url" content="http://example.com/Untitled.html">
+<meta property="og:title" content="组建NAS">
+<meta property="og:url" content="http://example.com/interest/%E7%BB%84%E5%BB%BANAS.html">
 <meta property="og:site_name" content="北方天">
-<meta property="og:description" content="AHB仲裁器信号：  仲裁过程包括四个基本步骤： 1．主设备使用HBuSREQx信号请求访问总线； 2．仲裁器置位相应的HGRATx信号，表示主设备的申请已成功，它将在当前传输完成时获得总线访问权； 3．主设备拥有地址／控制总线； 4．主设备拥有数据总线。 请求总线访问 \1. master使用HBUSREQx想arbiter请求总线的控制权，仲裁器在时钟上升沿采样HBUSREQx信号，然后通过仲">
+<meta property="og:description" content="S NAS简介简介NAS（Network Attached Storage：网络附属存储）按字面简单说就是连接在网络上，具备资料存储功能的装置，因此也称为“网络存储器”。它是一种专用数据存储服务器。它以数据为中心，将存储设备与服务器彻底分离，集中管理数据，从而释放带宽、提高性能、降低总拥有成本、保护投资。其成本远远低于使用服务器存储，而效率却远远高于后者。 NAS被定义为一种特殊的专用数据存储服务">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="d:/software/%E6%9C%89%E9%81%93%E4%BA%91%E7%AC%94%E8%AE%B0/%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6/dyk1203@126.com/805cd10e95a64ed2950e8907c682d059/clipboard.png">
-<meta property="article:published_time" content="2022-03-12T03:55:36.049Z">
-<meta property="article:modified_time" content="2022-03-12T03:51:25.792Z">
+<meta property="article:published_time" content="2022-03-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-13T12:56:43.050Z">
 <meta property="article:author" content="Yongkang Dong">
 <meta property="article:tag" content="芯片 验证 读书 编程">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="d:/software/%E6%9C%89%E9%81%93%E4%BA%91%E7%AC%94%E8%AE%B0/%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6/dyk1203@126.com/805cd10e95a64ed2950e8907c682d059/clipboard.png">
   
   
-  <title>page.title - 北方天</title>
+  <title>组建NAS - 北方天</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -194,7 +192,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="page.title">
+            <span class="h2" id="subtitle" title="组建NAS">
               
             </span>
 
@@ -219,34 +217,50 @@
                 
 
 <article class="page-content">
-  <p><strong>AHB仲裁器信号：</strong></p>
-<p><img src="D:/software/%E6%9C%89%E9%81%93%E4%BA%91%E7%AC%94%E8%AE%B0/%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6/dyk1203@126.com/805cd10e95a64ed2950e8907c682d059/clipboard.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>仲裁过程包括四个基本步骤：</p>
-<p>1．主设备使用HBuSREQx信号请求访问总线；</p>
-<p>2．仲裁器置位相应的HGRATx信号，表示主设备的申请已成功，它将在当前传输完成时获得总线访问权；</p>
-<p>3．主设备拥有地址／控制总线；</p>
-<p>4．主设备拥有数据总线。</p>
-<p><strong>请求总线访问</strong></p>
-<p>\1. master使用HBUSREQx想arbiter请求总线的控制权，仲裁器在时钟上升沿采样HBUSREQx信号，然后通过仲裁算法（协议中未规定）来决定哪一个master接管总线。</p>
-<p>\2. 如果master请求锁定总线（不希望传输被其他master的请求打断），那么master还必须断言HLOCKx信号，使其他主机不能控制总线。</p>
-<p>\3. 申请到总线的master可以执行一次burst传输，arbiter需要知道HTRANS和HBURST信号，以知道一次burst的停止。如果master希望在一次burst之后还要进行burst传输，那么master需要在burst传输中再次请求HBUSREQ。</p>
-<p>\4. 如果主机在一次burst中丢掉了对总线的控制，那么需要重新申请HBUSREQ。</p>
-<p>\5. 如果master进行未定长度的burst，那么master需要在传输过程中一直申请HBUSREQ。</p>
-<p>\6. 如果没有master请求bus，那么总线会被移交给缺省主机，HTRANS上发送IDLE。</p>
-<p>arbiter可以通过仲裁算法对发起HBUSREQ的master进行仲裁，决定哪个master占用总线，但是以下情况下，当前占用总线的master保持对总线的占用权：</p>
-<p>\1. 当前master 用HLOCK信号锁定了总线。</p>
-<p>\2. 当前主设备处于定常的burst传输。</p>
-<p>\3. 发生split相应的主设备的请求会被屏蔽。</p>
-<p><strong>授予总线</strong></p>
-<p>arbiter通过HGRANT信号表示总线中哪个master的优先级最高，并且在当前HREADY为高（也就是当前数据读写完成）时将总线授予优先权最高的master。同时arbiter改变HMASTER表示哪个master占用bus。</p>
-<p><strong>突发提前终止</strong></p>
-<p>通常仲裁器在突发结束之前不会将总线移交给新的主机。但是，如果仲裁器决定突发必须被提前终止以防止过长的总线访问时间，那么可能在一个突发完成之前将总线访问权移交给另一个主机。如果主机在突发传输中失去对总线的访问，必须重新断言总线请求信号。主机必须确保HBURsI’和瑚限ANS信号都被更新以确保不再执行一个完整的突发传输</p>
-<p><strong>仲裁算法</strong></p>
-<p><strong>仲裁算法有固定优先级的仲裁(Fixed priority)，循环式优先级仲裁(Round Robin)，或是随机性的仲裁(Random)和竞争仲裁优先级(Tournament)</strong></p>
-<p>固定优先级算法，就是指总线中各主设备的优先级是事先确定好的，在仲裁器仲裁过程中固定不变。    </p>
-<p>而循环优先级算法则不同，各主设备的优先级在仲裁器的仲裁过程中不是一成不变，而是根据一定规律发生变化的。</p>
-<p>两者各有利弊，采用固定优先级算法，可以对那些有重要数据传输或有大量实时数据传输以及经常需要占用总线的主设备赋予较高的优先权，以便有效地利用AHB总线。固定优先级算法的缺点是可能会出现总线主设备“撑死”和“饿死”的现象，即优先级高的主设备总是优于优先级低的主设备获得总线的访问权，从而导致优先级低的设备不能及时获得总线的访问权而造成数据发送堵塞。</p>
-<p>相反，采用循环优先级算法则可以克服这种“饱饿”不均的弊端，在循环优先级算法中，由于其优先级随着每个总线周期动态地改变，各个设备在总线上的身份平等，获得总线占用权的机会均等。所以，在一定意义上来说，优先级循环是最公平的算法。循环优先级的缺点是当处理某些设备的大批量实时数据时会造成效率下降。</p>
+  <p>S</p>
+<h2 id="NAS简介"><a href="#NAS简介" class="headerlink" title="NAS简介"></a>NAS简介</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>NAS（Network Attached Storage：网络附属存储）按字面简单说就是连接在网络上，具备资料存储功能的装置，因此也称为“<a target="_blank" rel="noopener" href="https://www.smzdm.com/fenlei/wangluocunchu/">网络存储</a>器”。它是一种专用数据存储服务器。它以数据为中心，将<a target="_blank" rel="noopener" href="https://www.smzdm.com/fenlei/cunchushebei/">存储设备</a>与服务器彻底分离，集中管理数据，从而释放带宽、提高性能、降低总拥有成本、保护投资。其成本远远低于使用服务器存储，而效率却远远高于后者。</p>
+<p>NAS被定义为一种特殊的专用数据存储服务器，包括存储器件（例如磁盘阵列、CD&#x2F;DVD驱动器、磁带驱动器或可移动的存储介质）和内嵌系统软件，可提供跨平台文件共享功能。NAS通常在一个LAN上占有自己的节点，无需应用服务器的干预，允许用户在网络上存取数据，在这种配置中，NAS集中管理和处理网络上的所有数据，将负载从应用或企业服务器上卸载下来，有效降低总拥有成本，保护用户投资。</p>
+<p>NAS本身能够支持多种协议（如NFS、CIFS、FTP、HTTP等），而且能够支持各种操作系统。通过任何一台工作站，采用IE或Netscape浏览器就可以对NAS设备进行直观方便的管理。</p>
+<p>目前NAS可大略分为“专注存储型”(Storage NAS)以及“集成平台型”(Platform NAS)两种，后者即为具备自身操作系统。就平台式NAS而言，现今全球著名品牌为华芸科技（ASUSTOR）、普安科技(Infortrend)、诠力科技（ITE2）、威联通科技 （QNAP）、与群晖科技（Synology）、宏普科技(又称色卡司)（Thecus）等。</p>
+<h3 id="存储优缺点"><a href="#存储优缺点" class="headerlink" title="存储优缺点"></a>存储优缺点</h3><p>优点：</p>
+<ol>
+<li>NAS产品是真正即插即用的产品。NAS设备一般支持多计算机平台，用户通过网络支持协议可进入相同的文档，因而NAS设备无需改造即可用于混合Unix&#x2F;Windows NT局域网内。</li>
+<li>NAS设备的物理位置同样是灵活的。它们可放置在工作组内，靠近数据中心的应用服务器，或者也可放在其他地点，通过物理链路与网络连接起来。无需应用服务器的干预，NAS设备允许用户在网络上存取数据，这样既可减小CPU的开销，也能显著改善网络的性能。</li>
+</ol>
+<p>局限：</p>
+<ol>
+<li>NAS没有解决与文件服务器相关的一个关键性问题，即备份过程中的带宽消耗。与将备份数据流从LAN中转移出去的存储区域网（SAN）不同，NAS仍使用网络进行备份和恢复。NAS 的一个缺点是它将存储事务由并行SCSI连接转移到了网络上。这就是说LAN除了必须处理正常的最终用户传输流外，还必须处理包括备份操作的存储磁盘请求。</li>
+<li>由于存储数据通过普通数据网络传输，因此易受网络上其它流量的影响。当网络上有其它大数据流量时会严重影响系统性能；由于存储数据通过普通数据网络传输，因此容易产生数据泄漏等安全问题；</li>
+<li>存储只能以文件方式访问，而不能像普通文件系统一样直接访问物理数据块，因此会在某些情况下严重影响系统效率，比如大型数据库就不能使用NAS。</li>
+</ol>
+<h3 id="为什么使用NAS？NAS的作用？"><a href="#为什么使用NAS？NAS的作用？" class="headerlink" title="为什么使用NAS？NAS的作用？"></a>为什么使用NAS？NAS的作用？</h3><ol>
+<li>集中存储，共享存储。集中管理文件，包括文档视频图片等，并且不同设备都可以远程访问，本地不需要存储这些文件，节省了存储空间，手机的内存也不需要那么大了。</li>
+<li>电脑、手机中文件的自动备份，防止文件丢失、误删</li>
+<li>可以使用迅雷远程下载，将闲置的时间用来下载，免费的离线下载。</li>
+<li>作为家庭媒体数据中心，这样电视盒子，WiFi 音箱就能直接读取 NAS 里面下载的电影和歌曲，当然也可以完美使用电视串流功能</li>
+<li>身为程序员，可以创建自己的 git 或者 svn 版本控制库</li>
+<li>搭建邮件服务器、个人博客、web 网站等等。</li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/31480960">(87 封私信 &#x2F; 80 条消息) 群晖 nas 有些什么基本和好玩的功能？ - 知乎 (zhihu.com)</a></li>
+<li></li>
+</ol>
+<h2 id="设备选型"><a href="#设备选型" class="headerlink" title="设备选型"></a>设备选型</h2><h3 id="1-CPU"><a href="#1-CPU" class="headerlink" title="1. CPU"></a>1. CPU</h3><p><strong>映泰（BIOSTAR)J4105NHU主板ITX迷你集成INTEL(J4105四核低耗处理器)</strong> <a target="_blank" rel="noopener" href="https://item.jd.com/100011556189.html#none">【映泰J4105NHU 】映泰（BIOSTAR)J4105NHU主板ITX迷你集成INTEL(J4105四核低耗处理器)【行情 报价 价格 评测】-京东 (jd.com)</a></p>
+<p>主板加CPU，688元，看评论也有不少人是用这个来做为NAS的，跑的应用还挺多，应该够我用了。</p>
+<p>而且是京东自营的，避免广东、深圳发货，毕竟那里现在疫情比较严重。</p>
+<h3 id="2-机箱"><a href="#2-机箱" class="headerlink" title="2. 机箱"></a>2. 机箱</h3><p><a target="_blank" rel="noopener" href="https://item.taobao.com/item.htm?spm=a1z0d.7625083.1998302264.5.5c5f4e69WDya6V&id=623874264426">蜗牛星际主机箱子四盘位 带硬盘背板 带SATA插口 带硬盘架nas主机-淘宝网 (taobao.com)</a></p>
+<p>100元</p>
+<h3 id="3-电源"><a href="#3-电源" class="headerlink" title="3. 电源"></a>3. 电源</h3><p><a target="_blank" rel="noopener" href="https://item.taobao.com/item.htm?spm=a1z09.2.0.0.547c2e8dc1uz3E&id=8914856861&_u=d1ni0a0r9b3e">益衡 Enhance ENP 7025B FLEX 小1U电源NAS 250w 静音 3年质保-淘宝网 (taobao.com)</a></p>
+<p>245元</p>
+<h3 id="4-内存条"><a href="#4-内存条" class="headerlink" title="4. 内存条"></a>4. 内存条</h3><p><a target="_blank" rel="noopener" href="https://item.jd.com/100005585020.html">【光威悍将DDR4 PC-8GB-2666MHz】光威（Gloway）8GB DDR4 2666 台式机内存 悍将系列-精选颗粒&#x2F;匠心打造【行情 报价 价格 评测】-京东 (jd.com)</a></p>
+<p>189元</p>
+<h3 id="5-硬盘"><a href="#5-硬盘" class="headerlink" title="5. 硬盘"></a>5. 硬盘</h3><p><a target="_blank" rel="noopener" href="https://item.jd.com/100010508835.html">【西部数据WD40EZAZ】西部数据(WD)蓝盘 4TB SATA6Gb&#x2F;s 256MB 台式机械硬盘(WD40EZAZ)【行情 报价 价格 评测】-京东 (jd.com)</a></p>
+<p>539元</p>
+<p><a target="_blank" rel="noopener" href="https://item.jd.com/100011322637.html#crumb-wrap">【光威GLOWAY Basic256GNVMe-M.2&#x2F;80】光威（Gloway）256GB SSD固态硬盘 M.2接口(NVMe协议) Basic-基础版&#x2F;五年质保【行情 报价 价格 评测】-京东 (jd.com)</a></p>
+<p>209元</p>
+<h2 id="系统安装"><a href="#系统安装" class="headerlink" title="系统安装"></a>系统安装</h2><h2 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h2><h2 id="应用实现"><a href="#应用实现" class="headerlink" title="应用实现"></a>应用实现</h2><p>NAS cpu</p>
+<h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/csdn100861/article/details/51440563">(12条消息) 什么是 NAS? 为什么要用 NAS？有什么好玩的功能？_UP的博客-CSDN博客_nas是什么</a></li>
+<li></li>
+</ol>
 
 
   

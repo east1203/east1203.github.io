@@ -210,6 +210,104 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2019/04/30/IC/others/%E6%95%B0%E6%8D%AE%E4%BE%9D%E8%B5%96RAW%20WAW%20WAR/" target="_self">
+          数据依赖RAW WAW WAR
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/04/30/IC/others/%E6%95%B0%E6%8D%AE%E4%BE%9D%E8%B5%96RAW%20WAW%20WAR/" target="_self">
+          
+          本文是作者在学习过程中的理解，所以很可能存在不全面或者错误 本文参考了自己动手写CPU之第五阶段（1）——流水线数据相关问题和cpu乱序原理 CPU指令中的相关性包括数据相关性，结构（资源）相关性和控制相关性。 数据相关性：CPU基于流水线执行，在执行指令时，上一条指令没有执行完就要开始接下来指令的执行，如果当前指令中的操作数来源于上一条指令的执行结果，那么就会产生数据依赖。 资源相关性：CPU内
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-04-30 00:00" pubdate>
+              2019-04-30
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/IC/">IC</a>
+            
+              <a href="/categories/IC/others/">others</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/04/19/others/linux/redhat%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/" target="_self">
+          redhat虚拟机网络配置
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/04/19/others/linux/redhat%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/" target="_self">
+          
+          redhat虚拟机出现联网错误解决1 设置windows主机的网络连接(参考) 在网络连接下有VMnet1,VMnet2,(vmnet1是host-only，也就是说，选择用vmnet1的话就相当于VMware给你提供了一个虚拟交换机，仅将虚拟机和真实系统连上了，虚 拟机可以与真实系统相互共享文件，但是虚拟机无法访问外部互联网，而vmnet8是NAT，就是网络地址转换，相当于给你一个虚拟交换机，将
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-04-19 00:00" pubdate>
+              2019-04-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/linux/">linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/linux/">linux</a>
+            
+              <a href="/tags/virtual-machine/">virtual machine</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2019/04/18/C++/%E5%87%BD%E6%95%B0/C++%20%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0/" target="_self">
           C++ 函数参数
         </a>
@@ -595,99 +693,6 @@
               <a href="/tags/Asynchronous/">Asynchronous</a>
             
           </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/04/11/tools/vcs/%E7%94%9F%E6%88%90%E4%BB%BF%E7%9C%9F%E6%B3%A2%E5%BD%A2.vcd%20.fsdb%20.vpd/" target="_self">
-          生成仿真波形vcd vpd fsdb
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/04/11/tools/vcs/%E7%94%9F%E6%88%90%E4%BB%BF%E7%9C%9F%E6%B3%A2%E5%BD%A2.vcd%20.fsdb%20.vpd/" target="_self">
-          
-          1. verilog系统函数生成vcdVCD （Value Change Dump）是一个通用的格式。 VCD文件是IEEE1364标准(Verilog HDL语言标准)中定义的一种ASCII文件。它主要包含了头信息，变量的预定义和变量值的变化信息。正是因为它包含了信号的变化信息，就相当于记录了整个仿真的信息，我们可以用这个文件来再现仿真，也就能够显示波形。 特别说明的一点是，正是因为VCD记录了
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-04-11 00:00" pubdate>
-              2019-04-11
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/tools/">tools</a>
-            
-              <a href="/categories/tools/EDA/">EDA</a>
-            
-              <a href="/categories/tools/EDA/vcs/">vcs</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/vcs/">vcs</a>
-            
-              <a href="/tags/EDA/">EDA</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/03/11/others/hello-world/" target="_self">
-          Hello World
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/03/11/others/hello-world/" target="_self">
-          
-          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-03-11 00:00" pubdate>
-              2019-03-11
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/others/">others</a>
-            
-          </div>
-        
         
       </div>
     </article>

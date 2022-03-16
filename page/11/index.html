@@ -210,6 +210,104 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2019/05/23/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F%E8%AE%BE%E8%AE%A1/" target="_self">
+          跨时钟域设计
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/05/23/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F%E8%AE%BE%E8%AE%A1/" target="_self">
+          
+          1. 同步、异步定义对于工具来说，只要给出了时钟之间的关系，工具就认为是同步时钟，tool就可以对这两个时钟分析时序关系。 同步时钟：能够明确定义以下属性的时钟:  时钟周期或者频率 时钟占空比 duty time 每个时钟信号第一个上升沿的时间（相位） 时钟的输入latency——从PLL到模块的时钟输入端口的delay  异步时钟：没法明确定义上面这些属性的时钟。 比如clk0的周期、占空比、
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-05-23 00:00" pubdate>
+              2019-05-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/IC/">IC</a>
+            
+              <a href="/categories/IC/Asynchronous/">Asynchronous</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/Asynchronous/">Asynchronous</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/05/19/C++/C++%E4%B8%AD%E7%9A%84%E5%BC%82%E5%B8%B8/" target="_self">
+          C++中的异常
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/05/19/C++/C++%E4%B8%AD%E7%9A%84%E5%BC%82%E5%B8%B8/" target="_self">
+          
+          关于异常这里先只放一张关于异常栈展开，也就是关于异常的抛出和捕获的配对 再try块中抛出（throw）异常（exception），在函数的调用链上逐级向上寻找匹配的catch块，如果找到了匹配的catch就执行异常处理的代码，如果没有找到推出当前的程序块或者函数（一些相关的局部对象就会被释放掉），然后继续向上找。如果最终找不到，会执行一个terminate程序，终止程序的执行。 异常捕获的搜索如下
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-05-19 00:00" pubdate>
+              2019-05-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/C/">C++</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2019/05/16/IC/others/%E9%80%9A%E8%BF%87RISC%E5%AD%98%E5%82%A8%E7%A8%8B%E5%BA%8F%E6%9C%BA%E7%90%86%E8%A7%A3%E6%95%B0%E6%8D%AE%E9%80%9A%E8%B7%AF%E6%8E%A7%E5%88%B6%E5%99%A8%E8%AE%BE%E8%AE%A1/" target="_self">
           通过RISC存储程序机理解数据通路控制器设计
         </a>
@@ -593,104 +691,6 @@
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/C/">C++</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/04/30/IC/others/%E6%95%B0%E6%8D%AE%E4%BE%9D%E8%B5%96RAW%20WAW%20WAR/" target="_self">
-          数据依赖RAW WAW WAR
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/04/30/IC/others/%E6%95%B0%E6%8D%AE%E4%BE%9D%E8%B5%96RAW%20WAW%20WAR/" target="_self">
-          
-          本文是作者在学习过程中的理解，所以很可能存在不全面或者错误 本文参考了自己动手写CPU之第五阶段（1）——流水线数据相关问题和cpu乱序原理 CPU指令中的相关性包括数据相关性，结构（资源）相关性和控制相关性。 数据相关性：CPU基于流水线执行，在执行指令时，上一条指令没有执行完就要开始接下来指令的执行，如果当前指令中的操作数来源于上一条指令的执行结果，那么就会产生数据依赖。 资源相关性：CPU内
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-04-30 00:00" pubdate>
-              2019-04-30
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/IC/">IC</a>
-            
-              <a href="/categories/IC/others/">others</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/04/19/others/linux/redhat%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/" target="_self">
-          redhat虚拟机网络配置
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/04/19/others/linux/redhat%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/" target="_self">
-          
-          redhat虚拟机出现联网错误解决1 设置windows主机的网络连接(参考) 在网络连接下有VMnet1,VMnet2,(vmnet1是host-only，也就是说，选择用vmnet1的话就相当于VMware给你提供了一个虚拟交换机，仅将虚拟机和真实系统连上了，虚 拟机可以与真实系统相互共享文件，但是虚拟机无法访问外部互联网，而vmnet8是NAT，就是网络地址转换，相当于给你一个虚拟交换机，将
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-04-19 00:00" pubdate>
-              2019-04-19
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/linux/">linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/linux/">linux</a>
-            
-              <a href="/tags/virtual-machine/">virtual machine</a>
             
           </div>
         

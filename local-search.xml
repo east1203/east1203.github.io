@@ -70,6 +70,62 @@
   
   
   <entry>
+    <title>2023年地平线校招社招实习内推</title>
+    <link href="/2022/03/16/others/2023%E5%B9%B4%E5%9C%B0%E5%B9%B3%E7%BA%BF%E6%A0%A1%E6%8B%9B%E7%A4%BE%E6%8B%9B%E5%AE%9E%E4%B9%A0%E5%86%85%E6%8E%A8/"/>
+    <url>/2022/03/16/others/2023%E5%B9%B4%E5%9C%B0%E5%B9%B3%E7%BA%BF%E6%A0%A1%E6%8B%9B%E7%A4%BE%E6%8B%9B%E5%AE%9E%E4%B9%A0%E5%86%85%E6%8E%A8/</url>
+    
+    <content type="html"><![CDATA[<h2 id="2022年、2023年地平线社招、校招、实习内推"><a href="#2022年、2023年地平线社招、校招、实习内推" class="headerlink" title="2022年、2023年地平线社招、校招、实习内推"></a>2022年、2023年地平线社招、校招、实习内推</h2><p>大量芯片、算法、软件、质量、功能安全的岗位等你来，社招校招实习都可以。</p><p>基于创新的人工智能专用计算架构BPU(Brain Processing Unit) ，地平线为自研 AI 芯片规划了完备的研发路线图。2017年，地平线即推出了中国首款边缘人工智能芯片；2019年，地平线又先后推出中国首款车规级 AI 芯片——征程2、新一代 AIoT 智能应用加速引擎——旭日2。2020年，地平线进一步加速AI芯片迭代，推出新一代高效能车规级AI芯片征程3和全新一代 AIoT 边缘 AI 芯片平台旭日3。</p><p>地平线于2021年7月推出业界第一款集成自动驾驶和智能交互于一体的全场景整车智能中央计算芯片——征程5，单芯片AI算力达128 TOPS。随着征程 5的推出，地平线成为业界唯一能够提供覆盖从L2到L4全场景整车智能芯片方案的边缘人工智能平台型企业。</p><h2 id="内推码-jwhymm"><a href="#内推码-jwhymm" class="headerlink" title="内推码  jwhymm"></a>内推码  jwhymm</h2><p><strong>添加内推码，增加简历筛选通过率</strong></p><h2 id="简历投递"><a href="#简历投递" class="headerlink" title="简历投递"></a>简历投递</h2><ol><li>关注【地平线招聘】微信公众号，进行投递。</li><li>去地平线官网  <a href="https://horizon.hotjob.cn/">地平线招聘官网 (hotjob.cn)</a></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>others</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>others</tag>
+      
+      <tag>life</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>git错误及解决</title>
+    <link href="/2022/03/13/tools/git/git%E9%94%99%E8%AF%AF%E5%8F%8A%E8%A7%A3%E5%86%B3/"/>
+    <url>/2022/03/13/tools/git/git%E9%94%99%E8%AF%AF%E5%8F%8A%E8%A7%A3%E5%86%B3/</url>
+    
+    <content type="html"><![CDATA[<h2 id="…-but-github-does-not-provide-shell-access"><a href="#…-but-github-does-not-provide-shell-access" class="headerlink" title="… but github does not provide shell access"></a>… but github does not provide shell access</h2><p>Solution：</p><p>Try and redefine the ssh url for remote origin:</p><figure class="highlight dsconfig"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><pre><code class="hljs dsconfig"><span class="hljs-string">git</span> <span class="hljs-string">remote</span> <span class="hljs-built_in">set-url</span> <span class="hljs-string">origin</span> <span class="hljs-string">git</span>@<span class="hljs-string">github</span>.<span class="hljs-string">com:lut/</span><span class="hljs-string">EvolutionApp</span>.<span class="hljs-string">git</span><br></code></pre></td></tr></table></figure><p>Only <a href="https://git-scm.com/docs/git-remote#Documentation/git-remote.txt-emset-urlem"><code>git remote set-url</code></a> can change an existing remote URL (as opposed to <a href="https://git-scm.com/docs/git-remote#Documentation/git-remote.txt-emaddem"><code>git remote add</code></a>, to <em>add</em> a <em>new</em> remote name and URL)<br>Here, is issue was the URL of the existing origin: <code>EvolutionApp</code>: it needed to be replaced by a valid one.</p><p>reference：<a href="https://stackoverflow.com/questions/26953071/github-authentication-failed-github-does-not-provide-shell-access">git - Github Authentication Failed - … GitHub does not provide shell access - Stack Overflow</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>tools</category>
+      
+      <category>git</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>git</tag>
+      
+      <tag>tools</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>git命令缩写</title>
     <link href="/2022/03/12/tools/git/git%E5%91%BD%E4%BB%A4%E7%BC%A9%E5%86%99/"/>
     <url>/2022/03/12/tools/git/git%E5%91%BD%E4%BB%A4%E7%BC%A9%E5%86%99/</url>
