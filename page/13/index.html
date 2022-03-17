@@ -210,6 +210,57 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2019/04/13/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/%E5%BC%82%E6%AD%A5fifo/" target="_self">
+          异步FIFO
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/04/13/IC/%E8%B7%A8%E6%97%B6%E9%92%9F%E5%9F%9F/%E5%BC%82%E6%AD%A5fifo/" target="_self">
+          
+          异步fifo  异步FIFO就是读写地址不同，要么不同频率，要么同频不同相。读地址和空标志由读时钟产生，写地址和满标志由写时钟产生   问题 异步fifo读写时钟不一致，当要产生fifo的空满标志位时，需要比较读写地址。比如产生空标志位需要在读时钟下采样写地址，并跟读地址进行比较。由于地址一般是多位，在读时钟下各位跳变不一样，产生毛刺，要过一段时间才能稳定，如果在不稳定阶段采样到了数据会发生错误
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-04-13 00:00" pubdate>
+              2019-04-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/IC/">IC</a>
+            
+              <a href="/categories/IC/Asynchronous/">Asynchronous</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/Asynchronous/">Asynchronous</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2019/04/11/tools/vcs/%E7%94%9F%E6%88%90%E4%BB%BF%E7%9C%9F%E6%B3%A2%E5%BD%A2.vcd%20.fsdb%20.vpd/" target="_self">
           生成仿真波形vcd vpd fsdb
         </a>
@@ -589,53 +640,6 @@
         <a href="/2019/03/09/Verilog/Verilog%E8%AF%AD%E6%B3%95%E5%B0%8F%E7%BB%93(1)/" target="_self">
           
           逻辑综合忽略延时信息   比如”# 10 a &#x3D; 1’b1;”在逻辑综合的时候会将延时信息忽略。2. always语句的规则：重复执行always后的语句  如果always后接”@(posedge clk)”,当执行到这时，always语句块的进程被挂起来，直到满足”posedge clk”条件，执行always块中的语句。然后always块会马上重复执行,到”@(posedge c
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-03-09 00:00" pubdate>
-              2019-03-09
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verilog/">Verilog</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Verilog/">Verilog</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/03/09/Verilog/%E9%98%BB%E5%A1%9E%E5%92%8C%E9%9D%9E%E9%98%BB%E5%A1%9E%E8%B5%8B%E5%80%BC/" target="_self">
-          阻塞和非阻塞赋值
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/03/09/Verilog/%E9%98%BB%E5%A1%9E%E5%92%8C%E9%9D%9E%E9%98%BB%E5%A1%9E%E8%B5%8B%E5%80%BC/" target="_self">
-          
-          1 阻塞赋值2 非阻塞赋值3 自触发always块 使用阻塞赋值不能自触发123456789module osc(clk);output clk;reg clk;initial begin   #10 clk &#x3D; 0;end&#x2F;&#x2F;initialalways @(clk)    #5 clk &#x3D; ~clk;endmodule 当语句执行到 clk &#x3D; ~clk,clk的值立马改变，在此期间
         </a>
       </p>
 
