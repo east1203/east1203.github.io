@@ -210,15 +210,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/07/22/IC/others/Verilog%E4%BB%BF%E7%9C%9F%E5%8E%9F%E7%90%86/" target="_self">
-          Verilog仿真原理
+        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
+          SV——线程及线程间的通信（一）
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2019/07/22/IC/others/Verilog%E4%BB%BF%E7%9C%9F%E5%8E%9F%E7%90%86/" target="_self">
+        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
           
-          1. 电路与仿真1.1 电路是并行的1.2 仿真时串行的EDA工具是软件，在CPU中串行执行，所以仿真是串行的，也是顺序执行。 Verilog的并行性在仿真中是通过其语义（semantics）来实现的。语义就是Verilog的语言含义。比如@是等待事件，#10是延迟10个时间单位，块语句都是并行的。 2. Verilog仿真概念2.1 仿真时间仿真事件是仿真器维护的时间值，它用来模拟电路真实的运行
+          ​    实际硬件中，计算是并发进行的，在Verilog中通过initial、always、连续赋值来模拟，在测试平台中为了模拟、检验Verilog中的这些语句块，tb使用许多并发的线程。 1. 线程的定义和使用1.1 定义线程initial 、always、assign都是进程，初次之外还有：  fork    join 其内的语句并发，fork-join块执行完才执行后面的语句。  fork
         </a>
       </p>
 
@@ -226,8 +226,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2019-07-22 00:00" pubdate>
-              2019-07-22
+            <time datetime="2019-07-23 00:00" pubdate>
+              2019-07-23
             </time>
           </div>
         
@@ -235,9 +235,9 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/IC/">IC</a>
+              <a href="/categories/Verification/">Verification</a>
             
-              <a href="/categories/IC/others/">others</a>
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
             
           </div>
         
@@ -247,9 +247,62 @@
             
               <a href="/tags/IC/">IC</a>
             
-              <a href="/tags/Verilog/">Verilog</a>
+              <a href="/tags/SV/">SV</a>
             
-              <a href="/tags/Simulation/">Simulation</a>
+              <a href="/tags/Verification/">Verification</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_self">
+          SV——线程及线程间的通信（二）
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_self">
+          
+          1. 旗语 semaphore​    如果把进程执行看成“开车”这个行为，开车需要钥匙，旗语就类似于“钥匙”。一个线程执行要先申请钥匙（旗语），如果只有一个钥匙（旗语）并且被其他线程申请了，那么这个线程阻塞。当那个线程执行完了，返回钥匙（旗语），被阻塞的线程可以再申请钥匙（旗语）。 ​    旗语可以用在多个进程共享资源的时候。  new方法创建一个或多个旗语 get获取一个或多个旗语，获取失败
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-23 00:00" pubdate>
+              2019-07-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/Verification/">Verification</a>
             
           </div>
         
@@ -481,6 +534,59 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2019/07/22/Verification/simulation/Verilog%E4%BB%BF%E7%9C%9F%E5%8E%9F%E7%90%86/" target="_self">
+          Verilog仿真原理
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/22/Verification/simulation/Verilog%E4%BB%BF%E7%9C%9F%E5%8E%9F%E7%90%86/" target="_self">
+          
+          1. 电路与仿真1.1 电路是并行的1.2 仿真时串行的EDA工具是软件，在CPU中串行执行，所以仿真是串行的，也是顺序执行。 Verilog的并行性在仿真中是通过其语义（semantics）来实现的。语义就是Verilog的语言含义。比如@是等待事件，#10是延迟10个时间单位，块语句都是并行的。 2. Verilog仿真概念2.1 仿真时间仿真事件是仿真器维护的时间值，它用来模拟电路真实的运行
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-22 00:00" pubdate>
+              2019-07-22
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/Simulation/">Simulation</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/Verilog/">Verilog</a>
+            
+              <a href="/tags/Simulation/">Simulation</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2019/07/21/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" target="_self">
           SV——数据类型
         </a>
@@ -623,108 +729,6 @@
               <a href="/tags/IC/">IC</a>
             
               <a href="/tags/Asynchronous/">Asynchronous</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/07/15/Verification/Debug/dump%E6%B3%A2%E5%BD%A2/" target="_self">
-          debug——dumpboxing
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/07/15/Verification/Debug/dump%E6%B3%A2%E5%BD%A2/" target="_self">
-          
-          
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-07-15 00:00" pubdate>
-              2019-07-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verification/">Verification</a>
-            
-              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/SV/">SV</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/07/15/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E6%8E%A5%E5%8F%A3/" target="_self">
-          SV——接口
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/07/15/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E6%8E%A5%E5%8F%A3/" target="_self">
-          
-          1. Interface概念System Verilog中引入了接口定义，接口与module 等价的定义，是要在其他的接口、module中直接定义，不能写在块语句中，跟class是不同的。 ​    接口是将一组线捆绑起来，可以将接口传递给module。 2.  接口的优点一）通过接口在module之间或内部进行信号，模块的输入列表就是一个接口，这样简单，避免手动连线的错误。 二）如果需要增加模块
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-07-15 00:00" pubdate>
-              2019-07-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verification/">Verification</a>
-            
-              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/SV/">SV</a>
             
           </div>
         

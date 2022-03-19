@@ -210,6 +210,116 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2019/08/08/Verification/UVM/UVM%E2%80%94%E2%80%94sequence%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
+          UVM——sequence（一）
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/08/08/Verification/UVM/UVM%E2%80%94%E2%80%94sequence%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
+          
+          在UVM中，将激励生成和测试平台分开，使平台只编译一次，但可以运行多个激励，要实现这一点需要sequence机制、factory机制和config_db机制。 在不同的测试用例中，将不同的sequence设置成sequencer的main_phase中的default_sequence。当sequencer执行到main_phase时，发现有default_sequence，就启动sequence
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-08-08 00:00" pubdate>
+              2019-08-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/UVM/">UVM</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/Verification/">Verification</a>
+            
+              <a href="/tags/UVM/">UVM</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/08/08/Verification/UVM/UVM%E2%80%94%E2%80%94sequence%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_self">
+          UVM——sequence（二）
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/08/08/Verification/UVM/UVM%E2%80%94%E2%80%94sequence%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_self">
+          
+          6. virtual sequence​    如果被嵌套的sequence需要在不同的sequencer中启动，也就是需要sequence之间同步，那么此时的嵌套sequence就是virtual sequence。它不产生transaction，只是控制其它sequence产生transaction发送给不同的sequencer，这就是为什么是virtual。 ​    virtual seq
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-08-08 00:00" pubdate>
+              2019-08-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Verification/">Verification</a>
+            
+              <a href="/categories/Verification/UVM/">UVM</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IC/">IC</a>
+            
+              <a href="/tags/SV/">SV</a>
+            
+              <a href="/tags/Verification/">Verification</a>
+            
+              <a href="/tags/UVM/">UVM</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2019/08/07/Verilog/Verilog%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" target="_self">
           Verilog——文件读写
         </a>
@@ -582,112 +692,6 @@
         <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94OOP%E6%8A%80%E5%B7%A7/" target="_self">
           
           1. 事务传递​    在事务生成器中，每次新建transaction，随机化后发送给接收器，这样每次发送函数transmit(tr)发送的transaction都不同。避免了transmit程序需要多个cycle，后面的随机化将前面还没有发送完成的数据覆盖了。 ​    下面这种写法是只创建一个transaction对象，对对象进行多次随机化，后面的随机化可能会覆盖前面没发送的数据。 12345
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-07-23 00:00" pubdate>
-              2019-07-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verification/">Verification</a>
-            
-              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/SV/">SV</a>
-            
-              <a href="/tags/Verification/">Verification</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
-          SV——线程及线程间的通信（一）
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
-          
-          ​    实际硬件中，计算是并发进行的，在Verilog中通过initial、always、连续赋值来模拟，在测试平台中为了模拟、检验Verilog中的这些语句块，tb使用许多并发的线程。 1. 线程的定义和使用1.1 定义线程initial 、always、assign都是进程，初次之外还有：  fork    join 其内的语句并发，fork-join块执行完才执行后面的语句。  fork
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-07-23 00:00" pubdate>
-              2019-07-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Verification/">Verification</a>
-            
-              <a href="/categories/Verification/System-Verilog/">System Verilog</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/IC/">IC</a>
-            
-              <a href="/tags/SV/">SV</a>
-            
-              <a href="/tags/Verification/">Verification</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_self">
-          SV——线程及线程间的通信（二）
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/07/23/Verification/SystemVerilog/SV%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_self">
-          
-          1. 旗语 semaphore​    如果把进程执行看成“开车”这个行为，开车需要钥匙，旗语就类似于“钥匙”。一个线程执行要先申请钥匙（旗语），如果只有一个钥匙（旗语）并且被其他线程申请了，那么这个线程阻塞。当那个线程执行完了，返回钥匙（旗语），被阻塞的线程可以再申请钥匙（旗语）。 ​    旗语可以用在多个进程共享资源的时候。  new方法创建一个或多个旗语 get获取一个或多个旗语，获取失败
         </a>
       </p>
 

@@ -1,0 +1,550 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/icon/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yongkang Dong">
+  <meta name="keywords" content="芯片 验证 读书 编程">
+  
+    <meta name="description" content="本文是作者在学习过程中的理解，所以很可能存在不全面或者错误 本文参考了自己动手写CPU之第五阶段（1）——流水线数据相关问题和cpu乱序原理 CPU指令中的相关性包括数据相关性，结构（资源）相关性和控制相关性。 数据相关性：CPU基于流水线执行，在执行指令时，上一条指令没有执行完就要开始接下来指令的执行，如果当前指令中的操作数来源于上一条指令的执行结果，那么就会产生数据依赖。 资源相关性：CPU内">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据依赖RAW WAW WAR">
+<meta property="og:url" content="http://example.com/2019/04/30/IC/CPU/%E6%95%B0%E6%8D%AE%E4%BE%9D%E8%B5%96RAW%20WAW%20WAR/index.html">
+<meta property="og:site_name" content="北方天">
+<meta property="og:description" content="本文是作者在学习过程中的理解，所以很可能存在不全面或者错误 本文参考了自己动手写CPU之第五阶段（1）——流水线数据相关问题和cpu乱序原理 CPU指令中的相关性包括数据相关性，结构（资源）相关性和控制相关性。 数据相关性：CPU基于流水线执行，在执行指令时，上一条指令没有执行完就要开始接下来指令的执行，如果当前指令中的操作数来源于上一条指令的执行结果，那么就会产生数据依赖。 资源相关性：CPU内">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/04/data_dependency1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/04/data_dependency2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/04/data_dependency3.png">
+<meta property="article:published_time" content="2019-04-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-19T01:40:04.218Z">
+<meta property="article:author" content="Yongkang Dong">
+<meta property="article:tag" content="IC">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/04/data_dependency1.png">
+  
+  
+  <title>数据依赖RAW WAW WAR - 北方天</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>East1203</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    Archives
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    Tags
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/source/">
+                
+                source
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/background/back2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="数据依赖RAW WAW WAR">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-04-30 00:00" pubdate>
+        April 30, 2019 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      26 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">数据依赖RAW WAW WAR</h1>
+            
+            <div class="markdown-body">
+              <p><strong>本文是作者在学习过程中的理解，所以很可能存在不全面或者错误</strong></p>
+<p>本文参考了<a target="_blank" rel="noopener" href="https://blog.csdn.net/leishangwen/article/details/38298787">自己动手写CPU之第五阶段（1）——流水线数据相关问题</a>和<a target="_blank" rel="noopener" href="http://www.techbulo.com/1963.html">cpu乱序原理</a></p>
+<p>CPU指令中的相关性包括<strong>数据相关性，结构（资源）相关性和控制相关性</strong>。</p>
+<p><strong>数据相关性</strong>：CPU基于流水线执行，在执行指令时，上一条指令没有执行完就要开始接下来指令的执行，如果当前指令中的操作数来源于上一条指令的执行结果，那么就会产生数据依赖。</p>
+<p><strong>资源相关性</strong>：CPU内的硬件资源是有限的。所谓资源相关，是指多条指令进入流水线后在同一机器周期内争用同一个功能部件所发生的冲突。</p>
+<p><strong>控制相关性</strong>：由于跳转指令引起指令跳转。CPU遇到跳转指令可能不跳转接着执行吓一跳指令；但如果跳转到其他的指令，PC值会由跳转指令执行结果而定，这会冲刷流水线。</p>
+<p>这里只整理<strong>数据相关性</strong>内容。</p>
+<hr>
+<p>数据依赖性主要有三种RAW（写后读依赖）、WAR（读后写依赖）、WAW（写后写依赖）。</p>
+<p><strong>RAW</strong>：Read After Write，假设指令j是在指令i后面执行的指令，RAW表示指令i将数据写入寄存器后，指令j才能从这个寄存器读取数据。如果指令j在指令i写入寄存器前尝试读出该寄存器的内容，将得到不正确的数据。</p>
+<p>** WAR**：Write After Read，假设指令j是在指令i后面执行的指令，WAR表示指令i读出数据后，指令j才能写这个寄存器。如果指令j在指令i读出数据前就写该寄存器，将使得指令i读出的数据不正确。</p>
+<p> <strong>WAW</strong>：Write After Write，假设指令j是在指令i后面执行的指令，WAW表示指令i将数据写入寄存器后，指令j才能将数据写入这个寄存器。如果指令j在指令i之前写该寄存器，将使得该寄存器的值不是最新值。</p>
+<h5 id="顺序执行"><a href="#顺序执行" class="headerlink" title="顺序执行"></a>顺序执行</h5><p>对于5级流水线结构的CPU，取址、译码、执行、访存和写回。顺序执行的指令写寄存器实在写回阶段，后续的指令也是在写回阶段写寄存器，所以不存在WAW依赖。读寄存器实在译码阶段进行，而写寄存器实在写回阶段，所以不存在WAR依赖。<strong>只存在RAW依赖</strong>，这是因为读的数据是写操作执行完成写回寄存器操作后读的数据，必须等到前面的数据写回。</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-keyword">ADD</span> <span class="hljs-built_in">r1</span>,<span class="hljs-built_in">r2</span>,<span class="hljs-built_in">r3</span><br><span class="hljs-keyword">SUB</span> <span class="hljs-built_in">r4</span>,<span class="hljs-built_in">r5</span>,<span class="hljs-built_in">r1</span>     指令需要读取上一条指令的结果<br></code></pre></td></tr></table></figure>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs armasm">流水线：<br><span class="hljs-keyword">ADD</span>       取指 译码 执行 访存 写回<br><span class="hljs-keyword">SUB</span>            取指 译码 执行 访存 写回<br></code></pre></td></tr></table></figure>
+<p>SUB指令在“译码”阶段读取r1寄存器的值，但这时ADD指令还没有写回。</p>
+<p><strong>解决RAW方法</strong></p>
+<ol>
+<li><p>添加空的周期</p>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs oxygene">流水线：<br><span class="hljs-keyword">ADD</span>       取指 译码  执行  访存  写回<br>SUB            取指 <span class="hljs-keyword">empty</span> <span class="hljs-keyword">empty</span> 译码 执行 访存 写回<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>编译器对指令进行调度</p>
+</li>
+</ol>
+<p> 编译器将SUB指令之后的不与ADD、SUB两条指令存在相关性的指令添加到ADD和SUB这两条存在数据依赖的指令中间。这样执行效率不高。<br> <figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs armasm"> 编译器调度后的指令：<br><span class="hljs-keyword">ADD</span> <span class="hljs-built_in">r1</span>,<span class="hljs-built_in">r2</span>,<span class="hljs-built_in">r3</span><br>指令<span class="hljs-number">1</span><br>指令<span class="hljs-number">2</span><br><span class="hljs-keyword">SUB</span> <span class="hljs-built_in">r4</span>,<span class="hljs-built_in">r5</span>,<span class="hljs-built_in">r1</span>     指令需要读取上一条指令的结果<br></code></pre></td></tr></table></figure></p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs armasm">编译器调度之后的流水线：<br><span class="hljs-keyword">ADD</span>       取指 译码 执行 访存 写回<br>指令<span class="hljs-number">1</span>          取指 译码 执行 访存 写回<br>指令<span class="hljs-number">2</span>               取指 译码 执行 访存 写回<br><span class="hljs-keyword">SUB</span>                     取指 译码 执行 访存 写回<br></code></pre></td></tr></table></figure>
+<ol start="3">
+<li>数据前推（数据旁路缓冲器）</li>
+</ol>
+<p>  （<strong>假设在执行阶段就能得到计算结果</strong>）。通过旁路缓冲器将执行阶段的结果直接给到下一条指令的译码阶段。这样就不需要等到写回寄存器。这要效率高，但是需要额外的复杂逻辑。<br>  <figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs avrasm">流水线：<br><span class="hljs-keyword">ADD</span>       取指 译码 执行 访存 写回<br><span class="hljs-keyword">SUB</span><br></code></pre></td></tr></table></figure></p>
+<hr>
+<h5 id="乱序执行"><a href="#乱序执行" class="headerlink" title="乱序执行"></a>乱序执行</h5><p>由于访存、浮点运算等指令时间长，会阻塞流水线。乱序执行就是不必等前面的指令执行完就开始执行接下来的指令。乱序执行中的数据依赖三种都有：<strong>WAW,RAW,WAR</strong></p>
+<p>乱序执行采用了如下图所示的保留站（Reservation Station ）这种类似于接待室的设施。</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/04/data_dependency1.png" srcset="/img/loading.gif" lazyload></p>
+<p>解码单元解码后的指令不是直接送到流水线，而是根据各自的指令种类，将解码后的指令送往各自的保留站中保存下来。如果操作数位于寄存器中，就把操作数从寄存器中读出来，和指令一起放入保留站。相反，如果操作数还在由前面的指令进行计算，那么就把那条指令的识别信息保存下来。</p>
+<p>然后，保留站把操作数齐备、可执行的指令依次送到流水线进行运算。即使指令位于前面，如果操作数没准备好，也不能开始执行，所以保留站中的指令执行顺序与程序不一致（乱序）。另外，保留站会监视执行流水线输出的结果，如果产生的结果正好是等待中的指令的操作数，就将其读入，这样操作数齐备后，等待中的指令就可以执行了。</p>
+<p>此外，上图给每种指令都设置了保留站，而有的处理器用一个保留站控制所有流水线。</p>
+<h6 id="乱序执行中的反向依赖"><a href="#乱序执行中的反向依赖" class="headerlink" title="乱序执行中的反向依赖"></a>乱序执行中的反向依赖</h6><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs avrasm"><span class="hljs-keyword">LD</span> <span class="hljs-built_in">r1</span>，［a］<span class="hljs-comment">; ←将内存的变量a 读入到寄存器r1（加载）</span><br><br><span class="hljs-keyword">ADD</span> <span class="hljs-built_in">r2</span>，<span class="hljs-built_in">r1</span>，<span class="hljs-built_in">r5</span><span class="hljs-comment">; ←r1与r5相加，保存到r2</span><br><br><span class="hljs-keyword">SUB</span> <span class="hljs-built_in">r1</span>，<span class="hljs-built_in">r5</span>，<span class="hljs-built_in">r4</span><span class="hljs-comment">; ←r5减去 r4，保存到 r1</span><br></code></pre></td></tr></table></figure>
+<p>LD指令需要较长时钟周期，ADD与LD有r1寄存器的依赖关系，所以ADD也被阻塞不能执行。而SUB指令中的r4,r5都已知，根据乱序执行，SUB指令先执行。而SUB指令的保存结果位置是ADD指令的操作数r1，这样就产生的了反向依赖（anti-dependency)。SUB指令先于ADD执行，那么ADD指令执行时的r1值就不是LD指令的结果，而是SUB执行后保存在r1的值，程序执行如下图：</p>
+<p><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/04/data_dependency2.png" srcset="/img/loading.gif" lazyload></p>
+<h6 id="寄存器重命名消除反向依赖"><a href="#寄存器重命名消除反向依赖" class="headerlink" title="寄存器重命名消除反向依赖"></a>寄存器重命名消除反向依赖</h6><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%AF%84%E5%AD%98%E5%99%A8%E9%87%8D%E5%91%BD%E5%90%8D">逻辑寄存器和物理寄存器</a> :<br>编译器或者汇编器生成的机器语言程序读写有限数量的指令集体系结构（ISA）寄存器。例如，Alpha ISA使用32个64位宽整数寄存器，32个64位宽浮点寄存器。这些体系结构寄存器，是程序可以直接访问的逻辑上的寄存器。如果程序员在调试器中把这个程序暂停，可以观察到这64个寄存器与一些状态寄存器当前存储的值。<br>一款特定的处理器，实现了这种处理器体系结构。例如Alpha 21264有80个整数寄存器、72个浮点寄存器，作为处理器内物理实现的寄存器。也就是说，Alpha 21264处理器有80个物理存在的位置存储整数运算的结果，72个位置存放浮点运算的结果。实际上，该款处理器有更多的物理存在的存储位置，但与寄存器重名关系不大。</p>
+<p>重命名处理将程序中记载的寄存器编号（称为“逻辑寄存器”）对应到物理寄存器编号上。各指令写入结果的逻辑寄存器一定要分配到空闲的物理寄存器上。</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">LD</span> <span class="hljs-built_in">p11</span>，［a］<span class="hljs-comment">; ←将内存的变量读入寄存器p11 （r1）</span><br><br><span class="hljs-keyword">ADD</span> <span class="hljs-built_in">p12</span>，<span class="hljs-built_in">p11</span>，<span class="hljs-built_in">r5</span><span class="hljs-comment">; ←p11 （r1）与 r5相加，保存到p12 （r2）</span><br><br><span class="hljs-keyword">SUB</span> <span class="hljs-built_in">p13</span>，<span class="hljs-built_in">r5</span>，<span class="hljs-built_in">r4</span><span class="hljs-comment">; ←r5减去 r4，保存到 p13 （r1）</span><br></code></pre></td></tr></table></figure>
+<p>如图3 所示，LD指令要将结果保存到r1 ，而实际上被重命名，结果保存到了物理寄存器p11。解码下一条 ADD指令时，对应表中记载了 r1 &#x3D; p11 ，因此将使用 r1 的部分改变为使用p11。此外，存放 ADD指令结果的r2 寄存器对应到空闲物理寄存器p12。而SUB 指令的结果也要保存到r1 ，此时要将r1对应到空闲的物理寄存器p13 上。</p>
+<p>这样，尽管逻辑寄存器都是r1 ，但保存LD指令结果和SUB指令结果的实际物理寄存器编号并不相同，因此即使SUB 指令比LD指令早完成，也不会发生任何问题。这种处理叫做寄存器重命名。<br><img src="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/04/data_dependency3.png" srcset="/img/loading.gif" lazyload></p>
+<p>图3 重命名之后的情况</p>
+<h6 id="寄存器重命名原理"><a href="#寄存器重命名原理" class="headerlink" title="寄存器重命名原理"></a>寄存器重命名原理</h6><p>为了实现寄存器重命名，乱序执行的处理器要有物理寄存器池，以及逻辑寄存器和物理寄存器的对应表。在译码时给逻辑寄存器分配物理寄存器，并且记录到对应表中。在解码的时候也要查找对应表中的对应关系，将后续指令中使用的逻辑寄存器转换成对应的物理寄存器。并且在指令执行结束后要释放物理寄存器到空闲物理寄存器池中。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/IC/">IC</a>
+                    
+                      <a class="hover-with-bg" href="/categories/IC/CPU/">CPU</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/IC/">IC</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/04/30/C++/gcc%E7%BC%96%E8%AF%91%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">gcc编译常用命令</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/04/19/others/linux/redhat%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/">
+                        <span class="hidden-mobile">redhat虚拟机网络配置</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
