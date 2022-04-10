@@ -70,6 +70,64 @@
   
   
   <entry>
+    <title>vim中录制命令并重复执行</title>
+    <link href="/2022/04/09/linux/vim%E4%B8%AD%E5%BD%95%E5%88%B6%E5%8A%A8%E4%BD%9C%E5%B9%B6%E9%87%8D%E5%A4%8D%E6%89%A7%E8%A1%8C/"/>
+    <url>/2022/04/09/linux/vim%E4%B8%AD%E5%BD%95%E5%88%B6%E5%8A%A8%E4%BD%9C%E5%B9%B6%E9%87%8D%E5%A4%8D%E6%89%A7%E8%A1%8C/</url>
+    
+    <content type="html"><![CDATA[<p>S</p><h2 id="录制命令"><a href="#录制命令" class="headerlink" title="录制命令"></a>录制命令</h2><p>在vim中可以将重复做的命令录制，然后自动执行这些命令。</p><p>下面通过一个在每一行开头插入递增数字的例子来介绍录制命令。</p><figure class="highlight shell"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">初始文件内容</span><br>red<br>yellow<br>blue<br>green<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">目标文件内容</span><br>1red<br>2yellow<br>3blue<br>4green<br></code></pre></td></tr></table></figure><ol><li>在第一行先写入”1”.</li><li>在vim normal mode下按qa键，进入命令录制的模式，这个时候vim下方会有”recording @a”提示</li><li>光标放在”red”前”1”字符上，然后按ctrl+v，选中”1”，再按下”y”键复制选中的”1”。</li><li>按”j”键移动到下一行，光标位于改行第一个位置。</li><li>按大写的”P”键，将1复制到光标左侧。</li><li>光标选中”1”，按ctrl+a，使”1”递增为”2”。</li><li>按下”q”，推出录制</li></ol><h2 id="重复执行录制命令"><a href="#重复执行录制命令" class="headerlink" title="重复执行录制命令"></a>重复执行录制命令</h2><p>执行完上述步骤之后，文件内容变成：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">1red<br>2yellow<br>blue<br>green<br></code></pre></td></tr></table></figure><p>在normal mode下，将光标 至于”2”上，输入2@a，就会看到刚才录制的命令重复执行了2次</p><p>得到：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">目标文件内容</span><br>1red<br>2yellow<br>3blue<br>4green<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>linux</category>
+      
+      <category>vim</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>linux</tag>
+      
+      <tag>vim</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>vim中替换字符串为换行符</title>
+    <link href="/2022/04/09/linux/vim%E6%9B%BF%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%BA%E6%8D%A2%E8%A1%8C%E7%AC%A6/"/>
+    <url>/2022/04/09/linux/vim%E6%9B%BF%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%BA%E6%8D%A2%E8%A1%8C%E7%AC%A6/</url>
+    
+    <content type="html"><![CDATA[<p>在用vim的时候，经常需要将某些字符替换成其他字符，我们一般用一下命令：</p><figure class="highlight shell"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><pre><code class="hljs SHELL"><span class="hljs-meta prompt_"># </span><span class="language-bash">used <span class="hljs-keyword">in</span> vim <span class="hljs-built_in">command</span> mode</span><br>:%s/str1/str2/gn  # s 是全局搜索，搜索文件中的所有行 <br># g 是将每行中匹配到的字符串全部替换，不加g只替换每行的第一个<br># n 是只搜索、但不替换<br>:%s/str1/str2/g # 搜索并替换<br>:1,10s/str1/str2/gn  # 指定替换范围，只替换1到10行<br></code></pre></td></tr></table></figure><p>如果要将换行符替换成空，这种情况可能用在清楚某些空白行中。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">:%s/\n//g  # \n表示换行符<br></code></pre></td></tr></table></figure><p>上例中，我们用’\n’表示匹配换行符，但是如果我们想将字符串替换成换行符，则要用’\r’表示换行符</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">:%s/,/\r/g  # 将逗号替换成换行符，如果还用\n，会有问题<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>linux</category>
+      
+      <category>vim</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>linux</tag>
+      
+      <tag>vim</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>MESI和MOESI Cache一致性协议</title>
     <link href="/2022/03/19/IC/Cache/MESI%E5%92%8CMOESI%20Cache%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/"/>
     <url>/2022/03/19/IC/Cache/MESI%E5%92%8CMOESI%20Cache%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/</url>
@@ -947,6 +1005,8 @@
     <categories>
       
       <category>linux</category>
+      
+      <category>vim</category>
       
     </categories>
     
@@ -2711,6 +2771,8 @@
       
       <category>linux</category>
       
+      <category>vim</category>
+      
     </categories>
     
     
@@ -2762,6 +2824,8 @@
     <categories>
       
       <category>linux</category>
+      
+      <category>vim</category>
       
     </categories>
     
