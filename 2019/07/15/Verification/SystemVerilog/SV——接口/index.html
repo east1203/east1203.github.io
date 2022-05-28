@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/07/SV/if2.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/east1203/MarkdownPhoto/master/2019/07/SV/if3.png">
 <meta property="article:published_time" content="2019-07-14T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-12T03:51:25.815Z">
+<meta property="article:modified_time" content="2022-05-28T09:59:59.873Z">
 <meta property="article:author" content="Yongkang Dong">
 <meta property="article:tag" content="IC">
 <meta property="article:tag" content="SV">
@@ -219,7 +219,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      5.5k 字
+      6.1k 字
     </span>
   
 
@@ -228,7 +228,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      47 分钟
+      51 分钟
     </span>
   
 
@@ -366,40 +366,20 @@
 
 
 
+<h3 id="8-接口使用注意事项"><a href="#8-接口使用注意事项" class="headerlink" title="8. 接口使用注意事项"></a>8. 接口使用注意事项</h3><ul>
+<li><p>接口不能在package中被&#96;include 。</p>
+<p>下面这种写法是会报错的。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">package</span> pkg;<br>	<span class="hljs-meta">`<span class="hljs-keyword">include</span> &quot;apb_if.sv&quot;</span><br>    ……<br><span class="hljs-keyword">endpackage</span><br></code></pre></td></tr></table></figure>
 
+<p>而要放在package外面</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-meta">`<span class="hljs-keyword">include</span> &quot;apb_if.sv&quot;</span><br><span class="hljs-keyword">package</span> pkg;<br>    ……<br><span class="hljs-keyword">endpackage</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>如果要在UVM中要通过hierarchy访问DUT中的信号，最好将这些信号放在interface中，然后将virtual interface传给UVM</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-comment">// 在接口中定义信号</span><br><span class="hljs-keyword">interface</span> bfm;<br>	<span class="hljs-keyword">bit</span>[<span class="hljs-number">7</span>:<span class="hljs-number">0</span> addr;<br><span class="hljs-keyword">endinterface</span><br><br><span class="hljs-comment">// 实例化接口</span><br>bfm u_bfm();<br>        <br><span class="hljs-comment">// 将虚接口传给UVM</span><br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>	uvm_config_db<span class="hljs-variable">#(vitual bfm)::set(&quot;&quot;, uvm_test_top, &quot;bfm&quot;, bfm)</span>;<br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 在UVM可直接操作虚接口      </span><br></code></pre></td></tr></table></figure>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<p>如果不这样的话，当uvm component（driver， monitor， agent等）文件是通过package来管理的话，就不能在UVM中hierarchy引用DUT中的信号。</p>
+</li>
+</ul>
 
             </div>
             <hr>
