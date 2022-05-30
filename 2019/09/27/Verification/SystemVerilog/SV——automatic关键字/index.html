@@ -24,7 +24,7 @@
 <meta property="og:description" content="参考：IEEE 1800 6.21 Scope and lifetime  1. SV中变量存储 Variables declared outside a module, program, interface, checker, task, or function are local to the  compilation unit and have a static lifetime (exis">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2019-09-26T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-12T03:51:25.813Z">
+<meta property="article:modified_time" content="2022-05-28T12:03:59.288Z">
 <meta property="article:author" content="Yongkang Dong">
 <meta property="article:tag" content="IC">
 <meta property="article:tag" content="SV">
@@ -269,11 +269,12 @@
 <li>Variables declared <strong>outside</strong> a <strong>module, program, interface, checker, task, or function</strong> are local to the</li>
 </ol>
 <p>compilation unit and <strong>have a static lifetime (exist for the whole simulation).</strong> </p>
-<div class="code-wrapper"><pre><code class="hljs">2. Variables declared **inside** a module, interface, program, or checker, but **outside** a task, process, or function, are local in scope（局部有效） and **have a static lifetime**. 
- 3. Variables declared **inside** a static task, function, or block are local in scope and default to a **static lifetime.**
- 4. Tasks and functions may be declared as **automatic**. Variables declared in an automatic task, function, or block are local in scope, **default to the lifetime of the call or block（automatic类型的变量的生存周期是函数调用时间或者块语句的生存周期）,** **and are initialized on each entry to the call or block。**
- 5. An **automatic block** is one in which declarations are automatic by default. Specific variables within an automatic task, function, or block can be explicitly declared as static. Such variables have a static lifetime. 
-</code></pre></div>
+<ol start="2">
+<li>Variables declared <strong>inside</strong> a module, interface, program, or checker, but <strong>outside</strong> a task, process, or function, are local in scope（局部有效） and <strong>have a static lifetime</strong>. </li>
+<li>Variables declared <strong>inside</strong> a static task, function, or block are local in scope and default to a <strong>static lifetime.</strong></li>
+<li>Tasks and functions may be declared as <strong>automatic</strong>. Variables declared in an automatic task, function, or block are local in scope, <strong>default to the lifetime of the call or block（automatic类型的变量的生存周期是函数调用时间或者块语句的生存周期）,</strong> <strong>and are initialized on each entry to the call or block。</strong></li>
+<li>An <strong>automatic block</strong> is one in which declarations are automatic by default. Specific variables within an automatic task, function, or block can be explicitly declared as static. Such variables have a static lifetime.</li>
+</ol>
 <p>​    上面前三条是一个意思，<strong>变量都是存在静态存储区，如果有多个线程同时调用任务或者函数，任务或函数内地变量是共享的，这样会发生问题。</strong></p>
 <p>​    后面两条是一个意思，变量存在动态存储区，<strong>每次对任务或者函数的调用都会分配动态存储区域来存储变量，任务或者函数执行完，自动释放动态存储区。</strong></p>
 <p>1800中的例子</p>
